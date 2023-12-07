@@ -249,8 +249,12 @@ namespace RocketCore
 
 	void RenderSystem::UpdateRenderData()
 	{
+		auto mainCam = SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
+		_rocketGraphics->UpdateCamera(mainCam->GetCameraData());
+
 		RocketCore::Graphics::RenderConstantData data;
 		UpdateConstantData(data);
+		_rocketGraphics->UpdateConstantData(data);
 	}
 
 	void RenderSystem::DrawCurrentScene()

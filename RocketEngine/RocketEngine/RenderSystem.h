@@ -77,10 +77,8 @@ namespace RocketCore
 		void DrawProcess();
 
 	private:
-		void UpdateConstantData(RocketCore::Graphics::RenderConstantData& data);
-
-	private:
 		void UpdateRenderData();
+		void UpdateConstantData(RocketCore::Graphics::RenderConstantData& data);
 		void DrawCurrentScene();
 
 	private:

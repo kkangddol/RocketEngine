@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="MeshObject.cpp" />
@@ -138,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h" />
-    <ClInclude Include="d3dx11effect.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />
@@ -148,6 +149,20 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RocketDX11.h" />
     <ClInclude Include="RocketMacroDX11.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

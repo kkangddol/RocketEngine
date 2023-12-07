@@ -15,15 +15,15 @@ namespace RocketCore::Graphics
 {
 	Grid::Grid(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS)
 		: md3dDevice(pDevice), md3dImmediateContext(pDeviceContext), m_pRenderstate(pRS),
-		mVB(nullptr), mIB(nullptr), mFX(nullptr), mTech(nullptr), mfxWorldViewProj(nullptr), mInputLayout(nullptr),
-		mWorld(), mView(), mProj()
+		mVB(nullptr), mIB(nullptr), mInputLayout(nullptr),
+		mWorld(), mView(), mProj(),
+		_vertexShader(nullptr),_pixelShader(nullptr)
 	{
 
 	}
 
 	Grid::~Grid()
 	{
-		ReleaseCOM(mFX);
 		ReleaseCOM(mInputLayout);
 
 		ReleaseCOM(mVB);
@@ -34,8 +34,7 @@ namespace RocketCore::Graphics
 	void Grid::Initialize()
 	{
 		BuildGeometryBuffers();
-		BuildFX();
-		BuildVertexLayout();
+		CreateShader();
 	}
 
 	void Grid::Update(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
@@ -47,6 +46,10 @@ namespace RocketCore::Graphics
 
 	void Grid::Render()
 	{
+		// Grid가 쓰는 Shader deviceContext 이용해 연결.
+		md3dImmediateContext->VSSetShader(_vertexShader, nullptr, 0);
+		md3dImmediateContext->PSSetShader(_pixelShader, nullptr, 0);
+
 		// 입력 배치 객체 셋팅
 		md3dImmediateContext->IASetInputLayout(mInputLayout);
 		md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -60,23 +63,11 @@ namespace RocketCore::Graphics
 		/// WVP TM등을 셋팅
 		// Set constants
 		DirectX::XMMATRIX worldViewProj = mWorld * mView * mProj;
-		mfxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
 
 		// 렌더스테이트
 		md3dImmediateContext->RSSetState(m_pRenderstate);
 
-		// 테크닉은...
-		D3DX11_TECHNIQUE_DESC techDesc;
-		mTech->GetDesc(&techDesc);
-
-		// 랜더패스는...
-		for (UINT p = 0; p < techDesc.Passes; ++p)
-		{
-			mTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-			// 20개의 인덱스로 그리드를 그린다.
-			md3dImmediateContext->DrawIndexed(40, 0, 0);
-		}
+		md3dImmediateContext->DrawIndexed(40, 0, 0);
 	}
 
 	void Grid::BuildGeometryBuffers()
@@ -97,6 +88,7 @@ namespace RocketCore::Graphics
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;
 		vbd.StructureByteStride = 0;
+
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = vertices;
 		HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mVB));
@@ -129,44 +121,35 @@ namespace RocketCore::Graphics
 		HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mIB));
 	}
 
-	void Grid::BuildFX()
+	void Grid::UpdateRenderData()
 	{
-		std::ifstream fin("../fx/color.fxo", std::ios::binary);
 
-		fin.seekg(0, std::ios_base::end);
-		int size = (int)fin.tellg();
-		fin.seekg(0, std::ios_base::beg);
-		std::vector<char> compiledShader(size);
-
-		fin.read(&compiledShader[0], size);
-		fin.close();
-
-		HR(D3DX11CreateEffectFromMemory(&compiledShader[0], size,
-			0, md3dDevice, &mFX));
-
-		mTech = mFX->GetTechniqueByName("ColorTech");
-		mfxWorldViewProj = mFX->GetVariableByName("gWorldViewProj")->AsMatrix();
 	}
 
-	void Grid::BuildVertexLayout()
+	void Grid::CreateShader()
 	{
+		std::ifstream vsFile("../x64/Debug/VertexShader.cso", std::ios::binary);
+		std::ifstream psFile("../x64/Debug/PixelShader.cso", std::ios::binary);
+
+		std::vector<char> vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };
+		std::vector<char> psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };
+
+		md3dDevice->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &_vertexShader);
+		md3dDevice->CreatePixelShader(psData.data(), psData.size(), nullptr, &_pixelShader);
+
+
+		// 셰이더도 만들어두고 레이아웃도 만들어두고 이런거 저런거 갖다 쓸 수 있게하는게 좋겠지
+		// 이렇게 코드적으로 박아두면 안좋을 것 같다는 얘기를 하는 것 같은데?
+
 		// Create the vertex input layout.
 		D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 		{
 			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			//{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
 
-		// Create the input layout
-		D3DX11_PASS_DESC passDesc;
-		mTech->GetPassByIndex(0)->GetDesc(&passDesc);
-		HR(md3dDevice->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature,
-			passDesc.IAInputSignatureSize, &mInputLayout));
-	}
-
-	void Grid::UpdateRenderData()
-	{
-
+		md3dDevice->CreateInputLayout(vertexDesc, 2, vsData.data(), vsData.size(), &mInputLayout);
 	}
 
 }

@@ -1,4 +1,5 @@
 #include "RocketDX11.h"
+#include "Grid.h"
 
 #include "RocketMacroDX11.h"
 #include "DeviceBuilderDX11.h"
@@ -178,6 +179,9 @@ namespace RocketCore::Graphics
 
 		// Render State
 		CreateRenderStates();
+
+		_grid = new Grid(_device.Get(), _deviceContext.Get(), _wireframeRenderState.Get());
+		_grid->Initialize();
 	}
 
 	void RocketDX11::OnResize(int _width, int _height)
@@ -292,18 +296,25 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::UpdateCamera(const CameraData& cameraData)
 	{
-
+		_camera.SetPosition(cameraData.position.x, cameraData.position.y, cameraData.position.z);
+		_camera.SetFrustum(cameraData.fovY, cameraData.aspect, cameraData.nearZ, cameraData.farZ);
 	}
 
 	void RocketDX11::Render()
 	{
 		BeginRender(0.5f, 0.5f, 0.5f, 1.0f);
+		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+		_grid->Render();
 		RenderMesh();
 		EndRender();
-
 	}
 
 	void RocketDX11::Finalize()
+	{
+		delete _grid;
+	}
+
+	void RocketDX11::UpdateConstantData(const RenderConstantData& renderConstData)
 	{
 
 	}

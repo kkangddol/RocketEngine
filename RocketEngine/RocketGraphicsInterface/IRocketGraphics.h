@@ -25,6 +25,7 @@ namespace RocketCore::Graphics
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) abstract;
 
 		virtual void UpdateCamera(const CameraData& cameraData) abstract;
+		virtual void UpdateConstantData(const RenderConstantData& renderConstData) abstract;
 
 		virtual void Render() abstract;
 

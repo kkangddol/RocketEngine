@@ -8,7 +8,7 @@ namespace RocketEngine
 
 
 class CameraMove : public RocketEngine::Component
-{
+{	
 public:
 	CameraMove(RocketEngine::GameObject* owner);
 

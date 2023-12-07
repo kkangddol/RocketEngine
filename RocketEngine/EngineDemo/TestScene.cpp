@@ -1,6 +1,6 @@
 #include "TestScene.h"
 #include "RocketAPILoader.h"
-#include "CameraMove.h"
+#include "DebugCameraMove.h"
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
@@ -15,6 +15,12 @@ void TestScene::Initialize()
 {
 	scene = RocketEngine::CreateScene("TEST");
 	assert(scene);
+
+	auto camObj = scene->GetMainCamera()->gameObject;
+	camObj->AddComponent<DebugCameraMove>();
+
+	camObj->transform.Translate(0.0f, 5.0f, 0.0f);
+
 	/*
 	{
 		RocketEngine::GameObject* cameraObj = scene->GetMainCamera()->gameObject;
@@ -154,7 +160,7 @@ void TestScene::Initialize()
 
 		/// Light Test
 		RocketEngine::GameObject* dirLightObj = RocketEngine::CreateObject("dirLight");
-		RocketEngine::DirectionalLight* dirLight = dirLightObj->AddComponent<RocketEngine::DirectionalLight>();
+		RocketEngine::DirectionalLight* dirLight = b  dirLightObj->AddComponent<RocketEngine::DirectionalLight>();
 		dirLightObj->transform.Rotate(45.0f, 0.0f, 0.0f);
 
 		RocketEngine::GameObject* pointLightObj = RocketEngine::CreateObject("pointLight");

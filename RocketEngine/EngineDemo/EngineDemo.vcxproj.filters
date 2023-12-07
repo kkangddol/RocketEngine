@@ -16,9 +16,6 @@
     <Filter Include="ClientComponent">
       <UniqueIdentifier>{c3570028-8cd8-4a12-86bf-94db1f0912ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ClientComponent\RandomSpawn">
-      <UniqueIdentifier>{2c4f867f-e54a-496f-acab-f72c541ba346}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -36,9 +33,6 @@
     <ClCompile Include="CameraMove.cpp">
       <Filter>ClientComponent</Filter>
     </ClCompile>
-    <ClCompile Include="RandomSpawn.cpp">
-      <Filter>ClientComponent\RandomSpawn</Filter>
-    </ClCompile>
     <ClCompile Include="DebugCameraMove.cpp">
       <Filter>ClientComponent</Filter>
     </ClCompile>
@@ -55,9 +49,6 @@
     </ClInclude>
     <ClInclude Include="CameraMove.h">
       <Filter>ClientComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomSpawn.h">
-      <Filter>ClientComponent\RandomSpawn</Filter>
     </ClInclude>
     <ClInclude Include="DebugCameraMove.h">
       <Filter>ClientComponent</Filter>

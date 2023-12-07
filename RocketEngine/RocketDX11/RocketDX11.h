@@ -1,17 +1,21 @@
 #pragma once
 
 #include "..\\RocketGraphicsInterface\\IRocketGraphics.h"
+#include "Camera.h"
 
 #include <windows.h>
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
 #include <wrl.h>
+#include <DirectXMath.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
 namespace RocketCore::Graphics
 {
+	class Grid;
+
 	class RocketDX11 final : public IRocketGraphics
 	{
 	public:
@@ -23,6 +27,7 @@ namespace RocketCore::Graphics
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) override;
 
 		virtual void UpdateCamera(const CameraData& cameraData) override;
+		virtual void UpdateConstantData(const RenderConstantData& renderConstData) override;
 
 		virtual void Render() override;
 
@@ -71,5 +76,10 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _solidRenderState;
 		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다.
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
+
+	private:
+		Grid* _grid;
+		Camera _camera;
+
 	};
 }

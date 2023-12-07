@@ -163,7 +163,6 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="DebugCameraMove.cpp" />
-    <ClCompile Include="RandomSpawn.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="RocketAPILoader.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -172,7 +171,6 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="DebugCameraMove.h" />
-    <ClInclude Include="RandomSpawn.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="RocketAPILoader.h" />
     <ClInclude Include="TestScene.h" />

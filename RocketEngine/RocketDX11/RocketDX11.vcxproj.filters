@@ -13,9 +13,6 @@
     <Filter Include="GraphicsEngine">
       <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EffectFramework">
-      <UniqueIdentifier>{c011ad83-107c-4638-ba93-ae62dc90326d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{22c35920-33c7-49ee-93e4-a0ba4a627ed2}</UniqueIdentifier>
     </Filter>
@@ -40,6 +37,12 @@
     <Filter Include="ObjectManager">
       <UniqueIdentifier>{29fd3f0b-e069-4c6e-946d-62a3f083f0b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Shader">
+      <UniqueIdentifier>{d1db05f7-9ff0-41f6-92da-cbecec9aea3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Camera">
+      <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -63,6 +66,9 @@
     <ClCompile Include="ObjectManager.cpp">
       <Filter>ObjectManager</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Object\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RocketDX11.h">
@@ -83,9 +89,6 @@
     <ClInclude Include="Grid.h">
       <Filter>Object\HelperObject</Filter>
     </ClInclude>
-    <ClInclude Include="d3dx11effect.h">
-      <Filter>EffectFramework</Filter>
-    </ClInclude>
     <ClInclude Include="MeshObject.h">
       <Filter>Object\MeshObject</Filter>
     </ClInclude>
@@ -98,5 +101,16 @@
     <ClInclude Include="ObjectManager.h">
       <Filter>ObjectManager</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Object\Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Object\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Object\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
