@@ -22,32 +22,32 @@ void DebugCameraMove::Update()
 		moveSpeed *= 2.0f;
 	}
 
-	if (RocketEngine::GetKey(VK_UP))
+	if (RocketEngine::GetKey('W'))
 	{
 		_camera->Walk(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_DOWN))
+	if (RocketEngine::GetKey('S'))
 	{
 		_camera->Walk(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_LEFT))
+	if (RocketEngine::GetKey('A'))
 	{
 		_camera->Strafe(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_RIGHT))
+	if (RocketEngine::GetKey('D'))
 	{
 		_camera->Strafe(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_NEXT))
+	if (RocketEngine::GetKey('Q'))
 	{
 		_camera->WorldUpDown(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_PRIOR))
+	if (RocketEngine::GetKey('E'))
 	{
 		_camera->WorldUpDown(moveSpeed * deltaTime);
 	}

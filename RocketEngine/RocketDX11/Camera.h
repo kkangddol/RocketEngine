@@ -18,11 +18,7 @@ public:
 public:
 	DirectX::XMFLOAT3 GetPosition() const;
 	void SetPosition(float x, float y, float z);
-	void SetPosition(const DirectX::XMFLOAT3& pos);
-
-	DirectX::XMFLOAT3 GetLook() const;
-	DirectX::XMFLOAT3 GetRight() const;
-	DirectX::XMFLOAT3 GetUp() const;
+	void SetRotation(float w, float x, float y, float z);
 
 	float GetNearZ() const;
 	float GetFarZ() const;
@@ -39,39 +35,28 @@ public:
 
 	void SetFrustum(float fovY, float aspect, float nearZ, float farZ);
 
-	void LookAt(const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
-	void LookAt(const DirectX::XMFLOAT3& pos, const DirectX::XMFLOAT3& target, const DirectX::XMFLOAT3& up);
-
 	void UpdateViewMatrix();
 
 	DirectX::XMMATRIX GetViewMatrix() const;				// 카메라의 로컬좌표'계'를 반환
 	DirectX::XMMATRIX GetProjectionMatrix() const;		// 카메라의 투영행렬을 반환
 	DirectX::XMMATRIX GetViewProjectionMatrix() const;	// 위의 두 행렬을 적절히 곱해서 반환(view의 역행렬을 곱해주겠지?)
 
-	void Strafe(float delta);
-	void Walk(float delta);
-	void WorldUpDown(float delta);
-
-	void Yaw(float angle);
-	void Pitch(float angle);
-	void Roll(float angle);
-	void RotateY(float angle);
-
+	DirectX::XMVECTOR GetForward() const;
+	DirectX::XMVECTOR GetUp() const;
+	DirectX::XMVECTOR GetRight() const;
 
 private:
-	DirectX::XMFLOAT3 position_;				// 카메라의 위치 (로컬 (월드 기준))
-	DirectX::XMFLOAT3 look_;					// 카메라의 정면 (로컬)
-	DirectX::XMFLOAT3 right_;				// 카메라의 오른쪽 (로컬)
-	DirectX::XMFLOAT3 up_;					// 카메라의 위 (로컬)
+	DirectX::XMFLOAT3 _position;				// 위치 (월드)
+	DirectX::XMFLOAT4 _rotation;				// 쿼터니언 (월드)
 
-	float nearZ_;					// frustum의 가까운 평면까지의 거리
-	float farZ_;					// frustum의 먼 평면까지의 거리
-	float aspect_;					// 가로 / 세로 비율
-	float fovY_;					// fov각도를 60분법으로 갖고있음
-	float nearWindowHeight_;		// frustum의 가까운 평면의 높이
-	float farWindowHeight_;			// frustum의 먼 평면의 높이
+	float _nearZ;					// frustum의 가까운 평면까지의 거리
+	float _farZ;					// frustum의 먼 평면까지의 거리
+	float _aspect;					// 가로 / 세로 비율
+	float _fovY;					// fov각도를 60분법으로 갖고있음
+	float _nearWindowHeight;		// frustum의 가까운 평면의 높이
+	float _farWindowHeight;			// frustum의 먼 평면의 높이
 
-	DirectX::XMFLOAT4X4 viewMatrix_;			// 카메라의 로컬좌표'계'
-	DirectX::XMFLOAT4X4 projectionMatrix_;	// 카메라의 투영 행렬
+	DirectX::XMFLOAT4X4 _viewMatrix;			// 카메라의 로컬좌표'계'
+	DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
 };
 

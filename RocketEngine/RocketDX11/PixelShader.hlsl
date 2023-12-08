@@ -1,10 +1,10 @@
-struct Input
+struct PixelInputType
 {
-	float4 position : SV_POSITION;
-	float4 color : COLOR;
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
 };
 
-float4 main(Input input) : SV_TARGET
+float4 main(PixelInputType input) : SV_TARGET
 {
-	return float4(input.color.r, input.color.g, input.color.b, 1);
+    return input.color;
 }

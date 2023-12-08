@@ -297,12 +297,14 @@ namespace RocketCore::Graphics
 	void RocketDX11::UpdateCamera(const CameraData& cameraData)
 	{
 		_camera.SetPosition(cameraData.position.x, cameraData.position.y, cameraData.position.z);
+		_camera.SetRotation(cameraData.rotation.w, cameraData.rotation.x, cameraData.rotation.y, cameraData.rotation.z);
 		_camera.SetFrustum(cameraData.fovY, cameraData.aspect, cameraData.nearZ, cameraData.farZ);
+		_camera.UpdateViewMatrix();
 	}
 
 	void RocketDX11::Render()
 	{
-		BeginRender(0.5f, 0.5f, 0.5f, 1.0f);
+		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 		_grid->Render();
 		RenderMesh();

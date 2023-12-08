@@ -5,18 +5,12 @@
 #include <vector>
 #include "RocketMacroDX11.h"
 
-#ifdef _DEBUG
-#pragma comment( lib, "../Lib/Effects11d.lib" )
-#else
-#pragma comment( lib, "../Lib/Effects11.lib" )
-#endif
-
 namespace RocketCore::Graphics
 {
 	Grid::Grid(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS)
-		: md3dDevice(pDevice), md3dImmediateContext(pDeviceContext), m_pRenderstate(pRS),
-		mVB(nullptr), mIB(nullptr), mInputLayout(nullptr),
-		mWorld(), mView(), mProj(),
+		: _device(pDevice), _deviceContext(pDeviceContext), _renderstate(pRS),
+		mVB(nullptr), mIB(nullptr), _inputLayout(nullptr),
+		_world(), _view(), _proj(),
 		_vertexShader(nullptr),_pixelShader(nullptr)
 	{
 
@@ -24,7 +18,7 @@ namespace RocketCore::Graphics
 
 	Grid::~Grid()
 	{
-		ReleaseCOM(mInputLayout);
+		ReleaseCOM(_inputLayout);
 
 		ReleaseCOM(mVB);
 		ReleaseCOM(mIB);
@@ -39,35 +33,57 @@ namespace RocketCore::Graphics
 
 	void Grid::Update(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
-		mWorld = world;
-		mView = view;
-		mProj = proj;
+		_world = world;
+		_view = view;
+		_proj = proj;
 	}
 
 	void Grid::Render()
 	{
 		// Grid가 쓰는 Shader deviceContext 이용해 연결.
-		md3dImmediateContext->VSSetShader(_vertexShader, nullptr, 0);
-		md3dImmediateContext->PSSetShader(_pixelShader, nullptr, 0);
+		_deviceContext->VSSetShader(_vertexShader, nullptr, 0);
+		_deviceContext->PSSetShader(_pixelShader, nullptr, 0);
 
 		// 입력 배치 객체 셋팅
-		md3dImmediateContext->IASetInputLayout(mInputLayout);
-		md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		_deviceContext->IASetInputLayout(_inputLayout);
+		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 		// 인덱스버퍼와 버텍스버퍼 셋팅
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
-		md3dImmediateContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
-		md3dImmediateContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
+		_deviceContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
+		_deviceContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
 
 		/// WVP TM등을 셋팅
 		// Set constants
-		DirectX::XMMATRIX worldViewProj = mWorld * mView * mProj;
+		DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		MatrixBufferType* dataPtr;
+		unsigned int bufferNumber;
+
+		_world = DirectX::XMMatrixTranspose(_world);
+		_view = DirectX::XMMatrixTranspose(_view);
+		_proj = DirectX::XMMatrixTranspose(_proj);
+
+		HR(_deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+		dataPtr = (MatrixBufferType*)mappedResource.pData;
+
+		dataPtr->world = _world;
+		dataPtr->view = _view;
+		dataPtr->projection = _proj;
+
+		_deviceContext->Unmap(_matrixBuffer, 0);
+
+		bufferNumber = 0;
+
+		_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
 
 		// 렌더스테이트
-		md3dImmediateContext->RSSetState(m_pRenderstate);
+		_deviceContext->RSSetState(_renderstate);
 
-		md3dImmediateContext->DrawIndexed(40, 0, 0);
+		_deviceContext->DrawIndexed(40, 0, 0);
 	}
 
 	void Grid::BuildGeometryBuffers()
@@ -91,7 +107,7 @@ namespace RocketCore::Graphics
 
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = vertices;
-		HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mVB));
+		HR(_device->CreateBuffer(&vbd, &vinitData, &mVB));
 
 
 		// 인덱스 버퍼를 생성한다.
@@ -118,7 +134,7 @@ namespace RocketCore::Graphics
 		ibd.StructureByteStride = 0;
 		D3D11_SUBRESOURCE_DATA iinitData;
 		iinitData.pSysMem = indices;
-		HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mIB));
+		HR(_device->CreateBuffer(&ibd, &iinitData, &mIB));
 	}
 
 	void Grid::UpdateRenderData()
@@ -134,8 +150,8 @@ namespace RocketCore::Graphics
 		std::vector<char> vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };
 		std::vector<char> psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };
 
-		md3dDevice->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &_vertexShader);
-		md3dDevice->CreatePixelShader(psData.data(), psData.size(), nullptr, &_pixelShader);
+		_device->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &_vertexShader);
+		_device->CreatePixelShader(psData.data(), psData.size(), nullptr, &_pixelShader);
 
 
 		// 셰이더도 만들어두고 레이아웃도 만들어두고 이런거 저런거 갖다 쓸 수 있게하는게 좋겠지
@@ -149,7 +165,17 @@ namespace RocketCore::Graphics
 			{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
 
-		md3dDevice->CreateInputLayout(vertexDesc, 2, vsData.data(), vsData.size(), &mInputLayout);
+		D3D11_BUFFER_DESC matrixBufferDesc;
+		matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+		matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		matrixBufferDesc.MiscFlags = 0;
+		matrixBufferDesc.StructureByteStride = 0;
+
+		HR(_device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer));
+
+		_device->CreateInputLayout(vertexDesc, 2, vsData.data(), vsData.size(), &_inputLayout);
 	}
 
 }

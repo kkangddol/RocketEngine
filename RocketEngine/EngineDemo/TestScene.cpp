@@ -19,8 +19,6 @@ void TestScene::Initialize()
 	auto camObj = scene->GetMainCamera()->gameObject;
 	camObj->AddComponent<DebugCameraMove>();
 
-	camObj->transform.Translate(0.0f, 5.0f, 0.0f);
-
 	/*
 	{
 		RocketEngine::GameObject* cameraObj = scene->GetMainCamera()->gameObject;
