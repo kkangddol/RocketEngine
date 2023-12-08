@@ -15,7 +15,8 @@
 namespace RocketCore::Graphics
 {
 	class Grid;
-
+	class Axis;
+	
 	class RocketDX11 final : public IRocketGraphics
 	{
 	public:
@@ -79,6 +80,7 @@ namespace RocketCore::Graphics
 
 	private:
 		Grid* _grid;
+		Axis* _axis;
 		Camera _camera;
 
 	};

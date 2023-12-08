@@ -9,7 +9,7 @@ namespace RocketCore::Graphics
 {
 	Grid::Grid(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS)
 		: _device(pDevice), _deviceContext(pDeviceContext), _renderstate(pRS),
-		mVB(nullptr), mIB(nullptr), _inputLayout(nullptr),
+		_vertexBuffer(nullptr), _indexBuffer(nullptr), _inputLayout(nullptr),
 		_world(), _view(), _proj(),
 		_vertexShader(nullptr),_pixelShader(nullptr)
 	{
@@ -20,8 +20,8 @@ namespace RocketCore::Graphics
 	{
 		ReleaseCOM(_inputLayout);
 
-		ReleaseCOM(mVB);
-		ReleaseCOM(mIB);
+		ReleaseCOM(_vertexBuffer);
+		ReleaseCOM(_indexBuffer);
 	}
 
 
@@ -51,12 +51,8 @@ namespace RocketCore::Graphics
 		// 인덱스버퍼와 버텍스버퍼 셋팅
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
-		_deviceContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
-		_deviceContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
-
-		/// WVP TM등을 셋팅
-		// Set constants
-		DirectX::XMMATRIX worldViewProj = _world * _view * _proj;
+		_deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
+		_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		MatrixBufferType* dataPtr;
@@ -107,7 +103,7 @@ namespace RocketCore::Graphics
 
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = vertices;
-		HR(_device->CreateBuffer(&vbd, &vinitData, &mVB));
+		HR(_device->CreateBuffer(&vbd, &vinitData, &_vertexBuffer));
 
 
 		// 인덱스 버퍼를 생성한다.
@@ -134,7 +130,7 @@ namespace RocketCore::Graphics
 		ibd.StructureByteStride = 0;
 		D3D11_SUBRESOURCE_DATA iinitData;
 		iinitData.pSysMem = indices;
-		HR(_device->CreateBuffer(&ibd, &iinitData, &mIB));
+		HR(_device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
 	}
 
 	void Grid::UpdateRenderData()

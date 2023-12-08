@@ -39,8 +39,8 @@ namespace RocketCore::Graphics
 		ID3D11Device* _device;						// D3D11 디바이스
 		ID3D11DeviceContext* _deviceContext;		// 디바이스 컨텍스트
 
-		ID3D11Buffer* mVB;
-		ID3D11Buffer* mIB;
+		ID3D11Buffer* _vertexBuffer;
+		ID3D11Buffer* _indexBuffer;
 
 		ID3D11InputLayout* _inputLayout;
 
