@@ -130,25 +130,30 @@
   <ItemGroup>
     <ClCompile Include="Axis.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="MeshObject.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />
     <ClInclude Include="IResource.h" />
-    <ClInclude Include="MeshObject.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RocketDX11.h" />
     <ClInclude Include="RocketMacroDX11.h" />
+    <ClInclude Include="IShader.h" />
+    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

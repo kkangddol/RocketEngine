@@ -5,12 +5,8 @@
 
 namespace RocketCore::Graphics
 {
-	class Axis
+	class Cube
 	{
-	public:
-		Axis(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS);
-		~Axis();
-
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 Pos;
@@ -23,6 +19,10 @@ namespace RocketCore::Graphics
 			DirectX::XMMATRIX view;
 			DirectX::XMMATRIX projection;
 		};
+
+	public:
+		Cube();
+		~Cube();
 
 	public:
 		void Initialize();
@@ -55,7 +55,5 @@ namespace RocketCore::Graphics
 		ID3D11Buffer* _matrixBuffer;
 
 		void CreateShader();
-
-
 	};
 }

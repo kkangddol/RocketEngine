@@ -1,6 +1,8 @@
 #include "RocketDX11.h"
 #include "Grid.h"
 #include "Axis.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 
 #include "RocketMacroDX11.h"
 #include "DeviceBuilderDX11.h"
@@ -181,11 +183,17 @@ namespace RocketCore::Graphics
 		// Render State
 		CreateRenderStates();
 
-		_grid = new Grid(_device.Get(), _deviceContext.Get(), _wireframeRenderState.Get());
-		_grid->Initialize();
-
 		_axis = new Axis(_device.Get(), _deviceContext.Get(), _wireframeRenderState.Get());
 		_axis->Initialize();
+		
+		_vertexShader = new VertexShader();
+		_vertexShader->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
+
+		_pixelShader = new PixelShader();
+		_pixelShader->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
+
+		_grid = new Grid();
+		_grid->Initialize(_device.Get());
 	}
 
 	void RocketDX11::OnResize(int _width, int _height)
@@ -310,7 +318,7 @@ namespace RocketCore::Graphics
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
-		_grid->Render();
+		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
 		_axis->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 		_axis->Render();
 		RenderMesh();

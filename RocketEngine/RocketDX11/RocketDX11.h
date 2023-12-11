@@ -12,10 +12,14 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
+using Microsoft::WRL::ComPtr;
+
 namespace RocketCore::Graphics
 {
 	class Grid;
 	class Axis;
+	class VertexShader;
+	class PixelShader;
 	
 	class RocketDX11 final : public IRocketGraphics
 	{
@@ -57,31 +61,32 @@ namespace RocketCore::Graphics
 
 		/// 초기화 관련
 	private:
-		Microsoft::WRL::ComPtr<ID3D11Device> _device;
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;	// immediateContext
+		ComPtr<ID3D11Device> _device;
+		ComPtr<ID3D11DeviceContext> _deviceContext;	// immediateContext
 		D3D_FEATURE_LEVEL _featureLevel;
 
 		UINT _m4xMsaaQuality;
 
-		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _backBuffer;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTargetView;
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _depthStencilBuffer;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
+		ComPtr<IDXGISwapChain> _swapChain;
+		ComPtr<ID3D11Texture2D> _backBuffer;
+		ComPtr<ID3D11RenderTargetView> _renderTargetView;
+		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
+		ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		D3D11_VIEWPORT _viewport;
 
 		/// Render State
 		// 미리 여러 세트를 만들어두고 스위칭한다.
 	private:
-		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _wireframeRenderState;
-		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _solidRenderState;
+		ComPtr<ID3D11RasterizerState> _wireframeRenderState;
+		ComPtr<ID3D11RasterizerState> _solidRenderState;
 		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다.
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
+		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
 	private:
 		Grid* _grid;
 		Axis* _axis;
 		Camera _camera;
-
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
 	};
 }

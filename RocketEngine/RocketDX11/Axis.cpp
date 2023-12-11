@@ -136,11 +136,6 @@ namespace RocketCore::Graphics
 		HR(_device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
 	}
 
-	void Axis::UpdateRenderData()
-	{
-
-	}
-
 	void Axis::CreateShader()
 	{
 		std::ifstream vsFile("../x64/Debug/VertexShader.cso", std::ios::binary);

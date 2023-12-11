@@ -43,6 +43,18 @@
     <Filter Include="Object\Camera">
       <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Shader\HLSL">
+      <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Shader\VertexShader">
+      <UniqueIdentifier>{432a0a45-8dfd-4a92-a33c-ee223f44104a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Shader\Interface">
+      <UniqueIdentifier>{29efc75b-6165-429a-91b3-ac525dfbe18f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Shader\PixelShader">
+      <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -57,9 +69,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Object\HelperObject</Filter>
     </ClCompile>
-    <ClCompile Include="MeshObject.cpp">
-      <Filter>Object\MeshObject</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>ResourceManager</Filter>
     </ClCompile>
@@ -68,6 +77,15 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Object\MeshObject</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Object\Shader\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Object\Shader\PixelShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +107,6 @@
     <ClInclude Include="Grid.h">
       <Filter>Object\HelperObject</Filter>
     </ClInclude>
-    <ClInclude Include="MeshObject.h">
-      <Filter>Object\MeshObject</Filter>
-    </ClInclude>
     <ClInclude Include="IResource.h">
       <Filter>Resource\Interface</Filter>
     </ClInclude>
@@ -104,13 +119,25 @@
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Object\MeshObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>Object\Shader\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Object\Shader\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Object\Shader\PixelShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Object\Shader</Filter>
+      <Filter>Object\Shader\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Object\Shader</Filter>
+      <Filter>Object\Shader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
