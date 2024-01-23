@@ -50,7 +50,7 @@ namespace RocketEngine
 		_soundSystem.Play3DOnce(_audioMap.at(audioName));
 
 		/// TEST¿ë
-		//RMFLOAT3 palyerPos;
+		//Vector3 palyerPos;
 		//palyerPos.x = 0.0f;
 		//palyerPos.y = 0.0f;
 		//palyerPos.z = 0.0f;
@@ -67,7 +67,7 @@ namespace RocketEngine
 		_soundSystem.Play3DRepeat(_audioMap.at(audioName));
 
 		/// TEST¿ë
-		//RMFLOAT3 palyerPos;
+		//Vector3 palyerPos;
 		//palyerPos.x = 0.0f;
 		//palyerPos.y = 0.0f;
 		//palyerPos.z = 0.0f;
@@ -173,7 +173,7 @@ namespace RocketEngine
 			&(gameObject->transform), 0);
 
 		/// TEST¿ë
-		//RMFLOAT3* objectPos = new RMFLOAT3();
+		//Vector3* objectPos = new Vector3();
 		//objectPos->x = 10.0f;
 		//objectPos->y = 0.0f;
 		//objectPos->z = 0.0f;

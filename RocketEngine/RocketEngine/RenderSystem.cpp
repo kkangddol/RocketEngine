@@ -17,7 +17,7 @@
 #include "PhysicsSystem.h"
 #include "DynamicCollider.h"
 #include "BoxCollider.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include "TextBox.h"
 #include "SpriteRenderer.h"
 #include "..\\RocketGraphicsInterface\\ISketchable.h"
@@ -423,7 +423,7 @@ namespace RocketCore
 // 		{
 // 			RocketEngine::DynamicCollider* col = static_cast<RocketEngine::DynamicCollider*>(rigid->userData);
 // 			RocketEngine::BoxCollider* temp = dynamic_cast<RocketEngine::BoxCollider*>(col);
-// 			RocketEngine::RMFLOAT4X4 worldTM = col->gameObject->transform.GetWorldTM();
+// 			RocketEngine::Matrix worldTM = col->gameObject->transform.GetWorldTM();
 // 			if (temp)
 // 			{
 // 				//_rocketGraphics->RenderCube(worldTM, temp->GetWidth(), temp->GetHeight(), temp->GetDepth(), { true,1.0f,0.0f,0.0f,1.0f });
@@ -438,7 +438,7 @@ namespace RocketCore
 // 		{
 // 			RocketEngine::StaticCollider* col = static_cast<RocketEngine::StaticCollider*>(rigid->userData);
 // 			RocketEngine::PlaneCollider* temp = dynamic_cast<RocketEngine::PlaneCollider*>(col);
-// 			RocketEngine::RMFLOAT4X4 worldTM = col->gameObject->transform.GetWorldTM();
+// 			RocketEngine::Matrix worldTM = col->gameObject->transform.GetWorldTM();
 // 			if (temp)
 // 			{
 // 				//_rocketGraphics->RenderCube(worldTM, 0.01f, 100.0f, 100.0f, { false,0.0f,1.0f,0.0f,1.0f });

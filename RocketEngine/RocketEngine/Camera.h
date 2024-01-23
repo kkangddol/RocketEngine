@@ -1,7 +1,7 @@
 #pragma once
 #include "DLLExporter.h"
 #include "Component.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include "..\\RocketGraphicsInterface\\CameraData.h"
 
 #ifdef _DEBUG
@@ -42,8 +42,8 @@ namespace RocketEngine
 		float GetFarWindowWidth() const;
 		float GetFarWindowHeight() const;
 
-		RMFLOAT4X4 GetViewMatrix() const;	// 카메라의 로컬좌표'계'를 반환
-		RMFLOAT4X4 GetProjMatrix() const;	// 카메라의 투영행렬을 반환
+		Matrix GetViewMatrix() const;	// 카메라의 로컬좌표'계'를 반환
+		Matrix GetProjMatrix() const;	// 카메라의 투영행렬을 반환
 
 		void SetNearZ(float nearZ);
 		void SetFarZ(float farZ);
@@ -73,8 +73,8 @@ namespace RocketEngine
 		float _nearWindowHeight;	// frustum의 가까운 평면의 높이
 		float _farWindowHeight;		// frustum의 먼 평면의 높이
 
-		RMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계'
-		RMFLOAT4X4 _projMatrix;		// 카메라의 투영 행렬
+		Matrix _viewMatrix;		// 카메라의 로컬좌표'계'
+		Matrix _projMatrix;		// 카메라의 투영 행렬
 
 		bool _isShakeCameraOnHit;
 		bool _isShakeCameraOnShoot;

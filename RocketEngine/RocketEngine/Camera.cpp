@@ -2,7 +2,7 @@
 #include <cmath>
 #include "GameObject.h"
 #include "Transform.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include <windows.h>	// 디버그용으로 열었음
 #include "RenderSystem.h"
 
@@ -112,12 +112,12 @@ namespace RocketEngine
 		return _farWindowHeight;
 	}
 
-	RMFLOAT4X4 Camera::GetViewMatrix() const
+	Matrix Camera::GetViewMatrix() const
 	{
 		return _viewMatrix;
 	}
 
-	RMFLOAT4X4 Camera::GetProjMatrix() const
+	Matrix Camera::GetProjMatrix() const
 	{
 		return _projMatrix;
 	}
@@ -145,7 +145,7 @@ namespace RocketEngine
 
 	void Camera::Strafe(float delta)
 	{
-		RMFLOAT3 rightVec = gameObject->transform.GetRight();
+		Vector3 rightVec = gameObject->transform.GetRight();
 		rightVec.x *= delta;
 		rightVec.y *= delta;
 		rightVec.z *= delta;
@@ -155,7 +155,7 @@ namespace RocketEngine
 
 	void Camera::Walk(float delta)
 	{
-		RMFLOAT3 forwardVec = gameObject->transform.GetForward();
+		Vector3 forwardVec = gameObject->transform.GetForward();
 		forwardVec.x *= delta;
 		forwardVec.y *= delta;
 		forwardVec.z *= delta;
@@ -165,22 +165,22 @@ namespace RocketEngine
 
 	void Camera::WorldUpDown(float delta)
 	{
-		RMFLOAT3 worldUpDelta = { 0.0f,delta,0.0f };
+		Vector3 worldUpDelta = { 0.0f,delta,0.0f };
 		gameObject->transform.Translate(worldUpDelta);
 	}
 
 	void Camera::Pitch(float radian)
 	{
-		//RMQuaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), gameObject->transform.GetRight(), angle);
-		RMFLOAT4 r{ 1.0f,0.0f,0.0f,1.0f };
-		r = RMFloat4MultiplyMatrix(r, gameObject->transform.GetLocalRotationMatrix());
-		RMQuaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { r.x,r.y,r.z }, radian);
+		//Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), gameObject->transform.GetRight(), angle);
+		Vector4 r{ 1.0f,0.0f,0.0f,1.0f };
+		r = Vector4MultiplyMatrix(r, gameObject->transform.GetLocalRotationMatrix());
+		Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { r.x,r.y,r.z }, radian);
 		gameObject->transform.SetLocalRotation(newRot);
 	}
 
 	void Camera::RotateY(float angle)
 	{
-		RMQuaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
+		Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
 		gameObject->transform.SetLocalRotation(newRot);		
 	}
 

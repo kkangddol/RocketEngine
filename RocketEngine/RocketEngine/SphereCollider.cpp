@@ -14,9 +14,9 @@ namespace RocketEngine
 
 	void SphereCollider::Update()
 	{
-		RMFLOAT4X4 worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
-		RMFLOAT3 WHD = { GetWidth(), GetHeight(), GetDepth() };
-		RMFLOAT4 color = { 0.0f,1.0f,0.0f,1.0f };
+		Matrix worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
+		Vector3 WHD = { GetWidth(), GetHeight(), GetDepth() };
+		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
 		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 

@@ -3,15 +3,7 @@
 #include "Component.h"
 #include <vector>
 
-#if defined(_DX11) || defined(_DX12)
-#include "..\\RocketMath\\RocketMath.h"
-#endif // _DX11 || _DX12
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif //_DEBUG
+#include "MathHeader.h"
 
 namespace RocketEngine
 {
@@ -30,20 +22,20 @@ namespace RocketEngine
 
 		/// Get World Position, Rotation, Scale
 	public:
-		RMFLOAT3 GetPosition() const;	// world 기준
-		RMQuaternion GetRotation() const;	// world 기준 쿼터니언
-		RMFLOAT3 GetEuler() const;		// world 기준 60분법
-		RMFLOAT3 GetScale() const;		// world 기준
+		Vector3 GetPosition() const;	// world 기준
+		Quaternion GetRotation() const;	// world 기준 쿼터니언
+		Vector3 GetEuler() const;		// world 기준 60분법
+		Vector3 GetScale() const;		// world 기준
 
 		/// Set World Position, Rotation, Scale
 	public:
-		void SetPosition(const RMFLOAT3& position);
+		void SetPosition(const Vector3& position);
 		void SetPosition(float x, float y, float z);
-		void SetRotation(const RMQuaternion& quaternion);
+		void SetRotation(const Quaternion& quaternion);
 		void SetRotation(float w, float x, float y, float z);
-		void SetRotationEuler(const RMFLOAT3& euler);
+		void SetRotationEuler(const Vector3& euler);
 		void SetRotationEuler(float angleX, float angleY, float angleZ);
-		void SetScale(const RMFLOAT3& scale);
+		void SetScale(const Vector3& scale);
 		void SetScale(float x, float y, float z);
 		
 
@@ -51,65 +43,65 @@ namespace RocketEngine
 		/// 참조로 전달하기 더 좋고 안전한 방법 생각해보셈.
 		/// 23.07.26 강석원 && 오수안 인재원
 	public:
-		RMFLOAT3& GetLocalPositionRef();
-		RMQuaternion& GetLocalRotationRef();
-		RMFLOAT3& GetLocalScaleRef();
+		Vector3& GetLocalPositionRef();
+		Quaternion& GetLocalRotationRef();
+		Vector3& GetLocalScaleRef();
 
 		/// Get Local Position, Rotation, Scale 정보
 	public:
-		RMFLOAT3 GetLocalPosition() const;
-		RMQuaternion GetLocalRotation() const;
-		RMFLOAT3 GetLocalEuler() const;
-		RMFLOAT3 GetLocalScale() const;
+		Vector3 GetLocalPosition() const;
+		Quaternion GetLocalRotation() const;
+		Vector3 GetLocalEuler() const;
+		Vector3 GetLocalScale() const;
 
 	public:
-		void SetLocalPosition(const RMFLOAT3& position);
+		void SetLocalPosition(const Vector3& position);
 		void SetLocalPosition(float x, float y, float z);
-		void SetLocalRotation(const RMQuaternion& quaternion);
+		void SetLocalRotation(const Quaternion& quaternion);
 		void SetLocalRotation(float w, float x, float y, float z);
-		void SetLocalRotationEuler(const RMFLOAT3& euler);
+		void SetLocalRotationEuler(const Vector3& euler);
 		void SetLocalRotationEuler(float angleX, float angleY, float angleZ);
 		void SetLocalRotationEulerXZConvert(float angleX, float angleY, float angleZ);
-		void SetLocalScale(const RMFLOAT3& scale);
+		void SetLocalScale(const Vector3& scale);
 		void SetLocalScale(float x, float y, float z);
 
 	public:
 		/// Forwar,Up,Right vector (World 기준)
-		RMFLOAT3 GetForward() const;
-		RMFLOAT3 GetUp() const;
-		RMFLOAT3 GetRight() const;
+		Vector3 GetForward() const;
+		Vector3 GetUp() const;
+		Vector3 GetRight() const;
 
-		RMFLOAT4X4 GetLocalScaleMatrix() const;
-		RMFLOAT4X4 GetLocalRotationMatrix() const;
-		RMFLOAT4X4 GetLocalTranslateMatrix() const;
+		Matrix GetLocalScaleMatrix() const;
+		Matrix GetLocalRotationMatrix() const;
+		Matrix GetLocalTranslateMatrix() const;
 
-		RMFLOAT4X4 GetWorldScaleMatrix() const;
-		RMFLOAT4X4 GetWorldRotationMatrix() const;
-		RMFLOAT4X4 GetWorldTranslateMatrix() const;
+		Matrix GetWorldScaleMatrix() const;
+		Matrix GetWorldRotationMatrix() const;
+		Matrix GetWorldTranslateMatrix() const;
 
-		RMFLOAT4X4 GetWorldTM() const;
+		Matrix GetWorldTM() const;
 
 		// UI에서 사용할 2D Transform 정보 Get.
 	public:
-		RMFLOAT3X3 Get2DLocalScaleMatrix() const;
-		RMFLOAT3X3 Get2DLocalRotationMatrix() const;
-		RMFLOAT3X3 Get2DLocalTranslateMatrix() const;
+		Vector3X3 Get2DLocalScaleMatrix() const;
+		Vector3X3 Get2DLocalRotationMatrix() const;
+		Vector3X3 Get2DLocalTranslateMatrix() const;
 
-		RMFLOAT3X3 Get2DWorldTM() const;
+		Vector3X3 Get2DWorldTM() const;
 
 	public:
-		void Translate(const RMFLOAT3& position);
+		void Translate(const Vector3& position);
 		void Translate(float x, float y, float z);
-		void Rotate(RMQuaternion quaternion);					// 쿼터니언 기준 회전
+		void Rotate(Quaternion quaternion);					// 쿼터니언 기준 회전
 		void Rotate(float angleX, float angleY, float angleZ);	// 오일러 각 기준 회전, radian
 
-		void LookAt(const RMFLOAT3& target, const RMFLOAT3& up);
-		void LookAt(const RMFLOAT3& pos, const RMFLOAT3& target, const RMFLOAT3& up);
+		void LookAt(const Vector3& target, const Vector3& up);
+		void LookAt(const Vector3& pos, const Vector3& target, const Vector3& up);
 
 	private:
-		RMFLOAT3 _position;
-		RMQuaternion _rotation;		// 쿼터니언
-		RMFLOAT3 _scale;
+		Vector3 _position;
+		Quaternion _rotation;		// 쿼터니언
+		Vector3 _scale;
 
 		/// 계층구조.
 	public:

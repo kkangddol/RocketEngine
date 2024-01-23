@@ -11,7 +11,7 @@
 
 #pragma comment(lib, "..\\SoundLib\\lib\\x64\\fmod_vc.lib")
 
-#include "..\\RocketMath\\RocketMath.h" 
+#include "MathHeader.h" 
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")

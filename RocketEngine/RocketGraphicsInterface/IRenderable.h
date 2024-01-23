@@ -1,5 +1,5 @@
 #pragma once
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include "MaterialData.h"
 
 #ifdef _DEBUG

@@ -1,7 +1,7 @@
 #pragma once
 #include "DLLExporter.h"
 #include "Collider.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")

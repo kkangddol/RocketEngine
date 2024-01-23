@@ -1,7 +1,7 @@
 #pragma once
 #include "DLLExporter.h"
 #include "StaticCollider.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -35,7 +35,7 @@ namespace RocketEngine
 		virtual void Update() override;
 
 	public:
-		RMFLOAT3 GetNormalVector() const;
+		Vector3 GetNormalVector() const;
 		float GetDistance() const;
 	};
 }

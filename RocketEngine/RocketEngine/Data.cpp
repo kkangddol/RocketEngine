@@ -2,92 +2,92 @@
 
 namespace RocketCore
 {
-	RocketEngine::RMFLOAT3 DataStruct::GetPosition()
+	RocketEngine::Vector3 DataStruct::GetPosition()
 	{
 		return { transform->position_x, transform->position_y, transform->position_z };
 	}
 
-	RocketEngine::RMQuaternion DataStruct::GetRotation()
+	RocketEngine::Quaternion DataStruct::GetRotation()
 	{
 		return { transform->rotation_w, transform->rotation_x, transform->rotation_y, transform->rotation_z };
 	}
 
-	RocketEngine::RMFLOAT3 DataStruct::GetScale()
+	RocketEngine::Vector3 DataStruct::GetScale()
 	{
 		return { transform->scale_x, transform->scale_y, transform->scale_z };
 	}
 
-	RocketEngine::RMFLOAT3 boxColliderData::GetPositionOffset()
+	RocketEngine::Vector3 boxColliderData::GetPositionOffset()
 	{
 		return { positionOffset[0], positionOffset[1] , positionOffset[2] };
 	}
 
-	RocketEngine::RMQuaternion boxColliderData::GetRotationOffset()
+	RocketEngine::Quaternion boxColliderData::GetRotationOffset()
 	{
 		return { rotationOffset[0], rotationOffset[1], rotationOffset[2], rotationOffset[3] };
 	}
 
-	RocketEngine::RMFLOAT3 boxColliderData::GetScaleOffset()
+	RocketEngine::Vector3 boxColliderData::GetScaleOffset()
 	{
 		return { scaleOffset[0], scaleOffset[1] , scaleOffset[2] };
 	}
 
-	RocketEngine::RMFLOAT3 capsuleColliderData::GetPositionOffset()
+	RocketEngine::Vector3 capsuleColliderData::GetPositionOffset()
 	{
 		return { positionOffset[0], positionOffset[1] , positionOffset[2] };
 	}
 
-	RocketEngine::RMQuaternion capsuleColliderData::GetRotationOffset()
+	RocketEngine::Quaternion capsuleColliderData::GetRotationOffset()
 	{
 		return { rotationOffset[0], rotationOffset[1], rotationOffset[2], rotationOffset[3] };
 	}
 
-	RocketEngine::RMFLOAT3 capsuleColliderData::GetScaleOffset()
+	RocketEngine::Vector3 capsuleColliderData::GetScaleOffset()
 	{
 		return { scaleOffset[0], scaleOffset[1] , scaleOffset[2] };
 	}
 
-	RocketEngine::RMFLOAT3 sphereColliderData::GetPositionOffset()
+	RocketEngine::Vector3 sphereColliderData::GetPositionOffset()
 	{
 		return { positionOffset[0], positionOffset[1] , positionOffset[2] };
 	}
 
-	RocketEngine::RMQuaternion sphereColliderData::GetRotationOffset()
+	RocketEngine::Quaternion sphereColliderData::GetRotationOffset()
 	{
 		return { rotationOffset[0], rotationOffset[1], rotationOffset[2], rotationOffset[3] };
 	}
 
-	RocketEngine::RMFLOAT3 sphereColliderData::GetScaleOffset()
+	RocketEngine::Vector3 sphereColliderData::GetScaleOffset()
 	{
 		return { scaleOffset[0], scaleOffset[1] , scaleOffset[2] };
 	}
 
-	RocketEngine::RMFLOAT3 planeColliderData::GetPositionOffset()
+	RocketEngine::Vector3 planeColliderData::GetPositionOffset()
 	{
 		return { positionOffset[0], positionOffset[1] , positionOffset[2] };
 	}
 
-	RocketEngine::RMQuaternion planeColliderData::GetRotationOffset()
+	RocketEngine::Quaternion planeColliderData::GetRotationOffset()
 	{
 		return { rotationOffset[0], rotationOffset[1], rotationOffset[2], rotationOffset[3] };
 	}
 
-	RocketEngine::RMFLOAT3 planeColliderData::GetScaleOffset()
+	RocketEngine::Vector3 planeColliderData::GetScaleOffset()
 	{
 		return { scaleOffset[0], scaleOffset[1] , scaleOffset[2] };
 	}
 
-	RocketEngine::RMFLOAT3 staticBoxColliderData::GetPositionOffset()
+	RocketEngine::Vector3 staticBoxColliderData::GetPositionOffset()
 	{
 		return { positionOffset[0], positionOffset[1] , positionOffset[2] };
 	}
 
-	RocketEngine::RMQuaternion staticBoxColliderData::GetRotationOffset()
+	RocketEngine::Quaternion staticBoxColliderData::GetRotationOffset()
 	{
 		return { rotationOffset[0], rotationOffset[1], rotationOffset[2], rotationOffset[3] };
 	}
 
-	RocketEngine::RMFLOAT3 staticBoxColliderData::GetScaleOffset()
+	RocketEngine::Vector3 staticBoxColliderData::GetScaleOffset()
 	{
 		return { scaleOffset[0], scaleOffset[1] , scaleOffset[2] };
 	}

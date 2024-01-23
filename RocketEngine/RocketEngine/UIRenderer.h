@@ -2,7 +2,7 @@
 #include "DLLExporter.h"
 #include "Component.h"
 #include <string>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -27,7 +27,7 @@ namespace RocketCore
 		virtual void Start() override;
 
 	public:
-		RocketEngine::RMFLOAT3X3 Get2DWorldTM();
+		RocketEngine::Vector3X3 Get2DWorldTM();
 		virtual std::string GetSketchData() { return "default"; }
 
 	public:

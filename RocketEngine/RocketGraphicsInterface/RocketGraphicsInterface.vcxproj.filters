@@ -7,6 +7,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{84147368-0370-49f3-80d7-2635104744de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{0f0cad57-503c-444c-934a-3a2f1cf477f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IRocketGraphics.h">
@@ -29,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="MaterialData.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

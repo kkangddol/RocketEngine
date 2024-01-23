@@ -29,7 +29,7 @@ namespace RocketCore
 		}
 	}
 
-	void DebugSystem::DrawDebugText(RocketEngine::RMFLOAT2 centerPos, std::string content, float size)
+	void DebugSystem::DrawDebugText(RocketEngine::Vector2 centerPos, std::string content, float size)
 	{
 		if (!_isDebugMode)
 		{
@@ -39,7 +39,7 @@ namespace RocketCore
 		_textQueue.push_back({ centerPos,content,size });
 	}
 
-	void DebugSystem::DrawDebugBox(RocketEngine::RMFLOAT4X4 worldTM, RocketEngine::RMFLOAT3 widthHeightDepth /*= {1.0f,1.0f,1.0f}*/, bool isWire /*= true*/, RocketEngine::RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,0.0f }*/)
+	void DebugSystem::DrawDebugBox(RocketEngine::Matrix worldTM, RocketEngine::Vector3 widthHeightDepth /*= {1.0f,1.0f,1.0f}*/, bool isWire /*= true*/, RocketEngine::Vector4 color /*= { 1.0f,0.0f,0.0f,0.0f }*/)
 	{
 		if (!_isDebugMode)
 		{
@@ -49,7 +49,7 @@ namespace RocketCore
 		_boxQueue.push_back({ worldTM, widthHeightDepth, isWire,color });
 	}
 
-	void DebugSystem::DrawDebugLine(RocketEngine::RMFLOAT3 beginPoint, RocketEngine::RMFLOAT3 endPoint, RocketEngine::RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
+	void DebugSystem::DrawDebugLine(RocketEngine::Vector3 beginPoint, RocketEngine::Vector3 endPoint, RocketEngine::Vector4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
 	{
 		if (!_isDebugMode)
 		{
@@ -59,7 +59,7 @@ namespace RocketCore
 		_lineQueue.push_back({ beginPoint, endPoint, color });
 	}
 
-	void DebugSystem::DrawDebug2DBox(RocketEngine::RMFLOAT2 LT, RocketEngine::RMFLOAT2 RB, RocketEngine::RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
+	void DebugSystem::DrawDebug2DBox(RocketEngine::Vector2 LT, RocketEngine::Vector2 RB, RocketEngine::Vector4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
 	{
 		if (!_isDebugMode)
 		{

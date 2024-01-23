@@ -1,7 +1,7 @@
 #pragma once
 #include "DLLExporter.h"
 #include <functional>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
@@ -68,27 +68,27 @@ namespace RocketEngine
 		/// save data
 		int* dataI;
 		float* dataF;
-		RMFLOAT2* data2V;
-		RMFLOAT3* data3V;
-		RMQuaternion* dataQuat = nullptr;
+		Vector2* data2V;
+		Vector3* data3V;
+		Quaternion* dataQuat = nullptr;
 		std::function<void()> onCompleteFunc = nullptr;
 
 	public:
 		/// Get data
 		Tween& GetData(int* data);
 		Tween& GetData(float* data);
-		Tween& GetData(RMFLOAT2* data);
-		Tween& GetData(RMFLOAT3* data);
-		Tween& GetData(RMQuaternion* data);
+		Tween& GetData(Vector2* data);
+		Tween& GetData(Vector3* data);
+		Tween& GetData(Quaternion* data);
 
 		/// how to move
 
 		// transform
 		Tween& DoMove(const int& destination, const float duration);
 		Tween& DoMove(const float& destination, const float duration);
-		Tween& DoMove(RMFLOAT2& destination, const float duration);
-		Tween& DoMove(const RMFLOAT3& destination, const float duration);
-		Tween& DoMove(const RMQuaternion& destination, const float duration);
+		Tween& DoMove(Vector2& destination, const float duration);
+		Tween& DoMove(const Vector3& destination, const float duration);
+		Tween& DoMove(const Quaternion& destination, const float duration);
 
 		// etc
 		Tween& Delay(float delayTime);

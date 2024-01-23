@@ -83,12 +83,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)..\Libraries\Include\ServerCore\;$(SolutionDir)..\Libraries\Include\;$(SolutionDir)..\Libraries\ProtoBuf\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);$(SolutionDir)..\Libraries\Libs\</LibraryPath>
-    <OutDir>$(SolutionDir)BUILDTEST\</OutDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)..\Libraries\Include\ServerCore\;$(SolutionDir)..\Libraries\Include\;$(SolutionDir)..\Libraries\ProtoBuf\;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath);$(SolutionDir)..\Libraries\Libs\</LibraryPath>
-    <OutDir>$(SolutionDir)BUILDTEST\</OutDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_UNICODE;UNICODE;_SILENCE_CXX20_CISO646_REMOVED_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalModuleDependencies>
       </AdditionalModuleDependencies>
@@ -138,9 +138,17 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration);$(SolutionDir)Lib\$(Configuration)\DXTK;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RocketEngine.lib;DirectXTK.lib$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,13 +160,25 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration);$(SolutionDir)Lib\$(Configuration)\DXTK;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RocketEngine.lib;DirectXTK.lib$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />

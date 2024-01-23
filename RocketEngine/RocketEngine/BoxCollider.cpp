@@ -18,15 +18,15 @@ namespace RocketEngine
 	/// 디버그 정보 출력.
 	void BoxCollider::Update()
 	{
-		RMFLOAT4X4 worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
-		RMFLOAT3 WHD = { GetWidth(),GetHeight(),GetDepth() };
-		RMFLOAT4 color = { 0.0f,1.0f,0.0f,1.0f };
+		Matrix worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
+		Vector3 WHD = { GetWidth(),GetHeight(),GetDepth() };
+		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
 		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 		if (gameObject->objName == "player")
 		{
-			RMFLOAT3 direction = gameObject->transform.GetForward();
-			RMFLOAT3 beginPoint = {worldTM._41, worldTM._42, worldTM._43};
-			RMFLOAT3 endPoint = beginPoint + direction * 10.0f;
+			Vector3 direction = gameObject->transform.GetForward();
+			Vector3 beginPoint = {worldTM._41, worldTM._42, worldTM._43};
+			Vector3 endPoint = beginPoint + direction * 10.0f;
 			color = { 1.0f, 0.0f, 0.0f, 1.0f };
 			RocketCore::DebugSystem::Instance().DrawDebugLine(beginPoint,endPoint);
 		}

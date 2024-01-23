@@ -6,7 +6,7 @@
 #include <vector>
 
 #if defined(_DX11) || defined(_DX12)
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #endif // _DX11 || _DX12
 
 #ifdef _DEBUG
@@ -34,25 +34,25 @@ namespace RocketEngine
 
 	// Collider 자체적으로 들고 있는 TRS Offset과 그 getter, setter
 	public:
-		void SetPositionOffset(RMFLOAT3 position);
-		void SetRotationOffset(RMQuaternion rotation);
+		void SetPositionOffset(Vector3 position);
+		void SetRotationOffset(Quaternion rotation);
 		void SetRotationOffset(float angleX, float angleY, float angleZ);
-		void SetScaleOffset(RMFLOAT3 scale);
+		void SetScaleOffset(Vector3 scale);
 
-		RMFLOAT3 GetPositionOffset() const;
-		RMQuaternion GetRotationOffset() const;
-		RMFLOAT3 GetScaleOffset() const;
+		Vector3 GetPositionOffset() const;
+		Quaternion GetRotationOffset() const;
+		Vector3 GetScaleOffset() const;
 
-		RMFLOAT4X4 GetOffsetTranslateMatrix() const;
-		RMFLOAT4X4 GetOffsetRotationMatrix() const;
-		RMFLOAT4X4 GetOffsetScaleMatrix() const;
+		Matrix GetOffsetTranslateMatrix() const;
+		Matrix GetOffsetRotationMatrix() const;
+		Matrix GetOffsetScaleMatrix() const;
 
-		RMFLOAT4X4 GetOffsetTM() const;
+		Matrix GetOffsetTM() const;
 
 	protected:
-		RMFLOAT3 _positionOffset;
-		RMQuaternion _rotationOffset;
-		RMFLOAT3 _scaleOffset;
+		Vector3 _positionOffset;
+		Quaternion _rotationOffset;
+		Vector3 _scaleOffset;
 
 	public:
 		virtual void UpdateToPhysics() abstract;

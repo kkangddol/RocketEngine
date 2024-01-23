@@ -22,11 +22,11 @@ namespace RocketEngine
 	public:
 		float GetRange() const;
 		void SetRange(float range);
-		RMFLOAT3 GetAttenuation() const;
-		void SetAttenuation(RMFLOAT3 attenuation);
+		Vector3 GetAttenuation() const;
+		void SetAttenuation(Vector3 attenuation);
 
 	private:
 		float _range;
-		RMFLOAT3 _attenuation;
+		Vector3 _attenuation;
 	};
 }

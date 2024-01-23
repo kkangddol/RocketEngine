@@ -14,31 +14,31 @@ namespace RocketEngine
 
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetPosition() const
+	RocketEngine::Vector3 Transform::GetPosition() const
 	{
-		RMFLOAT4 result = { _position.x, _position.y, _position.z ,1.0f };
+		Vector4 result = { _position.x, _position.y, _position.z ,1.0f };
 		if (_parent)
 		{
-			result = RMFloat4MultiplyMatrix(result, _parent->GetWorldTM());
+			result = Vector4MultiplyMatrix(result, _parent->GetWorldTM());
 		}
 
 		return { result.x, result.y, result.z };
 	}
 
-	RocketEngine::RMQuaternion Transform::GetRotation() const
+	RocketEngine::Quaternion Transform::GetRotation() const
 	{
-		RMQuaternion result = _rotation;
+		Quaternion result = _rotation;
 		if (_parent)
 		{
-			result = RMQuaternionMultiply(result, _parent->GetRotation());
+			result = QuaternionMultiply(result, _parent->GetRotation());
 		}
 
 		return result;
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetEuler() const
+	RocketEngine::Vector3 Transform::GetEuler() const
 	{
-		RMQuaternion rot = GetRotation();
+		Quaternion rot = GetRotation();
 
 		// 쿼터니언의 요소 추출
 		float w = rot.w;
@@ -56,9 +56,9 @@ namespace RocketEngine
 		return { roll * toDegree, pitch * toDegree,  yaw * toDegree };
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetScale() const
+	RocketEngine::Vector3 Transform::GetScale() const
 	{
-		RMFLOAT3 result = _scale;
+		Vector3 result = _scale;
 		if (_parent)
 		{
 			result.x *= _parent->GetScale().x;
@@ -69,17 +69,17 @@ namespace RocketEngine
 		return result;
 	}
 
-	void Transform::SetPosition(const RMFLOAT3& position)
+	void Transform::SetPosition(const Vector3& position)
 	{
 		SetPosition(position.x, position.y, position.z);
 	}
 
 	void Transform::SetPosition(float x, float y, float z)
 	{
-		RMFLOAT4 result = { x,y,z ,1.0f };
+		Vector4 result = { x,y,z ,1.0f };
 		if (_parent)
 		{
-			result = RMFloat4MultiplyMatrix(result, _parent->GetWorldTM().Inverse());
+			result = Vector4MultiplyMatrix(result, _parent->GetWorldTM().Inverse());
 		}
 
 		_position.x = result.x;
@@ -87,23 +87,23 @@ namespace RocketEngine
 		_position.z = result.z;
 	}
 
-	void Transform::SetRotation(const RMQuaternion& quaternion)
+	void Transform::SetRotation(const Quaternion& quaternion)
 	{
 		SetRotation(quaternion.w, quaternion.x, quaternion.y, quaternion.z);
 	}
 
 	void Transform::SetRotation(float w, float x, float y, float z)
 	{
-		RMQuaternion result = { w,x,y,z };
+		Quaternion result = { w,x,y,z };
 		if (_parent)
 		{
-			result = RMQuaternionMultiply(result, _parent->GetRotation().conjugate());
+			result = QuaternionMultiply(result, _parent->GetRotation().conjugate());
 		}
 
 		_rotation = result;
 	}
 
-	void Transform::SetRotationEuler(const RMFLOAT3& euler)
+	void Transform::SetRotationEuler(const Vector3& euler)
 	{
 		SetRotationEuler(euler.x, euler.y, euler.z);
 	}
@@ -127,7 +127,7 @@ namespace RocketEngine
 		float cos_half_radianY = cos(half_radianY);
 		float cos_half_radianZ = cos(half_radianZ);
 
-		RMQuaternion rot;
+		Quaternion rot;
 
 		rot.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
 		rot.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
@@ -137,22 +137,22 @@ namespace RocketEngine
 		SetRotation(rot);
 	}
 
-	void Transform::SetScale(const RMFLOAT3& scale)
+	void Transform::SetScale(const Vector3& scale)
 	{
 		SetScale(scale.x, scale.y, scale.z);
 	}
 
 	void Transform::SetScale(float x, float y, float z)
 	{
-		RMFLOAT4 result = { x,y,z ,1.0f };
+		Vector4 result = { x,y,z ,1.0f };
 		if (_parent)
 		{
-			RMFLOAT4X4 scaleInverseMatrix = _parent->GetWorldScaleMatrix();
+			Matrix scaleInverseMatrix = _parent->GetWorldScaleMatrix();
 			scaleInverseMatrix.m[0][0] = 1 / scaleInverseMatrix.m[0][0];
 			scaleInverseMatrix.m[1][1] = 1 / scaleInverseMatrix.m[1][1];
 			scaleInverseMatrix.m[2][2] = 1 / scaleInverseMatrix.m[2][2];
 			scaleInverseMatrix.m[3][3] = 1 / scaleInverseMatrix.m[3][3];
-			result = RMFloat4MultiplyMatrix(result, scaleInverseMatrix);
+			result = Vector4MultiplyMatrix(result, scaleInverseMatrix);
 		}
 
 		_scale.x = result.x;
@@ -160,17 +160,17 @@ namespace RocketEngine
 		_scale.z = result.z;
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetLocalPosition() const
+	RocketEngine::Vector3 Transform::GetLocalPosition() const
 	{
 		return _position;
 	}
 
-	RocketEngine::RMQuaternion Transform::GetLocalRotation() const
+	RocketEngine::Quaternion Transform::GetLocalRotation() const
 	{
 		return _rotation;
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetLocalEuler() const
+	RocketEngine::Vector3 Transform::GetLocalEuler() const
 	{
 		// 쿼터니언의 요소 추출
 		float w = _rotation.w;
@@ -188,27 +188,27 @@ namespace RocketEngine
 		return { roll * toDegree, pitch * toDegree,  yaw * toDegree };
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetLocalScale() const
+	RocketEngine::Vector3 Transform::GetLocalScale() const
 	{
 		return _scale;
 	}
 
-	RocketEngine::RMFLOAT3& Transform::GetLocalPositionRef()
+	RocketEngine::Vector3& Transform::GetLocalPositionRef()
 	{
 		return _position;
 	}
 
-	RocketEngine::RMQuaternion& Transform::GetLocalRotationRef()
+	RocketEngine::Quaternion& Transform::GetLocalRotationRef()
 	{
 		return _rotation;
 	}
 
-	RocketEngine::RMFLOAT3& Transform::GetLocalScaleRef()
+	RocketEngine::Vector3& Transform::GetLocalScaleRef()
 	{
 		return _scale;
 	}	
 
-	void Transform::SetLocalPosition(const RMFLOAT3& position)
+	void Transform::SetLocalPosition(const Vector3& position)
 	{
 		_position = position;
 	}
@@ -220,14 +220,14 @@ namespace RocketEngine
 		_position.z = z;
 	}
 
-	void Transform::SetLocalRotation(const RMQuaternion& quaternion)
+	void Transform::SetLocalRotation(const Quaternion& quaternion)
 	{
 		_rotation = quaternion;
 	}
 
 	void Transform::SetLocalRotation(float w, float x, float y, float z)
 	{
-		RMQuaternion temp = RMQuaternionNormalize({ w,x,y,z });
+		Quaternion temp = QuaternionNormalize({ w,x,y,z });
 
 		_rotation.w = temp.w;
 		_rotation.x = temp.x;
@@ -235,7 +235,7 @@ namespace RocketEngine
 		_rotation.z = temp.z;
 	}
 
-	void Transform::SetLocalRotationEuler(const RMFLOAT3& euler)
+	void Transform::SetLocalRotationEuler(const Vector3& euler)
 	{
 		SetLocalRotationEuler(euler.x, euler.y, euler.z);
 	}
@@ -270,7 +270,7 @@ namespace RocketEngine
 		SetLocalRotationEuler(angleZ, angleY + 90.0f, angleX);
 	}
 
-	void Transform::SetLocalScale(const RMFLOAT3& scale)
+	void Transform::SetLocalScale(const Vector3& scale)
 	{
 		_scale = scale;
 	}
@@ -282,27 +282,27 @@ namespace RocketEngine
 		_scale.z = z;
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetForward() const
+	RocketEngine::Vector3 Transform::GetForward() const
 	{
-		RMFLOAT4 temp = RMFloat4MultiplyMatrix(RMFLOAT4(0.0f, 0.0f, 1.0f, 0.0f), GetWorldRotationMatrix());
-		return RMFLOAT3(temp.x, temp.y, temp.z);
+		Vector4 temp = Vector4MultiplyMatrix(Vector4(0.0f, 0.0f, 1.0f, 0.0f), GetWorldRotationMatrix());
+		return Vector3(temp.x, temp.y, temp.z);
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetUp() const
+	RocketEngine::Vector3 Transform::GetUp() const
 	{
-		RMFLOAT4 temp = RMFloat4MultiplyMatrix(RMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), GetWorldRotationMatrix());
-		return RMFLOAT3(temp.x, temp.y, temp.z);
+		Vector4 temp = Vector4MultiplyMatrix(Vector4(0.0f, 1.0f, 0.0f, 0.0f), GetWorldRotationMatrix());
+		return Vector3(temp.x, temp.y, temp.z);
 	}
 
-	RocketEngine::RMFLOAT3 Transform::GetRight() const
+	RocketEngine::Vector3 Transform::GetRight() const
 	{
-		RMFLOAT4 temp = RMFloat4MultiplyMatrix(RMFLOAT4(1.0f, 0.0f, 0.0f, 0.0f), GetWorldRotationMatrix());
-		return RMFLOAT3(temp.x, temp.y, temp.z);
+		Vector4 temp = Vector4MultiplyMatrix(Vector4(1.0f, 0.0f, 0.0f, 0.0f), GetWorldRotationMatrix());
+		return Vector3(temp.x, temp.y, temp.z);
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetLocalScaleMatrix() const
+	RocketEngine::Matrix Transform::GetLocalScaleMatrix() const
 	{
-		RMFLOAT4X4 scaleMatrix =
+		Matrix scaleMatrix =
 		{
 			_scale.x,	0,		0,		0,
 			0,		_scale.y,	0,		0,
@@ -313,9 +313,9 @@ namespace RocketEngine
 		return scaleMatrix;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetLocalRotationMatrix() const
+	RocketEngine::Matrix Transform::GetLocalRotationMatrix() const
 	{
-		RMFLOAT4X4 rotationMatrix =
+		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotation.y * _rotation.y + _rotation.z * _rotation.z),
 			2.0f * (_rotation.x * _rotation.y + _rotation.z * _rotation.w),
@@ -341,9 +341,9 @@ namespace RocketEngine
 		return rotationMatrix;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetLocalTranslateMatrix() const
+	RocketEngine::Matrix Transform::GetLocalTranslateMatrix() const
 	{
-		RMFLOAT4X4 translateMatrix =
+		Matrix translateMatrix =
 		{
 			1,				0,				0,				0,
 			0,				1,				0,				0,
@@ -354,9 +354,9 @@ namespace RocketEngine
 		return translateMatrix;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetWorldScaleMatrix() const
+	RocketEngine::Matrix Transform::GetWorldScaleMatrix() const
 	{
-		RMFLOAT4X4 result = GetLocalScaleMatrix();
+		Matrix result = GetLocalScaleMatrix();
 
 		if (_parent)
 		{
@@ -366,9 +366,9 @@ namespace RocketEngine
 		return result;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetWorldRotationMatrix() const
+	RocketEngine::Matrix Transform::GetWorldRotationMatrix() const
 	{
-		RMFLOAT4X4 result = GetLocalRotationMatrix();
+		Matrix result = GetLocalRotationMatrix();
 
 		if (_parent)
 		{
@@ -378,9 +378,9 @@ namespace RocketEngine
 		return result;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetWorldTranslateMatrix() const
+	RocketEngine::Matrix Transform::GetWorldTranslateMatrix() const
 	{
-		RMFLOAT4X4 result = GetLocalTranslateMatrix();
+		Matrix result = GetLocalTranslateMatrix();
 
 		if (_parent)
 		{
@@ -390,9 +390,9 @@ namespace RocketEngine
 		return result;
 	}
 
-	RocketEngine::RMFLOAT4X4 Transform::GetWorldTM() const
+	RocketEngine::Matrix Transform::GetWorldTM() const
 	{
-		RMFLOAT4X4 result = GetLocalScaleMatrix() * GetLocalRotationMatrix() * GetLocalTranslateMatrix();
+		Matrix result = GetLocalScaleMatrix() * GetLocalRotationMatrix() * GetLocalTranslateMatrix();
 		
 		if (_parent)
 		{
@@ -402,9 +402,9 @@ namespace RocketEngine
 		return result;
 	}
 
-	RocketEngine::RMFLOAT3X3 Transform::Get2DLocalScaleMatrix() const
+	RocketEngine::Vector3X3 Transform::Get2DLocalScaleMatrix() const
 	{
-		RMFLOAT3X3 scaleMatrix =
+		Vector3X3 scaleMatrix =
 		{
 			_scale.x,	0,		0,
 			0,		_scale.y,	0,
@@ -414,9 +414,9 @@ namespace RocketEngine
 		return scaleMatrix;
 	}
 
-	RocketEngine::RMFLOAT3X3 Transform::Get2DLocalRotationMatrix() const
+	RocketEngine::Vector3X3 Transform::Get2DLocalRotationMatrix() const
 	{
-		RMFLOAT3X3 rotationMatrix =
+		Vector3X3 rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotation.y * _rotation.y + _rotation.z * _rotation.z),
 			2.0f * (_rotation.x * _rotation.y + _rotation.z * _rotation.w),
@@ -434,9 +434,9 @@ namespace RocketEngine
 		return rotationMatrix;
 	}
 
-	RocketEngine::RMFLOAT3X3 Transform::Get2DLocalTranslateMatrix() const
+	RocketEngine::Vector3X3 Transform::Get2DLocalTranslateMatrix() const
 	{
-		RMFLOAT3X3 translateMatrix =
+		Vector3X3 translateMatrix =
 		{
 			1,				0,				0,
 			0,				1,				0,
@@ -446,9 +446,9 @@ namespace RocketEngine
 		return translateMatrix;
 	}
 
-	RocketEngine::RMFLOAT3X3 Transform::Get2DWorldTM() const
+	RocketEngine::Vector3X3 Transform::Get2DWorldTM() const
 	{
-		RMFLOAT3X3 result = Get2DLocalScaleMatrix() * Get2DLocalRotationMatrix() * Get2DLocalTranslateMatrix();
+		Vector3X3 result = Get2DLocalScaleMatrix() * Get2DLocalRotationMatrix() * Get2DLocalTranslateMatrix();
 
 		if (_parent)
 		{
@@ -458,7 +458,7 @@ namespace RocketEngine
 		return result;
 	}
 
-	void Transform::Translate(const RMFLOAT3& position)
+	void Transform::Translate(const Vector3& position)
 	{
 		_position.x += position.x;
 		_position.y += position.y;
@@ -492,14 +492,14 @@ namespace RocketEngine
 		float cos_half_radianZ = cos(half_radianZ);
 
 		// 쿼터니언 요소를 계산합니다.
-		RMFLOAT4 rotQuat;
+		Vector4 rotQuat;
 		rotQuat.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
 		rotQuat.y = cos_half_radianX * sin_half_radianY * cos_half_radianZ - sin_half_radianX * cos_half_radianY * sin_half_radianZ;
 		rotQuat.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
 		rotQuat.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
 
 		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
-		RMQuaternion result;
+		Quaternion result;
 		result.x = _rotation.w * rotQuat.x + _rotation.x * rotQuat.w + _rotation.y * rotQuat.z - _rotation.z * rotQuat.y;
 		result.y = _rotation.w * rotQuat.y - _rotation.x * rotQuat.z + _rotation.y * rotQuat.w + _rotation.z * rotQuat.x;
 		result.z = _rotation.w * rotQuat.z + _rotation.x * rotQuat.y - _rotation.y * rotQuat.x + _rotation.z * rotQuat.w;
@@ -509,9 +509,9 @@ namespace RocketEngine
 		_rotation = result;
 	}
 
-	void Transform::Rotate(RMQuaternion quaternion)
+	void Transform::Rotate(Quaternion quaternion)
 	{
-		_rotation = RMQuaternionMultiply(_rotation, quaternion);
+		_rotation = QuaternionMultiply(_rotation, quaternion);
 	}
 
 	/// <summary>
@@ -521,11 +521,11 @@ namespace RocketEngine
 	/// </summary>
 	/// <param name="target">바라볼 타겟</param>
 	/// <param name="up"> 카메라가 right vector를 구할때 사용할 up 벡터</param>
-	void Transform::LookAt(const RMFLOAT3& target, const RMFLOAT3& up)
+	void Transform::LookAt(const Vector3& target, const Vector3& up)
 	{
-// 		RMFLOAT3 look = RMFloat3Normalize(target - gameObject->transform.GetPosition());
-// 		RMFLOAT3 right = RMFloat3Normalize(RMFloat3Cross(up, look));
-// 		RMFLOAT3 up = RMFloat3Normalize(RMFloat3Cross(look, right));
+// 		Vector3 look = Vector3Normalize(target - gameObject->transform.GetPosition());
+// 		Vector3 right = Vector3Normalize(Vector3Cross(up, look));
+// 		Vector3 up = Vector3Normalize(Vector3Cross(look, right));
 // 
 // 		_look
 // 
@@ -534,7 +534,7 @@ namespace RocketEngine
 // 		XMStoreFloat3(&up_, upVector);
 	}
 
-	void Transform::LookAt(const RMFLOAT3& pos, const RMFLOAT3& target, const RMFLOAT3& up)
+	void Transform::LookAt(const Vector3& pos, const Vector3& target, const Vector3& up)
 	{
 
 	}
@@ -544,15 +544,15 @@ namespace RocketEngine
 		auto name = gameObject->objName;
 		if (name != "playerLeg" && name != "playerBody" && name != "playerHead")
 		{
-			RMFLOAT4 tempPos = RMFloat4MultiplyMatrix({ GetPosition(), 1.0f }, parent->GetWorldTM().Inverse());
+			Vector4 tempPos = Vector4MultiplyMatrix({ GetPosition(), 1.0f }, parent->GetWorldTM().Inverse());
 			_position.x = tempPos.x;
 			_position.y = tempPos.y;
 			_position.z = tempPos.z;
 
-			_rotation = RMQuaternionMultiply(GetRotation(), parent->GetRotation().conjugate());
+			_rotation = QuaternionMultiply(GetRotation(), parent->GetRotation().conjugate());
 		}
 
-		RMFLOAT4 tempScale = RMFloat4MultiplyMatrix({ GetScale(), 1.0f }, parent->GetWorldScaleMatrix().Inverse());
+		Vector4 tempScale = Vector4MultiplyMatrix({ GetScale(), 1.0f }, parent->GetWorldScaleMatrix().Inverse());
 		_scale.x = tempScale.x;
 		_scale.y = tempScale.y;
 		_scale.z = tempScale.z;
@@ -588,11 +588,11 @@ namespace RocketEngine
 			return;
 		}
 
-		RMFLOAT4 tempPos = RMFloat4MultiplyMatrix({ _position.x,_position.y,_position.z,1.0f }, _parent->GetWorldTM());
+		Vector4 tempPos = Vector4MultiplyMatrix({ _position.x,_position.y,_position.z,1.0f }, _parent->GetWorldTM());
 		SetLocalPosition(tempPos.x, tempPos.y, tempPos.z);
 
-		SetLocalRotation(RMQuaternionMultiply(_rotation, _parent->GetRotation()));
-		RMFLOAT4 tempScale = RMFloat4MultiplyMatrix({ _scale,1.0f }, _parent->GetWorldScaleMatrix());
+		SetLocalRotation(QuaternionMultiply(_rotation, _parent->GetRotation()));
+		Vector4 tempScale = Vector4MultiplyMatrix({ _scale,1.0f }, _parent->GetWorldScaleMatrix());
 		SetLocalScale(tempScale.x, tempScale.y, tempScale.z);
 
 		_parent->ReleaseChild(this);

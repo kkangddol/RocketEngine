@@ -22,7 +22,7 @@ namespace RocketCore
 		_isFocused = false;
 	}
 
-	RocketEngine::RMFLOAT3X3 UIRenderer::Get2DWorldTM()
+	RocketEngine::Vector3X3 UIRenderer::Get2DWorldTM()
 	{
 		return gameObject->transform.Get2DWorldTM();
 	}
@@ -34,7 +34,7 @@ namespace RocketCore
 			return false;
 		}
 
-		RocketEngine::RMFLOAT2 mousePos = RocketCore::InputSystem::Instance().GetMousePosition();
+		RocketEngine::Vector2 mousePos = RocketCore::InputSystem::Instance().GetMousePosition();
 
 		if (GetLeft() <= mousePos.x && mousePos.x <= GetRight())
 		{
@@ -90,32 +90,32 @@ namespace RocketCore
 
 	float UIRenderer::GetLeft() const
 	{
-		RocketEngine::RMFLOAT3 pos = gameObject->transform.GetPosition();
-		RocketEngine::RMFLOAT3 scale = gameObject->transform.GetScale();
+		RocketEngine::Vector3 pos = gameObject->transform.GetPosition();
+		RocketEngine::Vector3 scale = gameObject->transform.GetScale();
 
 		return pos.x - _width * scale.x / 2;
 	}
 
 	float UIRenderer::GetTop() const
 	{
-		RocketEngine::RMFLOAT3 pos = gameObject->transform.GetPosition();
-		RocketEngine::RMFLOAT3 scale = gameObject->transform.GetScale();
+		RocketEngine::Vector3 pos = gameObject->transform.GetPosition();
+		RocketEngine::Vector3 scale = gameObject->transform.GetScale();
 
 		return pos.y - _height * scale.y / 2;
 	}
 
 	float UIRenderer::GetRight() const
 	{
-		RocketEngine::RMFLOAT3 pos = gameObject->transform.GetPosition();
-		RocketEngine::RMFLOAT3 scale = gameObject->transform.GetScale();
+		RocketEngine::Vector3 pos = gameObject->transform.GetPosition();
+		RocketEngine::Vector3 scale = gameObject->transform.GetScale();
 
 		return pos.x + _width * scale.x / 2;
 	}
 
 	float UIRenderer::GetBottom() const
 	{
-		RocketEngine::RMFLOAT3 pos = gameObject->transform.GetPosition();
-		RocketEngine::RMFLOAT3 scale = gameObject->transform.GetScale();
+		RocketEngine::Vector3 pos = gameObject->transform.GetPosition();
+		RocketEngine::Vector3 scale = gameObject->transform.GetScale();
 
 		return pos.y + _height * scale.y / 2;
 	}

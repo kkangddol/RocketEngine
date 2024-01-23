@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "InputSystem.h"
 #include "DebugSystem.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -24,10 +24,10 @@ namespace RocketEngine
 	void Button::LateUpdate()
 	{
 		// 디버그 정보 출력.
-		RMFLOAT3 worldPos = gameObject->transform.GetPosition();
-		RMFLOAT2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
-		RMFLOAT2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
-		RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f };
+		Vector3 worldPos = gameObject->transform.GetPosition();
+		Vector2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
+		Vector2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
+		Vector4 color = { 1.0f,0.0f,0.0f,1.0f };
 		RocketCore::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
 	}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -11,45 +11,45 @@ namespace RocketCore::Graphics
 {
 	struct DirectionalLightData
 	{
-		RocketEngine::RMFLOAT4 ambient;
-		RocketEngine::RMFLOAT4 diffuse;
-		RocketEngine::RMFLOAT4 specular;
-		RocketEngine::RMFLOAT3 direction;
+		RocketEngine::Vector4 ambient;
+		RocketEngine::Vector4 diffuse;
+		RocketEngine::Vector4 specular;
+		RocketEngine::Vector3 direction;
 		float intensity = 1.0f; 
 		//자동으로 바이트 패딩 됨. Directional Light 한정 빛의 밝기 정렬을 위해 Intensity 마련.
 	};
 
 	struct PointLightData
 	{
-		RocketEngine::RMFLOAT4 ambient;
-		RocketEngine::RMFLOAT4 diffuse;
-		RocketEngine::RMFLOAT4 specular;
+		RocketEngine::Vector4 ambient;
+		RocketEngine::Vector4 diffuse;
+		RocketEngine::Vector4 specular;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::RMFLOAT3 position;
+		RocketEngine::Vector3 position;
 		float range;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::RMFLOAT3 attenuation;
+		RocketEngine::Vector3 attenuation;
 		float tPad;
 	};
 
 	struct SpotLightData
 	{
-		RocketEngine::RMFLOAT4 ambient;
-		RocketEngine::RMFLOAT4 diffuse;
-		RocketEngine::RMFLOAT4 specular;
+		RocketEngine::Vector4 ambient;
+		RocketEngine::Vector4 diffuse;
+		RocketEngine::Vector4 specular;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::RMFLOAT3 position;
+		RocketEngine::Vector3 position;
 		float range;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::RMFLOAT3 direction;
+		RocketEngine::Vector3 direction;
 		float spot;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::RMFLOAT3 attenuation;
+		RocketEngine::Vector3 attenuation;
 		float tPad;
 	};
 }

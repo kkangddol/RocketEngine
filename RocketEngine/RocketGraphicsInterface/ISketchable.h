@@ -1,5 +1,5 @@
 #pragma once
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -15,7 +15,7 @@ namespace RocketCore::Graphics
 		virtual void SetData(const char* data) abstract;
 		virtual void SetAlpha(float alpha) abstract;
 		virtual void SetFillRatio(float ratio) abstract;
-		virtual void Render(const RocketEngine::RMFLOAT3X3& rectTM) abstract;
+		virtual void Render(const RocketEngine::Vector3X3& rectTM) abstract;
 		//path,text
 	};
 }

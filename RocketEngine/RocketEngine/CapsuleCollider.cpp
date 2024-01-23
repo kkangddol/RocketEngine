@@ -16,11 +16,11 @@ namespace RocketEngine
 
 	void CapsuleCollider::Update()
 	{
-		RMFLOAT4X4 worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
+		Matrix worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
 		// Collider와 Mesh 일치를 위한 조정 test. 23.8.9.AJY.
 		//worldTM._42 += _height / 2;
-		RMFLOAT3 WHD = { GetHeight(), GetWidth(), GetDepth()};
-		RMFLOAT4 color = { 0.0f,1.0f,0.0f,1.0f };
+		Vector3 WHD = { GetHeight(), GetWidth(), GetDepth()};
+		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
 		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 

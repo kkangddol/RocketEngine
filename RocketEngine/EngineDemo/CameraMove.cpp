@@ -71,9 +71,9 @@ void CameraMove::Update()
 void CameraMove::OnMouseMove()
 {
 	//// Player의 시선 방향과 카메라의 방향을 내적한 후, acos에 넣어 각도를 구한다.
-	//RocketEngine::RMFLOAT3 playerForward = RMFloat3Normalize(_camera->gameObject->transform.GetParent()->GetParent()->GetForward());
-	//RocketEngine::RMFLOAT3 cameraForward = RMFloat3Normalize(_camera->gameObject->transform.GetForward());
-	////RocketEngine::RMFLOAT4 temp = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(cameraForward.x, cameraForward.y, cameraForward.z, 1.0f), 
+	//RocketEngine::Vector3 playerForward = Vector3Normalize(_camera->gameObject->transform.GetParent()->GetParent()->GetForward());
+	//RocketEngine::Vector3 cameraForward = Vector3Normalize(_camera->gameObject->transform.GetForward());
+	////RocketEngine::Vector4 temp = Vector4MultiplyMatrix(RocketEngine::Vector4(cameraForward.x, cameraForward.y, cameraForward.z, 1.0f), 
 	////	_camera->gameObject->transform.GetParent()->GetWorldRotationMatrix());
 	////cameraForward.x = temp.x;
 	////cameraForward.y = temp.y;
@@ -84,12 +84,12 @@ void CameraMove::OnMouseMove()
 	///// 부모의 rotation을 곱해줘야 하거나, 마우스가 화면 밖으로 갔을 때의 추가적인 조치가 필요한 경우를 생각해볼 수 있다.
 
 	/// Try.0
-	//RocketEngine::RMFLOAT2 mouseDelta = RocketEngine::GetMouseDelta();
-	RocketEngine::RMFLOAT2 mouseDelta = RocketEngine::MouseDeltaSmooth();
+	//RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
+	RocketEngine::Vector2 mouseDelta = RocketEngine::MouseDeltaSmooth();
 	_camera->Pitch(mouseDelta.y * RocketEngine::GetDeltaTime() * 0.05f);
 
 	/// Tryseok
-	RocketEngine::RMFLOAT3 euler = _camera->gameObject->transform.GetLocalEuler();
+	RocketEngine::Vector3 euler = _camera->gameObject->transform.GetLocalEuler();
 	if (89.0f < euler.x)
 	{
 		_camera->gameObject->transform.SetLocalRotationEuler(89.0f, 0.0f, 0.0f);
@@ -113,7 +113,7 @@ void CameraMove::OnMouseMove()
 // 	}
 // 	else
 // 	{
-// 		RocketEngine::RMFLOAT2 mouseDelta = RocketEngine::GetMouseDelta();
+// 		RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
 // 		_camera->Pitch(mouseDelta.y * 0.5f);
 //	}
 
@@ -126,7 +126,7 @@ void CameraMove::OnMouseMove()
 
 	//if (isPitchAbleAngle)
 	//{
-	//	RocketEngine::RMFLOAT2 mouseDelta = RocketEngine::GetMouseDelta();
+	//	RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
 	//	mouseDelta = mouseDelta * RocketEngine::GetDeltaTime();
 	//	_camera->Pitch(mouseDelta.y * 0.1f);
 	//}
@@ -143,15 +143,15 @@ void CameraMove::DrawAimLine()
 {
 	if (RocketEngine::GetKey(VK_RETURN))
 	{
-		RocketEngine::RMFLOAT3 pos = gameObject->transform.GetPosition() + RocketEngine::RMFLOAT3(0.7f, -0.4f, 0.0f);
+		RocketEngine::Vector3 pos = gameObject->transform.GetPosition() + RocketEngine::Vector3(0.7f, -0.4f, 0.0f);
 
-		RocketEngine::RMFLOAT4X4 tempTM = gameObject->transform.GetWorldTM();
-		RocketEngine::RMFLOAT4 temp = RMFloat4MultiplyMatrix({ pos,1 }, tempTM);
+		RocketEngine::Matrix tempTM = gameObject->transform.GetWorldTM();
+		RocketEngine::Vector4 temp = Vector4MultiplyMatrix({ pos,1 }, tempTM);
 		pos.x = temp.x;
 		pos.y = temp.y;
 		pos.z = temp.z;
 
-		RocketEngine::RMFLOAT3 target = pos + gameObject->transform.GetForward() * 50.0f;
+		RocketEngine::Vector3 target = pos + gameObject->transform.GetForward() * 50.0f;
 		RocketEngine::DrawDebugLine(pos, target);
 	}
 }

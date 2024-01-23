@@ -39,12 +39,12 @@ namespace RocketEngine
 		_range = range;
 	}
 
-	RocketEngine::RMFLOAT3 PointLight::GetAttenuation() const
+	RocketEngine::Vector3 PointLight::GetAttenuation() const
 	{
 		return _attenuation;
 	}
 
-	void PointLight::SetAttenuation(RMFLOAT3 attenuation)
+	void PointLight::SetAttenuation(Vector3 attenuation)
 	{
 		_attenuation = attenuation;
 	}

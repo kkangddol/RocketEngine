@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include <windows.h>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -42,19 +42,19 @@ namespace RocketCore
 		bool previousKeyState[0xB0];
 
 	public:
-		RocketEngine::RMFLOAT2 GetMousePosition() const;
-		RocketEngine::RMFLOAT2 GetMouseDelta() const;
-		RocketEngine::RMFLOAT2 MouseDeltaSmooth();
+		RocketEngine::Vector2 GetMousePosition() const;
+		RocketEngine::Vector2 GetMouseDelta() const;
+		RocketEngine::Vector2 MouseDeltaSmooth();
 		float GetMouseSensitivity() const;
 		void SetMouseSensitivity(float sensitivity);
 
 	private:
 		float _mouseSensitivity;
 		POINT _mousePoint;
-		RocketEngine::RMFLOAT2 _currentMousePosition;
-		RocketEngine::RMFLOAT2 _previousMousePosition;
-		RocketEngine::RMFLOAT2 _currentMouseDelta;
-		RocketEngine::RMFLOAT2 _previousMouseDelta;
+		RocketEngine::Vector2 _currentMousePosition;
+		RocketEngine::Vector2 _previousMousePosition;
+		RocketEngine::Vector2 _currentMouseDelta;
+		RocketEngine::Vector2 _previousMouseDelta;
 
 	private:
 		int _screenWidth;

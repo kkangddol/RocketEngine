@@ -546,13 +546,13 @@ namespace RocketCore
 				data.camera->_nearWindowHeight = obj["Camera"]["near_winHeight"].GetFloat();
 				data.camera->_nearWindowWidth = obj["Camera"]["near_winWidth"].GetFloat();
 
-				data.camera->_viewMatrix = RocketEngine::RMFLOAT4X4(
+				data.camera->_viewMatrix = RocketEngine::Matrix(
 					obj["Camera"]["View Matrix"]["m_11"].GetFloat(), obj["Camera"]["View Matrix"]["m_12"].GetFloat(), obj["Camera"]["View Matrix"]["m_13"].GetFloat(), obj["Camera"]["View Matrix"]["m_14"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_21"].GetFloat(), obj["Camera"]["View Matrix"]["m_22"].GetFloat(), obj["Camera"]["View Matrix"]["m_23"].GetFloat(), obj["Camera"]["View Matrix"]["m_24"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_31"].GetFloat(), obj["Camera"]["View Matrix"]["m_32"].GetFloat(), obj["Camera"]["View Matrix"]["m_33"].GetFloat(), obj["Camera"]["View Matrix"]["m_34"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_41"].GetFloat(), obj["Camera"]["View Matrix"]["m_42"].GetFloat(), obj["Camera"]["View Matrix"]["m_43"].GetFloat(), obj["Camera"]["View Matrix"]["m_44"].GetFloat());
 
-				data.camera->_projMatrix = RocketEngine::RMFLOAT4X4(
+				data.camera->_projMatrix = RocketEngine::Matrix(
 					obj["Camera"]["Proj Matrix"]["m_11"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_12"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_13"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_14"].GetFloat(),
 					obj["Camera"]["Proj Matrix"]["m_21"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_22"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_23"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_24"].GetFloat(),
 					obj["Camera"]["Proj Matrix"]["m_31"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_32"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_33"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_34"].GetFloat(),

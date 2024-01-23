@@ -82,10 +82,10 @@ namespace RocketEngine
 	void TextBox::LateUpdate()
 	{
 		// 디버그 정보 출력.
-		RMFLOAT3 worldPos = gameObject->transform.GetPosition();
-		RMFLOAT2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
-		RMFLOAT2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
-		RMFLOAT4 color = { 0.0f,0.0f,1.0f,1.0f };
+		Vector3 worldPos = gameObject->transform.GetPosition();
+		Vector2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
+		Vector2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
+		Vector4 color = { 0.0f,0.0f,1.0f,1.0f };
 		RocketCore::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
 	}
 
@@ -122,7 +122,7 @@ namespace RocketEngine
 		return _fontSize;
 	}
 
-	RocketEngine::RMFLOAT4 TextBox::GetColor() const
+	RocketEngine::Vector4 TextBox::GetColor() const
 	{
 		return _color;
 	}
@@ -132,7 +132,7 @@ namespace RocketEngine
 		_fontSize = size;
 	}
 
-	void TextBox::SetFontColor(RMFLOAT4 color)
+	void TextBox::SetFontColor(Vector4 color)
 	{
 		_color = color;
 	}

@@ -2,7 +2,7 @@
 #include "DLLExporter.h"
 #include "UIRenderer.h"
 #include <string>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -45,13 +45,13 @@ namespace RocketEngine
 
 	public:
 		float GetFontSize() const;
-		RMFLOAT4 GetColor() const;
+		Vector4 GetColor() const;
 		void SetFontSize(float size);
-		void SetFontColor(RMFLOAT4 color);
+		void SetFontColor(Vector4 color);
 
 	private:
 		std::string _text;
 		float _fontSize;
-		RMFLOAT4 _color;
+		Vector4 _color;
 	};
 }

@@ -131,17 +131,17 @@ namespace RocketEngine
 		return RocketCore::InputSystem::Instance().GetKey(keyCode);
 	}
 
-	RMFLOAT2 GetMousePosition()
+	Vector2 GetMousePosition()
 	{
 		return RocketCore::InputSystem::Instance().GetMousePosition();
 	}
 
-	RMFLOAT2 GetMouseDelta()
+	Vector2 GetMouseDelta()
 	{
 		return RocketCore::InputSystem::Instance().GetMouseDelta();
 	}
 
-	ROCKET_API RMFLOAT2 MouseDeltaSmooth()
+	ROCKET_API Vector2 MouseDeltaSmooth()
 	{
 		return RocketCore::InputSystem::Instance().MouseDeltaSmooth();
 	}
@@ -166,7 +166,7 @@ namespace RocketEngine
 		return RocketCore::SceneSystem::Instance().GetCurrentScene()->FindObjectByName(name);
 	}
 
-	ROCKET_API Collider* ShootRay(RMFLOAT3 origin, RMFLOAT3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
+	ROCKET_API Collider* ShootRay(Vector3 origin, Vector3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
 	{
 		// type이 1이면 rigidStatic, 2면 rigidDynamic
 		return RocketCore::PhysicsSystem::Instance().RayCast(origin, direction, length, type);
@@ -228,22 +228,22 @@ namespace RocketEngine
 		RocketCore::SoundSystem::Instance().PlayAllEnd();
 	}
 
-	void DrawDebugText(RMFLOAT2 centerPos, std::string content, float size)
+	void DrawDebugText(Vector2 centerPos, std::string content, float size)
 	{
 		RocketCore::DebugSystem::Instance().DrawDebugText(centerPos, content, size);
 	}
 
-	void DrawDebugBox(RMFLOAT4X4 worldTM, RMFLOAT3 widthHeightDepth /*= { 1.0f,1.0f,1.0f }*/, bool isWire /*= true*/, RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,0.0f }*/)
+	void DrawDebugBox(Matrix worldTM, Vector3 widthHeightDepth /*= { 1.0f,1.0f,1.0f }*/, bool isWire /*= true*/, Vector4 color /*= { 1.0f,0.0f,0.0f,0.0f }*/)
 	{
 		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, widthHeightDepth, isWire, color);
 	}
 
-	void DrawDebugLine(RMFLOAT3 beginPoint, RMFLOAT3 endPoint, RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
+	void DrawDebugLine(Vector3 beginPoint, Vector3 endPoint, Vector4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
 	{
 		RocketCore::DebugSystem::Instance().DrawDebugLine(beginPoint, endPoint, color);
 	}
 
-	void DrawDebug2DBox(RMFLOAT2 LT, RMFLOAT2 RB, RMFLOAT4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
+	void DrawDebug2DBox(Vector2 LT, Vector2 RB, Vector4 color /*= { 1.0f,0.0f,0.0f,1.0f }*/)
 	{
 		RocketCore::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
 	}

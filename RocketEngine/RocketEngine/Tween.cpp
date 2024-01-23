@@ -27,19 +27,19 @@ namespace RocketEngine
 		return *this;
 	}
 
-	Tween& Tween::GetData(RMFLOAT2* data)
+	Tween& Tween::GetData(Vector2* data)
 	{
 		this->data2V = data;
 		return *this;
 	}
 
-	Tween& Tween::GetData(RMFLOAT3* data)
+	Tween& Tween::GetData(Vector3* data)
 	{
 		this->data3V = data;
 		return *this;
 	}
 
-	Tween& Tween::GetData(RMQuaternion* data)
+	Tween& Tween::GetData(Quaternion* data)
 	{
 		this->dataQuat = data;
 		return *this;
@@ -65,18 +65,18 @@ namespace RocketEngine
 		return *this;
 	}
 
-	Tween& Tween::DoMove(RMFLOAT2& destination, const float duration)
+	Tween& Tween::DoMove(Vector2& destination, const float duration)
 	{
 		_timer->Start();
 		_timer->_duration = duration;
 
-		RMFLOAT2 distance;
+		Vector2 distance;
 		//distance._x = destination._x - this->data2V->_x;
 		//distance._y = destination._y - this->data2V->_y;
 
 		distance = destination - *this->data2V;
 
-		RMFLOAT2 start = *this->data2V;
+		Vector2 start = *this->data2V;
 
 		_timer->_play = [=]()
 		{
@@ -86,17 +86,17 @@ namespace RocketEngine
 		return *this;
 	}
 
-	Tween& Tween::DoMove(const RMFLOAT3& destination, const float duration)
+	Tween& Tween::DoMove(const Vector3& destination, const float duration)
 	{
 		_timer->Start();
 		_timer->_duration = duration;
 
-		RMFLOAT3 distance;
+		Vector3 distance;
 		distance.x = destination.x - this->data3V->x;
 		distance.y = destination.y - this->data3V->y;
 		distance.z = destination.z - this->data3V->z;
 
-		RMFLOAT3 start = *this->data3V;
+		Vector3 start = *this->data3V;
 
 		_timer->_play = [=]()
 		{
@@ -107,18 +107,18 @@ namespace RocketEngine
 		return *this;
 	}
 
-	Tween& Tween::DoMove(const RMQuaternion& destination, const float duration)
+	Tween& Tween::DoMove(const Quaternion& destination, const float duration)
 	{
 		_timer->Start();
 		_timer->_duration = duration;
 
-		RMQuaternion distance;
+		Quaternion distance;
 		distance.w = destination.w - dataQuat->w;
 		distance.x = destination.x - dataQuat->x;
 		distance.y = destination.y - dataQuat->y;
 		distance.z = destination.z - dataQuat->z;
 
-		RMQuaternion start = *this->dataQuat;
+		Quaternion start = *this->dataQuat;
 
 		_timer->_play = [=]()
 		{

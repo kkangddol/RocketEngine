@@ -43,10 +43,10 @@ namespace RocketEngine
 		_servant.push_back(rhs);
 	}
 
-	void DynamicCollider::UpdateFromPhysics(RMFLOAT3 pos, RMQuaternion quat)
+	void DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 	{
-		RMFLOAT4 localPos = RMFloat4MultiplyMatrix({ pos,1.0f }, GetOffsetTM().Inverse());
-		RMQuaternion localQuat = RMQuaternionMultiply(quat, GetRotationOffset().conjugate());
+		Vector4 localPos = Vector4MultiplyMatrix({ pos,1.0f }, GetOffsetTM().Inverse());
+		Quaternion localQuat = QuaternionMultiply(quat, GetRotationOffset().conjugate());
 
 		if (!(gameObject->objName == "player"
 			|| gameObject->objName == "playerBody"
@@ -95,8 +95,8 @@ namespace RocketEngine
 			return;
 		}
 
-		RMFLOAT4 pos = RMFLOAT4(GetPositionOffset(), 1.0f) * gameObject->transform.GetWorldTM();
-		RMQuaternion rot = RMQuaternionMultiply(GetRotationOffset(), gameObject->transform.GetRotation());
+		Vector4 pos = Vector4(GetPositionOffset(), 1.0f) * gameObject->transform.GetWorldTM();
+		Quaternion rot = QuaternionMultiply(GetRotationOffset(), gameObject->transform.GetRotation());
 
 		physx::PxTransform pxTransform;
 
@@ -120,7 +120,7 @@ namespace RocketEngine
 		_physXRigid->setGlobalPose(pxTransform);
 	}
 
-	void DynamicCollider::AddForce(RMFLOAT3 direction, eForceMode forceMode)
+	void DynamicCollider::AddForce(Vector3 direction, eForceMode forceMode)
 	{
 		physx::PxVec3 dir;
 		dir.x = direction.x;
@@ -144,18 +144,18 @@ namespace RocketEngine
 		}
 	}
 
-	RocketEngine::RMFLOAT3 DynamicCollider::GetVelocity() const
+	RocketEngine::Vector3 DynamicCollider::GetVelocity() const
 	{
 		physx::PxVec3 temp = _physXRigid->getLinearVelocity();
 		return { temp.x, temp.y, temp.z };
 	}
 
-	void DynamicCollider::SetVelocity(RMFLOAT3 velocity)
+	void DynamicCollider::SetVelocity(Vector3 velocity)
 	{
 		_physXRigid->setLinearVelocity({ velocity.x,velocity.y,velocity.z });
 	}
 
-	void DynamicCollider::AddVelocity(RMFLOAT3 velocity)
+	void DynamicCollider::AddVelocity(Vector3 velocity)
 	{
 		physx::PxVec3 temp{ velocity.x, velocity.y, velocity.z };
 		temp += _physXRigid->getLinearVelocity();

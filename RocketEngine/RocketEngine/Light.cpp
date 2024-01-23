@@ -13,32 +13,32 @@ namespace RocketEngine
 		//RocketCore::RenderSystem::Instance().AddLight(this);
 	}
 
-	RocketEngine::RMFLOAT4 Light::GetAmbient() const
+	RocketEngine::Vector4 Light::GetAmbient() const
 	{
 		return _ambient;
 	}
 
-	void Light::SetAmbient(RMFLOAT4 ambient)
+	void Light::SetAmbient(Vector4 ambient)
 	{
 		_ambient = ambient;
 	}
 
-	RocketEngine::RMFLOAT4 Light::GetDiffuse() const
+	RocketEngine::Vector4 Light::GetDiffuse() const
 	{
 		return _diffuse;
 	}
 
-	void Light::SetDiffuse(RMFLOAT4 diffuse)
+	void Light::SetDiffuse(Vector4 diffuse)
 	{
 		_diffuse = diffuse;
 	}
 
-	RocketEngine::RMFLOAT4 Light::GetSpecular() const
+	RocketEngine::Vector4 Light::GetSpecular() const
 	{
 		return _specular;
 	}
 
-	void Light::SetSpecular(RMFLOAT4 specular)
+	void Light::SetSpecular(Vector4 specular)
 	{
 		_specular = specular;
 	}

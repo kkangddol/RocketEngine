@@ -1,7 +1,7 @@
 #pragma once
 #include "DLLExporter.h"
 #include "Component.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -22,16 +22,16 @@ namespace RocketEngine
 		Light(GameObject* owner);
 
 	public:
-		RMFLOAT4 GetAmbient() const;
-		void SetAmbient(RMFLOAT4 ambient);
-		RMFLOAT4 GetDiffuse() const;
-		void SetDiffuse(RMFLOAT4 diffuse);
-		RMFLOAT4 GetSpecular() const;
-		void SetSpecular(RMFLOAT4 specular);
+		Vector4 GetAmbient() const;
+		void SetAmbient(Vector4 ambient);
+		Vector4 GetDiffuse() const;
+		void SetDiffuse(Vector4 diffuse);
+		Vector4 GetSpecular() const;
+		void SetSpecular(Vector4 specular);
 
 	protected:
-		RMFLOAT4 _ambient;
-		RMFLOAT4 _diffuse;
-		RMFLOAT4 _specular;
+		Vector4 _ambient;
+		Vector4 _diffuse;
+		Vector4 _specular;
 	};
 }

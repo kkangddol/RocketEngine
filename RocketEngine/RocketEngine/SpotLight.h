@@ -24,12 +24,12 @@ namespace RocketEngine
 		void SetRange(float range);
 		float GetSpot() const;
 		void SetSpot(float spot);
-		RMFLOAT3 GetAttenuation() const;
-		void SetAttenuation(RMFLOAT3 attenuation);
+		Vector3 GetAttenuation() const;
+		void SetAttenuation(Vector3 attenuation);
 
 	private:
 		float _range;
 		float _spot;
-		RMFLOAT3 _attenuation;
+		Vector3 _attenuation;
 	};
 }

@@ -186,22 +186,22 @@ namespace RocketCore
 		return previousKeyState[keyCode] && currentKeyState[keyCode];
 	}
 
-	RocketEngine::RMFLOAT2 InputSystem::GetMousePosition() const
+	RocketEngine::Vector2 InputSystem::GetMousePosition() const
 	{
 		return _currentMousePosition;
 	}
 
-	RocketEngine::RMFLOAT2 InputSystem::GetMouseDelta() const
+	RocketEngine::Vector2 InputSystem::GetMouseDelta() const
 	{
-		//return (_c urrentMousePosition - RocketEngine::RMFLOAT2(500.0f, 500.0f)) * TimeSystem::GetDeltaTime();
+		//return (_c urrentMousePosition - RocketEngine::Vector2(500.0f, 500.0f)) * TimeSystem::GetDeltaTime();
 		return (_currentMousePosition - _previousMousePosition) * _mouseSensitivity;
 	}
 
-	RocketEngine::RMFLOAT2 InputSystem::MouseDeltaSmooth()
+	RocketEngine::Vector2 InputSystem::MouseDeltaSmooth()
 	{
 		_currentMouseDelta = _currentMousePosition - _previousMousePosition;
 
-		RocketEngine::RMFLOAT2 result = (_currentMouseDelta + _previousMouseDelta);
+		RocketEngine::Vector2 result = (_currentMouseDelta + _previousMouseDelta);
 		result.x /= 2.0f;
 		result.y /= 2.0f;
 

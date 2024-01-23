@@ -16,27 +16,27 @@ namespace RocketEngine
 
 	}
 
-	RocketEngine::RMFLOAT3 Collider::GetPositionOffset() const
+	RocketEngine::Vector3 Collider::GetPositionOffset() const
 	{
 		return _positionOffset;
 	}
 
-	RocketEngine::RMQuaternion Collider::GetRotationOffset() const
+	RocketEngine::Quaternion Collider::GetRotationOffset() const
 	{
 		return _rotationOffset;
 	}
 
-	RocketEngine::RMFLOAT3 Collider::GetScaleOffset() const
+	RocketEngine::Vector3 Collider::GetScaleOffset() const
 	{
 		return _scaleOffset;
 	}
 
-	void Collider::SetPositionOffset(RMFLOAT3 position)
+	void Collider::SetPositionOffset(Vector3 position)
 	{
 		_positionOffset = position;
 	}
 
-	void Collider::SetRotationOffset(RMQuaternion rotation)
+	void Collider::SetRotationOffset(Quaternion rotation)
 	{
 		_rotationOffset = rotation;
 	}
@@ -66,14 +66,14 @@ namespace RocketEngine
 		_rotationOffset.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
 	}
 
-	void Collider::SetScaleOffset(RMFLOAT3 scale)
+	void Collider::SetScaleOffset(Vector3 scale)
 	{
 		_scaleOffset = scale;
 	}
 
-	RocketEngine::RMFLOAT4X4 Collider::GetOffsetTranslateMatrix() const
+	RocketEngine::Matrix Collider::GetOffsetTranslateMatrix() const
 	{
-		RMFLOAT4X4 translateMatrix =
+		Matrix translateMatrix =
 		{
 			1,					0,					0,					0,
 			0,					1,					0,					0,
@@ -84,9 +84,9 @@ namespace RocketEngine
 		return translateMatrix;
 	}
 
-	RocketEngine::RMFLOAT4X4 Collider::GetOffsetScaleMatrix() const
+	RocketEngine::Matrix Collider::GetOffsetScaleMatrix() const
 	{
-		RMFLOAT4X4 scaleMatrix =
+		Matrix scaleMatrix =
 		{
 			_scaleOffset.x,		0,					0,					0,
 			0,					_scaleOffset.y,		0,					0,
@@ -97,9 +97,9 @@ namespace RocketEngine
 		return scaleMatrix;
 	}
 
-	RocketEngine::RMFLOAT4X4 Collider::GetOffsetRotationMatrix() const
+	RocketEngine::Matrix Collider::GetOffsetRotationMatrix() const
 	{
-		RMFLOAT4X4 rotationMatrix =
+		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
 			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
@@ -125,9 +125,9 @@ namespace RocketEngine
 		return rotationMatrix;
 	}
 
-	RMFLOAT4X4 Collider::GetOffsetTM() const
+	Matrix Collider::GetOffsetTM() const
 	{
-		RMFLOAT4X4 result = GetOffsetScaleMatrix() * GetOffsetRotationMatrix() * GetOffsetTranslateMatrix();
+		Matrix result = GetOffsetScaleMatrix() * GetOffsetRotationMatrix() * GetOffsetTranslateMatrix();
 		
 		return result;
 	}

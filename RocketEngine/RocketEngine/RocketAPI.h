@@ -4,16 +4,9 @@
 /// 23.07.07 강석원 인재원.
 
 #pragma once
-#include "DLLExporter.h"
-
 #include <string>
-#include "..\\RocketMath\\RocketMath.h"
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
+#include "DLLExporter.h"
+#include "MathHeader.h"
 
 // 여기에 클라이언트에서 쓸 클래스들 참조해주고 (상속을위한?)
 /// 엔진 생성 팩토리
@@ -83,16 +76,16 @@ namespace RocketEngine
 	ROCKET_API bool GetKeyDown(int keyCode);
 	ROCKET_API bool GetKeyUp(int keyCode);
 	ROCKET_API bool GetKey(int keyCode);
-	ROCKET_API RMFLOAT2 GetMousePosition();
-	ROCKET_API RMFLOAT2 GetMouseDelta();
-	ROCKET_API RMFLOAT2 MouseDeltaSmooth();
+	ROCKET_API Vector2 GetMousePosition();
+	ROCKET_API Vector2 GetMouseDelta();
+	ROCKET_API Vector2 MouseDeltaSmooth();
 	ROCKET_API void AddStaticComponent(Component* component);
 	ROCKET_API float GetMouseSensitivity();
 	ROCKET_API void SetMouseSensitivity(float sensitivity);
 	ROCKET_API GameObject* FindObjectByName(std::string name);
 
 	/// 물리 기능 제공.
-	ROCKET_API Collider* ShootRay(RMFLOAT3 origin, RMFLOAT3 direction, float length = 100.0f, int* type = nullptr);
+	ROCKET_API Collider* ShootRay(Vector3 origin, Vector3 direction, float length = 100.0f, int* type = nullptr);
 
 	/// 사운드 관련.
 	ROCKET_API float GetGroupVolume(eSoundGroup group);
@@ -106,10 +99,10 @@ namespace RocketEngine
 
 	/// 디버그 관련.
 	//ROCKET_API void ToggleDebugMode();
-	ROCKET_API void DrawDebugText(RocketEngine::RMFLOAT2 centerPos, std::string content, float size);
-	ROCKET_API void DrawDebugBox(RocketEngine::RMFLOAT4X4 worldTM, RocketEngine::RMFLOAT3 widthHeightDepth = { 1.0f,1.0f,1.0f }, bool isWire = true, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
-	ROCKET_API void DrawDebugLine(RocketEngine::RMFLOAT3 beginPoint, RocketEngine::RMFLOAT3 endPoint, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
-	ROCKET_API void DrawDebug2DBox(RocketEngine::RMFLOAT2 LT, RocketEngine::RMFLOAT2 RB, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebugText(RocketEngine::Vector2 centerPos, std::string content, float size);
+	ROCKET_API void DrawDebugBox(RocketEngine::Matrix worldTM, RocketEngine::Vector3 widthHeightDepth = { 1.0f,1.0f,1.0f }, bool isWire = true, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebugLine(RocketEngine::Vector3 beginPoint, RocketEngine::Vector3 endPoint, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebug2DBox(RocketEngine::Vector2 LT, RocketEngine::Vector2 RB, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
 
 
 }

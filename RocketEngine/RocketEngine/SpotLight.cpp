@@ -51,12 +51,12 @@ namespace RocketEngine
 		_spot = spot;
 	}
 
-	RocketEngine::RMFLOAT3 SpotLight::GetAttenuation() const
+	RocketEngine::Vector3 SpotLight::GetAttenuation() const
 	{
 		return _attenuation;
 	}
 
-	void SpotLight::SetAttenuation(RMFLOAT3 attenuation)
+	void SpotLight::SetAttenuation(Vector3 attenuation)
 	{
 		_attenuation = attenuation;
 	}

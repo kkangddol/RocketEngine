@@ -11,7 +11,7 @@
 #include "CapsuleCollider.h"
 #include "PlaneCollider.h"
 #include "StaticBoxCollider.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include "Camera.h"
 
 #ifdef _DEBUG
@@ -128,7 +128,7 @@ namespace RocketCore
 			for (auto& collider : colvec)
 			{
 				RocketEngine::PlaneCollider* planeCol = dynamic_cast<RocketEngine::PlaneCollider*>(collider);
-				RocketEngine::RMFLOAT3 normal = planeCol->GetNormalVector();
+				RocketEngine::Vector3 normal = planeCol->GetNormalVector();
 				physx::PxPlane pxPlane = { normal.x,normal.y,normal.z, planeCol->GetDistance() };
 
 				physx::PxRigidStatic* planeRigid = PxCreatePlane(*_physics, pxPlane, *_material);
@@ -156,7 +156,7 @@ namespace RocketCore
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
 
-				RocketEngine::RMFLOAT3 pos = RMFloat3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
+				RocketEngine::Vector3 pos = Vector3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
 				physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 				physx::PxRigidDynamic* body = _physics->createRigidDynamic(localTm);
 				body->attachShape(*shape);
@@ -197,7 +197,7 @@ namespace RocketCore
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
 
-				RocketEngine::RMFLOAT3 pos = RMFloat3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
+				RocketEngine::Vector3 pos = Vector3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
 				physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 				physx::PxRigidDynamic* body = _physics->createRigidDynamic(localTm);
 				body->attachShape(*shape);
@@ -237,12 +237,12 @@ namespace RocketCore
 
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsuleCol->GetRadius(), capsuleCol->GetHalfHeight()), *_material);
 
-				RocketEngine::RMQuaternion quat = RMQuaternionMultiply(collider->GetRotationOffset(), object->transform.GetRotation());
+				RocketEngine::Quaternion quat = QuaternionMultiply(collider->GetRotationOffset(), object->transform.GetRotation());
 				physx::PxTransform shapeTransform(physx::PxIdentity);
 				shapeTransform.q = physx::PxQuat(quat.x, quat.y, quat.z, quat.w);
 				shape->setLocalPose(shapeTransform);
 
-				RocketEngine::RMFLOAT3 pos = RMFloat3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
+				RocketEngine::Vector3 pos = Vector3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
 				physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 				physx::PxRigidDynamic* body = _physics->createRigidDynamic(localTm);
 				body->setAngularDamping(0.5f);
@@ -275,7 +275,7 @@ namespace RocketCore
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(staticBoxCol->GetWidth() / 2, staticBoxCol->GetHeight() / 2, staticBoxCol->GetDepth() / 2), *_material);
 
-				RocketEngine::RMFLOAT3 pos = RMFloat3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
+				RocketEngine::Vector3 pos = Vector3MultiplyMatrix(collider->GetPositionOffset(), object->transform.GetWorldTM());
 				physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 				physx::PxRigidStatic* body = _physics->createRigidStatic(localTm);
 				body->attachShape(*shape);
@@ -302,7 +302,7 @@ namespace RocketCore
 
 		//		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(staticBoxCol->GetWidth() / 2, staticBoxCol->GetHeight() / 2, staticBoxCol->GetDepth() / 2), *_material);
 
-		//		RocketEngine::RMFLOAT3 pos = object->transform.GetLocalPosition();
+		//		RocketEngine::Vector3 pos = object->transform.GetLocalPosition();
 		//		physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 		//		physx::PxRigidStatic* body = _physics->createRigidStatic(localTm);
 		//		body->attachShape(*shape);
@@ -343,13 +343,13 @@ namespace RocketCore
 				std::string test2 = col->gameObject->objName;
 				std::string serv = servant->gameObject->objName;
 
-				RocketEngine::RMFLOAT4 masterPos = RocketEngine::RMFLOAT4{ col->GetPositionOffset() ,1.0f} *col->gameObject->transform.GetWorldTM();
+				RocketEngine::Vector4 masterPos = RocketEngine::Vector4{ col->GetPositionOffset() ,1.0f} *col->gameObject->transform.GetWorldTM();
 				physx::PxTransform masterTR(physx::PxIdentity);
 				masterTR.p.x = masterPos.x;
 				masterTR.p.y = masterPos.y;
 				masterTR.p.z = masterPos.z;
 
-				RocketEngine::RMFLOAT3 servantPos = servant->gameObject->transform.GetPosition();
+				RocketEngine::Vector3 servantPos = servant->gameObject->transform.GetPosition();
 				physx::PxTransform servantTR(physx::PxIdentity);
 				servantTR.p.x = servantPos.x;
 				servantTR.p.y = servantPos.y;
@@ -377,7 +377,7 @@ namespace RocketCore
 		}
 	}
 
-	RocketEngine::Collider* PhysicsSystem::RayCast(RocketEngine::RMFLOAT3 original, RocketEngine::RMFLOAT3 direction, float length, int* type /*= nullptr*/)
+	RocketEngine::Collider* PhysicsSystem::RayCast(RocketEngine::Vector3 original, RocketEngine::Vector3 direction, float length, int* type /*= nullptr*/)
 	{
 		physx::PxVec3 rayOrigin;
 		rayOrigin.x = original.x;
@@ -459,8 +459,8 @@ namespace RocketCore
 		}
 
 		// 물리 연산 결과를 오브젝트에 적용.
-		RocketEngine::RMFLOAT3 pos;
-		RocketEngine::RMQuaternion quat;
+		RocketEngine::Vector3 pos;
+		RocketEngine::Quaternion quat;
 
 		physx::PxTransform temp;
 		for (auto& rigid : _rigidDynamics)

@@ -1,6 +1,6 @@
 #pragma once
 #include "Singleton.h"
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -15,31 +15,31 @@ namespace RocketCore
 {
 	struct DebugText
 	{
-		RocketEngine::RMFLOAT2 centerPos;
+		RocketEngine::Vector2 centerPos;
 		std::string content;
 		float size;
 	};
 
 	struct DebugBox
 	{
-		RocketEngine::RMFLOAT4X4 worldTM;
-		RocketEngine::RMFLOAT3 widthHeightDepth;
+		RocketEngine::Matrix worldTM;
+		RocketEngine::Vector3 widthHeightDepth;
 		bool isWire;
-		RocketEngine::RMFLOAT4 color;
+		RocketEngine::Vector4 color;
 	};
 
 	struct DebugLine
 	{
-		RocketEngine::RMFLOAT3 beginPoint;
-		RocketEngine::RMFLOAT3 endPoint;
-		RocketEngine::RMFLOAT4 color;
+		RocketEngine::Vector3 beginPoint;
+		RocketEngine::Vector3 endPoint;
+		RocketEngine::Vector4 color;
 	};
 
 	struct Debug2DBox
 	{
-		RocketEngine::RMFLOAT2 LT;
-		RocketEngine::RMFLOAT2 RB;
-		RocketEngine::RMFLOAT4 color;
+		RocketEngine::Vector2 LT;
+		RocketEngine::Vector2 RB;
+		RocketEngine::Vector4 color;
 	};
 
 }
@@ -60,10 +60,10 @@ namespace RocketCore
 		void CheckDebugMode();
 
 	public:
-		void DrawDebugText(RocketEngine::RMFLOAT2 centerPos, std::string content, float size);
-		void DrawDebugBox(RocketEngine::RMFLOAT4X4 worldTM, RocketEngine::RMFLOAT3 widthHeightDepth = {1.0f,1.0f,1.0f}, bool isWire = true, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
-		void DrawDebugLine(RocketEngine::RMFLOAT3 beginPoint, RocketEngine::RMFLOAT3 endPoint, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
-		void DrawDebug2DBox(RocketEngine::RMFLOAT2 LT, RocketEngine::RMFLOAT2 RB, RocketEngine::RMFLOAT4 color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebugText(RocketEngine::Vector2 centerPos, std::string content, float size);
+		void DrawDebugBox(RocketEngine::Matrix worldTM, RocketEngine::Vector3 widthHeightDepth = {1.0f,1.0f,1.0f}, bool isWire = true, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebugLine(RocketEngine::Vector3 beginPoint, RocketEngine::Vector3 endPoint, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebug2DBox(RocketEngine::Vector2 LT, RocketEngine::Vector2 RB, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
 
 	public:
 		std::vector<DebugText>& GetTextQueue();

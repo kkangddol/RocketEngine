@@ -6,7 +6,7 @@
 #include <physx/extensions/PxDefaultErrorCallback.h>
 #include <vector>
 
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
@@ -56,7 +56,7 @@ namespace RocketCore
 		void AddActorsToScene();
 
 	public:
-		RocketEngine::Collider* RayCast(RocketEngine::RMFLOAT3 original, RocketEngine::RMFLOAT3 direction, float length, int* type = nullptr);
+		RocketEngine::Collider* RayCast(RocketEngine::Vector3 original, RocketEngine::Vector3 direction, float length, int* type = nullptr);
 
 	public:
 		physx::PxScene* GetPxScene();

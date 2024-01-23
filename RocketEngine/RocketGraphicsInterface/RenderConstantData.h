@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 #include "LightData.h"
 
 #ifdef _DEBUG

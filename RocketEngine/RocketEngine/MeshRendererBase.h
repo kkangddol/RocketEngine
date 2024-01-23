@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "..\\RocketGraphicsInterface\\MaterialData.h"
 
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -56,27 +56,27 @@ namespace RocketCore
 		// Graphics::ModelData _modelData;
 
 	public:
-		void SetLegacyAmbient(RocketEngine::RMFLOAT4 ambient);
-		void SetLegacyDiffuse(RocketEngine::RMFLOAT4 diffuse);
-		void SetLegacySpecular(RocketEngine::RMFLOAT4 specular);
-		void SetLegacyReflect(RocketEngine::RMFLOAT4 reflect);
+		void SetLegacyAmbient(RocketEngine::Vector4 ambient);
+		void SetLegacyDiffuse(RocketEngine::Vector4 diffuse);
+		void SetLegacySpecular(RocketEngine::Vector4 specular);
+		void SetLegacyReflect(RocketEngine::Vector4 reflect);
 
-		RocketEngine::RMFLOAT4 GetLegacyAmbient() const;
-		RocketEngine::RMFLOAT4 GetLegacyDiffuse() const;
-		RocketEngine::RMFLOAT4 GetLegacySpecular() const;
-		RocketEngine::RMFLOAT4 GetLegacyReflect() const;
+		RocketEngine::Vector4 GetLegacyAmbient() const;
+		RocketEngine::Vector4 GetLegacyDiffuse() const;
+		RocketEngine::Vector4 GetLegacySpecular() const;
+		RocketEngine::Vector4 GetLegacyReflect() const;
 
 	private:
 		Graphics::LegacyMaterialData _legacyMaterialData;
 
 	public:
-		void SetPBRAlbedo(RocketEngine::RMFLOAT4 albedo);
+		void SetPBRAlbedo(RocketEngine::Vector4 albedo);
 		void SetPBRMetallic(float metallic);
 		void SetPBRRoughness(float roughness);
 		void SetPBRSpecular(float specular);
 		void SetPBREmission(float emission);
 
-		RocketEngine::RMFLOAT4 GetPBRAlbedo() const;
+		RocketEngine::Vector4 GetPBRAlbedo() const;
 		float GetPBRMetallic() const;
 		float GetPBRRoughness() const;
 		float GetPBRSpecular() const;

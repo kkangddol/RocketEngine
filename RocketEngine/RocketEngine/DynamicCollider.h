@@ -2,7 +2,7 @@
 #include "DLLExporter.h"
 #include "Collider.h"
 #include <vector>
-#include "..\\RocketMath\\RocketMath.h"
+#include "MathHeader.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
@@ -61,7 +61,7 @@ namespace RocketEngine
 		std::vector<DynamicCollider*> _servant;
 
 	public:
-		void UpdateFromPhysics(RMFLOAT3 pos, RMQuaternion quat);
+		void UpdateFromPhysics(Vector3 pos, Quaternion quat);
 		virtual void UpdateToPhysics() override;
 		void LockRotationXZ();
 
@@ -71,12 +71,12 @@ namespace RocketEngine
 		virtual float GetDepth() const abstract;
 
 	public:
-		void AddForce(RMFLOAT3 direction, eForceMode forceMode);
+		void AddForce(Vector3 direction, eForceMode forceMode);
 
 	public:
-		RMFLOAT3 GetVelocity() const;
-		void SetVelocity(RMFLOAT3 velocity);
-		void AddVelocity(RMFLOAT3 velocity);
+		Vector3 GetVelocity() const;
+		void SetVelocity(Vector3 velocity);
+		void AddVelocity(Vector3 velocity);
 		void SetIsJumping(bool jump);
 		bool GetIsJumping() const;
 		physx::PxRigidDynamic* GetRigidBody();
@@ -91,7 +91,7 @@ namespace RocketEngine
 		bool _wasCollided;
 
 	private:
-		RMFLOAT4X4 _prevParentWorldTM;
-		RMQuaternion _prevParentRot;
+		Matrix _prevParentWorldTM;
+		Quaternion _prevParentRot;
 	};
 }
