@@ -10,10 +10,6 @@ namespace RocketCore::Graphics
 {
 	class Grid
 	{
-	public:
-		Grid();
-		~Grid();
-
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 Pos;
@@ -26,6 +22,10 @@ namespace RocketCore::Graphics
 			DirectX::XMMATRIX view;
 			DirectX::XMMATRIX projection;
 		};
+
+	public:
+		Grid();
+		~Grid();
 
 	public:
 		void Initialize(ID3D11Device* device);
