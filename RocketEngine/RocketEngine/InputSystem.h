@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "MathHeader.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class InputSystem : public Singleton<InputSystem>
 	{

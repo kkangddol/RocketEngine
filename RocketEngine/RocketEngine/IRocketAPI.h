@@ -8,7 +8,7 @@
 /// 
 /// 23.07.13 강석원 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class IRocketAPI abstract
 	{

@@ -4,17 +4,17 @@
 #include <string>
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
-	class ROCKET_API UIRenderer : public RocketEngine::Component
+	class ROCKET_API UIRenderer : public Rocket::Component
 	{
 	public:
-		UIRenderer(RocketEngine::GameObject* owner);
+		UIRenderer(Rocket::GameObject* owner);
 
 	protected:
 		virtual void Start() override;

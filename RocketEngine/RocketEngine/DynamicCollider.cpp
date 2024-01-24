@@ -5,7 +5,7 @@
 #include <physx/PxPhysics.h>
 #include <physx/PxPhysicsAPI.h>
 
-namespace RocketEngine
+namespace Rocket
 {
 	DynamicCollider::DynamicCollider(GameObject* owner)
 		: Collider(owner),

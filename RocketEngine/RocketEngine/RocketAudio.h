@@ -4,12 +4,12 @@
 
 #include <fmod.hpp>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Transform;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	/// <summary>
 	/// Sound 객체에 필요한 정보.
@@ -17,7 +17,7 @@ namespace RocketCore
 	struct RocketAudio
 	{
 		std::string path;				// Sound 경로
-		RocketEngine::Transform* transform;	// Sound 좌표
+		Rocket::Transform* transform;	// Sound 좌표
 		FMOD::Sound* sound;					// Sound 컨테이너
 		FMOD::Channel* channel;				// Sound 채널주소
 		eSoundGroup group;					// Sound 해당 그룹

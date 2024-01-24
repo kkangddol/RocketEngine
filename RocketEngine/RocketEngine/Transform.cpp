@@ -1,7 +1,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	Transform::Transform(GameObject* owner)
 		: Component(owner),

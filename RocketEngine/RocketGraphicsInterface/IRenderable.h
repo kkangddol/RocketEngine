@@ -1,12 +1,13 @@
 #pragma once
 #include "MathHeader.h"
-#include "MaterialData.h"
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
-	class IRenderable abstract
+	class IRenderable
 	{
 	public:
-		virtual void UpdateRenderData() abstract;
+		virtual ~IRenderable() {}
+		virtual void SetWorldTM(const Matrix& worldTM) = 0;
+		virtual void SetActive(bool isActive) = 0;
 	};
 }

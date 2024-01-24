@@ -9,7 +9,7 @@
 /// 
 /// 23.08.01 강석원&안준용 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 

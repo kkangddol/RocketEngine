@@ -2,11 +2,11 @@
 #include "DLLExporter.h"
 #include "MeshRendererBase.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API MeshRenderer final : public RocketCore::MeshRendererBase
+	class ROCKET_API MeshRenderer final : public Rocket::Core::MeshRendererBase
 	{
 	public:
 		MeshRenderer(GameObject* owner);

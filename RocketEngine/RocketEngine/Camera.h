@@ -2,9 +2,9 @@
 #include "DLLExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
-#include "..\\RocketGraphicsInterface\\CameraData.h"
+#include "../RocketGraphicsInterface/ICamera.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 
@@ -17,10 +17,10 @@ namespace RocketEngine
 		virtual void Start() override;
 
 	public:
-		RocketCore::Graphics::CameraData& GetCameraData();
+		Core::ICamera* GetCameraData();
 		
 	private:
-		RocketCore::Graphics::CameraData _cameraData;
+		Core::ICamera* _camera;
 
 	public:
 		float GetNearZ() const;

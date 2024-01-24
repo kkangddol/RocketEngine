@@ -4,12 +4,12 @@
 #include <string>
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	/// <summary>
 	/// Text 정보를 담고 출력을 담당하는 컴포넌트.
@@ -17,7 +17,7 @@ namespace RocketEngine
 	/// 
 	/// 23.08.11 강석원
 	/// </summary>
-	class ROCKET_API TextBox : public RocketCore::UIRenderer
+	class ROCKET_API TextBox : public Rocket::Core::UIRenderer
 	{
 	public:
 		TextBox(GameObject* owner);

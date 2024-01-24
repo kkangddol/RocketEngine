@@ -18,7 +18,7 @@ using rapidjson::PrettyWriter;
 using rapidjson::StringRef;
 
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	void DataSystem::Initialize()
 	{
@@ -39,7 +39,7 @@ namespace RocketCore
 		MakeAllObjects();
 	}
 
-	void DataSystem::ExportSceneToJson(RocketEngine::Scene& scenedata)
+	void DataSystem::ExportSceneToJson(Rocket::Scene& scenedata)
 	{
 		rapidjson::Document doc;
 		doc.SetArray();
@@ -65,7 +65,7 @@ namespace RocketCore
 				objValue.AddMember(StringRef("__object_name__"), nameValue, doc.GetAllocator());
 
 
-				std::unordered_map<std::string, std::vector< RocketCore::IComponent*>>& components = i->GetAllComponents();
+				std::unordered_map<std::string, std::vector< Rocket::Core::IComponent*>>& components = i->GetAllComponents();
 				for (auto& c : components)
 				{
 					SerializeComponents(i, c, doc, objValue);
@@ -641,7 +641,7 @@ namespace RocketCore
 
 	void DataSystem::MakeAllObjects()
 	{
-		currentScene = RocketEngine::CreateScene(sceneName,true);
+		currentScene = Rocket::CreateScene(sceneName,true);
 		assert(currentScene);
 
 		for (auto& obj : serializeData)
@@ -658,7 +658,7 @@ namespace RocketCore
 	void DataSystem::CreateObjAndComponent(DataStruct& data)
 	{
 		// 오브젝트 이름, 게임 오브젝트 생성해서 map에 넣는다
-		objs.insert({ data.transform->name, RocketEngine::CreateObject(data.transform->name.c_str()) });
+		objs.insert({ data.transform->name, Rocket::CreateObject(data.transform->name.c_str()) });
 		assert(data.transform);
 
 		if (data.transform != nullptr)
@@ -669,12 +669,12 @@ namespace RocketCore
 		}
 		if (data.camera != nullptr)
 		{
-			 auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::Camera>();
-			 RocketEngine::SetMainCamera(component);
+			 auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::Camera>();
+			 Rocket::SetMainCamera(component);
 		}
 		if (data.meshRenderer != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::MeshRenderer>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::MeshRenderer>();
 
 			component->SetMeshPath(data.meshRenderer->FBXpath);
 			component->SetShaderPath(data.meshRenderer->ShaderPath);
@@ -694,7 +694,7 @@ namespace RocketCore
 		}
 		if (data.skinnedMeshRenderer != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::SkinnedMeshRenderer>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::SkinnedMeshRenderer>();
 
 			component->SetMeshPath(data.skinnedMeshRenderer->FBXpath);
 			component->SetShaderPath(data.skinnedMeshRenderer->ShaderPath);
@@ -714,7 +714,7 @@ namespace RocketCore
 		}
 		if (data.sprite != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::SpriteRenderer>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::SpriteRenderer>();
 
 			component->SetWidth(data.sprite->width);
 			component->SetHeight(data.sprite->height);
@@ -724,7 +724,7 @@ namespace RocketCore
 		}
 		if (data.btn != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::Button>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::Button>();
 
 			component->SetHeight(data.btn->height);
 			component->SetWidth(data.btn->width);
@@ -733,16 +733,16 @@ namespace RocketCore
 		}
 		if (data.txtBox != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::TextBox>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::TextBox>();
 
 			component->SetText(data.txtBox->text);
 			component->SetSize(data.txtBox->width, data.txtBox->height);
 
-			objs.find(data.transform->name)->second->GetComponent<RocketEngine::TextBox>()->SetSortOrder(data.txtBox->sortOrder);
+			objs.find(data.transform->name)->second->GetComponent<Rocket::TextBox>()->SetSortOrder(data.txtBox->sortOrder);
 		}
 		if (data.capsuleColli != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::CapsuleCollider>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::CapsuleCollider>();
 
 			component->SetPositionOffset(data.GetPosition());
 			component->SetCapsuleInfo(data.capsuleColli->radius, data.capsuleColli->halfHeight);
@@ -752,7 +752,7 @@ namespace RocketCore
 		}
 		if (data.boxColli != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::BoxCollider>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::BoxCollider>();
 
 			component->SetVolume(data.boxColli->width, data.boxColli->height, data.boxColli->depth);
 			component->SetPositionOffset(data.boxColli->GetPositionOffset());
@@ -762,7 +762,7 @@ namespace RocketCore
 		}
 		if (data.sphereColli != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::SphereCollider>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::SphereCollider>();
 
 			component->SetRadius(data.sphereColli->radius);
 			component->SetPositionOffset(data.sphereColli->GetPositionOffset());
@@ -773,7 +773,7 @@ namespace RocketCore
 		{
 			for (auto& element : data.staticBoxColli)
 			{
-				auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::StaticBoxCollider>();
+				auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::StaticBoxCollider>();
 
 				component->SetVolume(element->width, element->height, element->depth);
 
@@ -785,7 +785,7 @@ namespace RocketCore
 		}
 		if (data.planeColli != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::PlaneCollider>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::PlaneCollider>();
 
 			component->SetPositionOffset(data.planeColli->GetPositionOffset());
 			component->SetRotationOffset(data.planeColli->GetRotationOffset());
@@ -793,7 +793,7 @@ namespace RocketCore
 		}
 		if (data.dirLight != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::DirectionalLight>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::DirectionalLight>();
 
 			component->SetAmbient(data.dirLight->ambient);
 			component->SetDiffuse(data.dirLight->diffuse);
@@ -803,7 +803,7 @@ namespace RocketCore
 		}
 		if (data.spotLight != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::SpotLight>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::SpotLight>();
 
 			component->SetAmbient(data.spotLight->ambient);
 			component->SetDiffuse(data.spotLight->diffuse);
@@ -816,7 +816,7 @@ namespace RocketCore
 		}
 		if (data.pointLight != nullptr)
 		{
-			auto component = objs.find(data.transform->name)->second->AddComponent<RocketEngine::PointLight>();
+			auto component = objs.find(data.transform->name)->second->AddComponent<Rocket::PointLight>();
 
 			component->SetAmbient(data.pointLight->ambient);
 			component->SetDiffuse(data.pointLight->diffuse);
@@ -836,24 +836,24 @@ namespace RocketCore
 		{
 			for (auto& child : data.transform->child)
 			{
-				objs.find(child)->second->GetComponent<RocketEngine::Transform>()->SetParent(objs.find(data.transform->name)->second);
+				objs.find(child)->second->GetComponent<Rocket::Transform>()->SetParent(objs.find(data.transform->name)->second);
 			}
 		}
 		if (data.boxColli != nullptr)
 		{
 			for (auto& serv : data.boxColli->servants)
 			{
-				if (objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>())
+				if (objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::BoxCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::BoxCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::SphereCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::BoxCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::SphereCollider>());
 				}
 			}
 		}
@@ -861,17 +861,17 @@ namespace RocketCore
 		{
 			for (auto& serv : data.sphereColli->servants)
 			{
-				if (objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>())
+				if (objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::BoxCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::BoxCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::SphereCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::SphereCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::SphereCollider>());
 				}
 			}
 		}
@@ -879,87 +879,87 @@ namespace RocketCore
 		{
 			for (auto& serv : data.capsuleColli->servants)
 			{
-				if (objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>())
+				if (objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::CapsuleCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::CapsuleCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::BoxCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::BoxCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::BoxCollider>());
 				}
-				else if (objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>())
+				else if (objs.find(serv)->second->GetComponent<Rocket::SphereCollider>())
 				{
-					objs.find(data.transform->name)->second->GetComponent<RocketEngine::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<RocketEngine::SphereCollider>());
+					objs.find(data.transform->name)->second->GetComponent<Rocket::CapsuleCollider>()->SetFixedJoint(objs.find(serv)->second->GetComponent<Rocket::SphereCollider>());
 				}
 			}
 		}
 	}
 
-	void DataSystem::SerializeComponents(RocketEngine::GameObject* obj, std::pair< const std::string, std::vector< RocketCore::IComponent* >>& comp, rapidjson::Document& doc, rapidjson::Value& objValue)
+	void DataSystem::SerializeComponents(Rocket::GameObject* obj, std::pair< const std::string, std::vector< Rocket::Core::IComponent* >>& comp, rapidjson::Document& doc, rapidjson::Value& objValue)
 	{
 		auto& componentName = comp.first;
 
-		if (componentName == "class RocketEngine::MeshRenderer")
+		if (componentName == "class Rocket::MeshRenderer")
 		{
 			MeshRendererSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::Transform")
+		else if (componentName == "class Rocket::Transform")
 		{
 			TransformSerialization(*obj, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::SkinnedMeshRenderer")
+		else if (componentName == "class Rocket::SkinnedMeshRenderer")
 		{
 			SkinnedMeshRendererSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::TextBox")
+		else if (componentName == "class Rocket::TextBox")
 		{
 			TextBoxSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::SpriteRenderer")
+		else if (componentName == "class Rocket::SpriteRenderer")
 		{
 			SpriteRendererSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::BoxCollider")
+		else if (componentName == "class Rocket::BoxCollider")
 		{
 			BoxColliderSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::CapsuleCollider")
+		else if (componentName == "class Rocket::CapsuleCollider")
 		{
 			CapsuleColliderSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::SphereCollider")
+		else if (componentName == "class Rocket::SphereCollider")
 		{
 			SphereColliderSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::PlaneCollider")
+		else if (componentName == "class Rocket::PlaneCollider")
 		{
 			PlaneColliderSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::StaticBoxCollider")
+		else if (componentName == "class Rocket::StaticBoxCollider")
 		{
 			StaticBoxColliderSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::Button")
+		else if (componentName == "class Rocket::Button")
 		{
 			ButtonSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::Camera")
+		else if (componentName == "class Rocket::Camera")
 		{
 			CameraSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::DirectionalLight")
+		else if (componentName == "class Rocket::DirectionalLight")
 		{
 			DirectionalLightSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::PointLight")
+		else if (componentName == "class Rocket::PointLight")
 		{
 			PointLightSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::SpotLight")
+		else if (componentName == "class Rocket::SpotLight")
 		{
 			SpotLightSerialization(comp, doc, objValue);
 		}
-		else if (componentName == "class RocketEngine::Raycast")
+		else if (componentName == "class Rocket::Raycast")
 		{
 			Value error;
 			error.SetString(comp.first.c_str(), strlen(comp.first.c_str()), doc.GetAllocator());
@@ -973,7 +973,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::TransformSerialization(const RocketEngine::GameObject& data, Document& doc, Value& val)
+	void DataSystem::TransformSerialization(const Rocket::GameObject& data, Document& doc, Value& val)
 	{
 		Value transformComponent(kObjectType);
 
@@ -1023,7 +1023,7 @@ namespace RocketCore
 				parentValue.SetString(i->GetParent()->gameObject->objName.c_str(), strlen(i->GetParent()->gameObject->objName.c_str()), doc.GetAllocator());
 				objValue.AddMember(StringRef("__parent_name__"), parentValue, doc.GetAllocator());
 
-				std::unordered_map<std::string, std::vector<RocketCore::IComponent*>>& components = i->gameObject->GetAllComponents();
+				std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>>& components = i->gameObject->GetAllComponents();
 				for (auto& c : components)
 				{
 					SerializeComponents(i->gameObject, c, doc, objValue);
@@ -1035,7 +1035,7 @@ namespace RocketCore
 		val.AddMember(StringRef("Transform"), transformComponent, doc.GetAllocator());
 	}
 
-	void DataSystem::MeshRendererSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::MeshRendererSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 
 
@@ -1047,7 +1047,7 @@ namespace RocketCore
 			componentName.SetString("MeshRenderer", strlen("MeshRenderer"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::MeshRenderer* comp = dynamic_cast<RocketEngine::MeshRenderer*>(element);
+			Rocket::MeshRenderer* comp = dynamic_cast<Rocket::MeshRenderer*>(element);
 
 			componentName.SetString(comp->GetMeshPath().c_str(), strlen(comp->GetMeshPath().c_str()), doc.GetAllocator());
 			componentValue.AddMember(StringRef("Mesh Path"), componentName, doc.GetAllocator());
@@ -1131,7 +1131,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::SkinnedMeshRendererSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::SkinnedMeshRendererSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1141,7 +1141,7 @@ namespace RocketCore
 			componentName.SetString("SkinnedMeshRenderer", strlen("SkinnedMeshRenderer"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::SkinnedMeshRenderer* comp = dynamic_cast<RocketEngine::SkinnedMeshRenderer*>(element);
+			Rocket::SkinnedMeshRenderer* comp = dynamic_cast<Rocket::SkinnedMeshRenderer*>(element);
 
 			componentName.SetString(comp->GetMeshPath().c_str(), strlen(comp->GetMeshPath().c_str()), doc.GetAllocator());
 			componentValue.AddMember(StringRef("Mesh Path"), componentName, doc.GetAllocator());
@@ -1228,7 +1228,7 @@ namespace RocketCore
 
 	}
 
-	void DataSystem::SpriteRendererSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::SpriteRendererSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1238,7 +1238,7 @@ namespace RocketCore
 			componentName.SetString("SpriteRenderer", strlen("SpriteRenderer"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::SpriteRenderer* comp = dynamic_cast<RocketEngine::SpriteRenderer*>(element);
+			Rocket::SpriteRenderer* comp = dynamic_cast<Rocket::SpriteRenderer*>(element);
 
 			componentName.SetString(comp->GetPath().c_str(), strlen(comp->GetPath().c_str()), doc.GetAllocator());
 			componentValue.AddMember(StringRef("Sprite Path"), componentName, doc.GetAllocator());
@@ -1251,7 +1251,7 @@ namespace RocketCore
 		}
 
 	}
-	void DataSystem::TextBoxSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::TextBoxSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1261,7 +1261,7 @@ namespace RocketCore
 			componentName.SetString("TextBox", strlen("TextBox"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::TextBox* comp = dynamic_cast<RocketEngine::TextBox*>(element);
+			Rocket::TextBox* comp = dynamic_cast<Rocket::TextBox*>(element);
 
 			componentName.SetString(comp->GetText().c_str(), strlen(comp->GetText().c_str()), doc.GetAllocator());
 			componentValue.AddMember(StringRef("text"), componentName, doc.GetAllocator());
@@ -1288,7 +1288,7 @@ namespace RocketCore
 
 	}
 
-	void DataSystem::CapsuleColliderSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::CapsuleColliderSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1298,7 +1298,7 @@ namespace RocketCore
 			componentName.SetString("CapsuleCollider", strlen("CapsuleCollider"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::CapsuleCollider* comp = dynamic_cast<RocketEngine::CapsuleCollider*>(element);
+			Rocket::CapsuleCollider* comp = dynamic_cast<Rocket::CapsuleCollider*>(element);
 
 			componentName.SetFloat(comp->GetRadius());
 			componentValue.AddMember("radius", componentName, doc.GetAllocator());
@@ -1345,7 +1345,7 @@ namespace RocketCore
 
 	}
 
-	void DataSystem::BoxColliderSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::BoxColliderSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1355,7 +1355,7 @@ namespace RocketCore
 			componentName.SetString("BoxCollider", strlen("BoxCollider"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::BoxCollider* comp = dynamic_cast<RocketEngine::BoxCollider*>(element);
+			Rocket::BoxCollider* comp = dynamic_cast<Rocket::BoxCollider*>(element);
 
 			componentName.SetFloat(comp->GetWidth());
 			componentValue.AddMember("width", componentName, doc.GetAllocator());
@@ -1404,7 +1404,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::SphereColliderSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::SphereColliderSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1414,7 +1414,7 @@ namespace RocketCore
 			componentName.SetString("SphereCollider", strlen("SphereCollider"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::SphereCollider* comp = dynamic_cast<RocketEngine::SphereCollider*>(element);
+			Rocket::SphereCollider* comp = dynamic_cast<Rocket::SphereCollider*>(element);
 
 			componentName.SetFloat(comp->GetRadius());
 			componentValue.AddMember("radius", componentName, doc.GetAllocator());
@@ -1457,7 +1457,7 @@ namespace RocketCore
 
 	}
 
-	void DataSystem::PlaneColliderSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::PlaneColliderSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1468,7 +1468,7 @@ namespace RocketCore
 			componentName.SetString("PlaneCollider", strlen("PlaneCollider"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::PlaneCollider* comp = dynamic_cast<RocketEngine::PlaneCollider*>(element);
+			Rocket::PlaneCollider* comp = dynamic_cast<Rocket::PlaneCollider*>(element);
 
 			componentName.SetFloat(comp->GetPositionOffset().x);
 			componentValue.AddMember("Position offset_x", componentName, doc.GetAllocator());
@@ -1497,7 +1497,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::StaticBoxColliderSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::StaticBoxColliderSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		Value staticBoxGroup(kObjectType);
 
@@ -1509,7 +1509,7 @@ namespace RocketCore
 			componentName.SetString("StaticBoxCollider", strlen("StaticBoxCollider"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::StaticBoxCollider* comp = dynamic_cast<RocketEngine::StaticBoxCollider*>(element);
+			Rocket::StaticBoxCollider* comp = dynamic_cast<Rocket::StaticBoxCollider*>(element);
 
 			componentName.SetFloat(comp->GetWidth());
 			componentValue.AddMember("width", componentName, doc.GetAllocator());
@@ -1549,7 +1549,7 @@ namespace RocketCore
 		val.AddMember("Static Box Collider", staticBoxGroup, doc.GetAllocator());
 	}
 
-	void DataSystem::ButtonSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::ButtonSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1559,7 +1559,7 @@ namespace RocketCore
 			componentName.SetString("Button", strlen("Button"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::Button* comp = dynamic_cast<RocketEngine::Button*>(element);
+			Rocket::Button* comp = dynamic_cast<Rocket::Button*>(element);
 
 			componentName.SetFloat(comp->GetWidth());
 			componentValue.AddMember("width", componentName, doc.GetAllocator());
@@ -1574,7 +1574,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::CameraSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::CameraSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& elements : data.second)
 		{
@@ -1584,7 +1584,7 @@ namespace RocketCore
 			componentName.SetString("Camera", strlen("Camera"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::Camera* comp = dynamic_cast<RocketEngine::Camera*>(elements);
+			Rocket::Camera* comp = dynamic_cast<Rocket::Camera*>(elements);
 
 			// 가까운 평면까지의 거리
 			componentName.SetFloat(comp->GetFarZ());
@@ -1717,7 +1717,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::DirectionalLightSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::DirectionalLightSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1727,7 +1727,7 @@ namespace RocketCore
 			componentName.SetString("DirectionalLight", strlen("DirectionalLight"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::DirectionalLight* comp = dynamic_cast<RocketEngine::DirectionalLight*>(element);
+			Rocket::DirectionalLight* comp = dynamic_cast<Rocket::DirectionalLight*>(element);
 
 			componentName.SetFloat(comp->GetIntensity());
 			componentValue.AddMember("intensity", componentName, doc.GetAllocator());
@@ -1784,7 +1784,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::PointLightSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::PointLightSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1794,7 +1794,7 @@ namespace RocketCore
 			componentName.SetString("PointLight", strlen("PointLight"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::PointLight* comp = dynamic_cast<RocketEngine::PointLight*>(element);
+			Rocket::PointLight* comp = dynamic_cast<Rocket::PointLight*>(element);
 
 			componentName.SetFloat(comp->GetRange());
 			componentValue.AddMember("range", componentName, doc.GetAllocator());
@@ -1866,7 +1866,7 @@ namespace RocketCore
 		}
 	}
 
-	void DataSystem::SpotLightSerialization(const std::pair<std::string, std::vector<RocketCore::IComponent*>>& data, Document& doc, Value& val)
+	void DataSystem::SpotLightSerialization(const std::pair<std::string, std::vector<Rocket::Core::IComponent*>>& data, Document& doc, Value& val)
 	{
 		for (const auto& element : data.second)
 		{
@@ -1876,7 +1876,7 @@ namespace RocketCore
 			componentName.SetString("SpotLight", strlen("SpotLight"), doc.GetAllocator());
 			componentValue.AddMember(StringRef("__component_type__"), componentName, doc.GetAllocator());
 
-			RocketEngine::SpotLight* comp = dynamic_cast<RocketEngine::SpotLight*>(element);
+			Rocket::SpotLight* comp = dynamic_cast<Rocket::SpotLight*>(element);
 
 			componentName.SetFloat(comp->GetRange());
 			componentValue.AddMember("range", componentName, doc.GetAllocator());

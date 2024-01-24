@@ -5,12 +5,12 @@
 
 using Microsoft::WRL::ComPtr;
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
 	class IShader
 	{
 	public:
-		virtual void CreateShader(ID3D11Device* device, std::string path) = 0;
+		virtual void Initialize(ID3D11Device* device, const std::string& path) = 0;
 	};
 }
  

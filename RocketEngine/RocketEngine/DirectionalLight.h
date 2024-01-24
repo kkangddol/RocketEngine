@@ -2,14 +2,12 @@
 #include "DLLExporter.h"
 #include "Light.h"
 
-#include "..\\RocketGraphicsInterface\\LightData.h"
-
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API DirectionalLight final : public Light
 	{
@@ -17,7 +15,7 @@ namespace RocketEngine
 		DirectionalLight(GameObject* owner);
 
 	public:
-		RocketCore::Graphics::DirectionalLightData GetLightData() const;
+		Rocket::Core::DirectionalLightData GetLightData() const;
 
 	public:
 		float GetIntensity() const;

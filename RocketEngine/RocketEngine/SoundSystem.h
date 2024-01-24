@@ -10,12 +10,12 @@
 
 #include "MathHeader.h" 
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Transform;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	/// <summary>
 	/// Sound 관리, 재생에 관련된 Class.
@@ -56,7 +56,7 @@ namespace RocketCore
 		/// <param name="pos">Object 위치</param>
 		/// <param name="vec">Object 속도</param>
 		void CreateSound3D(std::string soundPath, eSoundGroup soundGroup
-			, float minDistance, float maxDistance, RocketEngine::Transform* pos, float* vec);
+			, float minDistance, float maxDistance, Rocket::Transform* pos, float* vec);
 	
 	public:
 		/// 사운드 재생 관련 함수.
@@ -114,7 +114,7 @@ namespace RocketCore
 		bool IsSoundPlaying(std::string soundPath);
 
 	public:
-		void SetListenerTransform(RocketEngine::Transform* transform);
+		void SetListenerTransform(Rocket::Transform* transform);
 
 	public:
 		std::unordered_map<std::string, RocketAudio>& GetSoundMap();
@@ -139,6 +139,6 @@ namespace RocketCore
 		FMOD_VECTOR					_listenerPos;				// listener의 위치 (FMOD_VECTOR)
 		FMOD_VECTOR					_listenerForward;			// listener Forwrd
 		FMOD_VECTOR					_listenerUp;				// listener Up
-		RocketEngine::Transform*	_listenerTransform;			// listener의 Transform
+		Rocket::Transform*	_listenerTransform;			// listener의 Transform
 	};
 }

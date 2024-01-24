@@ -4,12 +4,12 @@
 #include <string>
 #include <cassert>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Scene;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class SceneSystem : public Singleton<SceneSystem>
 	{
@@ -23,17 +23,17 @@ namespace RocketCore
 		void UpdateLoadScene();
 
 	public:
-		RocketEngine::Scene* GetCurrentScene();
-		std::unordered_map<std::string, RocketEngine::Scene*>& GetAllScenes();
+		Rocket::Scene* GetCurrentScene();
+		std::unordered_map<std::string, Rocket::Scene*>& GetAllScenes();
 
 		/// RocketAPI 에서 랩핑해서 사용하는 함수들.
 	public:
-		RocketEngine::Scene* CreateScene(const std::string& sceneName, bool withNoCam = false);		
+		Rocket::Scene* CreateScene(const std::string& sceneName, bool withNoCam = false);		
 		bool LoadScene(const std::string& sceneName);
 
 	private:
-		RocketEngine::Scene* _loadScene;
-		RocketEngine::Scene* _currentScene;
-		std::unordered_map<std::string, RocketEngine::Scene*> _sceneMap;
+		Rocket::Scene* _loadScene;
+		Rocket::Scene* _currentScene;
+		std::unordered_map<std::string, Rocket::Scene*> _sceneMap;
 	};
 }

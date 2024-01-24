@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	BoxCollider::BoxCollider(GameObject* owner)
 		: DynamicCollider(owner),
@@ -21,14 +21,14 @@ namespace RocketEngine
 		Matrix worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
 		Vector3 WHD = { GetWidth(),GetHeight(),GetDepth() };
 		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 		if (gameObject->objName == "player")
 		{
 			Vector3 direction = gameObject->transform.GetForward();
 			Vector3 beginPoint = {worldTM._41, worldTM._42, worldTM._43};
 			Vector3 endPoint = beginPoint + direction * 10.0f;
 			color = { 1.0f, 0.0f, 0.0f, 1.0f };
-			RocketCore::DebugSystem::Instance().DrawDebugLine(beginPoint,endPoint);
+			Rocket::Core::DebugSystem::Instance().DrawDebugLine(beginPoint,endPoint);
 		}
 	}
 

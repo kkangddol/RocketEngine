@@ -4,7 +4,7 @@
 #include <vector>
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	enum class eForceMode : int
 	{
@@ -20,7 +20,7 @@ namespace physx
 	class PxRigidDynamic;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 

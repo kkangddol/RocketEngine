@@ -2,14 +2,12 @@
 #include "DLLExporter.h"
 #include "Light.h"
 
-#include "..\\RocketGraphicsInterface\\LightData.h"
-
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API PointLight final : public Light
 	{
@@ -17,7 +15,7 @@ namespace RocketEngine
 		PointLight(GameObject* owner);
 
 	public:
-		RocketCore::Graphics::PointLightData GetLightData() const;
+		Rocket::Core::PointLightData GetLightData() const;
 
 	public:
 		float GetRange() const;

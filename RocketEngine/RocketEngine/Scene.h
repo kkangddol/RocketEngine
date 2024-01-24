@@ -4,12 +4,12 @@
 #include <string>
 #include <functional>
 
-// namespace RocketEngine
+// namespace Rocket
 // {
 // 	class GameObject;
 // }
 // 
-// template class __declspec(dllexport) std::vector<RocketEngine::GameObject*>;
+// template class __declspec(dllexport) std::vector<Rocket::GameObject*>;
 // __declspec(dllexport) std::string;
 
 namespace SAD
@@ -17,14 +17,14 @@ namespace SAD
 	class Serialize;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 	class Camera;
 	class Serialize;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class UIRenderer;
 }
@@ -34,7 +34,7 @@ namespace RocketCore
 /// 
 /// 23.06.30 강석원 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API Scene
 	{
@@ -108,11 +108,11 @@ namespace RocketEngine
 		void CheckFocus();
 
 	public:
-		void AddUI(RocketCore::UIRenderer* ui);
+		void AddUI(Rocket::Core::UIRenderer* ui);
 
 	private:
-		RocketCore::UIRenderer* _focusedObj;
-		std::vector<RocketCore::UIRenderer*> _uiComponents;
+		Rocket::Core::UIRenderer* _focusedObj;
+		std::vector<Rocket::Core::UIRenderer*> _uiComponents;
 	};
 }
  

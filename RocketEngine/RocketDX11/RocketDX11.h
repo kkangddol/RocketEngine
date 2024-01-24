@@ -1,54 +1,55 @@
 #pragma once
-
-#include "..\\RocketGraphicsInterface\\IRocketGraphics.h"
-#include "Camera.h"
-
 #include <windows.h>
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <DirectXMath.h>
+#include <DXTK/SpriteBatch.h>
+#include <DXTK/PrimitiveBatch.h>
+#include <DXTK/VertexTypes.h>
+#include <DXTK/Effects.h>
+
+#include "../RocketGraphicsInterface/I3DRenderer.h"
+#include "Camera.h"
+#include "Light.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 
 using Microsoft::WRL::ComPtr;
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
 	class Grid;
 	class Axis;
+	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
+	class ResourceManager;
+	class ImageRenderer;
 	
-	class RocketDX11 final : public IRocketGraphics
+	class RocketDX11 final : public I3DRenderer
 	{
 	public:
 		RocketDX11();
 		~RocketDX11();
 
 	public:
-		//±×·¡ÇÈ½º ¿£ÁøÀ» ÃÊ±âÈ­ÇÑ´Ù.
-		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) override;
-
-		virtual void UpdateCamera(const CameraData& cameraData) override;
-		virtual void UpdateConstantData(const RenderConstantData& renderConstData) override;
-
+		//ê·¸ë˜í”½ìŠ¤ ì—”ì§„ì„ ì´ˆê¸°í™”í•œë‹¤.
+		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
+		virtual void SetDebugMode(bool isDebug) override;
+		virtual void Update(float deltaTime) override;
 		virtual void Render() override;
-
 		virtual void OnResize(int _width, int _height) override;
-
 		virtual void Finalize() override;
-
-		/// ·»´õ½ºÅ×ÀÌÆ® Á¦ÀÛ ÇÔ¼ö
-	private:
-		void CreateRenderStates();
 
 	private:
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
-		void RenderMesh();
+		void RenderHelperObject();
+		void RenderStaticMesh();
 		void RenderText();
+		void RenderLine();
 		void RenderTexture();
 		void EndRender();
 
@@ -58,8 +59,9 @@ namespace RocketCore::Graphics
 		int _screenWidth;
 		int _screenHeight;
 		bool _vSyncEnabled;
+		float _deltaTime;
 
-		/// ÃÊ±âÈ­ °ü·Ã
+		/// ì´ˆê¸°í™” ê´€ë ¨
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;	// immediateContext
@@ -71,22 +73,21 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11Texture2D> _backBuffer;
 		ComPtr<ID3D11RenderTargetView> _renderTargetView;
 		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
+		ComPtr<ID3D11DepthStencilState> _depthStencilState;
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
+		ComPtr<ID3D11BlendState > _defaultBlendState;
+		
 		D3D11_VIEWPORT _viewport;
-
-		/// Render State
-		// ¹Ì¸® ¿©·¯ ¼¼Æ®¸¦ ¸¸µé¾îµÎ°í ½ºÀ§ÄªÇÑ´Ù.
-	private:
-		ComPtr<ID3D11RasterizerState> _wireframeRenderState;
-		ComPtr<ID3D11RasterizerState> _solidRenderState;
-		// ÆùÆ®¶§¹®¿¡ µª½º½ºÅÄ½Ç ½ºÅ×ÀÌÆ®°¡ °­Á¦°¡ µÆ´Ù.
-		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
 	private:
 		Grid* _grid;
 		Axis* _axis;
-		Camera _camera;
-		VertexShader* _vertexShader;
-		PixelShader* _pixelShader;
+		DirectX::SpriteBatch* _spriteBatch;
+		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
+		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
+		ComPtr<ID3D11InputLayout> _lineInputLayout;
+
+	private:
+		ResourceManager& _resourceManager;
 	};
 }

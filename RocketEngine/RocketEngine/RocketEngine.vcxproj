@@ -50,7 +50,7 @@
     <ClInclude Include="IEngineProcess.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectSystem.h" />
-    <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="DLLExporter.h" />
     <ClInclude Include="RocketAPI.h" />
     <ClInclude Include="EngineProcess.h" />
@@ -102,7 +102,7 @@
     <ClCompile Include="PlaneCollider.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="MeshRendererBase.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="RocketAPI.cpp" />
     <ClCompile Include="EngineProcess.cpp" />
     <ClCompile Include="RocketCoreAPI.cpp" />

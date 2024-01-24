@@ -7,7 +7,7 @@
 /// 
 /// 22.12.18 강석원 집
 /// </summary>
-namespace RocketCore
+namespace Rocket::Core
 {
 	class TimeSystem : public Singleton<TimeSystem>
 	{

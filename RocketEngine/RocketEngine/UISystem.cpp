@@ -5,7 +5,7 @@
 #include "SceneSystem.h"
 #include "Scene.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	UISystem::UISystem()
 	{

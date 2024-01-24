@@ -1,7 +1,7 @@
-#include "RocketCoreAPI.h"
+#include "Rocket::CoreAPI.h"
 #include "SoundSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	std::unordered_map<std::string, RocketAudio>& GetSoundMapFromSoundSystem()
 	{

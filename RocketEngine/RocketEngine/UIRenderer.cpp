@@ -4,10 +4,10 @@
 #include "UISystem.h"
 #include "InputSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
-	UIRenderer::UIRenderer(RocketEngine::GameObject* owner)
-		: RocketEngine::Component(owner),
+	UIRenderer::UIRenderer(Rocket::GameObject* owner)
+		: Rocket::Component(owner),
 		_width(100.0f),
 		_height(100.0f),
 		_sortOrder(0),
@@ -34,7 +34,7 @@ namespace RocketCore
 			return false;
 		}
 
-		Vector2 mousePos = RocketCore::InputSystem::Instance().GetMousePosition();
+		Vector2 mousePos = Rocket::Core::InputSystem::Instance().GetMousePosition();
 
 		if (GetLeft() <= mousePos.x && mousePos.x <= GetRight())
 		{

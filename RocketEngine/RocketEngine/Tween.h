@@ -5,12 +5,12 @@
 
 /*template class __declspec(dllexport) std::function<float(float)>;*/
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class TweenTimer;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	enum eEasing
 	{
@@ -50,7 +50,7 @@ namespace RocketEngine
 	};
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 
 	class ROCKET_API Tween
@@ -90,7 +90,7 @@ namespace RocketEngine
 
 		/// easing functions
 
-		RocketCore::TweenTimer* _timer;
+		Rocket::Core::TweenTimer* _timer;
 
 		// easing data
 		static std::function<float(float)> _easings[31];

@@ -1,34 +1,27 @@
 #include "Axis.h"
-#include <DirectXColors.h>	// ÀÌ¹Ì ¸¹Àº ºÎºÐ DX11°ú °ãÄ£´Ù.
-#include <sstream>
-#include <fstream>
-#include <vector>
+#include <DirectXColors.h>	// ì´ë¯¸ ë§Žì€ ë¶€ë¶„ DX11ê³¼ ê²¹ì¹œë‹¤.
 #include "RocketMacroDX11.h"
+#include "ResourceManager.h"
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
-	Axis::Axis(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS)
-		: _device(pDevice), _deviceContext(pDeviceContext), _renderstate(pRS),
-		_vertexBuffer(nullptr), _indexBuffer(nullptr), _inputLayout(nullptr),
-		_world(), _view(), _proj(),
-		_vertexShader(nullptr), _pixelShader(nullptr)
+	Axis::Axis()
+		: _vertexBuffer(nullptr), _indexBuffer(nullptr),
+		_world(), _view(), _proj(), _renderState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::WIREFRAME))
 	{
 
 	}
 
 	Axis::~Axis()
 	{
-		ReleaseCOM(_inputLayout);
-
-		ReleaseCOM(_vertexBuffer);
-		ReleaseCOM(_indexBuffer);
+		_vertexBuffer.Reset();
+		_indexBuffer.Reset();
 	}
 
 
-	void Axis::Initialize()
+	void Axis::Initialize(ID3D11Device* device)
 	{
-		BuildGeometryBuffers();
-		CreateShader();
+		BuildGeometryBuffers(device);
 	}
 
 	void Axis::Update(const DirectX::XMMATRIX& world, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
@@ -38,21 +31,21 @@ namespace RocketCore::Graphics
 		_proj = proj;
 	}
 
-	void Axis::Render()
+	void Axis::Render(ID3D11DeviceContext* deviceContext, ID3D11VertexShader* vertexShader, ID3D11PixelShader* pixelShader, ID3D11Buffer* matrixBuffer, ID3D11InputLayout* inputLayout)
 	{
-		// Axis°¡ ¾²´Â Shader deviceContext ÀÌ¿ëÇØ ¿¬°á.
-		_deviceContext->VSSetShader(_vertexShader, nullptr, 0);
-		_deviceContext->PSSetShader(_pixelShader, nullptr, 0);
+		// Gridê°€ ì“°ëŠ” Shader deviceContext ì´ìš©í•´ ì—°ê²°.
+		deviceContext->VSSetShader(vertexShader, nullptr, 0);
+		deviceContext->PSSetShader(pixelShader, nullptr, 0);
 
-		// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
-		_deviceContext->IASetInputLayout(_inputLayout);
-		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		// ìž…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
+		deviceContext->IASetInputLayout(inputLayout);
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		// ÀÎµ¦½º¹öÆÛ¿Í ¹öÅØ½º¹öÆÛ ¼ÂÆÃ
+		// ì¸ë±ìŠ¤ë²„í¼ì™€ ë²„í…ìŠ¤ë²„í¼ ì…‹íŒ…
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
-		_deviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &stride, &offset);
-		_deviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
+		deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		MatrixBufferType* dataPtr;
@@ -62,7 +55,7 @@ namespace RocketCore::Graphics
 		_view = DirectX::XMMatrixTranspose(_view);
 		_proj = DirectX::XMMatrixTranspose(_proj);
 
-		HR(_deviceContext->Map(_matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+		HR(deviceContext->Map(matrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 		dataPtr = (MatrixBufferType*)mappedResource.pData;
 
@@ -70,31 +63,31 @@ namespace RocketCore::Graphics
 		dataPtr->view = _view;
 		dataPtr->projection = _proj;
 
-		_deviceContext->Unmap(_matrixBuffer, 0);
+		deviceContext->Unmap(matrixBuffer, 0);
 
 		bufferNumber = 0;
 
-		_deviceContext->VSSetConstantBuffers(bufferNumber, 1, &_matrixBuffer);
+		deviceContext->VSSetConstantBuffers(bufferNumber, 1, &matrixBuffer);
 
-		// ·»´õ½ºÅ×ÀÌÆ®
-		_deviceContext->RSSetState(_renderstate);
+		// ë Œë”ìŠ¤í…Œì´íŠ¸
+		deviceContext->RSSetState(_renderState.Get());
 
-		_deviceContext->DrawIndexed(6, 0, 0);
+		deviceContext->DrawIndexed(40, 0, 0);
 	}
 
-	void Axis::BuildGeometryBuffers()
+	void Axis::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		// Á¤Á¡ ¹öÆÛ¸¦ »ý¼ºÇÑ´Ù. 
-		// °¢ Ãà¿¡ ¸Âµµ·Ï 6°³ÀÇ Á¤Á¡À» ¸¸µé¾ú´Ù.
+		// ì •ì  ë²„í¼ë¥¼ ìƒì„±í•œë‹¤. 
+		// ê° ì¶•ì— ë§žë„ë¡ 6ê°œì˜ ì •ì ì„ ë§Œë“¤ì—ˆë‹¤.
 		Vertex vertices[] =
 		{
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },	// xÃà (»¡°­)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },	// xì¶• (ë¹¨ê°•)
 			{ DirectX::XMFLOAT3(10.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },
 
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},	// yÃà (ÃÊ·Ï)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},	// yì¶• (ì´ˆë¡)
 			{ DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},
 
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue)	},	// zÃà (ÆÄ¶û)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue)	},	// zì¶• (íŒŒëž‘)
 			{ DirectX::XMFLOAT3(0.0f, 0.0f, 10.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue) }
 		};
 
@@ -107,20 +100,20 @@ namespace RocketCore::Graphics
 		vbd.StructureByteStride = 0;
 		D3D11_SUBRESOURCE_DATA vinitData;
 		vinitData.pSysMem = vertices;
-		HR(_device->CreateBuffer(&vbd, &vinitData, &_vertexBuffer));
+		HR(device->CreateBuffer(&vbd, &vinitData, &_vertexBuffer));
 
 
-		// ÀÎµ¦½º ¹öÆÛ¸¦ »ý¼ºÇÑ´Ù.
-		// ¿ª½Ã 3°³ÀÇ ÃàÀ» ³ªÅ¸³»µµ·Ï Çß´Ù.
+		// ì¸ë±ìŠ¤ ë²„í¼ë¥¼ ìƒì„±í•œë‹¤.
+		// ì—­ì‹œ 3ê°œì˜ ì¶•ì„ ë‚˜íƒ€ë‚´ë„ë¡ í–ˆë‹¤.
 
 		UINT indices[] = {
-			// xÃà
+			// xì¶•
 			0, 1,
 
-			// yÃà
+			// yì¶•
 			2, 3,
 
-			// zÃà
+			// zì¶•
 			4, 5,
 		};
 
@@ -133,42 +126,6 @@ namespace RocketCore::Graphics
 		ibd.StructureByteStride = 0;
 		D3D11_SUBRESOURCE_DATA iinitData;
 		iinitData.pSysMem = indices;
-		HR(_device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
-	}
-
-	void Axis::CreateShader()
-	{
-		std::ifstream vsFile("../x64/Debug/VertexShader.cso", std::ios::binary);
-		std::ifstream psFile("../x64/Debug/PixelShader.cso", std::ios::binary);
-
-		std::vector<char> vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };
-		std::vector<char> psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };
-
-		_device->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &_vertexShader);
-		_device->CreatePixelShader(psData.data(), psData.size(), nullptr, &_pixelShader);
-
-
-		// ¼ÎÀÌ´õµµ ¸¸µé¾îµÎ°í ·¹ÀÌ¾Æ¿ôµµ ¸¸µé¾îµÎ°í ÀÌ·±°Å Àú·±°Å °®´Ù ¾µ ¼ö ÀÖ°ÔÇÏ´Â°Ô ÁÁ°ÚÁö
-		// ÀÌ·¸°Ô ÄÚµåÀûÀ¸·Î ¹Ú¾ÆµÎ¸é ¾ÈÁÁÀ» °Í °°´Ù´Â ¾ê±â¸¦ ÇÏ´Â °Í °°Àºµ¥?
-
-		// Create the vertex input layout.
-		D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			//{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
-			{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
-		};
-
-		D3D11_BUFFER_DESC matrixBufferDesc;
-		matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
-		matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		matrixBufferDesc.MiscFlags = 0;
-		matrixBufferDesc.StructureByteStride = 0;
-
-		HR(_device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer));
-
-		_device->CreateInputLayout(vertexDesc, 2, vsData.data(), vsData.size(), &_inputLayout);
+		HR(device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
 	}
 }

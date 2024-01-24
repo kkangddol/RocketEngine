@@ -1,7 +1,7 @@
 #include "CameraMove.h"
 
 
-CameraMove::CameraMove(RocketEngine::GameObject* owner)
+CameraMove::CameraMove(Rocket::GameObject* owner)
 	: Component(owner),
 	moveSpeed(2.0f)
 {
@@ -9,7 +9,7 @@ CameraMove::CameraMove(RocketEngine::GameObject* owner)
 
 void CameraMove::Start()
 {
-	_camera = gameObject->GetComponent<RocketEngine::Camera>();
+	_camera = gameObject->GetComponent<Rocket::Camera>();
 }
 
 void CameraMove::Update()
@@ -17,47 +17,47 @@ void CameraMove::Update()
 	/// 카메라 움직일 필요가 없어서 다 주석처리 했다
 	/*
 	//float deltaTime = rocket.GetDeltaTime();
-	float deltaTime = RocketEngine::GetDeltaTime();
+	float deltaTime = Rocket::GetDeltaTime();
 	moveSpeed = 5.0f;
 
-	if (RocketEngine::GetKey(VK_SHIFT))
+	if (Rocket::GetKey(VK_SHIFT))
 	{
 		moveSpeed *= 2.0f;
 	}
 
-	if (RocketEngine::GetKey(VK_UP))
+	if (Rocket::GetKey(VK_UP))
 	{
 		_camera->Walk(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_DOWN))
+	if (Rocket::GetKey(VK_DOWN))
 	{
 		_camera->Walk(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_LEFT))
+	if (Rocket::GetKey(VK_LEFT))
 	{
 		_camera->Strafe(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_RIGHT))
+	if (Rocket::GetKey(VK_RIGHT))
 	{
 		_camera->Strafe(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_NEXT))
+	if (Rocket::GetKey(VK_NEXT))
 	{
 		_camera->WorldUpDown(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey(VK_PRIOR))
+	if (Rocket::GetKey(VK_PRIOR))
 	{
 		_camera->WorldUpDown(moveSpeed * deltaTime);
 	}
 	// 
-	// 	if (RocketEngine::GetKeyDown(VK_LBUTTON))
+	// 	if (Rocket::GetKeyDown(VK_LBUTTON))
 	// 	{
-	// 		RocketEngine::Raycast* ray = gameObject->GetComponent<RocketEngine::Raycast>();
+	// 		Rocket::Raycast* ray = gameObject->GetComponent<Rocket::Raycast>();
 	// 		ray->UpdateRayInfo();
 	// 		ray->PerformRayCast();
 	// 	}
@@ -71,9 +71,9 @@ void CameraMove::Update()
 void CameraMove::OnMouseMove()
 {
 	//// Player의 시선 방향과 카메라의 방향을 내적한 후, acos에 넣어 각도를 구한다.
-	//RocketEngine::Vector3 playerForward = Vector3Normalize(_camera->gameObject->transform.GetParent()->GetParent()->GetForward());
-	//RocketEngine::Vector3 cameraForward = Vector3Normalize(_camera->gameObject->transform.GetForward());
-	////RocketEngine::Vector4 temp = Vector4MultiplyMatrix(RocketEngine::Vector4(cameraForward.x, cameraForward.y, cameraForward.z, 1.0f), 
+	//Rocket::Vector3 playerForward = Vector3Normalize(_camera->gameObject->transform.GetParent()->GetParent()->GetForward());
+	//Rocket::Vector3 cameraForward = Vector3Normalize(_camera->gameObject->transform.GetForward());
+	////Rocket::Vector4 temp = Vector4MultiplyMatrix(Rocket::Vector4(cameraForward.x, cameraForward.y, cameraForward.z, 1.0f), 
 	////	_camera->gameObject->transform.GetParent()->GetWorldRotationMatrix());
 	////cameraForward.x = temp.x;
 	////cameraForward.y = temp.y;
@@ -84,9 +84,9 @@ void CameraMove::OnMouseMove()
 	///// 부모의 rotation을 곱해줘야 하거나, 마우스가 화면 밖으로 갔을 때의 추가적인 조치가 필요한 경우를 생각해볼 수 있다.
 
 	/// Try.0
-	//RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
-	Vector2 mouseDelta = RocketEngine::MouseDeltaSmooth();
-	_camera->Pitch(mouseDelta.y * RocketEngine::GetDeltaTime() * 0.05f);
+	//Rocket::Vector2 mouseDelta = Rocket::GetMouseDelta();
+	Vector2 mouseDelta = Rocket::MouseDeltaSmooth();
+	_camera->Pitch(mouseDelta.y * Rocket::GetDeltaTime() * 0.05f);
 
 	/// Tryseok
 	Vector3 euler = _camera->gameObject->transform.GetLocalEuler();
@@ -113,7 +113,7 @@ void CameraMove::OnMouseMove()
 // 	}
 // 	else
 // 	{
-// 		RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
+// 		Rocket::Vector2 mouseDelta = Rocket::GetMouseDelta();
 // 		_camera->Pitch(mouseDelta.y * 0.5f);
 //	}
 
@@ -126,8 +126,8 @@ void CameraMove::OnMouseMove()
 
 	//if (isPitchAbleAngle)
 	//{
-	//	RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
-	//	mouseDelta = mouseDelta * RocketEngine::GetDeltaTime();
+	//	Rocket::Vector2 mouseDelta = Rocket::GetMouseDelta();
+	//	mouseDelta = mouseDelta * Rocket::GetDeltaTime();
 	//	_camera->Pitch(mouseDelta.y * 0.1f);
 	//}
 	//else
@@ -141,7 +141,7 @@ void CameraMove::OnMouseMove()
 
 void CameraMove::DrawAimLine()
 {
-	if (RocketEngine::GetKey(VK_RETURN))
+	if (Rocket::GetKey(VK_RETURN))
 	{
 		Vector3 pos = gameObject->transform.GetPosition() + Vector3(0.7f, -0.4f, 0.0f);
 
@@ -152,6 +152,6 @@ void CameraMove::DrawAimLine()
 		pos.z = temp.z;
 
 		Vector3 target = pos + gameObject->transform.GetForward() * 50.0f;
-		RocketEngine::DrawDebugLine(pos, target);
+		Rocket::DrawDebugLine(pos, target);
 	}
 }

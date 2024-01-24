@@ -1,15 +1,16 @@
 #pragma once
-#include "MathHeader.h"
+#include "IRenderable.h"
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
-	class ISketchable abstract
+	class ISketchable : public IRenderable
 	{
 	public:
-		virtual void SetData(const char* data) abstract;
-		virtual void SetAlpha(float alpha) abstract;
-		virtual void SetFillRatio(float ratio) abstract;
-		virtual void Render(const Matrix& rectTM) abstract;
-		//path,text
+		virtual ~ISketchable() {};
+		virtual void SetScreenSpace() = 0;
+		virtual void SetWorldSpace() = 0;
+
+		virtual float GetWidth() = 0;
+		virtual float GetHeight() = 0;
 	};
 }

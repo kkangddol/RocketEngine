@@ -6,10 +6,10 @@
 #include "Transform.h"
 #include "TimeSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	SpriteRenderer::SpriteRenderer(GameObject* owner)
-		: RocketCore::UIRenderer(owner),
+		: Rocket::Core::UIRenderer(owner),
 		_spritePath()
 	{
 

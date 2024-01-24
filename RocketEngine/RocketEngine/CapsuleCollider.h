@@ -3,7 +3,7 @@
 #include "DynamicCollider.h"
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 

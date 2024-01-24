@@ -1,7 +1,7 @@
 #include "Component.h"
 #include <typeinfo>
 
-namespace RocketEngine
+namespace Rocket
 {
 // 	Component::Component(GameObject* owner)
 // 		: gameObject(owner)

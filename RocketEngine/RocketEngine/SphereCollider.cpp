@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	SphereCollider::SphereCollider(GameObject* owner)
 		: DynamicCollider(owner)
@@ -17,7 +17,7 @@ namespace RocketEngine
 		Matrix worldTM = GetOffsetTM() * gameObject->transform.GetWorldTM();
 		Vector3 WHD = { GetWidth(), GetHeight(), GetDepth() };
 		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 
 	float SphereCollider::GetWidth() const

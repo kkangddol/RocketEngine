@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	SceneSystem::SceneSystem()
 		:_currentScene(nullptr),
@@ -15,17 +15,17 @@ namespace RocketCore
 
 	}
 
-	RocketEngine::Scene* SceneSystem::GetCurrentScene()
+	Rocket::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}
 
-	std::unordered_map<std::string, RocketEngine::Scene*>& SceneSystem::GetAllScenes()
+	std::unordered_map<std::string, Rocket::Scene*>& SceneSystem::GetAllScenes()
 	{
 		return _sceneMap;
 	}
 
-	RocketEngine::Scene* SceneSystem::CreateScene(const std::string& sceneName, bool withNoCam /*= false*/)
+	Rocket::Scene* SceneSystem::CreateScene(const std::string& sceneName, bool withNoCam /*= false*/)
 	{
 		auto iter = _sceneMap.find(sceneName);
 
@@ -34,9 +34,9 @@ namespace RocketCore
 			return _sceneMap[sceneName];
 		}
 
-		RocketEngine::Scene* scene;
+		Rocket::Scene* scene;
 
-		scene = new RocketEngine::Scene(sceneName, withNoCam);
+		scene = new Rocket::Scene(sceneName, withNoCam);
 
 
 		_sceneMap.insert({ sceneName, scene });

@@ -19,14 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraData.h" />
+    <ClInclude Include="ICamera.h" />
+    <ClInclude Include="IDebugCube.h" />
+    <ClInclude Include="IDebugObject.h" />
+    <ClInclude Include="IFactory.h" />
+    <ClInclude Include="IGraphicsSystem.h" />
+    <ClInclude Include="ILineRenderer.h" />
+    <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="IObject.h" />
+    <ClInclude Include="I3DRenderer.h" />
     <ClInclude Include="IRenderable.h" />
-    <ClInclude Include="IRocketGraphics.h" />
+    <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
-    <ClInclude Include="LightData.h" />
-    <ClInclude Include="MaterialData.h" />
+    <ClInclude Include="ISketchableImage.h" />
+    <ClInclude Include="ISketchableText.h" />
+    <ClInclude Include="ISkinnedMesh.h" />
+    <ClInclude Include="IStaticMesh.h" />
     <ClInclude Include="MathHeader.h" />
-    <ClInclude Include="RenderConstantData.h" />
+    <ClInclude Include="PrimitiveHeader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

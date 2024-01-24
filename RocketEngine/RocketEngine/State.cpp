@@ -1,6 +1,6 @@
 #include "State.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	State::State()
 		: _transitions(),

@@ -2,20 +2,20 @@
 #include "EngineProcess.h"
 #include "GameObject.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
-	MeshRendererBase::MeshRendererBase(RocketEngine::GameObject* owner)
+	MeshRendererBase::MeshRendererBase(Rocket::GameObject* owner)
 		: Component(owner)
 	{
 
 	}
 
-	RocketCore::Graphics::LegacyMaterialData& MeshRendererBase::GetLegacyMaterialData()
+	Rocket::Core::LegacyMaterialData& MeshRendererBase::GetLegacyMaterialData()
 	{
 		return _legacyMaterialData;
 	}
 
-	RocketCore::Graphics::PBRMaterialData& MeshRendererBase::GetPBRMaterialData()
+	Rocket::Core::PBRMaterialData& MeshRendererBase::GetPBRMaterialData()
 	{
 		return _PBRMaterialData;
 	}

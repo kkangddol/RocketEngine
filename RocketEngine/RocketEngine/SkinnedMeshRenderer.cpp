@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer(GameObject* owner)
 		: MeshRendererBase(owner)

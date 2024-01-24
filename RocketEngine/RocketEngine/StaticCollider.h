@@ -8,7 +8,7 @@ namespace physx
 	class PxRigidStatic;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 

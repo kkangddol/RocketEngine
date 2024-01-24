@@ -5,12 +5,12 @@
 #include <unordered_map>
 #include <string>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class SoundSystem;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	struct AudioStatus
 	{
@@ -76,7 +76,7 @@ namespace RocketEngine
 		std::unordered_map<std::string, std::string>& GetAudios();
 
 	private:
-		RocketCore::SoundSystem& _soundSystem;							// FMOD System
+		Rocket::Core::SoundSystem& _soundSystem;							// FMOD System
 
 		std::unordered_map<std::string, std::string> _audioMap;			// audioÀÌ¸§, audioPath
 		float _volume = 1.f;													// Sound º½·ý Å©±â

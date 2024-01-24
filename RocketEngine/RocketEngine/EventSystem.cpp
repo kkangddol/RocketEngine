@@ -1,6 +1,6 @@
 #include "EventSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 
 }

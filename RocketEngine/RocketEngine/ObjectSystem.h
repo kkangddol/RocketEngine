@@ -1,16 +1,16 @@
 #pragma once
-#include "Singleton.h"
 #include <vector>
 #include <string>
+#include "Singleton.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Scene;
 	class GameObject;
 	class Component;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
@@ -31,29 +31,29 @@ namespace RocketCore
 		void LateUpdateCurrentScene();
 
 		// 선택된 씬에 대해 Update를 수행한다.
-		void UpdateScene(RocketEngine::Scene* scene);
+		void UpdateScene(Rocket::Scene* scene);
 
 	public:
 		void FlushEnable();
 		void FlushDisable();
 
-		void AddEnable(RocketEngine::GameObject* obj);
-		void AddDisable(RocketEngine::GameObject* obj);
+		void AddEnable(Rocket::GameObject* obj);
+		void AddDisable(Rocket::GameObject* obj);
 
 	public:
-		RocketEngine::GameObject* CreateStaticObject(std::string objName);
+		Rocket::GameObject* CreateStaticObject(std::string objName);
 
 	private:
-		std::vector<RocketEngine::GameObject*> _staticObjList;
+		std::vector<Rocket::GameObject*> _staticObjList;
 
 	public:
-		void AddStaticComponent(RocketEngine::Component* component);
+		void AddStaticComponent(Rocket::Component* component);
 
 	private:
-		std::vector<RocketEngine::Component*> _staticComponentList;
+		std::vector<Rocket::Component*> _staticComponentList;
 
 	private:
-		std::vector<RocketEngine::GameObject*> _enableList;
-		std::vector<RocketEngine::GameObject*> _disableList;
+		std::vector<Rocket::GameObject*> _enableList;
+		std::vector<Rocket::GameObject*> _disableList;
 	};
 }

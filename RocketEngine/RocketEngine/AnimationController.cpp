@@ -1,5 +1,5 @@
 #include "AnimationController.h"
-#include "RenderSystem.h"
+#include "GraphicsSystem.h"
 #include "MeshRendererBase.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
@@ -8,7 +8,7 @@
 #include "State.h"
 #include "TimeSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	void AnimationController::SetCurrentState(std::string stateName)
 	{
@@ -55,22 +55,22 @@ namespace RocketEngine
 				_elapsedTime = 0.0f;
 				PlayCurrentAnim();
 			}
-			_elapsedTime += RocketCore::TimeSystem::Instance().GetDeltaTime();
+			_elapsedTime += Rocket::Core::TimeSystem::Instance().GetDeltaTime();
 		}
 	}
 
 	// юс╫ц
 	void AnimationController::PlayCurrentAnim()
 	{
-		RocketCore::MeshRendererBase* renderer = gameObject->GetComponentDynamic<RocketCore::MeshRendererBase>();
+		Rocket::Core::MeshRendererBase* renderer = gameObject->GetComponentDynamic<Rocket::Core::MeshRendererBase>();
 		
 		if (!renderer)
 		{
 			return;
 		}
 
-// 		RocketCore::Graphics::AnimData currentAnimData = GetCurrentState()->GetAnimData();
-// 		RocketCore::RenderSystem::Instance().PlayAnimation(renderer, currentAnimData);
+// 		Rocket::Core::AnimData currentAnimData = GetCurrentState()->GetAnimData();
+// 		Rocket::Core::RenderSystem::Instance().PlayAnimation(renderer, currentAnimData);
 	}
 
 	void AnimationController::SetAnimator(Animator* animator)
@@ -82,7 +82,7 @@ namespace RocketEngine
 		}
 	}
 
-	RocketEngine::Animator* AnimationController::GetAnimator()
+	Rocket::Animator* AnimationController::GetAnimator()
 	{
 		return _animator;
 	}

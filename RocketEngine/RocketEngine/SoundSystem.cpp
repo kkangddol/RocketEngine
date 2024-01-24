@@ -1,7 +1,7 @@
 #include "SoundSystem.h"
 #include "Transform.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	SoundSystem::SoundSystem()
 		: _pSystem()
@@ -84,7 +84,7 @@ namespace RocketCore
 	}
 
 	void SoundSystem::CreateSound3D(std::string soundPath, eSoundGroup soundGroup
-		, float minDistance, float maxDistance, RocketEngine::Transform* pos, float* vec)
+		, float minDistance, float maxDistance, Rocket::Transform* pos, float* vec)
 	{
 		// Sound 객체 생성 및 Info 기입
 		RocketAudio newAudio;
@@ -359,7 +359,7 @@ namespace RocketCore
 		return tempIsPlay;
 	}
 
-	void SoundSystem::SetListenerTransform(RocketEngine::Transform* transform)
+	void SoundSystem::SetListenerTransform(Rocket::Transform* transform)
 	{
 		_listenerTransform = transform;
 	}

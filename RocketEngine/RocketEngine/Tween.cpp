@@ -8,12 +8,12 @@
 
 constexpr float PI = DirectX::XM_PI;
 
-namespace RocketEngine
+namespace Rocket
 {
 	Tween::Tween()
 		: dataF(nullptr), data2V(nullptr), data3V(nullptr)
 	{
-		_timer = new RocketCore::TweenTimer();
+		_timer = new Rocket::Core::TweenTimer();
 	}
 
 	Tween::~Tween()

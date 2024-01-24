@@ -22,7 +22,7 @@
 /// 
 /// 23.07.26 강석원 인재원
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 	class Animator;

@@ -8,5 +8,5 @@ void Client::Initialize()
 	TestScene testScene;
 	testScene.Initialize();
 
-	RocketEngine::LoadScene("TEST");
+	Rocket::LoadScene("TEST");
 }

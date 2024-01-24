@@ -4,7 +4,7 @@
 #include "MeshRendererBase.h"
 #include "ObjectSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	// 생성자 순서 조심할 것.
 	// transform이 먼저 초기화 되지 않으면 Object 초기화할 때 문제 생김.
@@ -177,7 +177,7 @@ namespace RocketEngine
 		}
 	}
 
-// 	RocketCore::Graphics::RenderData* GameObject::GetRenderData()
+// 	Rocket::Core::RenderData* GameObject::GetRenderData()
 // 	{
 // 		if (_renderer)
 // 		{
@@ -186,9 +186,9 @@ namespace RocketEngine
 // 
 // 		for (auto& iter : _components)
 // 		{
-// 			if (dynamic_cast<RocketCore::Renderer*>(iter.second))
+// 			if (dynamic_cast<Rocket::Core::Renderer*>(iter.second))
 // 			{
-// 				_renderer = dynamic_cast<RocketCore::Renderer*>(iter.second);
+// 				_renderer = dynamic_cast<Rocket::Core::Renderer*>(iter.second);
 // 				return _renderer->GetData();
 // 			}
 // 		}
@@ -198,12 +198,12 @@ namespace RocketEngine
 
 	void GameObject::Enable()
 	{
-		RocketCore::ObjectSystem::Instance().AddEnable(this);
+		Rocket::Core::ObjectSystem::Instance().AddEnable(this);
 	}
 
 	void GameObject::Disable()
 	{
-		RocketCore::ObjectSystem::Instance().AddDisable(this);
+		Rocket::Core::ObjectSystem::Instance().AddDisable(this);
 	}
 
 	bool GameObject::IsActive() const
@@ -245,7 +245,7 @@ namespace RocketEngine
 		_isStarted = false;
 	}
 
-	std::unordered_map<std::string, std::vector<RocketCore::IComponent*>>& GameObject::GetAllComponents()
+	std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>>& GameObject::GetAllComponents()
 	{
 		return _components;
 	}

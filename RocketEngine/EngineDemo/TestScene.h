@@ -1,6 +1,6 @@
 #pragma once
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Scene;
 }
@@ -14,7 +14,7 @@ public:
 	void Initialize();
 
 public:
-	RocketEngine::Scene* scene;
+	Rocket::Scene* scene;
 
 private:
 	//RocketAPILoader& _rocket;

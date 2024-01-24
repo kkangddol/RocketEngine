@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 

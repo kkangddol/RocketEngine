@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	PlaneCollider::PlaneCollider(GameObject* owner)
 		: StaticCollider(owner)
@@ -18,7 +18,7 @@ namespace RocketEngine
 		Matrix worldTM = gameObject->transform.GetWorldTM();
 		Vector3 WHD = { 0.001f,100.0f,100.0f};
 		Vector4 color = { 0.0f,0.0f,1.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 
 	Vector3 PlaneCollider::GetNormalVector() const

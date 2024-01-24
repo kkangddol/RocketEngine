@@ -5,7 +5,7 @@
 #include "DebugSystem.h"
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	Button::Button(GameObject* owner)
 		: UIRenderer(owner),
@@ -21,7 +21,7 @@ namespace RocketEngine
 		Vector2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
 		Vector2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
 		Vector4 color = { 1.0f,0.0f,0.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
 	}
 
 	void Button::OnFocusEvent()

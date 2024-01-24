@@ -9,10 +9,10 @@ namespace SAD
 	class SadScene;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class ObjectSystem;
-	class RenderSystem;
+	class GraphicsSystem;
 	class SceneSystem;
 	class TimeSystem;
 	class InputSystem;
@@ -24,7 +24,7 @@ namespace RocketCore
 	class DataSystem;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API EngineProcess final : public IEngineProcess
 	{
@@ -65,17 +65,17 @@ namespace RocketEngine
 		/// 경고를 어떻게 해제할지 잘 고민해봐야 할듯.
 		/// 23.06.30 강석원 인재원.
 	private:
-		RocketCore::ObjectSystem& _objectSystem;
-		RocketCore::RenderSystem& _renderSystem;
-		RocketCore::SceneSystem& _sceneSystem;
-		RocketCore::TimeSystem& _timeSystem;
-		RocketCore::InputSystem& _inputSystem;
-		RocketCore::TweenSystem& _tweenSystem;
-		RocketCore::PhysicsSystem& _physicsSystem;
-		RocketCore::SoundSystem& _soundSystem;
-		RocketCore::DebugSystem& _debugSystem;
-		RocketCore::UISystem& _uiSystem;
-		RocketCore::DataSystem& _dataSystem;
+		Rocket::Core::ObjectSystem& _objectSystem;
+		Rocket::Core::GraphicsSystem& _renderSystem;
+		Rocket::Core::SceneSystem& _sceneSystem;
+		Rocket::Core::TimeSystem& _timeSystem;
+		Rocket::Core::InputSystem& _inputSystem;
+		Rocket::Core::TweenSystem& _tweenSystem;
+		Rocket::Core::PhysicsSystem& _physicsSystem;
+		Rocket::Core::SoundSystem& _soundSystem;
+		Rocket::Core::DebugSystem& _debugSystem;
+		Rocket::Core::UISystem& _uiSystem;
+		Rocket::Core::DataSystem& _dataSystem;
 
 
 		/// 윈도우 관련

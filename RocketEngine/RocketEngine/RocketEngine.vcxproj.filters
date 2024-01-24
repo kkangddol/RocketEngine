@@ -64,9 +64,6 @@
     <Filter Include="System">
       <UniqueIdentifier>{16b11710-e714-4506-9403-7489d6e5aa0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\RenderSystem">
-      <UniqueIdentifier>{1554353f-8156-49ee-8340-7690958d55ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="System\ObjectSystem">
       <UniqueIdentifier>{51532ac2-f77c-4a40-a6a2-8b927580aef1}</UniqueIdentifier>
     </Filter>
@@ -187,13 +184,16 @@
     <Filter Include="MathHeader">
       <UniqueIdentifier>{721eab2b-8d12-45a1-a9f3-238025499900}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\GraphicsSystem">
+      <UniqueIdentifier>{1554353f-8156-49ee-8340-7690958d55ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineProcess.h">
       <Filter>2_EngineProcess</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>System\RenderSystem</Filter>
+    <ClInclude Include="GraphicsSystem.h">
+      <Filter>System\GraphicsSystem</Filter>
     </ClInclude>
     <ClInclude Include="IComponent.h">
       <Filter>Component\0_Interface</Filter>
@@ -356,8 +356,8 @@
     <ClCompile Include="EngineProcess.cpp">
       <Filter>2_EngineProcess</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>System\RenderSystem</Filter>
+    <ClCompile Include="GraphicsSystem.cpp">
+      <Filter>System\GraphicsSystem</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>

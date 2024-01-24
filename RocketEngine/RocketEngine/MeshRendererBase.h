@@ -3,16 +3,15 @@
 
 #include "DLLExporter.h"
 #include "Component.h"
-#include "..\\RocketGraphicsInterface\\MaterialData.h"
 
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 
 	/// <summary>
@@ -21,10 +20,10 @@ namespace RocketCore
 	/// 
 	/// 23.06.29 강석원 인재원.
 	/// </summary>
-	class ROCKET_API MeshRendererBase : public RocketEngine::Component
+	class ROCKET_API MeshRendererBase : public Rocket::Component
 	{
 	public:
-		MeshRendererBase(RocketEngine::GameObject* owner);
+		MeshRendererBase(Rocket::GameObject* owner);
 
 	public:
 		Graphics::LegacyMaterialData& GetLegacyMaterialData();

@@ -1,40 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{ccae7ad0-2bf9-42e2-968e-8ea03abc6708}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Data">
       <UniqueIdentifier>{84147368-0370-49f3-80d7-2635104744de}</UniqueIdentifier>
     </Filter>
     <Filter Include="MathHeader">
       <UniqueIdentifier>{0f0cad57-503c-444c-934a-3a2f1cf477f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{1a70a43a-a782-41ab-9753-8d16c64de0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{b7a35ded-9c47-4859-8c65-5ebc76ef6106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{98c3388b-9d26-4b56-b276-1976c0307a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factory">
+      <UniqueIdentifier>{77428ffd-d685-4021-844a-113a47a40d0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsSystem">
+      <UniqueIdentifier>{22aa1d71-9863-4d5f-bcac-f1d46057fa18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IRocketGraphics.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderConstantData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="LightData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="ISketchable.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
     <ClInclude Include="MathHeader.h">
       <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h" />
+    <ClInclude Include="IDebugCube.h" />
+    <ClInclude Include="IDebugObject.h" />
+    <ClInclude Include="ILineRenderer.h" />
+    <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="IResourceManager.h" />
+    <ClInclude Include="ISketchable.h" />
+    <ClInclude Include="ISketchableImage.h" />
+    <ClInclude Include="ISketchableText.h" />
+    <ClInclude Include="ISkinnedMesh.h" />
+    <ClInclude Include="IStaticMesh.h" />
+    <ClInclude Include="PrimitiveHeader.h" />
+    <ClInclude Include="I3DRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="IFactory.h">
+      <Filter>Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="IGraphicsSystem.h">
+      <Filter>GraphicsSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,16 +2,16 @@
 #pragma once
 #include "..\\RocketEngine\\RocketAPI.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Camera;
 }
 
 
-class DebugCameraMove : public RocketEngine::Component
+class DebugCameraMove : public Rocket::Component
 {
 public:
-	DebugCameraMove(RocketEngine::GameObject* owner);
+	DebugCameraMove(Rocket::GameObject* owner);
 
 public:
 	virtual void Start() override;
@@ -24,5 +24,5 @@ public:
 	float moveSpeed;
 
 private:
-	RocketEngine::Camera* _camera;
+	Rocket::Camera* _camera;
 };

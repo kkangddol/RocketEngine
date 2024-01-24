@@ -5,12 +5,12 @@
 #include "DebugSystem.h"
 #include "TimeSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	float downTime = 0.0f;
 
 	TextBox::TextBox(GameObject* owner)
-		: RocketCore::UIRenderer(owner),
+		: Rocket::Core::UIRenderer(owner),
 		_text("default"),
 		_fontSize(20.0f),
 		_color(1.0f, 1.0f, 1.0f, 1.0f)
@@ -32,20 +32,20 @@ namespace RocketEngine
 
 		for (int keyCode = 0x30; keyCode <= 0x5A; keyCode++)
 		{
-			if (RocketCore::InputSystem::Instance().GetKeyDown(keyCode))
+			if (Rocket::Core::InputSystem::Instance().GetKeyDown(keyCode))
 			{
 				AppendText(keyCode);
 			}
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKeyDown(VK_BACK))
+		if (Rocket::Core::InputSystem::Instance().GetKeyDown(VK_BACK))
 		{
 			PopBackText();
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKey(VK_BACK))
+		if (Rocket::Core::InputSystem::Instance().GetKey(VK_BACK))
 		{
-			downTime += RocketCore::TimeSystem::Instance().GetDeltaTime();
+			downTime += Rocket::Core::TimeSystem::Instance().GetDeltaTime();
 
 			if (downTime >= 0.5f)
 			{
@@ -53,19 +53,19 @@ namespace RocketEngine
 			}
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKeyUp(VK_BACK))
+		if (Rocket::Core::InputSystem::Instance().GetKeyUp(VK_BACK))
 		{
 			downTime = 0.0f;
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKeyDown(VK_DELETE))
+		if (Rocket::Core::InputSystem::Instance().GetKeyDown(VK_DELETE))
 		{
 			PopBackText();
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKey(VK_DELETE))
+		if (Rocket::Core::InputSystem::Instance().GetKey(VK_DELETE))
 		{
-			downTime += RocketCore::TimeSystem::Instance().GetDeltaTime();
+			downTime += Rocket::Core::TimeSystem::Instance().GetDeltaTime();
 
 			if (downTime >= 0.5f)
 			{
@@ -73,7 +73,7 @@ namespace RocketEngine
 			}
 		}
 
-		if (RocketCore::InputSystem::Instance().GetKeyUp(VK_DELETE))
+		if (Rocket::Core::InputSystem::Instance().GetKeyUp(VK_DELETE))
 		{
 			downTime = 0.0f;
 		}
@@ -86,7 +86,7 @@ namespace RocketEngine
 		Vector2 LT = { worldPos.x - _width / 2, worldPos.y - _height / 2 };
 		Vector2 RB = { worldPos.x + _width / 2, worldPos.y + _height / 2 };
 		Vector4 color = { 0.0f,0.0f,1.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebug2DBox(LT, RB, color);
 	}
 
 	void TextBox::SetText(std::string text)

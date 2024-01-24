@@ -3,11 +3,11 @@
 #include "UIRenderer.h"
 #include <string>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API SpriteRenderer : public RocketCore::UIRenderer
+	class ROCKET_API SpriteRenderer : public Rocket::Core::UIRenderer
 	{
 	public:
 		SpriteRenderer(GameObject* owner);

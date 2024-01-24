@@ -2,12 +2,12 @@
 #include "Singleton.h"
 #include <vector>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Tween;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class TweenSystem : public Singleton<TweenSystem>
 	{
@@ -21,12 +21,12 @@ namespace RocketCore
 
 	//private:
 		// 사용하고 있는 닷트윈 객체의 벡터
-		std::vector<RocketEngine::Tween*> _dotweens;
+		std::vector<Rocket::Tween*> _dotweens;
 		// 사용이 끝나서 지우기 위한 닷트윈 객체의 벡터
-		std::vector<RocketEngine::Tween*> _deleteObj;
+		std::vector<Rocket::Tween*> _deleteObj;
 
 	public:
-		RocketEngine::Tween& CreateTween();
+		Rocket::Tween& CreateTween();
 		void Update();
 	};
 }

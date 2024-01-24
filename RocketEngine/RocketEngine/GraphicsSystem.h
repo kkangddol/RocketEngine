@@ -4,25 +4,26 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "..\\RocketGraphicsInterface\\IRocketGraphics.h"
+#include "../RocketGraphicsInterface/I3DRenderer.h"
+#include "../RocketGraphicsInterface/IGraphicsSystem.h"
 #include "RocketAPI.h"
 
 #define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
 	class IRenderable;
 	class ISketchable;
 	class RenderConstantData;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class MeshRendererBase;
 	class UIRenderer;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Light;
 }
@@ -33,15 +34,15 @@ namespace RocketEngine
 /// 
 /// 23.06.20 강석원 인재원.
 /// </summary>
-namespace RocketCore
+namespace Rocket::Core
 {
-	class RenderSystem : public Singleton<RenderSystem>
+	class GraphicsSystem : public Singleton<GraphicsSystem>, public IGraphicsSystem
 	{
 		friend Singleton;
-		friend void RocketEngine::RocketDestroyWindow();
+		friend void Rocket::RocketDestroyWindow();
 
 	private:
-		RenderSystem();		// 싱글턴이기 때문에 외부에서 생성할 수 없도록.
+		GraphicsSystem();		// 싱글턴이기 때문에 외부에서 생성할 수 없도록.
 
 		/// 시스템 초기화 관련
 	public:
@@ -51,12 +52,6 @@ namespace RocketCore
 	private:
 		bool _isEditor = false;
 
-		/// 게임 초기화 관련
-	public:
-		void MakeRenderableAll();
-		void MakeAnimationAll();
-		void MakeUIAll();
-
 	public:
 		void OnResize(int width, int height);
 
@@ -64,13 +59,13 @@ namespace RocketCore
 	public:
 		void DrawProcess();
 
-	private:
-		void UpdateRenderData();
-		void UpdateConstantData(RocketCore::Graphics::RenderConstantData& data);
-		void DrawCurrentScene();
-
-	private:
-		void DrawCurrentUI();
+// 	private:
+// 		void UpdateRenderData();
+// 		void UpdateConstantData(Rocket::Core::RenderConstantData& data);
+// 		void DrawCurrentScene();
+// 
+// 	private:
+// 		void DrawCurrentUI();
 
 	public:
 		int GetScreenWidth() const;
@@ -85,14 +80,6 @@ namespace RocketCore
 		/// DLL 관련
 	private:
 		HMODULE hGraphicsModule;
-		std::unique_ptr<RocketCore::Graphics::IRocketGraphics> _rocketGraphics;
-
-	public:
-		void AddLight(RocketEngine::Light* light);
-
-	private:
-		std::unordered_map<MeshRendererBase*, Graphics::IRenderable*> _renderMap;
-		std::unordered_map<UIRenderer*, Graphics::ISketchable*> _uiMap;
-		std::vector<RocketEngine::Light*> _lights;
+		std::unique_ptr<Rocket::Core::I3DRenderer> _rocketGraphics;
 	};
 }

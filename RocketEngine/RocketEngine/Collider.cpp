@@ -3,7 +3,7 @@
 #include <physx/PxPhysics.h>
 #include <physx/PxPhysicsAPI.h>
 
-namespace RocketEngine
+namespace Rocket
 {
 
 	Collider::Collider(GameObject* owner)

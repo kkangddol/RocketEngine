@@ -6,7 +6,7 @@
 /// 
 /// 23.06.20 강석원 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class IEngineProcess abstract
 	{

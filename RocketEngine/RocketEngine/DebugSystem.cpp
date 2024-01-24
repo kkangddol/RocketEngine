@@ -3,7 +3,7 @@
 #include "SoundSystem.h"
 #include <windows.h>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 
 	void DebugSystem::Initialize()
@@ -69,22 +69,22 @@ namespace RocketCore
 		_2DBoxQueue.push_back({ LT, RB, color });
 	}
 
-	std::vector<RocketCore::DebugText>& DebugSystem::GetTextQueue()
+	std::vector<Rocket::Core::DebugText>& DebugSystem::GetTextQueue()
 	{
 		return _textQueue;
 	}
 
-	std::vector<RocketCore::DebugBox>& DebugSystem::GetBoxQueue()
+	std::vector<Rocket::Core::DebugBox>& DebugSystem::GetBoxQueue()
 	{
 		return _boxQueue;
 	}
 
-	std::vector<RocketCore::DebugLine>& DebugSystem::GetLineQueue()
+	std::vector<Rocket::Core::DebugLine>& DebugSystem::GetLineQueue()
 	{
 		return _lineQueue;
 	}
 
-	std::vector<RocketCore::Debug2DBox>& DebugSystem::Get2DBoxQueue()
+	std::vector<Rocket::Core::Debug2DBox>& DebugSystem::Get2DBoxQueue()
 	{
 		return _2DBoxQueue;
 	}

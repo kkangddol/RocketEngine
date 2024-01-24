@@ -6,7 +6,7 @@
 
 #include "TimeSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	InputSystem::InputSystem()
 		:_currentMousePosition(0,0),
@@ -179,7 +179,7 @@ namespace RocketCore
 
 	Vector2 InputSystem::GetMouseDelta() const
 	{
-		//return (_c urrentMousePosition - RocketEngine::Vector2(500.0f, 500.0f)) * TimeSystem::GetDeltaTime();
+		//return (_c urrentMousePosition - Rocket::Vector2(500.0f, 500.0f)) * TimeSystem::GetDeltaTime();
 		return (_currentMousePosition - _previousMousePosition) * _mouseSensitivity;
 	}
 

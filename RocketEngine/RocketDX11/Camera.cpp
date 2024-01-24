@@ -1,17 +1,25 @@
+#include <cmath>
 #include "Camera.h"
+#include "ResourceManager.h"
+#include "GraphicsStruct.h"
+#include "RocketMacroDX11.h"
 
 using namespace DirectX;
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
+	Camera* Camera::_mainCamera;
+
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(50.0f), _aspect(1.0f), _fovY(90.0f),
+		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
-		SetFrustum(_fovY, _aspect, _nearZ, _farZ);
+		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		CreateCameraBuffer(ResourceManager::Instance().GetDevice());
 	}
 
 	Camera::~Camera()
@@ -34,91 +42,38 @@ namespace RocketCore::Graphics
 		_rotation = { x,y,z,w };
 	}
 
-	float Camera::GetNearZ() const
-	{
-		return _nearZ;
-	}
-
-	float Camera::GetFarZ() const
-	{
-		return _farZ;
-	}
-
-	float Camera::GetAspect() const
-	{
-		return _aspect;
-	}
-
-	float Camera::GetFovX() const
-	{
-		return XMConvertToDegrees(GetRadianFovX());
-	}
-
-	float Camera::GetRadianFovX() const
-	{
-		float halfWidth = GetNearWindowWidth() / 2;
-		return 2.0f * atan(halfWidth / _nearZ);
-	}
-
-	float Camera::GetFovY() const
-	{
-		return _fovY;
-	}
-
-	float Camera::GetRadianFovY() const
-	{
-		return XMConvertToRadians(_fovY);
-	}
-
-	float Camera::GetNearWindowWidth() const
-	{
-		return _aspect * _nearWindowHeight;
-	}
-
-	float Camera::GetNearWindowHeight() const
-	{
-		return _nearWindowHeight;
-	}
-
-	float Camera::GetFarWindowWidth() const
-	{
-		return _aspect * _farWindowHeight;
-	}
-
-	float Camera::GetFarWindowHeight() const
-	{
-		return _farWindowHeight;
-	}
-
-	/// Ä«¸Þ¶óÀÇ ¼¼ÆÃÀ» ¼³Á¤ÇÑ´Ù.
-	/// µé¾î¿Â °ª¿¡ ¸ÂÃç ¿©·¯ ¸â¹öµéµµ Àç¼³Á¤ÇØÁØ´Ù.
-	/// Áö±ÝÀº XMMatrixPerspectiveFovLH ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ Åõ¿µÇà·ÄÀ» ¸¸µç´Ù.
-	/// ÀÌ ºÎºÐÀº ³»°¡ Á÷Á¢ Åõ¿µÇà·ÄÀ» ¸¸µé¾îº¸°í ½Í´Ù.
+	/// ì¹´ë©”ë¼ì˜ ì„¸íŒ…ì„ ì„¤ì •í•œë‹¤.
+	/// ë“¤ì–´ì˜¨ ê°’ì— ë§žì¶° ì—¬ëŸ¬ ë©¤ë²„ë“¤ë„ ìž¬ì„¤ì •í•´ì¤€ë‹¤.
+	/// ì§€ê¸ˆì€ XMMatrixPerspectiveFovLH í•¨ìˆ˜ë¥¼ ì´ìš©í•´ì„œ íˆ¬ì˜í–‰ë ¬ì„ ë§Œë“ ë‹¤.
+	/// ì´ ë¶€ë¶„ì€ ë‚´ê°€ ì§ì ‘ íˆ¬ì˜í–‰ë ¬ì„ ë§Œë“¤ì–´ë³´ê³  ì‹¶ë‹¤.
 	/// 
-	/// 23.04.20 °­¼®¿ø ÀÎÀç¿ø
-	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
-	{
-		_fovY = fovY;
-		_aspect = aspect;
-		_nearZ = nearZ;
-		_farZ = farZ;
+	/// 23.04.20 ê°•ì„ì› ì¸ìž¬ì›
+// 	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
+// 	{
+// 		_fovY = fovY;
+// 		_aspect = aspect;
+// 		_nearZ = nearZ;
+// 		_farZ = farZ;
+// 
+// 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
+// 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+// 	}
 
-		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
-		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
-
-		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
-		XMStoreFloat4x4(&_projectionMatrix, temp);
-	}
-
-	/// ViewMatrix¸¦ °»½ÅÇØÁØ´Ù.
-	/// ±³¼ö´Ô ÄÚµå¿¡¼­´Â Àß¸øµÈ º¤ÅÍ°¡ µÇ¾îÀÖÀ» ½Ã lookÀ» ±âÁØÀ¸·Î ´Ù½Ã Á¡°ËÇØ¼­ º¯°æÇÏ´Â µí ÇÏ´Ù.
-	/// ³ª´Â ±×³É viewMatrix¸¸ °»½ÅÇØÁá´Ù.
+	/// ViewMatrixë¥¼ ê°±ì‹ í•´ì¤€ë‹¤.
+	/// êµìˆ˜ë‹˜ ì½”ë“œì—ì„œëŠ” ìž˜ëª»ëœ ë²¡í„°ê°€ ë˜ì–´ìžˆì„ ì‹œ lookì„ ê¸°ì¤€ìœ¼ë¡œ ë‹¤ì‹œ ì ê²€í•´ì„œ ë³€ê²½í•˜ëŠ” ë“¯ í•˜ë‹¤.
+	/// ë‚˜ëŠ” ê·¸ëƒ¥ viewMatrixë§Œ ê°±ì‹ í•´ì¤¬ë‹¤.
 	/// 
-	/// ±×¸®°í positionÀº À½¼ö·Î Áà¾ßÇÑ´Ù! ¿Ö³ÄÇÏ¸é Ä«¸Þ¶ó ±âÁØÀ¸·Î ¿Å±â´Â°Å´Ï±î!
+	/// ê·¸ë¦¬ê³  positionì€ ìŒìˆ˜ë¡œ ì¤˜ì•¼í•œë‹¤! ì™œëƒí•˜ë©´ ì¹´ë©”ë¼ ê¸°ì¤€ìœ¼ë¡œ ì˜®ê¸°ëŠ”ê±°ë‹ˆê¹Œ!
 	/// 
-	/// 23.04.20 °­¼®¿ø ÀÎÀç¿ø
+	/// 23.04.20 ê°•ì„ì› ì¸ìž¬ì›
 	void Camera::UpdateViewMatrix()
 	{
+// 		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
+// 		XMVECTOR det = XMMatrixDeterminant(world);
+// 		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
+// 
+// 		return;
+
 		XMVECTOR R = GetRight();
 		XMVECTOR U = GetUp();
 		XMVECTOR L = GetForward();
@@ -210,6 +165,86 @@ namespace RocketCore::Graphics
 		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
 		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&right), rotationMatrix);
 		return result;
+	}
+
+	void Camera::SetWorldTM(const Matrix& matrix)
+	{
+		_worldMatrix = matrix;
+	}
+
+	void Camera::SetNearZ(float nearZ)
+	{
+		_nearZ = nearZ;
+	}
+
+	void Camera::SetFarZ(float farZ)
+	{
+		_farZ = farZ;
+	}
+
+	void Camera::SetAspect(float aspect)
+	{
+		_aspect = aspect;
+	}
+
+	void Camera::SetFOVY(float fov)
+	{
+		_fovY = fov;
+	}
+
+	void Camera::SetNearHeight(float height)
+	{
+		_nearWindowHeight = height;
+	}
+
+	void Camera::SetFarHeight(float height)
+	{
+		_farWindowHeight = height;
+	}
+
+	void Camera::UpdateProjectionMatrix()
+	{
+		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
+		XMStoreFloat4x4(&_projectionMatrix, temp);
+	}
+
+	void Camera::SetAsMainCamera()
+	{
+		_mainCamera = this;
+	}
+
+	Camera* Camera::GetMainCamera()
+	{
+		return _mainCamera;
+	}
+
+	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
+	{
+		SetPosition(pos.x, pos.y, pos.z);
+		SetRotation(rot.w, rot.x, rot.y, rot.z);
+	}
+
+	void Camera::CreateCameraBuffer(ID3D11Device* device)
+	{
+		D3D11_BUFFER_DESC cameraBufferDesc;
+		cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
+		cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		cameraBufferDesc.MiscFlags = 0;
+		cameraBufferDesc.StructureByteStride = 0;
+
+		HR(device->CreateBuffer(&cameraBufferDesc, NULL, &_cameraBuffer));
+	}
+
+	ID3D11Buffer* Camera::GetCameraBuffer() const
+	{
+		return _cameraBuffer.Get();
+	}
+
+	ID3D11Buffer** Camera::GetAddressOfCameraBuffer()
+	{
+		return _cameraBuffer.GetAddressOf();
 	}
 
 }

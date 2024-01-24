@@ -1,7 +1,7 @@
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #include "EngineProcess.h"
 #include "ObjectSystem.h"
-#include "RenderSystem.h"
+#include "GraphicsSystem.h"
 #include "SceneSystem.h"
 #include "TimeSystem.h"
 #include "InputSystem.h"
@@ -15,10 +15,10 @@
 constexpr int WIDTH = 1920;
 constexpr int HEIGHT = 1080;
 
-static RocketCore::RenderSystem* RENDERSYSTEM;
+static Rocket::Core::GraphicsSystem* RENDERSYSTEM;
 static bool isInitialized = false;
 
-namespace RocketEngine
+namespace Rocket
 {
 	/// dll관련
 	IEngineProcess* CreateEngine()
@@ -33,17 +33,17 @@ namespace RocketEngine
 
 	/// 초기화 관련
 	EngineProcess::EngineProcess()
-		: _objectSystem(RocketCore::ObjectSystem::Instance()),
-		_renderSystem(RocketCore::RenderSystem::Instance()),
-		_sceneSystem(RocketCore::SceneSystem::Instance()),
-		_timeSystem(RocketCore::TimeSystem::Instance()),
-		_inputSystem(RocketCore::InputSystem::Instance()),
-		_tweenSystem(RocketCore::TweenSystem::Instance()),
-		_physicsSystem(RocketCore::PhysicsSystem::Instance()),
-		_soundSystem(RocketCore::SoundSystem::Instance()),
-		_debugSystem(RocketCore::DebugSystem::Instance()),
-		_uiSystem(RocketCore::UISystem::Instance()),
-		_dataSystem(RocketCore::DataSystem::Instance()),
+		: _objectSystem(Rocket::Core::ObjectSystem::Instance()),
+		_renderSystem(Rocket::Core::GraphicsSystem::Instance()),
+		_sceneSystem(Rocket::Core::SceneSystem::Instance()),
+		_timeSystem(Rocket::Core::TimeSystem::Instance()),
+		_inputSystem(Rocket::Core::InputSystem::Instance()),
+		_tweenSystem(Rocket::Core::TweenSystem::Instance()),
+		_physicsSystem(Rocket::Core::PhysicsSystem::Instance()),
+		_soundSystem(Rocket::Core::SoundSystem::Instance()),
+		_debugSystem(Rocket::Core::DebugSystem::Instance()),
+		_uiSystem(Rocket::Core::UISystem::Instance()),
+		_dataSystem(Rocket::Core::DataSystem::Instance()),
 		_hWnd(), _msg(), _screenWidth(WIDTH),_screenHeight(HEIGHT),
 		CLASSNAME(L"V-Gun"), WINDOWNAME(L"V-Gun")
 	{

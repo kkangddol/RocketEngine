@@ -14,7 +14,7 @@
 #include "MathHeader.h"
 #include "Camera.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	void PhysicsSystem::Initialize()
 	{
@@ -110,18 +110,18 @@ namespace RocketCore
 		}
 	}
 
-	void PhysicsSystem::MakePlaneCollider(RocketEngine::GameObject* object)
+	void PhysicsSystem::MakePlaneCollider(Rocket::GameObject* object)
 	{
-		RocketEngine::Collider* temp = object->GetComponent<RocketEngine::PlaneCollider>();
+		Rocket::Collider* temp = object->GetComponent<Rocket::PlaneCollider>();
 		
 		// PlaneCollider 생성
 		if (temp)
 		{
-			auto colvec = object->GetComponents<RocketEngine::PlaneCollider>();
+			auto colvec = object->GetComponents<Rocket::PlaneCollider>();
 
 			for (auto& collider : colvec)
 			{
-				RocketEngine::PlaneCollider* planeCol = dynamic_cast<RocketEngine::PlaneCollider*>(collider);
+				Rocket::PlaneCollider* planeCol = dynamic_cast<Rocket::PlaneCollider*>(collider);
 				Vector3 normal = planeCol->GetNormalVector();
 				physx::PxPlane pxPlane = { normal.x,normal.y,normal.z, planeCol->GetDistance() };
 
@@ -135,18 +135,18 @@ namespace RocketCore
 		}
 	}
 
-	void PhysicsSystem::MakeBoxCollider(RocketEngine::GameObject* object)
+	void PhysicsSystem::MakeBoxCollider(Rocket::GameObject* object)
 	{
-		RocketEngine::Collider* temp = object->GetComponent<RocketEngine::BoxCollider>();
+		Rocket::Collider* temp = object->GetComponent<Rocket::BoxCollider>();
 
 		// boxCollider 생성
 		if (temp)
 		{
-			auto colvec = object->GetComponents<RocketEngine::BoxCollider>();
+			auto colvec = object->GetComponents<Rocket::BoxCollider>();
 
 			for (auto& collider : colvec)
 			{
-				RocketEngine::BoxCollider* box = dynamic_cast<RocketEngine::BoxCollider*>(collider);
+				Rocket::BoxCollider* box = dynamic_cast<Rocket::BoxCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
 
@@ -176,18 +176,18 @@ namespace RocketCore
 		}
 	}
 
-	void PhysicsSystem::MakeSphereCollider(RocketEngine::GameObject* object)
+	void PhysicsSystem::MakeSphereCollider(Rocket::GameObject* object)
 	{
-		RocketEngine::Collider* temp = object->GetComponent<RocketEngine::SphereCollider>();
+		Rocket::Collider* temp = object->GetComponent<Rocket::SphereCollider>();
 
 		// SphereCollider 생성
 		if (temp)
 		{
-			auto colvec = object->GetComponents<RocketEngine::SphereCollider>();
+			auto colvec = object->GetComponents<Rocket::SphereCollider>();
 
 			for (auto& collider : colvec)
 			{
-				RocketEngine::SphereCollider* sphere = dynamic_cast<RocketEngine::SphereCollider*>(collider);
+				Rocket::SphereCollider* sphere = dynamic_cast<Rocket::SphereCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
 
@@ -216,18 +216,18 @@ namespace RocketCore
 		}
 	}
 
-	void PhysicsSystem::MakeCapsuleCollider(RocketEngine::GameObject* object)
+	void PhysicsSystem::MakeCapsuleCollider(Rocket::GameObject* object)
 	{
-		RocketEngine::Collider* temp = object->GetComponent<RocketEngine::CapsuleCollider>();
+		Rocket::Collider* temp = object->GetComponent<Rocket::CapsuleCollider>();
 
 		// CapsuleCollider 생성
 		if (temp)
 		{
-			auto colvec = object->GetComponents<RocketEngine::CapsuleCollider>();
+			auto colvec = object->GetComponents<Rocket::CapsuleCollider>();
 
 			for (auto& collider : colvec)
 			{
-				RocketEngine::CapsuleCollider* capsuleCol = dynamic_cast<RocketEngine::CapsuleCollider*>(collider);
+				Rocket::CapsuleCollider* capsuleCol = dynamic_cast<Rocket::CapsuleCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsuleCol->GetRadius(), capsuleCol->GetHalfHeight()), *_material);
 
@@ -254,18 +254,18 @@ namespace RocketCore
 		}
 	}
 
-	void PhysicsSystem::MakeStaticBoxCollider(RocketEngine::GameObject* object)
+	void PhysicsSystem::MakeStaticBoxCollider(Rocket::GameObject* object)
 	{
-		RocketEngine::Collider* temp = object->GetComponent<RocketEngine::StaticBoxCollider>();
+		Rocket::Collider* temp = object->GetComponent<Rocket::StaticBoxCollider>();
 
 		// StaticBoxCollider 생성
 		if (temp)
 		{
-			auto colvec = object->GetComponents<RocketEngine::StaticBoxCollider>();
+			auto colvec = object->GetComponents<Rocket::StaticBoxCollider>();
 
 			for (auto& collider : colvec)
 			{
-				RocketEngine::StaticBoxCollider* staticBoxCol = dynamic_cast<RocketEngine::StaticBoxCollider*>(collider);
+				Rocket::StaticBoxCollider* staticBoxCol = dynamic_cast<Rocket::StaticBoxCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(staticBoxCol->GetWidth() / 2, staticBoxCol->GetHeight() / 2, staticBoxCol->GetDepth() / 2), *_material);
 
@@ -285,18 +285,18 @@ namespace RocketCore
 			}
 		}
 
-		//std::vector<RocketEngine::StaticBoxCollider*> colliders = object->GetComponents<RocketEngine::StaticBoxCollider>();
+		//std::vector<Rocket::StaticBoxCollider*> colliders = object->GetComponents<Rocket::StaticBoxCollider>();
 		//int i = 0;
 		//if (colliders[0] != nullptr)
 		//{
 		//	// StaticBoxCollider 생성
 		//	for (const auto& col : colliders)
 		//	{
-		//		RocketEngine::StaticBoxCollider* staticBoxCol = dynamic_cast<RocketEngine::StaticBoxCollider*>(colliders[i++]);
+		//		Rocket::StaticBoxCollider* staticBoxCol = dynamic_cast<Rocket::StaticBoxCollider*>(colliders[i++]);
 
 		//		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(staticBoxCol->GetWidth() / 2, staticBoxCol->GetHeight() / 2, staticBoxCol->GetDepth() / 2), *_material);
 
-		//		RocketEngine::Vector3 pos = object->transform.GetLocalPosition();
+		//		Rocket::Vector3 pos = object->transform.GetLocalPosition();
 		//		physx::PxTransform localTm(physx::PxVec3(pos.x, pos.y, pos.z));
 		//		physx::PxRigidStatic* body = _physics->createRigidStatic(localTm);
 		//		body->attachShape(*shape);
@@ -315,9 +315,9 @@ namespace RocketCore
 	physx::PxFixedJoint* PhysicsSystem::MakeFixedJoint(physx::PxRigidDynamic* actor1, physx::PxRigidDynamic* actor2)
 	{
 		// actor1과 actor2의 collider를 받아온다.
-		//RocketEngine::BoxCollider* tempBox1 = static_cast<RocketEngine::BoxCollider*>(actor1->userData);
-		RocketEngine::CapsuleCollider* tempBox1 = static_cast<RocketEngine::CapsuleCollider*>(actor1->userData);
-		RocketEngine::DynamicCollider* tempBox2 = static_cast<RocketEngine::DynamicCollider*>(actor2->userData);
+		//Rocket::BoxCollider* tempBox1 = static_cast<Rocket::BoxCollider*>(actor1->userData);
+		Rocket::CapsuleCollider* tempBox1 = static_cast<Rocket::CapsuleCollider*>(actor1->userData);
+		Rocket::DynamicCollider* tempBox2 = static_cast<Rocket::DynamicCollider*>(actor2->userData);
 		// actor2의 y좌표를 (자신의 localPosition + actor1의 높이 절반) 으로 고정한다. 나머지 정보는 Identity로 고정.
 		physx::PxTransform tempTransform(physx::PxIdentity);
 		tempTransform.p.y = (*tempBox2).gameObject->transform.GetLocalPosition().y + (*tempBox1).GetHalfHeight()
@@ -331,7 +331,7 @@ namespace RocketCore
 	{
 		for (auto& dynamics : _rigidDynamics)
 		{
-			RocketEngine::DynamicCollider* col = static_cast<RocketEngine::DynamicCollider*>(dynamics->userData);
+			Rocket::DynamicCollider* col = static_cast<Rocket::DynamicCollider*>(dynamics->userData);
 			for (auto& servant : col->GetServants())
 			{
 				std::string test2 = col->gameObject->objName;
@@ -361,17 +361,17 @@ namespace RocketCore
 	{
 		for (auto& dynamics : _rigidDynamics)
 		{
-			static_cast<RocketEngine::DynamicCollider*>(dynamics->userData)->UpdateToPhysics();
+			static_cast<Rocket::DynamicCollider*>(dynamics->userData)->UpdateToPhysics();
 			_pxScene->addActor(*dynamics);
 		}
 		for (auto& statics : _rigidStatics)
 		{
-			static_cast<RocketEngine::StaticCollider*>(statics->userData)->UpdateToPhysics();
+			static_cast<Rocket::StaticCollider*>(statics->userData)->UpdateToPhysics();
 			_pxScene->addActor(*statics);
 		}
 	}
 
-	RocketEngine::Collider* PhysicsSystem::RayCast(Vector3 original, Vector3 direction, float length, int* type /*= nullptr*/)
+	Rocket::Collider* PhysicsSystem::RayCast(Vector3 original, Vector3 direction, float length, int* type /*= nullptr*/)
 	{
 		physx::PxVec3 rayOrigin;
 		rayOrigin.x = original.x;
@@ -383,7 +383,7 @@ namespace RocketCore
 		rayDirection.y = direction.y;
 		rayDirection.z = direction.z;
 
-		RocketEngine::Collider* hitCol = nullptr;
+		Rocket::Collider* hitCol = nullptr;
 
 		// 맞았는지를 판정.
 		physx::PxRaycastBuffer _hit;
@@ -415,7 +415,7 @@ namespace RocketCore
 			//physx::PxRigidDynamic* hitRigid = static_cast<physx::PxRigidDynamic*>(hitActor);
 
 			// 피격 정보를 userdata에 저장
-			hitCol = static_cast<RocketEngine::Collider*>(hitActor->userData);
+			hitCol = static_cast<Rocket::Collider*>(hitActor->userData);
 
 			//hitCol->Collide();
 
@@ -435,8 +435,8 @@ namespace RocketCore
 		// 각각의 GameObject들에게 물리 이벤트 발생.
 		for (auto& rigid : _rigidDynamics)
 		{
-			RocketEngine::DynamicCollider* col = static_cast<RocketEngine::DynamicCollider*>(rigid->userData);
-			RocketEngine::GameObject* gameObject = col->gameObject;
+			Rocket::DynamicCollider* col = static_cast<Rocket::DynamicCollider*>(rigid->userData);
+			Rocket::GameObject* gameObject = col->gameObject;
 
 			if (!col->GetWasCollided() && col->GetIsCollided())
 			{
@@ -470,7 +470,7 @@ namespace RocketCore
 			quat.z = temp.q.z;
 			quat.w = temp.q.w;
 
-			static_cast<RocketEngine::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, quat);
+			static_cast<Rocket::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, quat);
 		}
 	}
 
@@ -478,13 +478,13 @@ namespace RocketCore
 	{
 		for (auto& rigid : _rigidDynamics)
 		{
-			RocketEngine::DynamicCollider* col = static_cast<RocketEngine::DynamicCollider*>(rigid->userData);
+			Rocket::DynamicCollider* col = static_cast<Rocket::DynamicCollider*>(rigid->userData);
 			col->UpdateToPhysics();
 		}
 
 		for (auto& rigid : _rigidStatics)
 		{
-			RocketEngine::StaticCollider* col = static_cast<RocketEngine::StaticCollider*>(rigid->userData);
+			Rocket::StaticCollider* col = static_cast<Rocket::StaticCollider*>(rigid->userData);
 			col->UpdateToPhysics();
 		}
 	}
@@ -493,7 +493,7 @@ namespace RocketCore
 	{
 		for (auto& rigid : _rigidDynamics)
 		{
-			static_cast<RocketEngine::DynamicCollider*>(rigid->userData)->Flush();
+			static_cast<Rocket::DynamicCollider*>(rigid->userData)->Flush();
 		}
 	}
 

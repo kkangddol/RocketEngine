@@ -3,11 +3,11 @@
 #include "UIRenderer.h"
 #include <functional>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API Button : public RocketCore::UIRenderer
+	class ROCKET_API Button : public Rocket::Core::UIRenderer
 	{
 	public:
 		Button(GameObject* owner);

@@ -3,12 +3,12 @@
 #include "Singleton.h"
 #include <vector>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class UIRenderer;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	/// <summary>
 	/// 현재 포커스 된 객체 정보도 담고

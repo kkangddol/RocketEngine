@@ -1,7 +1,7 @@
 #include "TweenTimer.h"
 #include "TimeSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	TweenTimer::TweenTimer()
 		: _time(0.f), _isActive(false), _duration(0.f), _delayTime(0.f)

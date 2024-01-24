@@ -1,8 +1,8 @@
 #include "DLLExporter.h"
 #include "Light.h"
-#include "RenderSystem.h"
+#include "GraphicsSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	Light::Light(GameObject* owner)
 		: Component(owner),
@@ -10,7 +10,7 @@ namespace RocketEngine
 		_diffuse(1.0f,1.0f,1.0f,1.0f),
 		_specular(1.0f,1.0f,1.0f,1.0f)
 	{
-		//RocketCore::RenderSystem::Instance().AddLight(this);
+		//Rocket::Core::RenderSystem::Instance().AddLight(this);
 	}
 
 	Vector4 Light::GetAmbient() const

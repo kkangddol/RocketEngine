@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	CapsuleCollider::CapsuleCollider(GameObject* owner)
 		: DynamicCollider(owner),
@@ -21,7 +21,7 @@ namespace RocketEngine
 		//worldTM._42 += _height / 2;
 		Vector3 WHD = { GetHeight(), GetWidth(), GetDepth()};
 		Vector4 color = { 0.0f,1.0f,0.0f,1.0f };
-		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
+		Rocket::Core::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 
 	float CapsuleCollider::GetWidth() const

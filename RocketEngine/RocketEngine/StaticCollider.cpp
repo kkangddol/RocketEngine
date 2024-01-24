@@ -5,7 +5,7 @@
 #include <physx/PxPhysics.h>
 #include <physx/PxPhysicsAPI.h>
 
-namespace RocketEngine
+namespace Rocket
 {
 	StaticCollider::StaticCollider(GameObject* owner)
 		: Collider(owner),

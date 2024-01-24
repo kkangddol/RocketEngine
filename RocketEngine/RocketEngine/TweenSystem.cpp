@@ -2,7 +2,7 @@
 #include "Tween.h"
 #include "TweenTimer.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	TweenSystem::TweenSystem()
 	{
@@ -19,9 +19,9 @@ namespace RocketCore
 
 	}
 
-	RocketEngine::Tween& TweenSystem::CreateTween()
+	Rocket::Tween& TweenSystem::CreateTween()
 	{
-		RocketEngine::Tween* temp = new RocketEngine::Tween();
+		Rocket::Tween* temp = new Rocket::Tween();
 		_dotweens.push_back(temp);
 		return *_dotweens.back();
 	}
@@ -30,7 +30,7 @@ namespace RocketCore
 	void TweenSystem::Update()
 	{
 
-		for (RocketEngine::Tween* tween : _dotweens)
+		for (Rocket::Tween* tween : _dotweens)
 		{
 			if (tween->_timer->_isActive == true)
 			{
@@ -49,7 +49,7 @@ namespace RocketCore
 
 		// 지울 오브젝트를 모아둔 벡터와 현재 벡터를 비교해서 지운다
 		auto findObj = _deleteObj.begin();
-		for (RocketEngine::Tween* i : _deleteObj)
+		for (Rocket::Tween* i : _deleteObj)
 		{
 			auto dotweenIterator = std::find(_dotweens.begin(), _dotweens.end(), *findObj);
 			if (dotweenIterator != _dotweens.end())

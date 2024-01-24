@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 
 	PointLight::PointLight(GameObject* owner)
@@ -15,9 +15,9 @@ namespace RocketEngine
 
 	}
 
-	RocketCore::Graphics::PointLightData PointLight::GetLightData() const
+	Rocket::Core::PointLightData PointLight::GetLightData() const
 	{
-		RocketCore::Graphics::PointLightData data;
+		Rocket::Core::PointLightData data;
 		data.ambient = _ambient;
 		data.diffuse = _diffuse;
 		data.specular = _specular;

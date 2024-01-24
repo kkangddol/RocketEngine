@@ -5,7 +5,7 @@
 #include "MathHeader.h"
 #include "eSoundGroup.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	struct transfromData
 	{

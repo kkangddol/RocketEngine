@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class TweenTimer
 	{

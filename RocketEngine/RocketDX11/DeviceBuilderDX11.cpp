@@ -1,6 +1,6 @@
 #include "DeviceBuilderDX11.h"
 
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
 	DeviceBuilderDX11::DeviceBuilderDX11()
 		:_adapter(nullptr),

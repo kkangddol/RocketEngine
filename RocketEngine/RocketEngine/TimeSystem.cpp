@@ -1,6 +1,6 @@
 #include "TimeSystem.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	float TimeSystem::_deltaTime = 0;
 	int TimeSystem::_frameRate = 0;

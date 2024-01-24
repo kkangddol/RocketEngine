@@ -45,7 +45,7 @@
 #include "SpotLight.h"
 #include "AudioClip.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	/// 엔진 생성 팩토리.
 	ROCKET_API EngineProcess* CreateLauncher();

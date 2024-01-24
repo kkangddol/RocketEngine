@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <memory>
 #include <cassert>
-//#include "..\\RocketEngine\\IEngineProcess.h"
+//#include "..\\Rocket\\IEngineProcess.h"
 #include "..\\RocketEngine\\RocketAPI.h"
 #include "Client.h"
 
@@ -22,29 +22,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 	/// 엔진을 초기화 하고 루프시킨다.
-	RocketEngine::EngineProcess* rocketEngine = RocketEngine::CreateLauncher();
-	//RocketEngine::IEngineProcess* rocketEngine = RocketAPILoader::Instance().CreateLauncher();
-	rocketEngine->Initialize(static_cast<void*>(hInstance), nCmdShow);
+	Rocket::EngineProcess* Rocket = Rocket::CreateLauncher();
+	//Rocket::IEngineProcess* Rocket = RocketAPILoader::Instance().CreateLauncher();
+	Rocket->Initialize(static_cast<void*>(hInstance), nCmdShow);
 
 	/// 클라이언트를 초기화하고 준비시킨다.
 	std::unique_ptr<Client> client(new Client());
 	client->Initialize();
 
-	rocketEngine->RunEngine();
+	Rocket->RunEngine();
 
 	/// 게임을 정리한다.
-	rocketEngine->Finalize();
+	Rocket->Finalize();
 
-	RocketEngine::ReleaseLauncher(rocketEngine);
+	Rocket::ReleaseLauncher(Rocket);
 }
 
-// #include "..\\RocketEngine\\IRocketLauncher.h"
+// #include "..\\Rocket\\IRocketLauncher.h"
 // 
-// #define ENGINEDLL_PATH L"..\\x64\\Debug\\RocketEngine.dll"
+// #define ENGINEDLL_PATH L"..\\x64\\Debug\\Rocket.dll"
 // #else
-// #define ENGINEDLL_PATH L"Engine\\RocketEngine.dll" 
+// #define ENGINEDLL_PATH L"Engine\\Rocket.dll" 
 // #endif // _DEBUG
-// #define LAUNCHER_SIGNATURE RocketEngine::IRocketLauncher* (*) (void)
+// #define LAUNCHER_SIGNATURE Rocket::IRocketLauncher* (*) (void)
 // #define LAUNCHER_NAME "CreateEngine"
 // main
 // {
@@ -52,5 +52,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 // 
 // 	assert(hEngineModule);
 // 
-// 	std::unique_ptr<RocketEngine::IRocketLauncher> rocketEngine((reinterpret_cast<LAUNCHER_SIGNATURE>(GetProcAddress(hEngineModule, LAUNCHER_NAME)))());
+// 	std::unique_ptr<Rocket::IRocketLauncher> Rocket((reinterpret_cast<LAUNCHER_SIGNATURE>(GetProcAddress(hEngineModule, LAUNCHER_NAME)))());
 // }

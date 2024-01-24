@@ -4,9 +4,9 @@
 #include "Transform.h"
 #include "MathHeader.h"
 #include <windows.h>	// 디버그용으로 열었음
-#include "RenderSystem.h"
+#include "GraphicsSystem.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	Camera::Camera(GameObject* owner)
 		: Component(owner),
@@ -30,10 +30,10 @@ namespace RocketEngine
 
 	}
 
-	RocketCore::Graphics::CameraData& Camera::GetCameraData()
+	Rocket::Core::CameraData& Camera::GetCameraData()
 	{
-// 		float screenWidth = (float)RocketCore::RenderSystem::Instance().GetScreenWidth();
-// 		float screenHeight = (float)RocketCore::RenderSystem::Instance().GetScreenHeight();
+// 		float screenWidth = (float)Rocket::Core::RenderSystem::Instance().GetScreenWidth();
+// 		float screenHeight = (float)Rocket::Core::RenderSystem::Instance().GetScreenHeight();
 // 		_aspect = screenWidth / screenHeight;
 
 		

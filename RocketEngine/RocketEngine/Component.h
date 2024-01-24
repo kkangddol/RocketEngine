@@ -2,12 +2,12 @@
 #include "DLLExporter.h"
 #include "IComponent.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class ObjectSystem;
 }
@@ -20,12 +20,12 @@ namespace RocketCore
 /// 
 /// 23.06.29 강석원 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
-	class ROCKET_API Component : public RocketCore::IComponent
+	class ROCKET_API Component : public Rocket::Core::IComponent
 	{
 		friend class GameObject;
-		friend class RocketCore::ObjectSystem;
+		friend class Rocket::Core::ObjectSystem;
 	
 	public:
 		Component(GameObject* owner)

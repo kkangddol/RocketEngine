@@ -1,7 +1,7 @@
 #pragma once
 #include "Singleton.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class EventSystem : public Singleton<EventSystem>
 	{

@@ -3,12 +3,12 @@
 #include "Component.h"
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API Light : public Component
 	{

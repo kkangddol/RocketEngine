@@ -1,6 +1,6 @@
 #pragma once
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class IBuilder abstract
 	{

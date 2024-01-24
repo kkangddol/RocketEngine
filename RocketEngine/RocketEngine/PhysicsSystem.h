@@ -1,14 +1,14 @@
 #pragma once
-#include "Singleton.h"
-#include <physx/PxPhysics.h>
-#include <physx/PxPhysicsAPI.h>
-#include <physx/extensions/PxDefaultAllocator.h>
-#include <physx/extensions/PxDefaultErrorCallback.h>
+#include <PxPhysics.h>
+#include <PxPhysicsAPI.h>
+#include <extensions/PxDefaultAllocator.h>
+#include <extensions/PxDefaultErrorCallback.h>
 #include <vector>
+#include "Singleton.h"
 
 #include "MathHeader.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 	class Collider;
@@ -18,7 +18,7 @@ namespace RocketEngine
 	class Raycast;
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class PhysicsSystem : public Singleton<PhysicsSystem>
 	{
@@ -40,17 +40,17 @@ namespace RocketCore
 
 	public:
 		void MakeAllCollider();
-		void MakePlaneCollider(RocketEngine::GameObject* object);
-		void MakeBoxCollider(RocketEngine::GameObject* object);
-		void MakeSphereCollider(RocketEngine::GameObject* object);
-		void MakeCapsuleCollider(RocketEngine::GameObject* object);
-		void MakeStaticBoxCollider(RocketEngine::GameObject* object);
+		void MakePlaneCollider(Rocket::GameObject* object);
+		void MakeBoxCollider(Rocket::GameObject* object);
+		void MakeSphereCollider(Rocket::GameObject* object);
+		void MakeCapsuleCollider(Rocket::GameObject* object);
+		void MakeStaticBoxCollider(Rocket::GameObject* object);
 		physx::PxFixedJoint* MakeFixedJoint(physx::PxRigidDynamic* actor1, physx::PxRigidDynamic* actor2);
 		void MakeFixedJoint();
 		void AddActorsToScene();
 
 	public:
-		RocketEngine::Collider* RayCast(Vector3 original, Vector3 direction, float length, int* type = nullptr);
+		Rocket::Collider* RayCast(Vector3 original, Vector3 direction, float length, int* type = nullptr);
 
 	public:
 		physx::PxScene* GetPxScene();

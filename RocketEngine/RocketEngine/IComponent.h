@@ -1,6 +1,6 @@
 #pragma once
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
@@ -13,11 +13,11 @@ namespace RocketEngine
 /// 
 /// 23.06.29 강석원 인재원.
 /// </summary>
-namespace RocketCore
+namespace Rocket::Core
 {
 	class IComponent
 	{
-		friend class RocketEngine::GameObject;
+		friend class Rocket::GameObject;
 
 	public:
 		//virtual ~IComponent() = default;

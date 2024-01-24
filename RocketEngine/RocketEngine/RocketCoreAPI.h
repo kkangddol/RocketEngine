@@ -9,7 +9,7 @@
 /// 에디터에게 Open하고 싶은 부분만 제공할 수 있도록 했다.
 ///
 /// 23.08.02 강석원&오수안 인재원.
-namespace RocketCore
+namespace Rocket::Core
 {
 	ROCKET_API std::unordered_map<std::string, RocketAudio>& GetSoundMapFromSoundSystem();
 }

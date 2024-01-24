@@ -12,12 +12,12 @@ namespace physx
 	class PxScene;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class GameObject;
 }
 
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API Collider : public Component
 	{

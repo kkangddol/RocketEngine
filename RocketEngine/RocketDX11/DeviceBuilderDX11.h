@@ -9,7 +9,7 @@
 /// 
 /// 23.06.23 강석원 인재원
 /// </summary>
-namespace RocketCore::Graphics
+namespace Rocket::Core
 {
 	class DeviceBuilderDX11 final : public IBuilder
 	{

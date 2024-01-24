@@ -3,11 +3,11 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	AudioClip::AudioClip(GameObject* owner)
 		: Component(owner),
-		_soundSystem(RocketCore::SoundSystem::Instance()),
+		_soundSystem(Rocket::Core::SoundSystem::Instance()),
 		_audioMap(NULL),
 		_volume()
 	{

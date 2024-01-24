@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	struct DebugText
 	{
@@ -38,7 +38,7 @@ namespace RocketCore
 
 }
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class DebugSystem : public Singleton<DebugSystem>
 	{

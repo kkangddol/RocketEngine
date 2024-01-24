@@ -1,6 +1,6 @@
 #include "Data.h"
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	Vector3 DataStruct::GetPosition()
 	{

@@ -1,6 +1,6 @@
 #include "DebugCameraMove.h"
 
-DebugCameraMove::DebugCameraMove(RocketEngine::GameObject* owner)
+DebugCameraMove::DebugCameraMove(Rocket::GameObject* owner)
 	: Component(owner),
 	moveSpeed(2.0f)
 {
@@ -8,46 +8,46 @@ DebugCameraMove::DebugCameraMove(RocketEngine::GameObject* owner)
 
 void DebugCameraMove::Start()
 {
-	_camera = gameObject->GetComponent<RocketEngine::Camera>();
+	_camera = gameObject->GetComponent<Rocket::Camera>();
 }
 
 void DebugCameraMove::Update()
 {
 	//float deltaTime = rocket.GetDeltaTime();
-	float deltaTime = RocketEngine::GetDeltaTime();
+	float deltaTime = Rocket::GetDeltaTime();
 	moveSpeed = 5.0f;
 
-	if (RocketEngine::GetKey(VK_SHIFT))
+	if (Rocket::GetKey(VK_SHIFT))
 	{
 		moveSpeed *= 2.0f;
 	}
 
-	if (RocketEngine::GetKey('W'))
+	if (Rocket::GetKey('W'))
 	{
 		_camera->Walk(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey('S'))
+	if (Rocket::GetKey('S'))
 	{
 		_camera->Walk(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey('A'))
+	if (Rocket::GetKey('A'))
 	{
 		_camera->Strafe(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey('D'))
+	if (Rocket::GetKey('D'))
 	{
 		_camera->Strafe(moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey('Q'))
+	if (Rocket::GetKey('Q'))
 	{
 		_camera->WorldUpDown(-moveSpeed * deltaTime);
 	}
 
-	if (RocketEngine::GetKey('E'))
+	if (Rocket::GetKey('E'))
 	{
 		_camera->WorldUpDown(moveSpeed * deltaTime);
 	}
@@ -57,13 +57,13 @@ void DebugCameraMove::Update()
 
 void DebugCameraMove::OnMouseMove()
 {
-	if (!RocketEngine::GetKey(VK_RBUTTON))
+	if (!Rocket::GetKey(VK_RBUTTON))
 	{
 		return;
 	}
 
-	Vector2 mouseDelta = RocketEngine::GetMouseDelta();
-	mouseDelta = mouseDelta * RocketEngine::GetDeltaTime();
+	Vector2 mouseDelta = Rocket::GetMouseDelta();
+	mouseDelta = mouseDelta * Rocket::GetDeltaTime();
 	_camera->Pitch(mouseDelta.y);
 	_camera->RotateY(mouseDelta.x);
 }

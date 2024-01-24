@@ -7,7 +7,7 @@
 #include "InputSystem.h"
 #include "UIRenderer.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	Scene::Scene(std::string sceneName, bool fromEditor /*= false*/)
 		: _sceneName(sceneName),
@@ -83,16 +83,16 @@ namespace RocketEngine
 		}
 	}
 
-	RocketEngine::GameObject* Scene::CreateObject(std::string objName)
+	Rocket::GameObject* Scene::CreateObject(std::string objName)
 	{
 		GameObject* gameObject = new GameObject(objName);
 		_originalList.push_back(gameObject);
 		return gameObject;
 	}
 
-	RocketEngine::GameObject* Scene::CreateStaticObject(std::string objName)
+	Rocket::GameObject* Scene::CreateStaticObject(std::string objName)
 	{
-		return RocketCore::ObjectSystem::Instance().CreateStaticObject(objName);
+		return Rocket::Core::ObjectSystem::Instance().CreateStaticObject(objName);
 	}
 
 	bool Scene::DeleteObject(std::string gameObjectName)
@@ -124,7 +124,7 @@ namespace RocketEngine
 		_sceneName = sceneName;
 	}
 
-	RocketEngine::GameObject* Scene::FindObjectByName(std::string name)
+	Rocket::GameObject* Scene::FindObjectByName(std::string name)
 	{
 		auto iter = std::find_if(_originalList.begin(), _originalList.end(), [name](GameObject* obj) { return obj->objName == name; });
 		return *iter;
@@ -145,7 +145,7 @@ namespace RocketEngine
 
 	void Scene::CheckFocus()
 	{
-		if (!RocketCore::InputSystem::Instance().GetKeyDown(VK_LBUTTON))
+		if (!Rocket::Core::InputSystem::Instance().GetKeyDown(VK_LBUTTON))
 		{
 			return;
 		}
@@ -178,7 +178,7 @@ namespace RocketEngine
 		}
 	}
 
-	void Scene::AddUI(RocketCore::UIRenderer* ui)
+	void Scene::AddUI(Rocket::Core::UIRenderer* ui)
 	{
 		_uiComponents.push_back(ui);
 	}

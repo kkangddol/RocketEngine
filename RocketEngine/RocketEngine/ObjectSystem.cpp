@@ -6,7 +6,7 @@
 #include "Component.h"
 #include <algorithm>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	ObjectSystem::ObjectSystem()
 	{
@@ -21,7 +21,7 @@ namespace RocketCore
 
 	void ObjectSystem::Finalize()
 	{
-		RocketEngine::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 
 		for (auto& staticObj : _staticObjList)
 		{
@@ -44,7 +44,7 @@ namespace RocketCore
 
 	void ObjectSystem::StartCurrentScene()
 	{
-		RocketEngine::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 		//assert(currentScene);
 
 		if (currentScene == nullptr)
@@ -71,7 +71,7 @@ namespace RocketCore
 
 	void ObjectSystem::UpdateCurrentScene()
 	{
-		RocketEngine::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 
 		if (currentScene == nullptr)
 		{
@@ -93,7 +93,7 @@ namespace RocketCore
 
 	void ObjectSystem::LateUpdateCurrentScene()
 	{
-		RocketEngine::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 
 		if (currentScene == nullptr)
 		{
@@ -113,7 +113,7 @@ namespace RocketCore
 		currentScene->LateUpdate();
 	}
 
-	void ObjectSystem::UpdateScene(RocketEngine::Scene* scene)
+	void ObjectSystem::UpdateScene(Rocket::Scene* scene)
 	{
 
 	}
@@ -138,24 +138,24 @@ namespace RocketCore
 		_disableList.clear();
 	}
 
-	void ObjectSystem::AddEnable(RocketEngine::GameObject* obj)
+	void ObjectSystem::AddEnable(Rocket::GameObject* obj)
 	{
 		_enableList.push_back(obj);
 	}
 
-	void ObjectSystem::AddDisable(RocketEngine::GameObject* obj)
+	void ObjectSystem::AddDisable(Rocket::GameObject* obj)
 	{
 		_disableList.push_back(obj);
 	}
 
-	RocketEngine::GameObject* ObjectSystem::CreateStaticObject(std::string objName)
+	Rocket::GameObject* ObjectSystem::CreateStaticObject(std::string objName)
 	{
-		RocketEngine::GameObject* gameObject = new RocketEngine::GameObject(objName);
+		Rocket::GameObject* gameObject = new Rocket::GameObject(objName);
 		_staticObjList.push_back(gameObject);
 		return gameObject;
 	}
 
-	void ObjectSystem::AddStaticComponent(RocketEngine::Component* component)
+	void ObjectSystem::AddStaticComponent(Rocket::Component* component)
 	{
 		if (std::find(_staticComponentList.begin(), _staticComponentList.end(), component) != _staticComponentList.end())
 		{

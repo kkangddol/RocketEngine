@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace RocketCore
+namespace Rocket::Core
 {
 	class IComponent;
 	class ObjectSystem;
@@ -14,9 +14,9 @@ namespace RocketCore
 }
 
 // __declspec(dllexport) std::string;
-// template class __declspec(dllexport) std::unordered_map<std::string, RocketCore::IComponent*>;
+// template class __declspec(dllexport) std::unordered_map<std::string, Rocket::Core::IComponent*>;
 
-namespace RocketEngine
+namespace Rocket
 {
 	class Transform;
 }
@@ -28,14 +28,14 @@ namespace RocketEngine
 /// 
 /// 23.06.26 강석원 인재원.
 /// </summary>
-namespace RocketEngine
+namespace Rocket
 {
 	class ROCKET_API GameObject final
 	{
 		/// GameObject의 LifeCycle을 관리하는 클래스들에게 friend 걸어줌.
 		friend class Scene;
-		friend class RocketCore::PhysicsSystem;
-		friend class RocketCore::ObjectSystem;
+		friend class Rocket::Core::PhysicsSystem;
+		friend class Rocket::Core::ObjectSystem;
 
 		/// 생성자, 소멸자
 		/// Rule of Three..
@@ -73,7 +73,7 @@ namespace RocketEngine
 
 		/// 렌더링을 담당할 컴포넌트.
 	private:
-		RocketCore::MeshRendererBase* _renderer;
+		Rocket::Core::MeshRendererBase* _renderer;
 	
 		/// GameObject의 활성,비활성화 관리
 	public:
@@ -114,10 +114,10 @@ namespace RocketEngine
 		template <typename T>
 		std::vector<T*> GetComponentsDynamic();
 
-		std::unordered_map<std::string, std::vector<RocketCore::IComponent*>>& GetAllComponents();
+		std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>>& GetAllComponents();
 
 	private:
-		std::unordered_map<std::string, std::vector<RocketCore::IComponent*>> _components;
+		std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>> _components;
 	};
 
 	/// 컴포넌트를 추가하는 함수.

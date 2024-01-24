@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace RocketEngine
+namespace Rocket
 {
 	DirectionalLight::DirectionalLight(GameObject* owner)
 		: Light(owner),
@@ -11,9 +11,9 @@ namespace RocketEngine
 
 	}
 
-	RocketCore::Graphics::DirectionalLightData DirectionalLight::GetLightData() const
+	Rocket::Core::DirectionalLightData DirectionalLight::GetLightData() const
 	{
-		RocketCore::Graphics::DirectionalLightData data;
+		Rocket::Core::DirectionalLightData data;
 		data.ambient = _ambient;
 		data.diffuse = _diffuse;
 		data.specular = _specular;

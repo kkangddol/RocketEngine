@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace RocketEngine
+namespace Rocket
 {
 	class State;
 
