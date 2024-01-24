@@ -4,27 +4,21 @@
 #pragma once
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketCore::Graphics
 {
 	struct LegacyMaterialData
 	{
-		RocketEngine::Vector4 _ambient;
-		RocketEngine::Vector4 _diffuse;
-		RocketEngine::Vector4 _specular; // w : Specular Power.
-		RocketEngine::Vector4 _reflect;
+		Vector4 _ambient;
+		Vector4 _diffuse;
+		Vector4 _specular; // w : Specular Power.
+		Vector4 _reflect;
 	};
 
 	struct PBRMaterialData
 	{
 		//모두 다 0~1 범위에 있어야 한다. 
 		//금속/유전체 비교는 Shader의 다른 변수를 업데이트해서 가를 것.
-		RocketEngine::Vector4 _albedo;		// RGBA, 각각 0-1 사이. Base Color/Albedo.
+		Vector4 _albedo;		// RGBA, 각각 0-1 사이. Base Color/Albedo.
 		float _metallic;						// 금속성, 0-1. (유전체일 경우 영향 X)
 		float _roughness;					// 거침의 정도, 0-1. 
 		float _specular;						// 스페큘러, 0-1. (금속일 경우 영향 X)

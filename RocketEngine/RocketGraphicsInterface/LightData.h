@@ -1,55 +1,49 @@
 #pragma once
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketCore::Graphics
 {
 	struct DirectionalLightData
 	{
-		RocketEngine::Vector4 ambient;
-		RocketEngine::Vector4 diffuse;
-		RocketEngine::Vector4 specular;
-		RocketEngine::Vector3 direction;
+		Vector4 ambient;
+		Vector4 diffuse;
+		Vector4 specular;
+		Vector3 direction;
 		float intensity = 1.0f; 
 		//자동으로 바이트 패딩 됨. Directional Light 한정 빛의 밝기 정렬을 위해 Intensity 마련.
 	};
 
 	struct PointLightData
 	{
-		RocketEngine::Vector4 ambient;
-		RocketEngine::Vector4 diffuse;
-		RocketEngine::Vector4 specular;
+		Vector4 ambient;
+		Vector4 diffuse;
+		Vector4 specular;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::Vector3 position;
+		Vector3 position;
 		float range;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::Vector3 attenuation;
+		Vector3 attenuation;
 		float tPad;
 	};
 
 	struct SpotLightData
 	{
-		RocketEngine::Vector4 ambient;
-		RocketEngine::Vector4 diffuse;
-		RocketEngine::Vector4 specular;
+		Vector4 ambient;
+		Vector4 diffuse;
+		Vector4 specular;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::Vector3 position;
+		Vector3 position;
 		float range;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::Vector3 direction;
+		Vector3 direction;
 		float spot;
 
 		//GPU용 4D Vector 패킹.
-		RocketEngine::Vector3 attenuation;
+		Vector3 attenuation;
 		float tPad;
 	};
 }

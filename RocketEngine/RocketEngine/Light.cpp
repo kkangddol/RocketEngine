@@ -13,7 +13,7 @@ namespace RocketEngine
 		//RocketCore::RenderSystem::Instance().AddLight(this);
 	}
 
-	RocketEngine::Vector4 Light::GetAmbient() const
+	Vector4 Light::GetAmbient() const
 	{
 		return _ambient;
 	}
@@ -23,7 +23,7 @@ namespace RocketEngine
 		_ambient = ambient;
 	}
 
-	RocketEngine::Vector4 Light::GetDiffuse() const
+	Vector4 Light::GetDiffuse() const
 	{
 		return _diffuse;
 	}
@@ -33,7 +33,7 @@ namespace RocketEngine
 		_diffuse = diffuse;
 	}
 
-	RocketEngine::Vector4 Light::GetSpecular() const
+	Vector4 Light::GetSpecular() const
 	{
 		return _specular;
 	}

@@ -72,47 +72,47 @@ namespace RocketCore
 		return std::string();
 	}
 
-	void MeshRendererBase::SetLegacyAmbient(RocketEngine::Vector4 ambient)
+	void MeshRendererBase::SetLegacyAmbient(Vector4 ambient)
 	{
 		_legacyMaterialData._ambient = ambient;
 	}
 
-	void MeshRendererBase::SetLegacyDiffuse(RocketEngine::Vector4 diffuse)
+	void MeshRendererBase::SetLegacyDiffuse(Vector4 diffuse)
 	{
 		_legacyMaterialData._diffuse = diffuse;
 	}
 
-	void MeshRendererBase::SetLegacySpecular(RocketEngine::Vector4 specular)
+	void MeshRendererBase::SetLegacySpecular(Vector4 specular)
 	{
 		_legacyMaterialData._specular = specular;
 	}
 
-	void MeshRendererBase::SetLegacyReflect(RocketEngine::Vector4 reflect)
+	void MeshRendererBase::SetLegacyReflect(Vector4 reflect)
 	{
 		_legacyMaterialData._reflect = reflect;
 	}
 
-	RocketEngine::Vector4 MeshRendererBase::GetLegacyAmbient() const
+	Vector4 MeshRendererBase::GetLegacyAmbient() const
 	{
 		return _legacyMaterialData._ambient;
 	}
 
-	RocketEngine::Vector4 MeshRendererBase::GetLegacyDiffuse() const
+	Vector4 MeshRendererBase::GetLegacyDiffuse() const
 	{
 		return _legacyMaterialData._diffuse;
 	}
 
-	RocketEngine::Vector4 MeshRendererBase::GetLegacySpecular() const
+	Vector4 MeshRendererBase::GetLegacySpecular() const
 	{
 		return _legacyMaterialData._specular;
 	}
 
-	RocketEngine::Vector4 MeshRendererBase::GetLegacyReflect() const
+	Vector4 MeshRendererBase::GetLegacyReflect() const
 	{
 		return _legacyMaterialData._reflect;
 	}
 
-	void MeshRendererBase::SetPBRAlbedo(RocketEngine::Vector4 albedo)
+	void MeshRendererBase::SetPBRAlbedo(Vector4 albedo)
 	{
 		_PBRMaterialData._albedo = albedo;
 	}
@@ -137,7 +137,7 @@ namespace RocketCore
 		_PBRMaterialData._emission = emission;
 	}
 
-	RocketEngine::Vector4 MeshRendererBase::GetPBRAlbedo() const
+	Vector4 MeshRendererBase::GetPBRAlbedo() const
 	{
 		return _PBRMaterialData._albedo;
 	}

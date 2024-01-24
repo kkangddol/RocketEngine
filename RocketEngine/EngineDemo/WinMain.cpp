@@ -4,7 +4,7 @@
 #include <memory>
 #include <cassert>
 //#include "..\\RocketEngine\\IEngineProcess.h"
-#include "RocketAPILoader.h"
+#include "..\\RocketEngine\\RocketAPI.h"
 #include "Client.h"
 
 // 전역 변수:
@@ -39,7 +39,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 }
 
 // #include "..\\RocketEngine\\IRocketLauncher.h"
-// #ifdef _DEBUG
+// 
 // #define ENGINEDLL_PATH L"..\\x64\\Debug\\RocketEngine.dll"
 // #else
 // #define ENGINEDLL_PATH L"Engine\\RocketEngine.dll" 

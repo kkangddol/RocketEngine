@@ -21,15 +21,16 @@ namespace RocketEngine
 		RocketCore::DebugSystem::Instance().DrawDebugBox(worldTM, WHD, true, color);
 	}
 
-	RocketEngine::Vector3 PlaneCollider::GetNormalVector() const
+	Vector3 PlaneCollider::GetNormalVector() const
 	{
 		Vector3 axis = gameObject->transform.GetRight();
-		return Vector3Normalize(axis);
+		axis.Normalize();
+		return axis;
 	}
 
 	float PlaneCollider::GetDistance() const
 	{
-		return Vector3Length(gameObject->transform.GetLocalPosition());
+		return gameObject->transform.GetLocalPosition().Length();
 	}
 }
 

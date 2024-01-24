@@ -8,12 +8,6 @@
 
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketEngine
 {
 	class GameObject;
@@ -56,7 +50,7 @@ namespace RocketCore
 		void AddActorsToScene();
 
 	public:
-		RocketEngine::Collider* RayCast(RocketEngine::Vector3 original, RocketEngine::Vector3 direction, float length, int* type = nullptr);
+		RocketEngine::Collider* RayCast(Vector3 original, Vector3 direction, float length, int* type = nullptr);
 
 	public:
 		physx::PxScene* GetPxScene();

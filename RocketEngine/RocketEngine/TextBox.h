@@ -4,12 +4,6 @@
 #include <string>
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif //_DEBUG
-
 namespace RocketEngine
 {
 	class GameObject;
@@ -45,13 +39,13 @@ namespace RocketEngine
 
 	public:
 		float GetFontSize() const;
-		Vector4 GetColor() const;
+		Color GetColor() const;
 		void SetFontSize(float size);
-		void SetFontColor(Vector4 color);
+		void SetFontColor(Color color);
 
 	private:
 		std::string _text;
 		float _fontSize;
-		Vector4 _color;
+		Color _color;
 	};
 }

@@ -1,12 +1,6 @@
 #pragma once
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketCore::Graphics
 {
 	class ISketchable abstract
@@ -15,7 +9,7 @@ namespace RocketCore::Graphics
 		virtual void SetData(const char* data) abstract;
 		virtual void SetAlpha(float alpha) abstract;
 		virtual void SetFillRatio(float ratio) abstract;
-		virtual void Render(const RocketEngine::Vector3X3& rectTM) abstract;
+		virtual void Render(const Matrix& rectTM) abstract;
 		//path,text
 	};
 }

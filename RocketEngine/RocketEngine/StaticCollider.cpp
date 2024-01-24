@@ -31,8 +31,8 @@ namespace RocketEngine
 
 		_wasTranslated = true;
 
-		Vector4 pos = Vector4(GetPositionOffset(), 1.0f) * gameObject->transform.GetWorldTM();
-		Quaternion rot = QuaternionMultiply(GetRotationOffset(), gameObject->transform.GetRotation());
+		Vector3 pos = gameObject->transform.GetPosition();
+		Quaternion rot = gameObject->transform.GetRotation();
 
 		physx::PxTransform pxTransform;
 

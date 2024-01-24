@@ -10,9 +10,6 @@
     <Filter Include="SceneView">
       <UniqueIdentifier>{488a04f0-75d4-4fa1-8370-7bdbfb209124}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RocketAPILoader">
-      <UniqueIdentifier>{b3f7a61b-59e3-4a5b-a234-a36227eab6ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ClientComponent">
       <UniqueIdentifier>{c3570028-8cd8-4a12-86bf-94db1f0912ec}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>SceneView</Filter>
     </ClCompile>
-    <ClCompile Include="RocketAPILoader.cpp">
-      <Filter>RocketAPILoader</Filter>
-    </ClCompile>
     <ClCompile Include="CameraMove.cpp">
       <Filter>ClientComponent</Filter>
     </ClCompile>
@@ -43,9 +37,6 @@
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>SceneView</Filter>
-    </ClInclude>
-    <ClInclude Include="RocketAPILoader.h">
-      <Filter>RocketAPILoader</Filter>
     </ClInclude>
     <ClInclude Include="CameraMove.h">
       <Filter>ClientComponent</Filter>

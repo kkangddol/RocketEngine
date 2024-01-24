@@ -2,8 +2,7 @@
 #include "eSoundGroup.h"
 #include <string>
 
-#include "..\\SoundLib\\inc\\fmod.hpp"
-#include "..\\SoundLib\\inc\\fmod_common.h"
+#include <fmod.hpp>
 
 namespace RocketEngine
 {

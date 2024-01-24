@@ -122,7 +122,7 @@ namespace RocketEngine
 		return _fontSize;
 	}
 
-	RocketEngine::Vector4 TextBox::GetColor() const
+	Color TextBox::GetColor() const
 	{
 		return _color;
 	}
@@ -132,7 +132,7 @@ namespace RocketEngine
 		_fontSize = size;
 	}
 
-	void TextBox::SetFontColor(Vector4 color)
+	void TextBox::SetFontColor(Color color)
 	{
 		_color = color;
 	}

@@ -3,12 +3,6 @@
 #include <windows.h>
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketCore
 {
 	class InputSystem : public Singleton<InputSystem>
@@ -42,19 +36,19 @@ namespace RocketCore
 		bool previousKeyState[0xB0];
 
 	public:
-		RocketEngine::Vector2 GetMousePosition() const;
-		RocketEngine::Vector2 GetMouseDelta() const;
-		RocketEngine::Vector2 MouseDeltaSmooth();
+		Vector2 GetMousePosition() const;
+		Vector2 GetMouseDelta() const;
+		Vector2 MouseDeltaSmooth();
 		float GetMouseSensitivity() const;
 		void SetMouseSensitivity(float sensitivity);
 
 	private:
 		float _mouseSensitivity;
 		POINT _mousePoint;
-		RocketEngine::Vector2 _currentMousePosition;
-		RocketEngine::Vector2 _previousMousePosition;
-		RocketEngine::Vector2 _currentMouseDelta;
-		RocketEngine::Vector2 _previousMouseDelta;
+		Vector2 _currentMousePosition;
+		Vector2 _previousMousePosition;
+		Vector2 _currentMouseDelta;
+		Vector2 _previousMouseDelta;
 
 	private:
 		int _screenWidth;

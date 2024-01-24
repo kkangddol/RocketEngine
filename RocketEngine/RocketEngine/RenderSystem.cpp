@@ -27,14 +27,6 @@
 #include "SpotLight.h"
 #include <algorithm>
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
-#pragma comment(lib,"..\\x64\\Debug\\RocketUtil.lib")
-
 using GRAPHICS_CREATE_SIGNATURE = RocketCore::Graphics::IRocketGraphics* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
 

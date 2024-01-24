@@ -4,12 +4,6 @@
 #include "MathHeader.h"
 #include "..\\RocketGraphicsInterface\\CameraData.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketEngine
 {
 	class GameObject;
@@ -56,7 +50,7 @@ namespace RocketEngine
 		void WorldUpDown(float delta);
 
 		void Yaw(float angle);
-		void Pitch(float radian);
+		void Pitch(float angle);
 		void Roll(float angle);
 		void RotateY(float angle);
 

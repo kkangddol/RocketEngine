@@ -3,18 +3,6 @@
 #include "StaticCollider.h"
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketUtil.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketUtil.lib")
-#endif // _DEBUG
-
 /// <summary>
 /// BoxCollider 라는 이름이지만
 /// 사실 Rigidbody도 포함되어있습니다.

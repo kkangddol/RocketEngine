@@ -55,6 +55,9 @@
     <Filter Include="Object\Shader\PixelShader">
       <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{107d20a4-93c9-4f24-a5f3-433eb1e843b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="PixelShader.h">
       <Filter>Object\Shader\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,20 +6,6 @@
 
 #include "TimeSystem.h"
 
-#include "../RocketUtil/Log.h"
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketMath.lib")
-#endif
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketUtil.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketUtil.lib")
-#endif
-
 namespace RocketCore
 {
 	InputSystem::InputSystem()
@@ -186,22 +172,22 @@ namespace RocketCore
 		return previousKeyState[keyCode] && currentKeyState[keyCode];
 	}
 
-	RocketEngine::Vector2 InputSystem::GetMousePosition() const
+	Vector2 InputSystem::GetMousePosition() const
 	{
 		return _currentMousePosition;
 	}
 
-	RocketEngine::Vector2 InputSystem::GetMouseDelta() const
+	Vector2 InputSystem::GetMouseDelta() const
 	{
 		//return (_c urrentMousePosition - RocketEngine::Vector2(500.0f, 500.0f)) * TimeSystem::GetDeltaTime();
 		return (_currentMousePosition - _previousMousePosition) * _mouseSensitivity;
 	}
 
-	RocketEngine::Vector2 InputSystem::MouseDeltaSmooth()
+	Vector2 InputSystem::MouseDeltaSmooth()
 	{
 		_currentMouseDelta = _currentMousePosition - _previousMousePosition;
 
-		RocketEngine::Vector2 result = (_currentMouseDelta + _previousMouseDelta);
+		Vector2 result = (_currentMouseDelta + _previousMouseDelta);
 		result.x /= 2.0f;
 		result.y /= 2.0f;
 

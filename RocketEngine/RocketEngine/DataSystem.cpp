@@ -214,30 +214,30 @@ namespace RocketCore
 				data.meshRenderer->DiffusePath = obj["Mesh Renderer"]["Diffuse Path"].GetString();
 				data.meshRenderer->NormalPath = obj["Mesh Renderer"]["Normal Path"].GetString();
 
-				data.meshRenderer->ambient.r = obj["Mesh Renderer"]["ambient_r"].GetFloat();
-				data.meshRenderer->ambient.g = obj["Mesh Renderer"]["ambient_g"].GetFloat();
-				data.meshRenderer->ambient.b = obj["Mesh Renderer"]["ambient_b"].GetFloat();
-				data.meshRenderer->ambient.a = obj["Mesh Renderer"]["ambient_a"].GetFloat();
+				data.meshRenderer->ambient.x = obj["Mesh Renderer"]["ambient_r"].GetFloat();
+				data.meshRenderer->ambient.y = obj["Mesh Renderer"]["ambient_g"].GetFloat();
+				data.meshRenderer->ambient.z = obj["Mesh Renderer"]["ambient_b"].GetFloat();
+				data.meshRenderer->ambient.w = obj["Mesh Renderer"]["ambient_a"].GetFloat();
 
-				data.meshRenderer->diffuse.r = obj["Mesh Renderer"]["diffuse_r"].GetFloat();
-				data.meshRenderer->diffuse.g = obj["Mesh Renderer"]["diffuse_g"].GetFloat();
-				data.meshRenderer->diffuse.b = obj["Mesh Renderer"]["diffuse_b"].GetFloat();
-				data.meshRenderer->diffuse.a = obj["Mesh Renderer"]["diffuse_a"].GetFloat();
+				data.meshRenderer->diffuse.x = obj["Mesh Renderer"]["diffuse_r"].GetFloat();
+				data.meshRenderer->diffuse.y = obj["Mesh Renderer"]["diffuse_g"].GetFloat();
+				data.meshRenderer->diffuse.z = obj["Mesh Renderer"]["diffuse_b"].GetFloat();
+				data.meshRenderer->diffuse.w = obj["Mesh Renderer"]["diffuse_a"].GetFloat();
 
-				data.meshRenderer->specular.r = obj["Mesh Renderer"]["specular_r"].GetFloat();
-				data.meshRenderer->specular.g = obj["Mesh Renderer"]["specular_g"].GetFloat();
-				data.meshRenderer->specular.b = obj["Mesh Renderer"]["specular_b"].GetFloat();
-				data.meshRenderer->specular.a = obj["Mesh Renderer"]["specular_a"].GetFloat();
+				data.meshRenderer->specular.x = obj["Mesh Renderer"]["specular_r"].GetFloat();
+				data.meshRenderer->specular.y = obj["Mesh Renderer"]["specular_g"].GetFloat();
+				data.meshRenderer->specular.z = obj["Mesh Renderer"]["specular_b"].GetFloat();
+				data.meshRenderer->specular.w = obj["Mesh Renderer"]["specular_a"].GetFloat();
 
-				data.meshRenderer->reflect.r = obj["Mesh Renderer"]["reflect_r"].GetFloat();
-				data.meshRenderer->reflect.g = obj["Mesh Renderer"]["reflect_g"].GetFloat();
-				data.meshRenderer->reflect.b = obj["Mesh Renderer"]["reflect_b"].GetFloat();
-				data.meshRenderer->reflect.a = obj["Mesh Renderer"]["reflect_a"].GetFloat();
+				data.meshRenderer->reflect.x = obj["Mesh Renderer"]["reflect_r"].GetFloat();
+				data.meshRenderer->reflect.y = obj["Mesh Renderer"]["reflect_g"].GetFloat();
+				data.meshRenderer->reflect.z = obj["Mesh Renderer"]["reflect_b"].GetFloat();
+				data.meshRenderer->reflect.w = obj["Mesh Renderer"]["reflect_a"].GetFloat();
 
-				data.meshRenderer->pbr_albedo.r = obj["Mesh Renderer"]["pbr_albedo_r"].GetFloat();
-				data.meshRenderer->pbr_albedo.g = obj["Mesh Renderer"]["pbr_albedo_g"].GetFloat();
-				data.meshRenderer->pbr_albedo.b = obj["Mesh Renderer"]["pbr_albedo_b"].GetFloat();
-				data.meshRenderer->pbr_albedo.a = obj["Mesh Renderer"]["pbr_albedo_a"].GetFloat();
+				data.meshRenderer->pbr_albedo.x = obj["Mesh Renderer"]["pbr_albedo_r"].GetFloat();
+				data.meshRenderer->pbr_albedo.y = obj["Mesh Renderer"]["pbr_albedo_g"].GetFloat();
+				data.meshRenderer->pbr_albedo.z = obj["Mesh Renderer"]["pbr_albedo_b"].GetFloat();
+				data.meshRenderer->pbr_albedo.w = obj["Mesh Renderer"]["pbr_albedo_a"].GetFloat();
 
 				data.meshRenderer->pbr_metalic = obj["Mesh Renderer"]["pbr_metalic"].GetFloat();
 				data.meshRenderer->pbr_roughness = obj["Mesh Renderer"]["pbr_roughness"].GetFloat();
@@ -257,30 +257,30 @@ namespace RocketCore
 				data.skinnedMeshRenderer->DiffusePath = obj["Skinned Mesh Renderer"]["Diffuse Path"].GetString();
 				data.skinnedMeshRenderer->NormalPath = obj["Skinned Mesh Renderer"]["Normal Path"].GetString();
 
-				data.skinnedMeshRenderer->ambient.r = obj["Skinned Mesh Renderer"]["ambient_r"].GetFloat();
-				data.skinnedMeshRenderer->ambient.g = obj["Skinned Mesh Renderer"]["ambient_g"].GetFloat();
-				data.skinnedMeshRenderer->ambient.b = obj["Skinned Mesh Renderer"]["ambient_b"].GetFloat();
-				data.skinnedMeshRenderer->ambient.a = obj["Skinned Mesh Renderer"]["ambient_a"].GetFloat();
+				data.skinnedMeshRenderer->ambient.x = obj["Skinned Mesh Renderer"]["ambient_r"].GetFloat();
+				data.skinnedMeshRenderer->ambient.y = obj["Skinned Mesh Renderer"]["ambient_g"].GetFloat();
+				data.skinnedMeshRenderer->ambient.z = obj["Skinned Mesh Renderer"]["ambient_b"].GetFloat();
+				data.skinnedMeshRenderer->ambient.w = obj["Skinned Mesh Renderer"]["ambient_a"].GetFloat();
 
-				data.skinnedMeshRenderer->diffuse.r = obj["Skinned Mesh Renderer"]["diffuse_r"].GetFloat();
-				data.skinnedMeshRenderer->diffuse.g = obj["Skinned Mesh Renderer"]["diffuse_g"].GetFloat();
-				data.skinnedMeshRenderer->diffuse.b = obj["Skinned Mesh Renderer"]["diffuse_b"].GetFloat();
-				data.skinnedMeshRenderer->diffuse.a = obj["Skinned Mesh Renderer"]["diffuse_a"].GetFloat();
+				data.skinnedMeshRenderer->diffuse.x = obj["Skinned Mesh Renderer"]["diffuse_r"].GetFloat();
+				data.skinnedMeshRenderer->diffuse.y = obj["Skinned Mesh Renderer"]["diffuse_g"].GetFloat();
+				data.skinnedMeshRenderer->diffuse.z = obj["Skinned Mesh Renderer"]["diffuse_b"].GetFloat();
+				data.skinnedMeshRenderer->diffuse.w = obj["Skinned Mesh Renderer"]["diffuse_a"].GetFloat();
 
-				data.skinnedMeshRenderer->specular.r = obj["Skinned Mesh Renderer"]["specular_r"].GetFloat();
-				data.skinnedMeshRenderer->specular.g = obj["Skinned Mesh Renderer"]["specular_g"].GetFloat();
-				data.skinnedMeshRenderer->specular.b = obj["Skinned Mesh Renderer"]["specular_b"].GetFloat();
-				data.skinnedMeshRenderer->specular.a = obj["Skinned Mesh Renderer"]["specular_a"].GetFloat();
+				data.skinnedMeshRenderer->specular.x = obj["Skinned Mesh Renderer"]["specular_r"].GetFloat();
+				data.skinnedMeshRenderer->specular.y = obj["Skinned Mesh Renderer"]["specular_g"].GetFloat();
+				data.skinnedMeshRenderer->specular.z = obj["Skinned Mesh Renderer"]["specular_b"].GetFloat();
+				data.skinnedMeshRenderer->specular.w = obj["Skinned Mesh Renderer"]["specular_a"].GetFloat();
 
-				data.skinnedMeshRenderer->reflect.r = obj["Skinned Mesh Renderer"]["reflect_r"].GetFloat();
-				data.skinnedMeshRenderer->reflect.g = obj["Skinned Mesh Renderer"]["reflect_g"].GetFloat();
-				data.skinnedMeshRenderer->reflect.b = obj["Skinned Mesh Renderer"]["reflect_b"].GetFloat();
-				data.skinnedMeshRenderer->reflect.a = obj["Skinned Mesh Renderer"]["reflect_a"].GetFloat();
+				data.skinnedMeshRenderer->reflect.x = obj["Skinned Mesh Renderer"]["reflect_r"].GetFloat();
+				data.skinnedMeshRenderer->reflect.y = obj["Skinned Mesh Renderer"]["reflect_g"].GetFloat();
+				data.skinnedMeshRenderer->reflect.z = obj["Skinned Mesh Renderer"]["reflect_b"].GetFloat();
+				data.skinnedMeshRenderer->reflect.w = obj["Skinned Mesh Renderer"]["reflect_a"].GetFloat();
 
-				data.skinnedMeshRenderer->pbr_albedo.r = obj["Skinned Mesh Renderer"]["pbr_albedo_r"].GetFloat();
-				data.skinnedMeshRenderer->pbr_albedo.g = obj["Skinned Mesh Renderer"]["pbr_albedo_g"].GetFloat();
-				data.skinnedMeshRenderer->pbr_albedo.b = obj["Skinned Mesh Renderer"]["pbr_albedo_b"].GetFloat();
-				data.skinnedMeshRenderer->pbr_albedo.a = obj["Skinned Mesh Renderer"]["pbr_albedo_a"].GetFloat();
+				data.skinnedMeshRenderer->pbr_albedo.x = obj["Skinned Mesh Renderer"]["pbr_albedo_r"].GetFloat();
+				data.skinnedMeshRenderer->pbr_albedo.y = obj["Skinned Mesh Renderer"]["pbr_albedo_g"].GetFloat();
+				data.skinnedMeshRenderer->pbr_albedo.z = obj["Skinned Mesh Renderer"]["pbr_albedo_b"].GetFloat();
+				data.skinnedMeshRenderer->pbr_albedo.w = obj["Skinned Mesh Renderer"]["pbr_albedo_a"].GetFloat();
 
 				data.skinnedMeshRenderer->pbr_metalic = obj["Skinned Mesh Renderer"]["pbr_metalic"].GetFloat();
 				data.skinnedMeshRenderer->pbr_roughness = obj["Skinned Mesh Renderer"]["pbr_roughness"].GetFloat();
@@ -342,10 +342,10 @@ namespace RocketCore
 				data.txtBox->text = obj["Text Box"]["text"].GetString();
 				data.txtBox->fontSize = obj["Text Box"]["font size"].GetFloat();
 
-				data.txtBox->color.r = obj["Text Box"]["Color"]["r"].GetFloat();
-				data.txtBox->color.b = obj["Text Box"]["Color"]["g"].GetFloat();
-				data.txtBox->color.g = obj["Text Box"]["Color"]["b"].GetFloat();
-				data.txtBox->color.a = obj["Text Box"]["Color"]["a"].GetFloat();
+				data.txtBox->color.x = obj["Text Box"]["Color"]["r"].GetFloat();
+				data.txtBox->color.y = obj["Text Box"]["Color"]["g"].GetFloat();
+				data.txtBox->color.z = obj["Text Box"]["Color"]["b"].GetFloat();
+				data.txtBox->color.w = obj["Text Box"]["Color"]["a"].GetFloat();
 
 				data.txtBox->width = obj["Text Box"]["Width"].GetFloat();
 				data.txtBox->height = obj["Text Box"]["Height"].GetFloat();
@@ -546,13 +546,13 @@ namespace RocketCore
 				data.camera->_nearWindowHeight = obj["Camera"]["near_winHeight"].GetFloat();
 				data.camera->_nearWindowWidth = obj["Camera"]["near_winWidth"].GetFloat();
 
-				data.camera->_viewMatrix = RocketEngine::Matrix(
+				data.camera->_viewMatrix = Matrix(
 					obj["Camera"]["View Matrix"]["m_11"].GetFloat(), obj["Camera"]["View Matrix"]["m_12"].GetFloat(), obj["Camera"]["View Matrix"]["m_13"].GetFloat(), obj["Camera"]["View Matrix"]["m_14"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_21"].GetFloat(), obj["Camera"]["View Matrix"]["m_22"].GetFloat(), obj["Camera"]["View Matrix"]["m_23"].GetFloat(), obj["Camera"]["View Matrix"]["m_24"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_31"].GetFloat(), obj["Camera"]["View Matrix"]["m_32"].GetFloat(), obj["Camera"]["View Matrix"]["m_33"].GetFloat(), obj["Camera"]["View Matrix"]["m_34"].GetFloat(),
 					obj["Camera"]["View Matrix"]["m_41"].GetFloat(), obj["Camera"]["View Matrix"]["m_42"].GetFloat(), obj["Camera"]["View Matrix"]["m_43"].GetFloat(), obj["Camera"]["View Matrix"]["m_44"].GetFloat());
 
-				data.camera->_projMatrix = RocketEngine::Matrix(
+				data.camera->_projMatrix = Matrix(
 					obj["Camera"]["Proj Matrix"]["m_11"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_12"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_13"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_14"].GetFloat(),
 					obj["Camera"]["Proj Matrix"]["m_21"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_22"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_23"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_24"].GetFloat(),
 					obj["Camera"]["Proj Matrix"]["m_31"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_32"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_33"].GetFloat(), obj["Camera"]["Proj Matrix"]["m_34"].GetFloat(),
@@ -565,20 +565,20 @@ namespace RocketCore
 				data.dirLight->name = obj["Directional Light"]["__component_type__"].GetString();
 				data.dirLight->intensity = obj["Directional Light"]["intensity"].GetFloat();
 
-				data.dirLight->ambient.r = obj["Directional Light"]["ambient"]["r"].GetFloat();
-				data.dirLight->ambient.g = obj["Directional Light"]["ambient"]["g"].GetFloat();
-				data.dirLight->ambient.b = obj["Directional Light"]["ambient"]["b"].GetFloat();
-				data.dirLight->ambient.a = obj["Directional Light"]["ambient"]["a"].GetFloat();
+				data.dirLight->ambient.x = obj["Directional Light"]["ambient"]["r"].GetFloat();
+				data.dirLight->ambient.y = obj["Directional Light"]["ambient"]["g"].GetFloat();
+				data.dirLight->ambient.z = obj["Directional Light"]["ambient"]["b"].GetFloat();
+				data.dirLight->ambient.w = obj["Directional Light"]["ambient"]["a"].GetFloat();
 
-				data.dirLight->diffuse.r = obj["Directional Light"]["diffuse"]["r"].GetFloat();
-				data.dirLight->diffuse.g = obj["Directional Light"]["diffuse"]["g"].GetFloat();
-				data.dirLight->diffuse.b = obj["Directional Light"]["diffuse"]["b"].GetFloat();
-				data.dirLight->diffuse.a = obj["Directional Light"]["diffuse"]["a"].GetFloat();
+				data.dirLight->diffuse.x = obj["Directional Light"]["diffuse"]["r"].GetFloat();
+				data.dirLight->diffuse.y = obj["Directional Light"]["diffuse"]["g"].GetFloat();
+				data.dirLight->diffuse.z = obj["Directional Light"]["diffuse"]["b"].GetFloat();
+				data.dirLight->diffuse.w = obj["Directional Light"]["diffuse"]["a"].GetFloat();
 
-				data.dirLight->specular.r = obj["Directional Light"]["specular"]["r"].GetFloat();
-				data.dirLight->specular.g = obj["Directional Light"]["specular"]["g"].GetFloat();
-				data.dirLight->specular.b = obj["Directional Light"]["specular"]["b"].GetFloat();
-				data.dirLight->specular.a = obj["Directional Light"]["specular"]["a"].GetFloat();
+				data.dirLight->specular.x = obj["Directional Light"]["specular"]["r"].GetFloat();
+				data.dirLight->specular.y = obj["Directional Light"]["specular"]["g"].GetFloat();
+				data.dirLight->specular.z = obj["Directional Light"]["specular"]["b"].GetFloat();
+				data.dirLight->specular.w = obj["Directional Light"]["specular"]["a"].GetFloat();
 
 
 			}
@@ -592,20 +592,20 @@ namespace RocketCore
 				data.pointLight->range = obj["Point Light"]["attenuation"]["attenu_y"].GetFloat();
 				data.pointLight->range = obj["Point Light"]["attenuation"]["attenu_z"].GetFloat();
 
-				data.pointLight->ambient.r = obj["Point Light"]["ambient"]["r"].GetFloat();
-				data.pointLight->ambient.g = obj["Point Light"]["ambient"]["g"].GetFloat();
-				data.pointLight->ambient.b = obj["Point Light"]["ambient"]["b"].GetFloat();
-				data.pointLight->ambient.a = obj["Point Light"]["ambient"]["a"].GetFloat();
+				data.pointLight->ambient.x = obj["Point Light"]["ambient"]["r"].GetFloat();
+				data.pointLight->ambient.y = obj["Point Light"]["ambient"]["g"].GetFloat();
+				data.pointLight->ambient.z = obj["Point Light"]["ambient"]["b"].GetFloat();
+				data.pointLight->ambient.w = obj["Point Light"]["ambient"]["a"].GetFloat();
 
-				data.pointLight->diffuse.r = obj["Point Light"]["diffuse"]["r"].GetFloat();
-				data.pointLight->diffuse.g = obj["Point Light"]["diffuse"]["g"].GetFloat();
-				data.pointLight->diffuse.b = obj["Point Light"]["diffuse"]["b"].GetFloat();
-				data.pointLight->diffuse.a = obj["Point Light"]["diffuse"]["a"].GetFloat();
+				data.pointLight->diffuse.x = obj["Point Light"]["diffuse"]["r"].GetFloat();
+				data.pointLight->diffuse.y = obj["Point Light"]["diffuse"]["g"].GetFloat();
+				data.pointLight->diffuse.z = obj["Point Light"]["diffuse"]["b"].GetFloat();
+				data.pointLight->diffuse.w = obj["Point Light"]["diffuse"]["a"].GetFloat();
 
-				data.pointLight->specular.r = obj["Point Light"]["specular"]["r"].GetFloat();
-				data.pointLight->specular.g = obj["Point Light"]["specular"]["g"].GetFloat();
-				data.pointLight->specular.b = obj["Point Light"]["specular"]["b"].GetFloat();
-				data.pointLight->specular.a = obj["Point Light"]["specular"]["a"].GetFloat();
+				data.pointLight->specular.x = obj["Point Light"]["specular"]["r"].GetFloat();
+				data.pointLight->specular.y = obj["Point Light"]["specular"]["g"].GetFloat();
+				data.pointLight->specular.z = obj["Point Light"]["specular"]["b"].GetFloat();
+				data.pointLight->specular.w = obj["Point Light"]["specular"]["a"].GetFloat();
 			}
 			if (obj.HasMember("Spot Light"))
 			{
@@ -619,20 +619,20 @@ namespace RocketCore
 				data.spotLight->range = obj["Spot Light"]["attenuation"]["attenu_y"].GetFloat();
 				data.spotLight->range = obj["Spot Light"]["attenuation"]["attenu_z"].GetFloat();
 
-				data.spotLight->ambient.r = obj["Spot Light"]["ambient"]["r"].GetFloat();
-				data.spotLight->ambient.g = obj["Spot Light"]["ambient"]["g"].GetFloat();
-				data.spotLight->ambient.b = obj["Spot Light"]["ambient"]["b"].GetFloat();
-				data.spotLight->ambient.a = obj["Spot Light"]["ambient"]["a"].GetFloat();
+				data.spotLight->ambient.x = obj["Spot Light"]["ambient"]["r"].GetFloat();
+				data.spotLight->ambient.y = obj["Spot Light"]["ambient"]["g"].GetFloat();
+				data.spotLight->ambient.z = obj["Spot Light"]["ambient"]["b"].GetFloat();
+				data.spotLight->ambient.w = obj["Spot Light"]["ambient"]["a"].GetFloat();
 
-				data.spotLight->diffuse.r = obj["Spot Light"]["diffuse"]["r"].GetFloat();
-				data.spotLight->diffuse.g = obj["Spot Light"]["diffuse"]["g"].GetFloat();
-				data.spotLight->diffuse.b = obj["Spot Light"]["diffuse"]["b"].GetFloat();
-				data.spotLight->diffuse.a = obj["Spot Light"]["diffuse"]["a"].GetFloat();
+				data.spotLight->diffuse.x = obj["Spot Light"]["diffuse"]["r"].GetFloat();
+				data.spotLight->diffuse.y = obj["Spot Light"]["diffuse"]["g"].GetFloat();
+				data.spotLight->diffuse.z = obj["Spot Light"]["diffuse"]["b"].GetFloat();
+				data.spotLight->diffuse.w = obj["Spot Light"]["diffuse"]["a"].GetFloat();
 
-				data.spotLight->specular.r = obj["Spot Light"]["specular"]["r"].GetFloat();
-				data.spotLight->specular.g = obj["Spot Light"]["specular"]["g"].GetFloat();
-				data.spotLight->specular.b = obj["Spot Light"]["specular"]["b"].GetFloat();
-				data.spotLight->specular.a = obj["Spot Light"]["specular"]["a"].GetFloat();
+				data.spotLight->specular.x = obj["Spot Light"]["specular"]["r"].GetFloat();
+				data.spotLight->specular.y = obj["Spot Light"]["specular"]["g"].GetFloat();
+				data.spotLight->specular.z = obj["Spot Light"]["specular"]["b"].GetFloat();
+				data.spotLight->specular.w = obj["Spot Light"]["specular"]["a"].GetFloat();
 			}
 
 			serializeData.push_back(data);
@@ -1062,53 +1062,53 @@ namespace RocketCore
 			componentValue.AddMember(StringRef("Normal Path"), componentName, doc.GetAllocator());
 
 			// ambient
-			componentName.SetFloat(comp->GetLegacyAmbient().r);
+			componentName.SetFloat(comp->GetLegacyAmbient().x);
 			componentValue.AddMember(StringRef("ambient_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().g);
+			componentName.SetFloat(comp->GetLegacyAmbient().y);
 			componentValue.AddMember(StringRef("ambient_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().b);
+			componentName.SetFloat(comp->GetLegacyAmbient().z);
 			componentValue.AddMember(StringRef("ambient_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().a);
+			componentName.SetFloat(comp->GetLegacyAmbient().w);
 			componentValue.AddMember(StringRef("ambient_a"), componentName, doc.GetAllocator());
 
 			//diffuse
-			componentName.SetFloat(comp->GetLegacyDiffuse().r);
+			componentName.SetFloat(comp->GetLegacyDiffuse().x);
 			componentValue.AddMember(StringRef("diffuse_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().g);
+			componentName.SetFloat(comp->GetLegacyDiffuse().y);
 			componentValue.AddMember(StringRef("diffuse_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().b);
+			componentName.SetFloat(comp->GetLegacyDiffuse().z);
 			componentValue.AddMember(StringRef("diffuse_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().a);
+			componentName.SetFloat(comp->GetLegacyDiffuse().w);
 			componentValue.AddMember(StringRef("diffuse_a"), componentName, doc.GetAllocator());
 
 			//specular
-			componentName.SetFloat(comp->GetLegacySpecular().r);
+			componentName.SetFloat(comp->GetLegacySpecular().x);
 			componentValue.AddMember(StringRef("specular_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().g);
+			componentName.SetFloat(comp->GetLegacySpecular().y);
 			componentValue.AddMember(StringRef("specular_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().b);
+			componentName.SetFloat(comp->GetLegacySpecular().z);
 			componentValue.AddMember(StringRef("specular_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().a);
+			componentName.SetFloat(comp->GetLegacySpecular().w);
 			componentValue.AddMember(StringRef("specular_a"), componentName, doc.GetAllocator());
 
 			// reflect
-			componentName.SetFloat(comp->GetLegacyReflect().r);
+			componentName.SetFloat(comp->GetLegacyReflect().x);
 			componentValue.AddMember(StringRef("reflect_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().g);
+			componentName.SetFloat(comp->GetLegacyReflect().y);
 			componentValue.AddMember(StringRef("reflect_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().b);
+			componentName.SetFloat(comp->GetLegacyReflect().z);
 			componentValue.AddMember(StringRef("reflect_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().a);
+			componentName.SetFloat(comp->GetLegacyReflect().w);
 			componentValue.AddMember(StringRef("reflect_a"), componentName, doc.GetAllocator());
 
 			// pbr_albedo
-			componentName.SetFloat(comp->GetPBRAlbedo().r);
+			componentName.SetFloat(comp->GetPBRAlbedo().x);
 			componentValue.AddMember(StringRef("pbr_albedo_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().g);
+			componentName.SetFloat(comp->GetPBRAlbedo().y);
 			componentValue.AddMember(StringRef("pbr_albedo_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().b);
+			componentName.SetFloat(comp->GetPBRAlbedo().z);
 			componentValue.AddMember(StringRef("pbr_albedo_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().a);
+			componentName.SetFloat(comp->GetPBRAlbedo().w);
 			componentValue.AddMember(StringRef("pbr_albedo_a"), componentName, doc.GetAllocator());
 
 			// pbr_metalic
@@ -1156,53 +1156,53 @@ namespace RocketCore
 			componentValue.AddMember(StringRef("Normal Path"), componentName, doc.GetAllocator());
 
 			// ambient
-			componentName.SetFloat(comp->GetLegacyAmbient().r);
+			componentName.SetFloat(comp->GetLegacyAmbient().x);
 			componentValue.AddMember(StringRef("ambient_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().g);
+			componentName.SetFloat(comp->GetLegacyAmbient().y);
 			componentValue.AddMember(StringRef("ambient_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().b);
+			componentName.SetFloat(comp->GetLegacyAmbient().z);
 			componentValue.AddMember(StringRef("ambient_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyAmbient().a);
+			componentName.SetFloat(comp->GetLegacyAmbient().w);
 			componentValue.AddMember(StringRef("ambient_a"), componentName, doc.GetAllocator());
 
 			//diffuse
-			componentName.SetFloat(comp->GetLegacyDiffuse().r);
+			componentName.SetFloat(comp->GetLegacyDiffuse().x);
 			componentValue.AddMember(StringRef("diffuse_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().g);
+			componentName.SetFloat(comp->GetLegacyDiffuse().y);
 			componentValue.AddMember(StringRef("diffuse_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().b);
+			componentName.SetFloat(comp->GetLegacyDiffuse().z);
 			componentValue.AddMember(StringRef("diffuse_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyDiffuse().a);
+			componentName.SetFloat(comp->GetLegacyDiffuse().w);
 			componentValue.AddMember(StringRef("diffuse_a"), componentName, doc.GetAllocator());
 
 			//specular
-			componentName.SetFloat(comp->GetLegacySpecular().r);
+			componentName.SetFloat(comp->GetLegacySpecular().x);
 			componentValue.AddMember(StringRef("specular_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().g);
+			componentName.SetFloat(comp->GetLegacySpecular().y);
 			componentValue.AddMember(StringRef("specular_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().b);
+			componentName.SetFloat(comp->GetLegacySpecular().z);
 			componentValue.AddMember(StringRef("specular_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacySpecular().a);
+			componentName.SetFloat(comp->GetLegacySpecular().w);
 			componentValue.AddMember(StringRef("specular_a"), componentName, doc.GetAllocator());
 
 			// reflect
-			componentName.SetFloat(comp->GetLegacyReflect().r);
+			componentName.SetFloat(comp->GetLegacyReflect().x);
 			componentValue.AddMember(StringRef("reflect_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().g);
+			componentName.SetFloat(comp->GetLegacyReflect().y);
 			componentValue.AddMember(StringRef("reflect_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().b);
+			componentName.SetFloat(comp->GetLegacyReflect().z);
 			componentValue.AddMember(StringRef("reflect_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetLegacyReflect().a);
+			componentName.SetFloat(comp->GetLegacyReflect().w);
 			componentValue.AddMember(StringRef("reflect_a"), componentName, doc.GetAllocator());
 
 			// pbr_albedo
-			componentName.SetFloat(comp->GetPBRAlbedo().r);
+			componentName.SetFloat(comp->GetPBRAlbedo().x);
 			componentValue.AddMember(StringRef("pbr_albedo_r"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().g);
+			componentName.SetFloat(comp->GetPBRAlbedo().y);
 			componentValue.AddMember(StringRef("pbr_albedo_g"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().b);
+			componentName.SetFloat(comp->GetPBRAlbedo().z);
 			componentValue.AddMember(StringRef("pbr_albedo_b"), componentName, doc.GetAllocator());
-			componentName.SetFloat(comp->GetPBRAlbedo().a);
+			componentName.SetFloat(comp->GetPBRAlbedo().w);
 			componentValue.AddMember(StringRef("pbr_albedo_a"), componentName, doc.GetAllocator());
 
 			// pbr_metalic
@@ -1271,10 +1271,10 @@ namespace RocketCore
 
 			{
 				Value color(kObjectType);
-				color.AddMember("r", comp->GetColor().r, doc.GetAllocator());
-				color.AddMember("g", comp->GetColor().g, doc.GetAllocator());
-				color.AddMember("b", comp->GetColor().b, doc.GetAllocator());
-				color.AddMember("a", comp->GetColor().a, doc.GetAllocator());
+				color.AddMember("r", comp->GetColor().x, doc.GetAllocator());
+				color.AddMember("g", comp->GetColor().y, doc.GetAllocator());
+				color.AddMember("b", comp->GetColor().z, doc.GetAllocator());
+				color.AddMember("a", comp->GetColor().w, doc.GetAllocator());
 
 				componentValue.AddMember("Color", color, doc.GetAllocator());
 			}
@@ -1736,13 +1736,13 @@ namespace RocketCore
 				Value ambient(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetAmbient().r);
+				val.SetFloat(comp->GetAmbient().x);
 				ambient.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().g);
+				val.SetFloat(comp->GetAmbient().y);
 				ambient.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().b);
+				val.SetFloat(comp->GetAmbient().z);
 				ambient.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().a);
+				val.SetFloat(comp->GetAmbient().w);
 				ambient.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("ambient", ambient, doc.GetAllocator());
@@ -1752,13 +1752,13 @@ namespace RocketCore
 				Value diffuse(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetDiffuse().r);
+				val.SetFloat(comp->GetDiffuse().x);
 				diffuse.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().g);
+				val.SetFloat(comp->GetDiffuse().y);
 				diffuse.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().b);
+				val.SetFloat(comp->GetDiffuse().z);
 				diffuse.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().a);
+				val.SetFloat(comp->GetDiffuse().w);
 				diffuse.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("diffuse", diffuse, doc.GetAllocator());
@@ -1768,13 +1768,13 @@ namespace RocketCore
 				Value specular(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetSpecular().r);
+				val.SetFloat(comp->GetSpecular().x);
 				specular.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().g);
+				val.SetFloat(comp->GetSpecular().y);
 				specular.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().b);
+				val.SetFloat(comp->GetSpecular().z);
 				specular.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().a);
+				val.SetFloat(comp->GetSpecular().w);
 				specular.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("specular", specular, doc.GetAllocator());
@@ -1818,13 +1818,13 @@ namespace RocketCore
 				Value ambient(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetAmbient().r);
+				val.SetFloat(comp->GetAmbient().x);
 				ambient.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().g);
+				val.SetFloat(comp->GetAmbient().y);
 				ambient.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().b);
+				val.SetFloat(comp->GetAmbient().z);
 				ambient.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().a);
+				val.SetFloat(comp->GetAmbient().w);
 				ambient.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("ambient", ambient, doc.GetAllocator());
@@ -1834,13 +1834,13 @@ namespace RocketCore
 				Value diffuse(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetDiffuse().r);
+				val.SetFloat(comp->GetDiffuse().x);
 				diffuse.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().g);
+				val.SetFloat(comp->GetDiffuse().y);
 				diffuse.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().b);
+				val.SetFloat(comp->GetDiffuse().z);
 				diffuse.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().a);
+				val.SetFloat(comp->GetDiffuse().w);
 				diffuse.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("diffuse", diffuse, doc.GetAllocator());
@@ -1850,13 +1850,13 @@ namespace RocketCore
 				Value specular(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetSpecular().r);
+				val.SetFloat(comp->GetSpecular().x);
 				specular.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().g);
+				val.SetFloat(comp->GetSpecular().y);
 				specular.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().b);
+				val.SetFloat(comp->GetSpecular().z);
 				specular.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().a);
+				val.SetFloat(comp->GetSpecular().w);
 				specular.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("specular", specular, doc.GetAllocator());
@@ -1903,13 +1903,13 @@ namespace RocketCore
 				Value ambient(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetAmbient().r);
+				val.SetFloat(comp->GetAmbient().x);
 				ambient.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().g);
+				val.SetFloat(comp->GetAmbient().y);
 				ambient.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().b);
+				val.SetFloat(comp->GetAmbient().z);
 				ambient.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetAmbient().a);
+				val.SetFloat(comp->GetAmbient().w);
 				ambient.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("ambient", ambient, doc.GetAllocator());
@@ -1919,13 +1919,13 @@ namespace RocketCore
 				Value diffuse(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetDiffuse().r);
+				val.SetFloat(comp->GetDiffuse().x);
 				diffuse.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().g);
+				val.SetFloat(comp->GetDiffuse().y);
 				diffuse.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().b);
+				val.SetFloat(comp->GetDiffuse().z);
 				diffuse.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetDiffuse().a);
+				val.SetFloat(comp->GetDiffuse().w);
 				diffuse.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("diffuse", diffuse, doc.GetAllocator());
@@ -1935,13 +1935,13 @@ namespace RocketCore
 				Value specular(kObjectType);
 
 				Value val;
-				val.SetFloat(comp->GetSpecular().r);
+				val.SetFloat(comp->GetSpecular().x);
 				specular.AddMember("r", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().g);
+				val.SetFloat(comp->GetSpecular().y);
 				specular.AddMember("g", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().b);
+				val.SetFloat(comp->GetSpecular().z);
 				specular.AddMember("b", val, doc.GetAllocator());
-				val.SetFloat(comp->GetSpecular().a);
+				val.SetFloat(comp->GetSpecular().w);
 				specular.AddMember("a", val, doc.GetAllocator());
 
 				componentValue.AddMember("specular", specular, doc.GetAllocator());

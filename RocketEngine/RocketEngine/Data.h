@@ -2,9 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "../RocketMath/RocketMath.h"
-#pragma comment(lib, "../x64/Debug/RocketMath.lib")
-
+#include "MathHeader.h"
 #include "eSoundGroup.h"
 
 namespace RocketCore
@@ -44,8 +42,8 @@ namespace RocketCore
 		float _nearWindowWidth = 0.f;		// frustum의 먼 평면의 높이
 
 		// 행렬값
-		RocketEngine::Matrix _viewMatrix;		// 카메라의 로컬좌표'계'
-		RocketEngine::Matrix _projMatrix;		// 카메라의 투영 행렬
+		Matrix _viewMatrix;		// 카메라의 로컬좌표'계'
+		Matrix _projMatrix;		// 카메라의 투영 행렬
 	};
 
 	struct rayCastData
@@ -66,13 +64,13 @@ namespace RocketCore
 		std::string NormalPath;
 
 		// material Data
-		RocketEngine::Vector4 ambient = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 diffuse = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 specular = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 reflect = { 0, 0, 0, 0 };
+		Color ambient = { 0, 0, 0, 0 };
+		Color diffuse = { 0, 0, 0, 0 };
+		Color specular = { 0, 0, 0, 0 };
+		Color reflect = { 0, 0, 0, 0 };
 
 		// pbr materia Data;
-		RocketEngine::Vector4 pbr_albedo = { 0, 0, 0, 0 };
+		Color pbr_albedo = { 0, 0, 0, 0 };
 		float pbr_metalic = 0.f;
 		float pbr_roughness = 0.f;
 		float pbr_specular = 0.f;
@@ -89,13 +87,13 @@ namespace RocketCore
 		std::string NormalPath;
 
 		// material Data
-		RocketEngine::Vector4 ambient = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 diffuse = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 specular = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 reflect = { 0, 0, 0, 0 };
+		Vector4 ambient = { 0, 0, 0, 0 };
+		Vector4 diffuse = { 0, 0, 0, 0 };
+		Vector4 specular = { 0, 0, 0, 0 };
+		Vector4 reflect = { 0, 0, 0, 0 };
 
 		// pbr materia Data;
-		RocketEngine::Vector4 pbr_albedo = { 0, 0, 0, 0 };
+		Vector4 pbr_albedo = { 0, 0, 0, 0 };
 		float pbr_metalic = 0.f;
 		float pbr_roughness = 0.f;
 		float pbr_specular = 0.f;
@@ -120,7 +118,7 @@ namespace RocketCore
 
 		std::string text;
 		float fontSize = 0.f;
-		RocketEngine::Vector4 color = {};
+		Vector4 color = {};
 
 		float width = 0.f;
 		float height = 0.f;
@@ -155,9 +153,9 @@ namespace RocketCore
 		float height = 0.f;
 		float depth = 0.f;
 
-		RocketEngine::Vector3 GetPositionOffset();
-		RocketEngine::Quaternion GetRotationOffset();
-		RocketEngine::Vector3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 	};
 
 	struct capsuleColliderData
@@ -173,9 +171,9 @@ namespace RocketCore
 		float radius = 0.f;
 		float halfHeight = 0.f;
 
-		RocketEngine::Vector3 GetPositionOffset();
-		RocketEngine::Quaternion GetRotationOffset();
-		RocketEngine::Vector3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 	};
 
 	struct sphereColliderData
@@ -190,9 +188,9 @@ namespace RocketCore
 
 		float radius = 0.f;
 
-		RocketEngine::Vector3 GetPositionOffset();
-		RocketEngine::Quaternion GetRotationOffset();
-		RocketEngine::Vector3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 	};
 
 	struct planeColliderData
@@ -203,9 +201,9 @@ namespace RocketCore
 		float rotationOffset[4] = {};
 		float scaleOffset[3] = {};
 
-		RocketEngine::Vector3 GetPositionOffset();
-		RocketEngine::Quaternion GetRotationOffset();
-		RocketEngine::Vector3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 	};
 
 	struct staticBoxColliderData
@@ -220,9 +218,9 @@ namespace RocketCore
 		float height = 0.f;
 		float depth = 0.f;
 
-		RocketEngine::Vector3 GetPositionOffset();
-		RocketEngine::Quaternion GetRotationOffset();
-		RocketEngine::Vector3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 	};
 
 	struct animationData
@@ -269,9 +267,9 @@ namespace RocketCore
 		float intensity = 0.f;
 
 		// base
-		RocketEngine::Vector4 ambient = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 diffuse = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 specular = { 0, 0, 0, 0 };
+		Color ambient = { 0, 0, 0, 0 };
+		Color diffuse = { 0, 0, 0, 0 };
+		Color specular = { 0, 0, 0, 0 };
 
 	};
 
@@ -287,9 +285,9 @@ namespace RocketCore
 		float z = 0.f;
 
 		// base
-		RocketEngine::Vector4 ambient = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 diffuse = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 specular = { 0, 0, 0, 0 };
+		Color ambient = { 0, 0, 0, 0 };
+		Color diffuse = { 0, 0, 0, 0 };
+		Color specular = { 0, 0, 0, 0 };
 	};
 
 	struct spotLightData
@@ -306,9 +304,9 @@ namespace RocketCore
 		float z = 0.f;
 
 		// base
-		RocketEngine::Vector4 ambient = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 diffuse = { 0, 0, 0, 0 };
-		RocketEngine::Vector4 specular = { 0, 0, 0, 0 };
+		Color ambient = { 0, 0, 0, 0 };
+		Color diffuse = { 0, 0, 0, 0 };
+		Color specular = { 0, 0, 0, 0 };
 	};
 
 	struct DataStruct
@@ -338,8 +336,8 @@ namespace RocketCore
 		spotLightData* spotLight = nullptr;
 		pointLightData* pointLight = nullptr;
 
-		RocketEngine::Vector3 GetPosition();
-		RocketEngine::Quaternion GetRotation();
-		RocketEngine::Vector3 GetScale();
+		Vector3 GetPosition();
+		Quaternion GetRotation();
+		Vector3 GetScale();
 	};
 }

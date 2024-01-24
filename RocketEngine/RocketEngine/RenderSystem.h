@@ -7,19 +7,7 @@
 #include "..\\RocketGraphicsInterface\\IRocketGraphics.h"
 #include "RocketAPI.h"
 
-#ifdef _DX11
-#ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
-#else
-#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
-#endif // _DEBUG
-#elif _DX12
-#ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX12.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
-#else
-#define GRAPHICSDLL_PATH ("Graphics\\RocketDX12.dll"#filename)
-#endif // _DEBUG
-#endif // _DX11 or _DX12
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 
 namespace RocketCore::Graphics
 {

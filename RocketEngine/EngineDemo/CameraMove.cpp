@@ -85,11 +85,11 @@ void CameraMove::OnMouseMove()
 
 	/// Try.0
 	//RocketEngine::Vector2 mouseDelta = RocketEngine::GetMouseDelta();
-	RocketEngine::Vector2 mouseDelta = RocketEngine::MouseDeltaSmooth();
+	Vector2 mouseDelta = RocketEngine::MouseDeltaSmooth();
 	_camera->Pitch(mouseDelta.y * RocketEngine::GetDeltaTime() * 0.05f);
 
 	/// Tryseok
-	RocketEngine::Vector3 euler = _camera->gameObject->transform.GetLocalEuler();
+	Vector3 euler = _camera->gameObject->transform.GetLocalEuler();
 	if (89.0f < euler.x)
 	{
 		_camera->gameObject->transform.SetLocalRotationEuler(89.0f, 0.0f, 0.0f);
@@ -143,15 +143,15 @@ void CameraMove::DrawAimLine()
 {
 	if (RocketEngine::GetKey(VK_RETURN))
 	{
-		RocketEngine::Vector3 pos = gameObject->transform.GetPosition() + RocketEngine::Vector3(0.7f, -0.4f, 0.0f);
+		Vector3 pos = gameObject->transform.GetPosition() + Vector3(0.7f, -0.4f, 0.0f);
 
-		RocketEngine::Matrix tempTM = gameObject->transform.GetWorldTM();
-		RocketEngine::Vector4 temp = Vector4MultiplyMatrix({ pos,1 }, tempTM);
+		Matrix tempTM = gameObject->transform.GetWorldTM();
+		Vector3 temp =  Vector3::Transform(pos , tempTM);
 		pos.x = temp.x;
 		pos.y = temp.y;
 		pos.z = temp.z;
 
-		RocketEngine::Vector3 target = pos + gameObject->transform.GetForward() * 50.0f;
+		Vector3 target = pos + gameObject->transform.GetForward() * 50.0f;
 		RocketEngine::DrawDebugLine(pos, target);
 	}
 }

@@ -99,10 +99,10 @@ namespace RocketEngine
 
 	/// 디버그 관련.
 	//ROCKET_API void ToggleDebugMode();
-	ROCKET_API void DrawDebugText(RocketEngine::Vector2 centerPos, std::string content, float size);
-	ROCKET_API void DrawDebugBox(RocketEngine::Matrix worldTM, RocketEngine::Vector3 widthHeightDepth = { 1.0f,1.0f,1.0f }, bool isWire = true, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
-	ROCKET_API void DrawDebugLine(RocketEngine::Vector3 beginPoint, RocketEngine::Vector3 endPoint, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
-	ROCKET_API void DrawDebug2DBox(RocketEngine::Vector2 LT, RocketEngine::Vector2 RB, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebugText(Vector2 centerPos, std::string content, float size);
+	ROCKET_API void DrawDebugBox(Matrix worldTM, Vector3 widthHeightDepth = { 1.0f,1.0f,1.0f }, bool isWire = true, Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebugLine(Vector3 beginPoint, Vector3 endPoint, Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+	ROCKET_API void DrawDebug2DBox(Vector2 LT, Vector2 RB, Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
 
 
 }

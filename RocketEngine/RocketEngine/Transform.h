@@ -1,8 +1,8 @@
 #pragma once
-#include "DLLExporter.h"
-#include "Component.h"
 #include <vector>
 
+#include "DLLExporter.h"
+#include "Component.h"
 #include "MathHeader.h"
 
 namespace RocketEngine
@@ -32,7 +32,7 @@ namespace RocketEngine
 		void SetPosition(const Vector3& position);
 		void SetPosition(float x, float y, float z);
 		void SetRotation(const Quaternion& quaternion);
-		void SetRotation(float w, float x, float y, float z);
+		void SetRotation(float x, float y, float z, float w);
 		void SetRotationEuler(const Vector3& euler);
 		void SetRotationEuler(float angleX, float angleY, float angleZ);
 		void SetScale(const Vector3& scale);
@@ -58,7 +58,7 @@ namespace RocketEngine
 		void SetLocalPosition(const Vector3& position);
 		void SetLocalPosition(float x, float y, float z);
 		void SetLocalRotation(const Quaternion& quaternion);
-		void SetLocalRotation(float w, float x, float y, float z);
+		void SetLocalRotation(float x, float y, float z, float w);
 		void SetLocalRotationEuler(const Vector3& euler);
 		void SetLocalRotationEuler(float angleX, float angleY, float angleZ);
 		void SetLocalRotationEulerXZConvert(float angleX, float angleY, float angleZ);
@@ -81,14 +81,6 @@ namespace RocketEngine
 
 		Matrix GetWorldTM() const;
 
-		// UI에서 사용할 2D Transform 정보 Get.
-	public:
-		Vector3X3 Get2DLocalScaleMatrix() const;
-		Vector3X3 Get2DLocalRotationMatrix() const;
-		Vector3X3 Get2DLocalTranslateMatrix() const;
-
-		Vector3X3 Get2DWorldTM() const;
-
 	public:
 		void Translate(const Vector3& position);
 		void Translate(float x, float y, float z);
@@ -96,7 +88,6 @@ namespace RocketEngine
 		void Rotate(float angleX, float angleY, float angleZ);	// 오일러 각 기준 회전, radian
 
 		void LookAt(const Vector3& target, const Vector3& up);
-		void LookAt(const Vector3& pos, const Vector3& target, const Vector3& up);
 
 	private:
 		Vector3 _position;

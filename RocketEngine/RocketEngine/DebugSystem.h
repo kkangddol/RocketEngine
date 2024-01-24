@@ -2,12 +2,6 @@
 #include "Singleton.h"
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 #include <vector>
 #include <string>
 
@@ -15,31 +9,31 @@ namespace RocketCore
 {
 	struct DebugText
 	{
-		RocketEngine::Vector2 centerPos;
+		Vector2 centerPos;
 		std::string content;
 		float size;
 	};
 
 	struct DebugBox
 	{
-		RocketEngine::Matrix worldTM;
-		RocketEngine::Vector3 widthHeightDepth;
+		Matrix worldTM;
+		Vector3 widthHeightDepth;
 		bool isWire;
-		RocketEngine::Vector4 color;
+		Color color;
 	};
 
 	struct DebugLine
 	{
-		RocketEngine::Vector3 beginPoint;
-		RocketEngine::Vector3 endPoint;
-		RocketEngine::Vector4 color;
+		Vector3 beginPoint;
+		Vector3 endPoint;
+		Color color;
 	};
 
 	struct Debug2DBox
 	{
-		RocketEngine::Vector2 LT;
-		RocketEngine::Vector2 RB;
-		RocketEngine::Vector4 color;
+		Vector2 LT;
+		Vector2 RB;
+		Color color;
 	};
 
 }
@@ -60,10 +54,10 @@ namespace RocketCore
 		void CheckDebugMode();
 
 	public:
-		void DrawDebugText(RocketEngine::Vector2 centerPos, std::string content, float size);
-		void DrawDebugBox(RocketEngine::Matrix worldTM, RocketEngine::Vector3 widthHeightDepth = {1.0f,1.0f,1.0f}, bool isWire = true, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
-		void DrawDebugLine(RocketEngine::Vector3 beginPoint, RocketEngine::Vector3 endPoint, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
-		void DrawDebug2DBox(RocketEngine::Vector2 LT, RocketEngine::Vector2 RB, RocketEngine::Vector4 color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebugText(Vector2 centerPos, std::string content, float size);
+		void DrawDebugBox(Matrix worldTM, Vector3 widthHeightDepth = { 1.0f,1.0f,1.0f }, bool isWire = true, Color color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebugLine(Vector3 beginPoint, Vector3 endPoint, Color color = { 1.0f,0.0f,0.0f,1.0f });
+		void DrawDebug2DBox(Vector2 LT, Vector2 RB, Color color = { 1.0f,0.0f,0.0f,1.0f });
 
 	public:
 		std::vector<DebugText>& GetTextQueue();

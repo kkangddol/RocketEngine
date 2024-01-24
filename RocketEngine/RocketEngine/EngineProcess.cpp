@@ -11,13 +11,6 @@
 #include "DebugSystem.h"
 #include "UISystem.h"
 #include "DataSystem.h"
-#include "../RocketUtil/Log.h"
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketUtil.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketUtil.lib")
-#endif
 
 constexpr int WIDTH = 1920;
 constexpr int HEIGHT = 1080;
@@ -258,7 +251,7 @@ namespace RocketEngine
 
 	BOOL EngineProcess::InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
-// #ifdef _DEBUG
+// 
 // 		_hWnd = CreateWindow(CLASSNAME, WINDOWNAME, WS_OVERLAPPED,
 // 			CW_USEDEFAULT, CW_USEDEFAULT, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 // #else

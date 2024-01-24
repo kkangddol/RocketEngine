@@ -184,6 +184,9 @@
     <Filter Include="System\DataSystem\DataSystem">
       <UniqueIdentifier>{7dc47b8d-4054-482a-9901-11daddd445bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{721eab2b-8d12-45a1-a9f3-238025499900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineProcess.h">
@@ -344,6 +347,9 @@
     </ClInclude>
     <ClInclude Include="DataSystem.h">
       <Filter>System\DataSystem\DataSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

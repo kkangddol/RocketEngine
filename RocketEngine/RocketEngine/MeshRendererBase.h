@@ -7,13 +7,6 @@
 
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
-
 namespace RocketEngine
 {
 	class GameObject;
@@ -56,27 +49,27 @@ namespace RocketCore
 		// Graphics::ModelData _modelData;
 
 	public:
-		void SetLegacyAmbient(RocketEngine::Vector4 ambient);
-		void SetLegacyDiffuse(RocketEngine::Vector4 diffuse);
-		void SetLegacySpecular(RocketEngine::Vector4 specular);
-		void SetLegacyReflect(RocketEngine::Vector4 reflect);
+		void SetLegacyAmbient(Vector4 ambient);
+		void SetLegacyDiffuse(Vector4 diffuse);
+		void SetLegacySpecular(Vector4 specular);
+		void SetLegacyReflect(Vector4 reflect);
 
-		RocketEngine::Vector4 GetLegacyAmbient() const;
-		RocketEngine::Vector4 GetLegacyDiffuse() const;
-		RocketEngine::Vector4 GetLegacySpecular() const;
-		RocketEngine::Vector4 GetLegacyReflect() const;
+		Vector4 GetLegacyAmbient() const;
+		Vector4 GetLegacyDiffuse() const;
+		Vector4 GetLegacySpecular() const;
+		Vector4 GetLegacyReflect() const;
 
 	private:
 		Graphics::LegacyMaterialData _legacyMaterialData;
 
 	public:
-		void SetPBRAlbedo(RocketEngine::Vector4 albedo);
+		void SetPBRAlbedo(Vector4 albedo);
 		void SetPBRMetallic(float metallic);
 		void SetPBRRoughness(float roughness);
 		void SetPBRSpecular(float specular);
 		void SetPBREmission(float emission);
 
-		RocketEngine::Vector4 GetPBRAlbedo() const;
+		Vector4 GetPBRAlbedo() const;
 		float GetPBRMetallic() const;
 		float GetPBRRoughness() const;
 		float GetPBRSpecular() const;

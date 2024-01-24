@@ -45,58 +45,14 @@ namespace RocketEngine
 
 	void DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 	{
-		Vector4 localPos = Vector4MultiplyMatrix({ pos,1.0f }, GetOffsetTM().Inverse());
-		Quaternion localQuat = QuaternionMultiply(quat, GetRotationOffset().conjugate());
-
-		if (!(gameObject->objName == "player"
-			|| gameObject->objName == "playerBody"
-			|| gameObject->objName == "playerHead"
-			|| gameObject->objName == "player1"
-			|| gameObject->objName == "player2"
-			|| gameObject->objName == "player3"
-			|| gameObject->objName == "player4"
-			|| gameObject->objName == "playerBody1"
-			|| gameObject->objName == "playerBody2"
-			|| gameObject->objName == "playerBody3"
-			|| gameObject->objName == "playerBody4"
-			|| gameObject->objName == "playerHead1"
-			|| gameObject->objName == "playerHead2"
-			|| gameObject->objName == "playerHead3"
-			|| gameObject->objName == "playerHead4"))
-		{
-			// 회전 각도에 따라 y좌표 내려간 만큼만 올려주기
-			float r = GetHeight() / 2.0f;
-			float tempAngle = 2 * acos(quat.w);
-			localPos.y += r * (1 - cos(tempAngle));
-		}
-
-		gameObject->transform.SetPosition(localPos.x, localPos.y, localPos.z);
-		gameObject->transform.SetRotation(localQuat);
+		gameObject->transform.SetPosition(pos);
+		gameObject->transform.SetRotation(quat);
 	}
 
 	void DynamicCollider::UpdateToPhysics()
 	{
-		if (!(gameObject->objName == "player"
-			|| gameObject->objName == "playerBody"
-			|| gameObject->objName == "playerHead"
-			|| gameObject->objName == "player1"
-			|| gameObject->objName == "player2"
-			|| gameObject->objName == "player3"
-			|| gameObject->objName == "player4"
-			|| gameObject->objName == "playerBody1"
-			|| gameObject->objName == "playerBody2"
-			|| gameObject->objName == "playerBody3"
-			|| gameObject->objName == "playerBody4"
-			|| gameObject->objName == "playerHead1"
-			|| gameObject->objName == "playerHead2"
-			|| gameObject->objName == "playerHead3"
-			|| gameObject->objName == "playerHead4"))
-		{
-			return;
-		}
-
-		Vector4 pos = Vector4(GetPositionOffset(), 1.0f) * gameObject->transform.GetWorldTM();
-		Quaternion rot = QuaternionMultiply(GetRotationOffset(), gameObject->transform.GetRotation());
+		Vector3 pos = gameObject->transform.GetPosition();
+		Quaternion rot = gameObject->transform.GetRotation();
 
 		physx::PxTransform pxTransform;
 
@@ -144,7 +100,7 @@ namespace RocketEngine
 		}
 	}
 
-	RocketEngine::Vector3 DynamicCollider::GetVelocity() const
+	Vector3 DynamicCollider::GetVelocity() const
 	{
 		physx::PxVec3 temp = _physXRigid->getLinearVelocity();
 		return { temp.x, temp.y, temp.z };

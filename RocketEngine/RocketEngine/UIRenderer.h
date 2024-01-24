@@ -4,13 +4,6 @@
 #include <string>
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
-
 namespace RocketEngine
 {
 	class GameObject;
@@ -27,7 +20,7 @@ namespace RocketCore
 		virtual void Start() override;
 
 	public:
-		RocketEngine::Vector3X3 Get2DWorldTM();
+		Matrix Get2DWorldTM();
 		virtual std::string GetSketchData() { return "default"; }
 
 	public:

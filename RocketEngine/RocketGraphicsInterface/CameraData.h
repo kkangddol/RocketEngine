@@ -1,19 +1,13 @@
 #pragma once
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
 namespace RocketCore::Graphics
 {
 	struct CameraData
 	{
-		RocketEngine::Vector3 position;
-		RocketEngine::Quaternion rotation;
-		//RocketEngine::Matrix matrix;		// Mk.2 때 카메라 효과? 줄때 사용할 예정.
+		Vector3 position;
+		Quaternion rotation;
+		//Matrix matrix;		// Mk.2 때 카메라 효과? 줄때 사용할 예정.
 
 		float nearZ;					// frustum의 가까운 평면까지의 거리
 		float farZ;					// frustum의 먼 평면까지의 거리

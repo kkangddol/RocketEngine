@@ -6,12 +6,6 @@
 #include <windows.h>	// 디버그용으로 열었음
 #include "RenderSystem.h"
 
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketMath.lib")
-#endif
-
 namespace RocketEngine
 {
 	Camera::Camera(GameObject* owner)
@@ -73,7 +67,7 @@ namespace RocketEngine
 
 	float Camera::GetFovX() const
 	{
-		return RMConvertToDegrees(GetRadianFovX());
+		return DirectX::XMConvertToDegrees(GetRadianFovX());
 	}
 
 	float Camera::GetRadianFovX() const
@@ -89,7 +83,7 @@ namespace RocketEngine
 
 	float Camera::GetRadianFovY() const
 	{
-		return RMConvertToRadians(_fovY);
+		return DirectX::XMConvertToRadians(_fovY);
 	}
 
 	float Camera::GetNearWindowWidth() const
@@ -169,19 +163,16 @@ namespace RocketEngine
 		gameObject->transform.Translate(worldUpDelta);
 	}
 
-	void Camera::Pitch(float radian)
+	void Camera::Pitch(float angle)
 	{
-		//Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), gameObject->transform.GetRight(), angle);
-		Vector4 r{ 1.0f,0.0f,0.0f,1.0f };
-		r = Vector4MultiplyMatrix(r, gameObject->transform.GetLocalRotationMatrix());
-		Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { r.x,r.y,r.z }, radian);
-		gameObject->transform.SetLocalRotation(newRot);
+		gameObject->transform.Rotate(angle, 0.0f, 0.0f);
 	}
 
 	void Camera::RotateY(float angle)
 	{
-		Quaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
-		gameObject->transform.SetLocalRotation(newRot);		
+		Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angle);
+		Quaternion result = Quaternion::Concatenate(rotQuat, gameObject->transform.GetLocalRotation());
+		gameObject->transform.SetLocalRotation(result);
 	}
 
 	void Camera::ShakeCameraUpdateOnHit(float deltaTime)

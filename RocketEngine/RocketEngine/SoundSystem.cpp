@@ -248,17 +248,17 @@ namespace RocketCore
 			return;
 		}
 
-		RocketEngine::Vector3 pos = _listenerTransform->GetPosition();
+		Vector3 pos = _listenerTransform->GetPosition();
 		_listenerPos.x = pos.x;
 		_listenerPos.y = pos.y;
 		_listenerPos.z = pos.z;
 
-		RocketEngine::Vector3 forward = _listenerTransform->GetForward();
+		Vector3 forward = _listenerTransform->GetForward();
 		_listenerForward.x = forward.x;
 		_listenerForward.y = forward.y;
 		_listenerForward.z = forward.z;
 
-		RocketEngine::Vector3 up = _listenerTransform->GetUp();
+		Vector3 up = _listenerTransform->GetUp();
 		_listenerUp.x = up.x;
 		_listenerUp.y = up.y;
 		_listenerUp.z = up.z;

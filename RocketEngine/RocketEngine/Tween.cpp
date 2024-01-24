@@ -6,7 +6,7 @@
 #include <math.h>
 #include <iostream>
 
-#define PI 3.1415926543
+constexpr float PI = DirectX::XM_PI;
 
 namespace RocketEngine
 {

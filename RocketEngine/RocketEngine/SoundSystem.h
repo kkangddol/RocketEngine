@@ -5,19 +5,10 @@
 #include <string>
 #include "RocketAudio.h"
 
-#include "..\\SoundLib\\inc\\fmod.hpp"
-#include "..\\SoundLib\\inc\\fmod_common.h"
+#include <fmod.hpp>
 #include "eSoundGroup.h"
 
-#pragma comment(lib, "..\\SoundLib\\lib\\x64\\fmod_vc.lib")
-
 #include "MathHeader.h" 
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketMath.lib")
-#endif //_DEBUG
 
 namespace RocketEngine
 {

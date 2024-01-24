@@ -5,15 +5,7 @@
 #include "GameObject.h"
 #include <vector>
 
-#if defined(_DX11) || defined(_DX12)
 #include "MathHeader.h"
-#endif // _DX11 || _DX12
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif //_DEBUG
 
 namespace physx
 {

@@ -39,7 +39,7 @@ namespace RocketEngine
 		_range = range;
 	}
 
-	RocketEngine::Vector3 PointLight::GetAttenuation() const
+	Vector3 PointLight::GetAttenuation() const
 	{
 		return _attenuation;
 	}

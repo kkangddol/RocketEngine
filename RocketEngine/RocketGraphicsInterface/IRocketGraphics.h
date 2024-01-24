@@ -6,16 +6,6 @@
 
 #include "MathHeader.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\RocketMath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\RocketMath.lib")
-#endif // _DEBUG
-
-
-// Float2, Float3, Float4
-// Fmatrix3x3, Fmatrix4x4
-
 namespace RocketCore::Graphics
 {
 	class IRocketGraphics

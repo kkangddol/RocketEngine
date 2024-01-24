@@ -10,15 +10,8 @@
 #include "RenderSystem.h"
 #include "DebugSystem.h"
 #include "PhysicsSystem.h"
-#include "../RocketUtil/Log.h"
 #include "DataSystem.h"
 #include "SoundSystem.h"
-
-#ifdef _DEBUG
-#pragma comment(lib, "..\\x64\\Debug\\RocketUtil.lib")
-#else
-#pragma comment(lib, "..\\x64\\Release\\RocketUtil.lib")
-#endif // _DEBUG
 
 constexpr const char* DEFAULT_IMAGE_PATH = "..\\GraphicsResources\\Images\\luffy.jpg";
 
