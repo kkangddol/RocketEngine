@@ -16,7 +16,7 @@ namespace Rocket
 	class ROCKET_API BoxCollider final : public DynamicCollider
 	{
 	public:
-		BoxCollider(GameObject* owner);
+		BoxCollider();
 
 
 		/// 디버그 정보 보내기.

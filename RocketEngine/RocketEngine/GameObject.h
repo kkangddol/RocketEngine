@@ -128,8 +128,9 @@ namespace Rocket
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
-		T* component = new T(this);
-		_components[typeid(T).name()].push_back(component);
+		T* component = new T();
+		component->gameObject = this;
+		_components[typeid(T).name()].emplace_back(component);
 		return component;
 	}
 	

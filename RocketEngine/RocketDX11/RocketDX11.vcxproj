@@ -154,7 +154,7 @@
     <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -163,7 +163,7 @@
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
-    <ClCompile Include="StaticMeshObject.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -173,13 +173,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
-    <ClInclude Include="dllExporter.h" />
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GraphicsStruct.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />
@@ -193,7 +192,7 @@
     <ClInclude Include="RocketMacroDX11.h" />
     <ClInclude Include="IShader.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="StaticMeshObject.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexShader.h" />

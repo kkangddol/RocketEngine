@@ -22,7 +22,7 @@ namespace Rocket
 	class ROCKET_API Collider : public Component
 	{
 	public:
-		Collider(GameObject* owner);
+		Collider();
 
 	// Collider 자체적으로 들고 있는 TRS Offset과 그 getter, setter
 	public:

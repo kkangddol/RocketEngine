@@ -15,7 +15,7 @@ namespace Rocket
 	class ROCKET_API StaticCollider : public Collider
 	{
 	public:
-		StaticCollider(GameObject* owner);
+		StaticCollider();
 
 	public:
 		void SetPhysXRigid(physx::PxRigidStatic* rigid);

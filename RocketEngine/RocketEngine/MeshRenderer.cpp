@@ -1,13 +1,11 @@
 #include "MeshRenderer.h"
-#include "GameObject.h"
-#include "Transform.h"
+#include "GraphicsSystem.h"
 
 namespace Rocket
 {
-
-	MeshRenderer::MeshRenderer(GameObject* owner)
-		: MeshRendererBase(owner)
+	MeshRenderer::MeshRenderer()
+		: _meshRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateMeshRenderer())
 	{
-
+		_renderable = _meshRenderer;
 	}
 }

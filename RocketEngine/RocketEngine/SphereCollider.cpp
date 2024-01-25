@@ -6,8 +6,7 @@
 
 namespace Rocket
 {
-	SphereCollider::SphereCollider(GameObject* owner)
-		: DynamicCollider(owner)
+	SphereCollider::SphereCollider()
 	{
 
 	}

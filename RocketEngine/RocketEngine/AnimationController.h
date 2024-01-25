@@ -46,7 +46,7 @@ namespace Rocket
 #pragma endregion 급한대로 하드코딩
 
 	public:
-		AnimationController(GameObject* owner);
+		AnimationController();
 		~AnimationController();
 
 	protected:

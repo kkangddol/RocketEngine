@@ -4,8 +4,7 @@
 
 namespace Rocket
 {
-	SkinnedMeshRenderer::SkinnedMeshRenderer(GameObject* owner)
-		: MeshRendererBase(owner)
+	SkinnedMeshRenderer::SkinnedMeshRenderer()
 	{
 
 	}

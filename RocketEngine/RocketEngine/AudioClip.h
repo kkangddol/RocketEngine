@@ -27,7 +27,7 @@ namespace Rocket
 	class ROCKET_API AudioClip final : public Component
 	{
 	public:
-		AudioClip(GameObject* owner);
+		AudioClip();
 
 	protected:
 		virtual void Start() override;

@@ -23,15 +23,15 @@ namespace Rocket::Core
 /// </summary>
 namespace Rocket
 {
-	class ROCKET_API Component : public Rocket::Core::IComponent
+	class ROCKET_API Component : public Core::IComponent
 	{
 		friend class GameObject;
-		friend class Rocket::Core::ObjectSystem;
-		friend class Rocket::Core::GraphicsSystem;
+		friend class Core::ObjectSystem;
+		friend class Core::GraphicsSystem;
 	
 	public:
-		Component(GameObject* owner)
-			: gameObject(owner)
+		Component()
+			: gameObject(nullptr)
 		{
 
 		}

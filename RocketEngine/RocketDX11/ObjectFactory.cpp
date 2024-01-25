@@ -1,9 +1,8 @@
 #include "ObjectFactory.h"
 #include "ObjectManager.h"
-#include "ResourceManager.h"
 
 #include "Camera.h"
-#include "StaticMeshObject.h"
+#include "MeshRenderer.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -13,7 +12,7 @@ namespace Rocket::Core
 {
 	IFactory* CreateGraphicsObjectFactory()
 	{
-		return new Rocket::Core::ObjectFactory();
+		return new ObjectFactory();
 	}
 
 	void ReleaseFactory(IFactory* instance)
@@ -24,57 +23,53 @@ namespace Rocket::Core
 
 namespace Rocket::Core
 {
-	Rocket::Core::ICamera* ObjectFactory::CreateCamera()
+	ObjectFactory::ObjectFactory()
+		: _objectManager(ObjectManager::Instance())
 	{
-		return ObjectManager::Instance().CreateCamera();
+
 	}
 
-	Rocket::Core::IStaticMesh* ObjectFactory::CreateStaticMeshObject()
+	ICamera* ObjectFactory::CreateCamera()
 	{
-		ObjectManager& objMgr = ObjectManager::Instance();
-		ResourceManager& rscMgr = ResourceManager::Instance();
-
-		StaticMeshObject* obj = objMgr.CreateStaticMeshObject();
-
-		obj->SetModel(rscMgr.GetCubeModel());
-		obj->SetVertexShader(rscMgr.GetVertexShader("LightVS"));
-		obj->SetPixelShader(rscMgr.GetPixelShader("LightPS"));
-		obj->SetRenderState(rscMgr.GetRenderState(ResourceManager::eRenderState::SOLID));
-
-		return obj;
+		return _objectManager.CreateCamera();
 	}
 
-	Rocket::Core::ISketchableText* ObjectFactory::CreateText()
+	IMeshRenderer* ObjectFactory::CreateMeshRenderer()
 	{
-		return ObjectManager::Instance().CreateText();
+		return _objectManager.CreateMeshRenderer();
 	}
 
-	Rocket::Core::ISketchableImage* ObjectFactory::CreateImage()
+	ISketchableText* ObjectFactory::CreateText()
 	{
-		return ObjectManager::Instance().CreateImage();
+		return _objectManager.CreateText();
 	}
 
-	Rocket::Core::ILineRenderer* ObjectFactory::CreateLineRenderer()
+	ISketchableImage* ObjectFactory::CreateImage()
 	{
-		return ObjectManager::Instance().CreateLineRenderer();
+		return _objectManager.CreateImage();
 	}
 
-	ISkinnedMesh* Core::ObjectFactory::CreateSkinnedMeshObject()
+	ILineRenderer* ObjectFactory::CreateLineRenderer()
+	{
+		return _objectManager.CreateLineRenderer();
+	}
+
+	ISkinnedMesh* ObjectFactory::CreateSkinnedMeshObject()
 	{
 		return nullptr;
 	}
 
-	CubePrimitive* Core::ObjectFactory::CreateCubePrimitive()
+	CubePrimitive* ObjectFactory::CreateCubePrimitive()
 	{
 		return nullptr;
 	}
 
-	SpherePrimitive* Core::ObjectFactory::CreateSpherePrimitive()
+	SpherePrimitive* ObjectFactory::CreateSpherePrimitive()
 	{
 		return nullptr;
 	}
 
-	CylinderPrimitive* Core::ObjectFactory::CreateCylinderPrimitive()
+	CylinderPrimitive* ObjectFactory::CreateCylinderPrimitive()
 	{
 		return nullptr;
 	}

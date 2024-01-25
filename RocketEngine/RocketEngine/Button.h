@@ -10,7 +10,7 @@ namespace Rocket
 	class ROCKET_API Button : public Rocket::Core::UIRenderer
 	{
 	public:
-		Button(GameObject* owner);
+		Button();
 
 	protected:
 		virtual void LateUpdate() override;

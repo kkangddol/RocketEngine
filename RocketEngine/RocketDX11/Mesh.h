@@ -14,7 +14,7 @@ namespace Rocket::Core
 	class Mesh : public IResource
 	{
 	public:
-		virtual void Initialize(ID3D11Device* device);
+		virtual void Initialize(ID3D11Device* device) {}
 
 		int GetVertexCount() const;
 		int GetIndexCount() const;

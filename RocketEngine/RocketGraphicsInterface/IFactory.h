@@ -8,7 +8,7 @@
 namespace Rocket::Core
 {
 	class ICamera;
-	class IStaticMesh;
+	class IMeshRenderer;
 	class ISkinnedMesh;
 	class ISketchableText;
 	class ISketchableImage;
@@ -21,7 +21,7 @@ namespace Rocket::Core
 	{
 	public:
 		virtual ICamera* CreateCamera() = 0;
-		virtual IStaticMesh* CreateStaticMeshObject() = 0;
+		virtual IMeshRenderer* CreateMeshRenderer() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
 		virtual ISketchableText* CreateText() = 0;
 		virtual ISketchableImage* CreateImage() = 0;

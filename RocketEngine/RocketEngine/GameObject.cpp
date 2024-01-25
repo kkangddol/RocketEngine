@@ -9,7 +9,7 @@ namespace Rocket
 	// 생성자 순서 조심할 것.
 	// transform이 먼저 초기화 되지 않으면 Object 초기화할 때 문제 생김.
 	GameObject::GameObject(std::string objName)
-		:transform(*(new Transform(this))),
+		:transform(*(new Transform())),
 		_renderer(nullptr),
 		objName(objName),
 		_isActive(true),

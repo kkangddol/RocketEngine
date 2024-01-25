@@ -1,12 +1,14 @@
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "CubeMesh.h"
-#include "Model.h"
+#include "Mesh.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "RocketMacroDX11.h"
+#include "texture.h"
+#include "material.h"
 
 namespace Rocket::Core
 {
@@ -19,13 +21,6 @@ namespace Rocket::Core
 	{
 		_device = device;
 		_deviceContext = deviceContext;
-		_cubeModel = new Model();
-		_cubeModel->AddMesh(new CubeMesh());
-		_cubeModel->Initialize(device);
-		_cubeModel->LoadTexture(device, L"Resources/Textures/darkbrickdxt1.dds");
-
-		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
-
 		// Color Shader
 		{
 			VertexShader* colorVS = new VertexShader();
@@ -82,6 +77,22 @@ namespace Rocket::Core
 		}
 
 		CreateRenderStates();
+
+
+
+		_cubeMesh = new CubeMesh();
+		_cubeMesh->Initialize(device);
+
+		_defaultTexture = new Texture();
+		_defaultTexture->Initialize(device, L"Resources/Textures/darkbrickdxt1.dds");
+
+		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
+		
+		_defaultMaterial = new Material();
+		_defaultMaterial->SetVertexShader(GetVertexShader("LightVS"));
+		_defaultMaterial->SetPixelShader(GetPixelShader("LightPS"));
+		_defaultMaterial->SetRenderState(GetRenderState(eRenderState::SOLID));
+		_defaultMaterial->SetTexture(_defaultTexture);
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -107,11 +118,6 @@ namespace Rocket::Core
 	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
 	{
 		return _defaultFont;
-	}
-
-	Model* ResourceManager::GetCubeModel()
-	{
-		return _cubeModel;
 	}
 
 	ID3D11Device* ResourceManager::GetDevice()

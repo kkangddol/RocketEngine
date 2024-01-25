@@ -20,7 +20,7 @@ namespace Rocket
 	class ROCKET_API TextBox : public Rocket::Core::UIRenderer
 	{
 	public:
-		TextBox(GameObject* owner);
+		TextBox();
 
 	public:
 		virtual std::string GetSketchData() override;

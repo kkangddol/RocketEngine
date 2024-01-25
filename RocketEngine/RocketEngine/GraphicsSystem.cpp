@@ -24,10 +24,10 @@
 #include "SpotLight.h"
 #include <algorithm>
 
-using GRAPHICS_CREATE_SIGNATURE = Rocket::Core::I3DRenderer* (*)(void);
+using GRAPHICS_CREATE_SIGNATURE = Rocket::Core::IDX11Renderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
 
-#define GRAPHICS_RELEASE_SIGNATURE void(*)(Rocket::Core::I3DRenderer*)
+#define GRAPHICS_RELEASE_SIGNATURE void(*)(Rocket::Core::IDX11Renderer*)
 #define GRAPHICS_RELEASE_NAME "ReleaseGraphicsInstance"
 
 using FACTORY_CREATE_SIGNATURE = Rocket::Core::IFactory* (*)(void);

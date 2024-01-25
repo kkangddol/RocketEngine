@@ -4,9 +4,8 @@
 
 namespace Rocket
 {
-	DirectionalLight::DirectionalLight(GameObject* owner)
-		: Light(owner),
-		_intensity(1.0f)
+	DirectionalLight::DirectionalLight()
+		: _intensity(1.0f)
 	{
 
 	}

@@ -7,9 +7,8 @@
 namespace Rocket
 {
 
-	PointLight::PointLight(GameObject* owner)
-		: Light(owner),
-		_range(1.0f),
+	PointLight::PointLight()
+		: _range(1.0f),
 		_attenuation(1.0f,1.0f,1.0f)
 	{
 

@@ -29,8 +29,7 @@ namespace Rocket
 		}
 	}
 
-	AnimationController::AnimationController(GameObject* owner)
-		: Component(owner)
+	AnimationController::AnimationController()
 	{
 
 	}

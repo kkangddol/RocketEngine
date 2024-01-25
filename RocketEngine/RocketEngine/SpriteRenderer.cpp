@@ -8,9 +8,8 @@
 
 namespace Rocket
 {
-	SpriteRenderer::SpriteRenderer(GameObject* owner)
-		: Rocket::Core::UIRenderer(owner),
-		_spritePath()
+	SpriteRenderer::SpriteRenderer()
+		: _spritePath()
 	{
 
 	}

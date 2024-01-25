@@ -18,7 +18,7 @@ namespace Rocket
 	{
 		/// 생성자.
 	public:
-		Transform(GameObject* owner);		// 생성할 때 내 Entity가 무엇인지 저장한다.
+		Transform();		// 생성할 때 내 Entity가 무엇인지 저장한다.
 
 		/// Get World Position, Rotation, Scale
 	public:

@@ -1,15 +1,19 @@
 #pragma once
-#include "DLLExporter.h"
 #include "MeshRendererBase.h"
+#include "DLLExporter.h"
+#include "../RocketGraphicsInterface/IMeshRenderer.h"
 
 namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API MeshRenderer final : public Rocket::Core::MeshRendererBase
+	class ROCKET_API MeshRenderer final : public Core::MeshRendererBase
 	{
 	public:
-		MeshRenderer(GameObject* owner);
+		MeshRenderer();
+
+	protected:
+		Core::IMeshRenderer* _meshRenderer;
 	};
 }
 

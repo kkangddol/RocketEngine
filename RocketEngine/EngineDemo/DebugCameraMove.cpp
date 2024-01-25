@@ -1,8 +1,7 @@
 #include "DebugCameraMove.h"
 
-DebugCameraMove::DebugCameraMove(Rocket::GameObject* owner)
-	: Component(owner),
-	moveSpeed(2.0f)
+DebugCameraMove::DebugCameraMove()
+	: moveSpeed(2.0f)
 {
 }
 
@@ -64,6 +63,6 @@ void DebugCameraMove::OnMouseMove()
 
 	Vector2 mouseDelta = Rocket::GetMouseDelta();
 	mouseDelta = mouseDelta * Rocket::GetDeltaTime();
-	_camera->Pitch(mouseDelta.y);
-	_camera->RotateY(mouseDelta.x);
+	_camera->Pitch(mouseDelta.y * 2);
+	_camera->RotateY(mouseDelta.x * 2);
 }

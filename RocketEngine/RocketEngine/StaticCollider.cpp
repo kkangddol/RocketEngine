@@ -7,9 +7,8 @@
 
 namespace Rocket
 {
-	StaticCollider::StaticCollider(GameObject* owner)
-		: Collider(owner),
-		_isCollided(false),
+	StaticCollider::StaticCollider()
+		: _isCollided(false),
 		_wasCollided(false),
 		_physXRigid(nullptr)
 	{

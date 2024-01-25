@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "../RocketGraphicsInterface/I3DRenderer.h"
+#include "../RocketGraphicsInterface/IDX11Renderer.h"
 #include "../RocketGraphicsInterface/IFactory.h"
 #include "../RocketGraphicsInterface/IGraphicsSystem.h"
 #include "RocketAPI.h"
@@ -82,7 +82,7 @@ namespace Rocket::Core
 		/// DLL ฐüทร
 	private:
 		HMODULE hGraphicsModule;
-		std::unique_ptr<Rocket::Core::I3DRenderer> _rocketGraphics;
+		std::unique_ptr<Rocket::Core::IDX11Renderer> _rocketGraphics;
 		std::unique_ptr<Rocket::Core::IFactory> _factory;
 	};
 }

@@ -15,7 +15,7 @@
 #include "ResourceManager.h"
 #include "ObjectManager.h"
 
-#include "StaticMeshObject.h"
+#include "MeshRenderer.h"
 #include "ImageRenderer.h"
 #include "LineRenderer.h"
 #include "RocketMacroDX11.h"
@@ -23,12 +23,12 @@
 
 namespace Rocket::Core
 {
-	I3DRenderer* CreateGraphicsInstance()
+	IDX11Renderer* CreateGraphicsInstance()
 	{
 		return new Rocket::Core::RocketDX11();
 	}
 
-	void ReleaseGraphicsInstance(I3DRenderer* instance)
+	void ReleaseGraphicsInstance(IDX11Renderer* instance)
 	{
 		delete instance;
 	}
@@ -386,7 +386,7 @@ namespace Rocket::Core
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		RenderHelperObject();
-		//RenderStaticMesh();
+		RenderStaticMesh();
 		//RenderText();
 		
 		//RenderTexture();

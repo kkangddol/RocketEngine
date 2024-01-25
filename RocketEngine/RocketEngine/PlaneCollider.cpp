@@ -6,8 +6,7 @@
 
 namespace Rocket
 {
-	PlaneCollider::PlaneCollider(GameObject* owner)
-		: StaticCollider(owner)
+	PlaneCollider::PlaneCollider()
 	{
 
 	}

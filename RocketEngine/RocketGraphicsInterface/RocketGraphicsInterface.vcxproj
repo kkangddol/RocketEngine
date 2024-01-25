@@ -27,14 +27,14 @@
     <ClInclude Include="ILineRenderer.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="IObject.h" />
-    <ClInclude Include="I3DRenderer.h" />
+    <ClInclude Include="IDX11Renderer.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
     <ClInclude Include="ISketchableImage.h" />
     <ClInclude Include="ISketchableText.h" />
     <ClInclude Include="ISkinnedMesh.h" />
-    <ClInclude Include="IStaticMesh.h" />
+    <ClInclude Include="IMeshRenderer.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="PrimitiveHeader.h" />
   </ItemGroup>

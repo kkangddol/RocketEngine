@@ -9,9 +9,8 @@ namespace Rocket
 {
 	float downTime = 0.0f;
 
-	TextBox::TextBox(GameObject* owner)
-		: Rocket::Core::UIRenderer(owner),
-		_text("default"),
+	TextBox::TextBox()
+		: _text("default"),
 		_fontSize(20.0f),
 		_color(1.0f, 1.0f, 1.0f, 1.0f)
 	{

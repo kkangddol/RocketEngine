@@ -13,11 +13,13 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class Model;
+	class Mesh;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
 	class ImageRenderer;
+	class Texture;
+	class Material;
 
 	class ResourceManager : public Singleton<ResourceManager>
 	{
@@ -35,7 +37,9 @@ namespace Rocket::Core
 	public:
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-		Model* GetCubeModel();
+		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
+		Texture* GetDefaultTexture() const { return _defaultTexture; }
+		Material* GetDefaultMaterial() const { return _defaultMaterial; }
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
@@ -53,7 +57,13 @@ namespace Rocket::Core
 		ComPtr<ID3D11DeviceContext> _deviceContext;
 
 		// 기본 큐브 모델
-		Model* _cubeModel;
+		CubeMesh* _cubeMesh;
+
+		// 기본 머터리얼
+		Material* _defaultMaterial;
+
+		// 기본 텍스쳐
+		Texture* _defaultTexture;
 
 		// 기본 폰트 들고있음
 		DirectX::SpriteFont* _defaultFont;

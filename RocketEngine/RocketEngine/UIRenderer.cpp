@@ -6,9 +6,8 @@
 
 namespace Rocket::Core
 {
-	UIRenderer::UIRenderer(Rocket::GameObject* owner)
-		: Rocket::Component(owner),
-		_width(100.0f),
+	UIRenderer::UIRenderer()
+		: _width(100.0f),
 		_height(100.0f),
 		_sortOrder(0),
 		_isFocused(false),

@@ -12,7 +12,7 @@ namespace Rocket
 	class ROCKET_API PointLight final : public Light
 	{
 	public:
-		PointLight(GameObject* owner);
+		PointLight();
 
 	public:
 		//Rocket::Core::PointLightData GetLightData() const;

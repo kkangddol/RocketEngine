@@ -11,7 +11,7 @@ namespace Rocket
 class DebugCameraMove : public Rocket::Component
 {
 public:
-	DebugCameraMove(Rocket::GameObject* owner);
+	DebugCameraMove();
 
 public:
 	virtual void Start() override;

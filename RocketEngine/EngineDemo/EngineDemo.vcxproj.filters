@@ -24,9 +24,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>SceneView</Filter>
     </ClCompile>
-    <ClCompile Include="CameraMove.cpp">
-      <Filter>ClientComponent</Filter>
-    </ClCompile>
     <ClCompile Include="DebugCameraMove.cpp">
       <Filter>ClientComponent</Filter>
     </ClCompile>
@@ -37,9 +34,6 @@
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>SceneView</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraMove.h">
-      <Filter>ClientComponent</Filter>
     </ClInclude>
     <ClInclude Include="DebugCameraMove.h">
       <Filter>ClientComponent</Filter>

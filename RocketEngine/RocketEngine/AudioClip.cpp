@@ -5,9 +5,8 @@
 
 namespace Rocket
 {
-	AudioClip::AudioClip(GameObject* owner)
-		: Component(owner),
-		_soundSystem(Rocket::Core::SoundSystem::Instance()),
+	AudioClip::AudioClip()
+		: _soundSystem(Rocket::Core::SoundSystem::Instance()),
 		_audioMap(NULL),
 		_volume()
 	{

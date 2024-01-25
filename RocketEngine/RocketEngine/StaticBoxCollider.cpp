@@ -6,8 +6,7 @@
 
 namespace Rocket
 {
-	StaticBoxCollider::StaticBoxCollider(GameObject* owner)
-		: StaticCollider(owner)
+	StaticBoxCollider::StaticBoxCollider()
 	{
 
 	}

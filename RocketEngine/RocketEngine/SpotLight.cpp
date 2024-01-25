@@ -6,9 +6,8 @@
 namespace Rocket
 {
 
-	SpotLight::SpotLight(GameObject* owner)
-		: Light(owner),
-		_range(1.0f),
+	SpotLight::SpotLight()
+		: _range(1.0f),
 		_spot(1.0f),
 		_attenuation(1.0f, 1.0f, 1.0f)
 	{

@@ -28,10 +28,7 @@
       <Filter>Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceBuilderDX11.cpp">
-      <Filter>Builder</Filter>
+      <Filter>Resource\3DResource\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>FBXLoader</Filter>
@@ -46,10 +43,7 @@
       <Filter>Object\LineRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Resource\Model</Filter>
+      <Filter>Resource\3DResource\BaseClass</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>ObjectFactory</Filter>
@@ -66,7 +60,7 @@
     <ClCompile Include="RocketDX11.cpp">
       <Filter>GraphicsProcess</Filter>
     </ClCompile>
-    <ClCompile Include="StaticMeshObject.cpp">
+    <ClCompile Include="MeshRenderer.cpp">
       <Filter>Object\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
@@ -81,6 +75,12 @@
     <ClCompile Include="Light.cpp">
       <Filter>Light</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Object\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceBuilderDX11.cpp">
+      <Filter>DX11DeviceBuilder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Font.h" />
@@ -91,13 +91,7 @@
       <Filter>Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceBuilderDX11.h">
-      <Filter>Builder</Filter>
-    </ClInclude>
-    <ClInclude Include="dllExporter.h">
-      <Filter>dllExporter</Filter>
+      <Filter>Resource\3DResource\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>FBXLoader</Filter>
@@ -107,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Object\HelperObject</Filter>
-    </ClInclude>
-    <ClInclude Include="IBuilder.h">
-      <Filter>Builder\Interface</Filter>
     </ClInclude>
     <ClInclude Include="ImageRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
@@ -124,10 +115,7 @@
       <Filter>Resource\Shader\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Resource\Model</Filter>
+      <Filter>Resource\3DResource\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
       <Filter>ObjectFactory</Filter>
@@ -144,13 +132,10 @@
     <ClInclude Include="RocketDX11.h">
       <Filter>GraphicsProcess</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>ResourceManager</Filter>
-    </ClInclude>
     <ClInclude Include="RocketMacroDX11.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="StaticMeshObject.h">
+    <ClInclude Include="MeshRenderer.h">
       <Filter>Object\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
@@ -165,16 +150,22 @@
     <ClInclude Include="Light.h">
       <Filter>Light</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Object\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceBuilderDX11.h">
+      <Filter>DX11DeviceBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="IBuilder.h">
+      <Filter>Builder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
       <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Builder\Interface">
-      <UniqueIdentifier>{2b9a4a94-79e5-44a6-a04c-3533336ecc10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dllExporter">
-      <UniqueIdentifier>{469f1d43-ecb9-4ad1-b5c5-b895bec72d42}</UniqueIdentifier>
     </Filter>
     <Filter Include="FBXLoader">
       <UniqueIdentifier>{9e7db707-89b2-42b9-94c7-8b4977f88a36}</UniqueIdentifier>
@@ -211,18 +202,6 @@
     </Filter>
     <Filter Include="Resource\Interface">
       <UniqueIdentifier>{09e22f74-861b-465b-87d5-06f2a3723283}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Model">
-      <UniqueIdentifier>{586dfed4-01c4-4914-8839-59d9102b8d16}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D">
-      <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D\BaseClass">
-      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D\Primitive">
-      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{b426d68d-4899-470b-8822-54d1393565eb}</UniqueIdentifier>
@@ -271,6 +250,24 @@
     </Filter>
     <Filter Include="ObjectFactory">
       <UniqueIdentifier>{e3285456-1476-4c23-b8b0-9eaaf7356bab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Singleton">
+      <UniqueIdentifier>{9ab8b4fc-e7cd-4859-9c52-eb203fd87a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\3DResource">
+      <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\3DResource\BaseClass">
+      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\3DResource\Primitive">
+      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Material">
+      <UniqueIdentifier>{bfe75a22-e57e-483a-bb7c-22c13248a61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX11DeviceBuilder">
+      <UniqueIdentifier>{55b87733-0089-4254-9c2c-20eb7765c321}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ namespace Rocket
 	{
 		friend class Rocket::Core::GraphicsSystem;
 	public:
-		Camera(GameObject* owner);
+		Camera();
 
 	protected:
 		virtual void Start() override;

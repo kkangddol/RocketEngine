@@ -8,12 +8,9 @@
 
 namespace Rocket
 {
-	Camera::Camera(GameObject* owner)
-		: Component(owner),
-		/*_nearZ(0.01f),*/
-		_nearZ(0.01f),
+	Camera::Camera()
+		: _nearZ(0.01f),
 		_farZ(1000.0f),
-		/*_farZ(300.0f),*/
 		_aspect(16.0f / 9.0f),
 		_fovY(70.0f),
 		_nearWindowHeight(),

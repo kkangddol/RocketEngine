@@ -4,9 +4,8 @@
 
 namespace Rocket
 {
-	Light::Light(GameObject* owner)
-		: Component(owner),
-		_ambient(1.0f,1.0f,1.0f,1.0f),
+	Light::Light()
+		: _ambient(1.0f,1.0f,1.0f,1.0f),
 		_diffuse(1.0f,1.0f,1.0f,1.0f),
 		_specular(1.0f,1.0f,1.0f,1.0f)
 	{

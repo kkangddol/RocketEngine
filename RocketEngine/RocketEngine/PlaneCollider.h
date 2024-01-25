@@ -16,7 +16,7 @@ namespace Rocket
 	class ROCKET_API PlaneCollider final : public StaticCollider
 	{
 	public:
-		PlaneCollider(GameObject* owner);
+		PlaneCollider();
 
 		/// 디버그 정보 보내기.
 	protected:

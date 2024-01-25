@@ -10,7 +10,7 @@ namespace Rocket
 	class ROCKET_API CapsuleCollider final : public DynamicCollider
 	{
 	public:
-		CapsuleCollider(GameObject* owner);
+		CapsuleCollider();
 
 		/// 디버그 정보 보내기.
 	protected:

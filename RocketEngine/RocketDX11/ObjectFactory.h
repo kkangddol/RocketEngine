@@ -3,11 +3,16 @@
 
 namespace Rocket::Core
 {
+	class ObjectManager;
+
 	class ObjectFactory : public Rocket::Core::IFactory
 	{
 	public:
+		ObjectFactory();
+
+	public:
 		virtual ICamera* CreateCamera() override;
-		virtual IStaticMesh* CreateStaticMeshObject() override;
+		virtual IMeshRenderer* CreateMeshRenderer() override;
 		virtual ISketchableText* CreateText() override;
 		virtual ISketchableImage* CreateImage() override;
 		virtual ILineRenderer* CreateLineRenderer() override;
@@ -17,6 +22,9 @@ namespace Rocket::Core
 		virtual CubePrimitive* CreateCubePrimitive() override;
 		virtual SpherePrimitive* CreateSpherePrimitive() override;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() override;
+
+	private:
+		ObjectManager& _objectManager;
 	};
 }
 

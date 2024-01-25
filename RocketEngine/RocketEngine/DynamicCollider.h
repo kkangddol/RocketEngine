@@ -27,7 +27,7 @@ namespace Rocket
 	class ROCKET_API DynamicCollider : public Collider
 	{
 	public:
-		DynamicCollider(GameObject* owner);
+		DynamicCollider();
 
 	protected:
 		virtual void Start() override;

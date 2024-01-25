@@ -12,7 +12,7 @@ namespace Rocket
 	class ROCKET_API DirectionalLight final : public Light
 	{
 	public:
-		DirectionalLight(GameObject* owner);
+		DirectionalLight();
 
 	public:
 		//Rocket::Core::DirectionalLightData GetLightData() const;

@@ -7,9 +7,8 @@
 
 namespace Rocket
 {
-	DynamicCollider::DynamicCollider(GameObject* owner)
-		: Collider(owner),
-		_isJumping(false),
+	DynamicCollider::DynamicCollider()
+		: _isJumping(false),
 		_isCollided(false),
 		_wasCollided(false),
 		_servant(),

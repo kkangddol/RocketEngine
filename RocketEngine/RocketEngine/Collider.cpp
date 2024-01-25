@@ -6,9 +6,8 @@
 namespace Rocket
 {
 
-	Collider::Collider(GameObject* owner)
-		: Component(owner),
-		_positionOffset(0.0f,0.0f,0.0f),
+	Collider::Collider()
+		: _positionOffset(0.0f,0.0f,0.0f),
 		_rotationOffset(1.0f,0.0f,0.0f,0.0f),
 		_scaleOffset(1.0f,1.0f,1.0f),
 		_pxScene(nullptr)

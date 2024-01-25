@@ -2,12 +2,6 @@
 
 namespace Rocket::Core
 {
-
-	void Mesh::Initialize(ID3D11Device* device)
-	{
-
-	}
-
 	ID3D11Buffer* Mesh::GetVertexBuffer() const
 	{
 		return _vertexBuffer.Get();

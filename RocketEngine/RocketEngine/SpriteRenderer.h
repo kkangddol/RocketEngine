@@ -10,7 +10,7 @@ namespace Rocket
 	class ROCKET_API SpriteRenderer : public Rocket::Core::UIRenderer
 	{
 	public:
-		SpriteRenderer(GameObject* owner);
+		SpriteRenderer();
 
 	public:
 		virtual std::string GetSketchData() override;

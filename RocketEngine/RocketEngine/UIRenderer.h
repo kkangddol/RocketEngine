@@ -14,7 +14,7 @@ namespace Rocket::Core
 	class ROCKET_API UIRenderer : public Rocket::Component
 	{
 	public:
-		UIRenderer(Rocket::GameObject* owner);
+		UIRenderer();
 
 	protected:
 		virtual void Start() override;

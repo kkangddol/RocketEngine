@@ -2,16 +2,19 @@
 
 #include "..\\RocketGraphicsInterface\\IRenderable.h"
 
+#include "ResourceManager.h"
 #include "Camera.h"
-#include "StaticMeshObject.h"
+#include "MeshRenderer.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
-#include "ResourceManager.h"
 #include "LineRenderer.h"
+#include "Mesh.h"
+#include "CubeMesh.h"
 
 namespace Rocket::Core
 {
 	ObjectManager::ObjectManager()
+		: _resourceManager(ResourceManager::Instance())
 	{
 
 	}
@@ -24,20 +27,22 @@ namespace Rocket::Core
 		return temp;
 	}
 
-	StaticMeshObject* ObjectManager::CreateStaticMeshObject()
+	MeshRenderer* ObjectManager::CreateMeshRenderer()
 	{
-		StaticMeshObject* temp = new StaticMeshObject();
-		_staticMeshObjectList.emplace_back(temp);
+		MeshRenderer* meshRenderer = new MeshRenderer();
 
-		return temp;
+		meshRenderer->SetMesh(_resourceManager.GetCubeMesh());
+		meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
+
+		_meshRendererList.emplace_back(meshRenderer);
+
+		return meshRenderer;
 	}
 
 	Rocket::Core::ImageRenderer* ObjectManager::CreateImage()
 	{
-		auto& resourceMgr = ResourceManager::Instance();
-
 		ImageRenderer* temp = new ImageRenderer();
-		temp->InitalizeImageRenderer(resourceMgr.GetDevice(), resourceMgr.GetDeviceContext());
+		temp->InitalizeImageRenderer(_resourceManager.GetDevice(), _resourceManager.GetDeviceContext());
 		temp->SetImage("abcd.jpg");
 		_ImageList.emplace_back(temp);
 
@@ -49,9 +54,9 @@ namespace Rocket::Core
 		return _ImageList;
 	}
 
-	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
+	std::vector<MeshRenderer*>& ObjectManager::GetStaticMeshObjList()
 	{
-		return _staticMeshObjectList;
+		return _meshRendererList;
 	}
 
 	Rocket::Core::TextRenderer* ObjectManager::CreateText()

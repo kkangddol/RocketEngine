@@ -13,7 +13,7 @@ namespace Rocket
 	class ROCKET_API Light : public Component
 	{
 	public:
-		Light(GameObject* owner);
+		Light();
 
 	public:
 		Vector4 GetAmbient() const;

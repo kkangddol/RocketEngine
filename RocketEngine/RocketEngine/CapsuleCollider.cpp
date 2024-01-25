@@ -6,9 +6,8 @@
 
 namespace Rocket
 {
-	CapsuleCollider::CapsuleCollider(GameObject* owner)
-		: DynamicCollider(owner),
-		_radius(1.0f),
+	CapsuleCollider::CapsuleCollider()
+		: _radius(1.0f),
 		_halfHeight(1.0f)
 	{
 

@@ -10,7 +10,7 @@ namespace Rocket
 	class ROCKET_API SphereCollider final : public DynamicCollider
 	{
 	public:
-		SphereCollider(GameObject* owner);
+		SphereCollider();
 
 		/// 디버그 정보 보내기.
 	protected:

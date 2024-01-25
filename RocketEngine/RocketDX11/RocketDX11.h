@@ -9,7 +9,7 @@
 #include <VertexTypes.h>
 #include <Effects.h>
 
-#include "../RocketGraphicsInterface/I3DRenderer.h"
+#include "../RocketGraphicsInterface/IDX11Renderer.h"
 #include "Camera.h"
 #include "Light.h"
 
@@ -28,7 +28,7 @@ namespace Rocket::Core
 	class ResourceManager;
 	class ImageRenderer;
 	
-	class RocketDX11 final : public I3DRenderer
+	class RocketDX11 final : public IDX11Renderer
 	{
 	public:
 		RocketDX11();

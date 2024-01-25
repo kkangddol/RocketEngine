@@ -7,9 +7,8 @@
 
 namespace Rocket
 {
-	Button::Button(GameObject* owner)
-		: UIRenderer(owner),
-		_onClickEvent()
+	Button::Button()
+		: _onClickEvent()
 	{
 
 	}

@@ -6,9 +6,8 @@
 
 namespace Rocket
 {
-	BoxCollider::BoxCollider(GameObject* owner)
-		: DynamicCollider(owner),
-		_width(1.0f),
+	BoxCollider::BoxCollider()
+		: _width(1.0f),
 		_height(1.0f),
 		_depth(1.0f)
 	{

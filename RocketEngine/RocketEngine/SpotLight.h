@@ -12,7 +12,7 @@ namespace Rocket
 	class ROCKET_API SpotLight final : public Light
 	{
 	public:
-		SpotLight(GameObject* owner);
+		SpotLight();
 
 	public:
 		//Rocket::Core::SpotLightData GetLightData() const;
