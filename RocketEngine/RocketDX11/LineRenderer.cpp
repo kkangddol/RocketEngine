@@ -2,7 +2,7 @@
 
 namespace Rocket::Core
 {
-	void LineRenderer::DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 endPos, HDMath::HDFLOAT4 color)
+	void LineRenderer::DrawLine(Vector3 startPos, Vector3 endPos, Color color)
 	{
 		DirectX::XMFLOAT3 _startPos{ startPos.x, startPos.y,startPos.z };
 		DirectX::XMFLOAT3 _endPos{ endPos.x, endPos.y, endPos.z };
@@ -15,7 +15,7 @@ namespace Rocket::Core
 		_lines.emplace_back(startVec, endVec, colorVec);
 	}
 
-	void LineRenderer::DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+	void LineRenderer::DrawLine(Vector3 startPos, Vector3 direction, float length, Color color)
 	{
 		DirectX::XMFLOAT3 _startPos{ startPos.x, startPos.y, startPos.z };
 		DirectX::XMFLOAT3 _direction{ direction.x, direction.y, direction.z };

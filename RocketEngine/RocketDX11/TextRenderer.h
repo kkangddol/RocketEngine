@@ -4,9 +4,9 @@
 #include <memory>
 #include <DirectXColors.h>
 #include <string>
-#include <DXTK/SpriteFont.h>
+#include <SpriteFont.h>
 
-#include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
+#include "..\\RocketGraphicsInterface\\ISketchableText.h"
 
 namespace Rocket::Core
 {
@@ -35,7 +35,12 @@ namespace Rocket::Core
 
 		virtual void SetWorldSpace() override;
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
+
+		// ISketchableText을(를) 통해 상속됨
+		virtual float GetWidth() override;
+
+		virtual float GetHeight() override;
 
 		virtual void SetActive(bool isActive) override;
 
@@ -54,6 +59,9 @@ namespace Rocket::Core
 		float _yLocation;
 
 		bool _isTranslated;
+
+
+
 
 	};
 }

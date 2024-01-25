@@ -26,8 +26,8 @@ namespace Rocket::Core
 		MeshRendererBase(Rocket::GameObject* owner);
 
 	public:
-		Graphics::LegacyMaterialData& GetLegacyMaterialData();
-		Graphics::PBRMaterialData& GetPBRMaterialData();
+// 		Graphics::LegacyMaterialData& GetLegacyMaterialData();
+// 		Graphics::PBRMaterialData& GetPBRMaterialData();
 
 	public:
 		void SetMeshPath(std::string path);
@@ -59,7 +59,7 @@ namespace Rocket::Core
 		Vector4 GetLegacyReflect() const;
 
 	private:
-		Graphics::LegacyMaterialData _legacyMaterialData;
+		//Graphics::LegacyMaterialData _legacyMaterialData;
 
 	public:
 		void SetPBRAlbedo(Vector4 albedo);
@@ -75,6 +75,6 @@ namespace Rocket::Core
 		float GetPBREmission() const;
 
 	private:
-		Graphics::PBRMaterialData _PBRMaterialData;
+		//Graphics::PBRMaterialData _PBRMaterialData;
 	};
 }

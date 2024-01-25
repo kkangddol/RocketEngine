@@ -1,6 +1,6 @@
 #include "ObjectManager.h"
 
-#include "..\\HODO3DGraphicsInterface\\IRenderable.h"
+#include "..\\RocketGraphicsInterface\\IRenderable.h"
 
 #include "Camera.h"
 #include "StaticMeshObject.h"

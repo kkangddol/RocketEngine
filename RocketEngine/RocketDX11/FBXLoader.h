@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
+// #include <Importer.hpp>      // C++ importer interface
+// #include <scene.h>           // Output data structure
+// #include <postprocess.h>     // Post processing flags
 
 namespace Rocket::Core
 {

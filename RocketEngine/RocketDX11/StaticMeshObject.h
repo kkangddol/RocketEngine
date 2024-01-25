@@ -9,7 +9,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "..\\RocketGraphicsInterface\\IStaticMesh.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -21,7 +21,7 @@ namespace Rocket::Core
 		StaticMeshObject();
 
 	public:
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;

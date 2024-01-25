@@ -10,6 +10,7 @@ namespace Rocket
 namespace Rocket::Core
 {
 	class ObjectSystem;
+	class GraphicsSystem;
 }
 
 /// <summary>
@@ -26,6 +27,7 @@ namespace Rocket
 	{
 		friend class GameObject;
 		friend class Rocket::Core::ObjectSystem;
+		friend class Rocket::Core::GraphicsSystem;
 	
 	public:
 		Component(GameObject* owner)
@@ -49,6 +51,9 @@ namespace Rocket
 		virtual void OnCollisionEnter() override {}
 		virtual void OnCollisionStay() override {}
 		virtual void OnCollisionExit() override {}
+
+	protected:
+		virtual void SetRenderData() override {}
 
 
 	public:

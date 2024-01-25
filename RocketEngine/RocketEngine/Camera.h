@@ -4,20 +4,27 @@
 #include "MathHeader.h"
 #include "../RocketGraphicsInterface/ICamera.h"
 
+namespace Rocket::Core
+{
+	class GraphicsSystem;
+}
+
 namespace Rocket
 {
 	class GameObject;
 
 	class ROCKET_API Camera final : public Component
 	{
+		friend class Rocket::Core::GraphicsSystem;
 	public:
 		Camera(GameObject* owner);
 
 	protected:
 		virtual void Start() override;
+		virtual void SetRenderData() override;
 
 	public:
-		Core::ICamera* GetCameraData();
+		Core::ICamera& GetCamera();
 		
 	private:
 		Core::ICamera* _camera;

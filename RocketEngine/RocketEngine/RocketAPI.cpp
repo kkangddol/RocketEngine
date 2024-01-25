@@ -30,7 +30,7 @@ namespace Rocket
 
 	void LoadSceneFromJSON(std::string sceneDataPath)
 	{
-		Rocket::Core::DataSystem::Instance().SetAllDataToScene(sceneDataPath);
+		//Rocket::Core::DataSystem::Instance().SetAllDataToScene(sceneDataPath);
 	}
 
 	GameObject* CreateObject(const std::string& objName)

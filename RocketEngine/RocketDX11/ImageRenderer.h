@@ -3,13 +3,11 @@
 #include <d3d11.h>
 #include <memory>
 //#include <vector>
-#include <DXTK\\SpriteBatch.h>
-#include <DXTK\\WICTextureLoader.h>
-#include <DirectXTex\\DirectXTex.h>
+#include <SpriteBatch.h>
+#include <WICTextureLoader.h>
 #include <wrl\client.h>
 
-#include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "..\\RocketGraphicsInterface\\ISketchableImage.h"
 
 
 
@@ -32,7 +30,7 @@ namespace Rocket::Core
 
 		virtual void SetWorldSpace() override;
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 
 		virtual void SetActive(bool isActive) override;
 
@@ -41,6 +39,9 @@ namespace Rocket::Core
 		virtual float GetWidth() override;
 
 		virtual float GetHeight() override;
+
+		// ISketchableImage을(를) 통해 상속됨
+		virtual DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color) override;
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
@@ -58,7 +59,6 @@ namespace Rocket::Core
 		float _scaleY;
 
 		// 이미지 정보
-		DirectX::TexMetadata _meataData;
 		float _imageWidth;
 		float _imageHeight;
 
@@ -69,5 +69,7 @@ namespace Rocket::Core
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
 		bool _isTranslated;
+
+
 	};
 }

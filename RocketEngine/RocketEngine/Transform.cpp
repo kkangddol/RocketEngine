@@ -6,7 +6,7 @@ namespace Rocket
 	Transform::Transform(GameObject* owner)
 		: Component(owner),
 		_position(0.0f, 0.0f, 0.0f),
-		_rotation(1.0f, 0.0f, 0.0f, 0.0f),
+		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
 		_scale(1.0f, 1.0f, 1.0f),
 		_parent(),
 		_children()
@@ -229,7 +229,7 @@ namespace Rocket
 
 	Vector3 Transform::GetForward() const
 	{
-		return Vector3::Transform(Vector3::Forward, GetRotation());
+		return Vector3::Transform(Vector3::Backward, GetRotation());
 	}
 
 	Vector3 Transform::GetUp() const
@@ -327,7 +327,7 @@ namespace Rocket
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)
 	{
-		Quaternion rot = Quaternion::CreateFromYawPitchRoll(angleX, angleY, angleZ);
+		Quaternion rot = Quaternion::CreateFromYawPitchRoll({ angleX, angleY, angleZ });
 		_rotation = Quaternion::Concatenate(_rotation, rot);
 	}
 

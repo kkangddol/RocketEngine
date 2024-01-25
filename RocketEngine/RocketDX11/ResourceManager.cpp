@@ -22,9 +22,9 @@ namespace Rocket::Core
 		_cubeModel = new Model();
 		_cubeModel->AddMesh(new CubeMesh());
 		_cubeModel->Initialize(device);
-		_cubeModel->LoadTexture(device, L"../Resource/darkbrickdxt1.dds");
+		_cubeModel->LoadTexture(device, L"Resources/Textures/darkbrickdxt1.dds");
 
-		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
+		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 
 		// Color Shader
 		{
@@ -35,12 +35,12 @@ namespace Rocket::Core
 				{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 			};
 			colorVS->SetVertexDesc(colorDesc, ARRAYSIZE(colorDesc));
-			colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
+			colorVS->Initialize(_device.Get(), "Resources/Shaders/ColorVS.cso");
 			colorVS->SetVertexType(VertexType::COLOR_VERTEX);
 			_vertexShaders["ColorVS"] = colorVS;
 
 			PixelShader* colorPS = new PixelShader();
-			colorPS->Initialize(_device.Get(), "../x64/Debug/ColorPS.cso");
+			colorPS->Initialize(_device.Get(), "Resources/Shaders/ColorPS.cso");
 			_pixelShaders["ColorPS"] = colorPS;
 		}
 
@@ -53,12 +53,12 @@ namespace Rocket::Core
 				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 			};
 			textureVS->SetVertexDesc(textureDesc, ARRAYSIZE(textureDesc));
-			textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
+			textureVS->Initialize(_device.Get(), "Resources/Shaders/TextureVS.cso");
 			textureVS->SetVertexType(VertexType::TEXTURE_VERTEX);
 			_vertexShaders["TextureVS"] = textureVS;
 
 			PixelShader* texturePS = new PixelShader();
-			texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
+			texturePS->Initialize(_device.Get(), "Resources/Shaders/TexturePS.cso");
 			_pixelShaders["TexturePS"] = texturePS;
 		}
 
@@ -72,12 +72,12 @@ namespace Rocket::Core
 				{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 			};
 			lightVS->SetVertexDesc(lightDesc, ARRAYSIZE(lightDesc));
-			lightVS->Initialize(_device.Get(), "../x64/Debug/LightVS.cso");
+			lightVS->Initialize(_device.Get(), "Resources/Shaders/LightVS.cso");
 			lightVS->SetVertexType(VertexType::LIGHT_VERTEX);
 			_vertexShaders["LightVS"] = lightVS;
 
 			PixelShader* lightPS = new PixelShader();
-			lightPS->Initialize(_device.Get(), "../x64/Debug/LightPS.cso");
+			lightPS->Initialize(_device.Get(), "Resources/Shaders/LightPS.cso");
 			_pixelShaders["LightPS"] = lightPS;
 		}
 

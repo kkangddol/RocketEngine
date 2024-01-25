@@ -4,10 +4,10 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include <DXTK/SpriteBatch.h>
-#include <DXTK/PrimitiveBatch.h>
-#include <DXTK/VertexTypes.h>
-#include <DXTK/Effects.h>
+#include <SpriteBatch.h>
+#include <PrimitiveBatch.h>
+#include <VertexTypes.h>
+#include <Effects.h>
 
 #include "../RocketGraphicsInterface/I3DRenderer.h"
 #include "Camera.h"

@@ -219,7 +219,7 @@ namespace Rocket::Core
 		_viewport.Height = (float)backBufferDesc.Height;
 		_viewport.Width = (float)backBufferDesc.Width;
 		_viewport.MinDepth = 0;
-		_viewport.MaxDepth = 1;
+		_viewport.MaxDepth = 1; 
 
 		_deviceContext->RSSetViewports(
 			1,
@@ -386,11 +386,11 @@ namespace Rocket::Core
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		RenderHelperObject();
-		RenderStaticMesh();
-		RenderText();
+		//RenderStaticMesh();
+		//RenderText();
 		
-		RenderTexture();
-		RenderLine();
+		//RenderTexture();
+		//RenderLine();
 
 		//_deviceContext->OMSetBlendState(nullptr, );
 		//_deviceContext->OMSetDepthStencilState();

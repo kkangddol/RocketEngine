@@ -20,9 +20,13 @@ namespace Rocket
 		_farWindowHeight(),
 		_isShakeCameraOnHit(false), _isShakeCameraOnShoot(false),
 		_shakeDurationOnHit(0.1f), _shakeDurationOnShoot(0.1f),
-		_distX(0.0f),_distY(0.0f), _distYOnShoot(0.0f)
+		_distX(0.0f),_distY(0.0f), _distYOnShoot(0.0f),
+		_camera(Core::GraphicsSystem::Instance().GetFactory()->CreateCamera())
 	{
-
+		_camera->SetNearZ(0.01f);
+		_camera->SetFarZ(1000.0f);
+		_camera->SetAspect(16.0f / 9.0f);
+		_camera->SetFOVY(70.0f);
 	}
 
 	void Camera::Start()
@@ -30,24 +34,14 @@ namespace Rocket
 
 	}
 
-	Rocket::Core::CameraData& Camera::GetCameraData()
+	void Camera::SetRenderData()
 	{
-// 		float screenWidth = (float)Rocket::Core::RenderSystem::Instance().GetScreenWidth();
-// 		float screenHeight = (float)Rocket::Core::RenderSystem::Instance().GetScreenHeight();
-// 		_aspect = screenWidth / screenHeight;
+		_camera->SetPositionAndRotation(gameObject->transform.GetPosition(), gameObject->transform.GetRotation());
+	}
 
-		
-		_cameraData.nearZ = _nearZ;
-		_cameraData.farZ = _farZ;
-		_cameraData.aspect = _aspect;
-		_cameraData.fovY = _fovY;
-		_cameraData.nearWindowHeight = _nearWindowHeight;
-		_cameraData.farWindowHeight = _farWindowHeight;
-
-		_cameraData.position = gameObject->transform.GetPosition();
-		_cameraData.rotation = gameObject->transform.GetRotation();
-
-		return _cameraData;
+	Rocket::Core::ICamera& Camera::GetCamera()
+	{
+		return *_camera;
 	}
 
 	float Camera::GetNearZ() const
@@ -119,22 +113,22 @@ namespace Rocket
 	void Camera::SetNearZ(float nearZ)
 	{
 		_nearZ = nearZ;
-		_cameraData.nearZ = nearZ;
+		//_cameraData.nearZ = nearZ;
 	}
 
 	void Camera::SetFarZ(float farZ)
 	{
-		_cameraData.farZ = farZ;
+		//_cameraData.farZ = farZ;
 	}
 
 	void Camera::SetAspect(float aspect)
 	{	
-		_cameraData.aspect = aspect;
+		//_cameraData.aspect = aspect;
 	}
 
 	void Camera::SetFovY(float fovY)
 	{
-		_cameraData.fovY = fovY;
+		//_cameraData.fovY = fovY;
 	}
 
 	void Camera::Strafe(float delta)
@@ -149,18 +143,13 @@ namespace Rocket
 
 	void Camera::Walk(float delta)
 	{
-		Vector3 forwardVec = gameObject->transform.GetForward();
-		forwardVec.x *= delta;
-		forwardVec.y *= delta;
-		forwardVec.z *= delta;
-
-		gameObject->transform.Translate(forwardVec);
+		Vector3 moveVec = gameObject->transform.GetForward() * delta;
+		gameObject->transform.Translate(moveVec);
 	}
 
 	void Camera::WorldUpDown(float delta)
 	{
-		Vector3 worldUpDelta = { 0.0f,delta,0.0f };
-		gameObject->transform.Translate(worldUpDelta);
+		gameObject->transform.Translate(Vector3::Up * delta);
 	}
 
 	void Camera::Pitch(float angle)

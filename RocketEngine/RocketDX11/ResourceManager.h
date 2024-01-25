@@ -3,7 +3,7 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <unordered_map>
-#include <DXTK/SpriteFont.h>
+#include <SpriteFont.h>
 #include <vector>
 
 #include "string"

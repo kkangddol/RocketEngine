@@ -59,4 +59,24 @@ namespace Rocket::Core
 		return ObjectManager::Instance().CreateLineRenderer();
 	}
 
+	ISkinnedMesh* Core::ObjectFactory::CreateSkinnedMeshObject()
+	{
+		return nullptr;
+	}
+
+	CubePrimitive* Core::ObjectFactory::CreateCubePrimitive()
+	{
+		return nullptr;
+	}
+
+	SpherePrimitive* Core::ObjectFactory::CreateSpherePrimitive()
+	{
+		return nullptr;
+	}
+
+	CylinderPrimitive* Core::ObjectFactory::CreateCylinderPrimitive()
+	{
+		return nullptr;
+	}
+
 }

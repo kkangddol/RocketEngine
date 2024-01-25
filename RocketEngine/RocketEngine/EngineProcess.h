@@ -66,7 +66,7 @@ namespace Rocket
 		/// 23.06.30 강석원 인재원.
 	private:
 		Rocket::Core::ObjectSystem& _objectSystem;
-		Rocket::Core::GraphicsSystem& _renderSystem;
+		Rocket::Core::GraphicsSystem& _graphicsSystem;
 		Rocket::Core::SceneSystem& _sceneSystem;
 		Rocket::Core::TimeSystem& _timeSystem;
 		Rocket::Core::InputSystem& _inputSystem;
@@ -75,7 +75,7 @@ namespace Rocket
 		Rocket::Core::SoundSystem& _soundSystem;
 		Rocket::Core::DebugSystem& _debugSystem;
 		Rocket::Core::UISystem& _uiSystem;
-		Rocket::Core::DataSystem& _dataSystem;
+		//Rocket::Core::DataSystem& _dataSystem;
 
 
 		/// 윈도우 관련

@@ -1,4 +1,4 @@
-#include <DXTK/DDSTextureLoader.h>
+#include <DDSTextureLoader.h>
 #include "Texture.h"
 #include "RocketMacroDX11.h"
 

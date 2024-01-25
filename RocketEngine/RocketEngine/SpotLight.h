@@ -15,7 +15,7 @@ namespace Rocket
 		SpotLight(GameObject* owner);
 
 	public:
-		Rocket::Core::SpotLightData GetLightData() const;
+		//Rocket::Core::SpotLightData GetLightData() const;
 
 	public:
 		float GetRange() const;

@@ -34,7 +34,7 @@ namespace Rocket
 	/// 초기화 관련
 	EngineProcess::EngineProcess()
 		: _objectSystem(Rocket::Core::ObjectSystem::Instance()),
-		_renderSystem(Rocket::Core::GraphicsSystem::Instance()),
+		_graphicsSystem(Rocket::Core::GraphicsSystem::Instance()),
 		_sceneSystem(Rocket::Core::SceneSystem::Instance()),
 		_timeSystem(Rocket::Core::TimeSystem::Instance()),
 		_inputSystem(Rocket::Core::InputSystem::Instance()),
@@ -43,11 +43,11 @@ namespace Rocket
 		_soundSystem(Rocket::Core::SoundSystem::Instance()),
 		_debugSystem(Rocket::Core::DebugSystem::Instance()),
 		_uiSystem(Rocket::Core::UISystem::Instance()),
-		_dataSystem(Rocket::Core::DataSystem::Instance()),
+		//_dataSystem(Rocket::Core::DataSystem::Instance()),
 		_hWnd(), _msg(), _screenWidth(WIDTH),_screenHeight(HEIGHT),
 		CLASSNAME(L"V-Gun"), WINDOWNAME(L"V-Gun")
 	{
-		RENDERSYSTEM = &_renderSystem;
+		RENDERSYSTEM = &_graphicsSystem;
 
 		int screenWidth = GetSystemMetrics(SM_CXSCREEN); // 모니터의 가로 크기
 		int screenHeight = GetSystemMetrics(SM_CYSCREEN); // 모니터의 세로 크기
@@ -77,7 +77,7 @@ namespace Rocket
 		GetClientRect(_hWnd, &rect);
 
 		_objectSystem.Initialize();
-		_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+		_graphicsSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 		_sceneSystem.Initialize();
 		_timeSystem.Initialize();
 		_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
@@ -86,7 +86,7 @@ namespace Rocket
 		_soundSystem.Initialize();
 		_debugSystem.Initialize();
 		_uiSystem.Initialize();
-		_dataSystem.Initialize();
+		//_dataSystem.Initialize();
 
 		isInitialized = true;
 
@@ -96,7 +96,7 @@ namespace Rocket
 	long EngineProcess::InitializeForEditor(void* hWnd)
 	{
 		_objectSystem.Initialize();
-		_renderSystem.Initialize(static_cast<HWND>(hWnd), _screenWidth, _screenHeight, true);
+		_graphicsSystem.Initialize(static_cast<HWND>(hWnd), _screenWidth, _screenHeight, true);
 		_sceneSystem.Initialize();
 		_timeSystem.Initialize();
 		_inputSystem.Initialize(static_cast<HWND>(hWnd), _screenWidth, _screenHeight);
@@ -134,7 +134,7 @@ namespace Rocket
 		 
 /*		_physicsSystem.UpdateToPhysics();*/
 
-		_renderSystem.DrawProcess();
+		_graphicsSystem.DrawProcess();
 		_objectSystem.FlushDisable();
 
 		_inputSystem.FlushForEditor();
@@ -142,7 +142,7 @@ namespace Rocket
 
 	void EngineProcess::Finalize()
 	{
-		_dataSystem.Finalize();
+		//_dataSystem.Finalize();
 		_uiSystem.Finalize();
 		_debugSystem.Finalize();
 		//_soundSystem.Finalize();
@@ -151,7 +151,7 @@ namespace Rocket
 		_inputSystem.Finalize();
 		_timeSystem.Finalize();
 		_sceneSystem.Finalize();
-		_renderSystem.Finalize();
+		_graphicsSystem.Finalize();
 		_objectSystem.Finalize();
 	}
 
@@ -217,7 +217,7 @@ namespace Rocket
 
 /*		_physicsSystem.UpdateToPhysics();*/
 
-		_renderSystem.DrawProcess();
+		_graphicsSystem.DrawProcess();
 		_objectSystem.FlushDisable();
 
 		_inputSystem.Flush();

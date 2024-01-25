@@ -100,7 +100,12 @@ void Rocket::Core::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	spriteBatch->End();
 }
 
-void Rocket::Core::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+DirectX::FXMVECTOR Rocket::Core::ImageRenderer::SetColor(DirectX::FXMVECTOR color)
+{
+	return DirectX::FXMVECTOR();
+}
+
+void Rocket::Core::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	if (_isTranslated != true)
 	{

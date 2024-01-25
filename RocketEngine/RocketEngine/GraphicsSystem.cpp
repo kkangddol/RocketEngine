@@ -30,12 +30,18 @@ constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
 #define GRAPHICS_RELEASE_SIGNATURE void(*)(Rocket::Core::I3DRenderer*)
 #define GRAPHICS_RELEASE_NAME "ReleaseGraphicsInstance"
 
+using FACTORY_CREATE_SIGNATURE = Rocket::Core::IFactory* (*)(void);
+constexpr const char* FACTORY_CREATE_NAME = "CreateGraphicsObjectFactory";
+
+#define FACTORY_RELEASE_SIGNATURE void(*)(Rocket::Core::IFactory*)
+#define FACTORY_RELEASE_NAME "ReleaseFactory"
+
 namespace Rocket::Core
 {
 	GraphicsSystem::GraphicsSystem()
 		:_hWnd(), _screenWidth(), _screenHeight(),
 		hGraphicsModule(LoadLibrary(GRAPHICSDLL_PATH)),
-		_rocketGraphics()
+		_rocketGraphics(), _factory()
 	{
 		DWORD error_code = GetLastError();
 		assert(hGraphicsModule);
@@ -44,9 +50,7 @@ namespace Rocket::Core
 		error_code = GetLastError();
 
 		_rocketGraphics.reset((reinterpret_cast<GRAPHICS_CREATE_SIGNATURE>(GetProcAddress(hGraphicsModule, GRAPHICS_CREATE_NAME)))());
-
-		//extern "C" __declspec(dllexport) IRocketGraphics * CreateGraphicsInstance();
-		//extern "C" __declspec(dllexport) void ReleaseGraphicsInstance(IRocketGraphics * instance);
+		_factory.reset((reinterpret_cast<FACTORY_CREATE_SIGNATURE>(GetProcAddress(hGraphicsModule, FACTORY_CREATE_NAME)))());
 	}
 
 	void GraphicsSystem::Initialize(HWND hWnd, int screenWidth, int screenHeight, bool isEditor /*= false*/)
@@ -72,8 +76,15 @@ namespace Rocket::Core
 
 	void GraphicsSystem::DrawProcess()
 	{
-		//UpdateRenderData(); //SetRenderData + 전체 렌더 시작,
+		SetRenderData(); //SetRenderData + 전체 렌더 시작,
+		_rocketGraphics->Update(TimeSystem::GetDeltaTime());
 		_rocketGraphics->Render();
+	}
+
+	void GraphicsSystem::SetRenderData()
+	{
+		auto mainCam = SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
+		mainCam->SetRenderData();
 	}
 
 	int GraphicsSystem::GetScreenWidth() const
@@ -84,6 +95,11 @@ namespace Rocket::Core
 	int GraphicsSystem::GetScreenHeight() const
 	{
 		return _screenHeight;
+	}
+
+	Rocket::Core::IFactory* GraphicsSystem::GetFactory() const
+	{
+		return _factory.get();
 	}
 
 // 	void GraphicsSystem::MakeRenderableAll()
@@ -246,15 +262,6 @@ namespace Rocket::Core
 // 		data.deltaTime = Rocket::Core::TimeSystem::Instance().GetDeltaTime();
 // 	}
 // 
-// 	void GraphicsSystem::UpdateRenderData()
-// 	{
-// 		auto mainCam = SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
-// 		_rocketGraphics->UpdateCamera(mainCam->GetCameraData());
-// 
-// 		Rocket::Core::RenderConstantData data;
-// 		UpdateConstantData(data);
-// 		_rocketGraphics->UpdateConstantData(data);
-// 	}
 // 
 // 	void GraphicsSystem::DrawCurrentScene()
 // {

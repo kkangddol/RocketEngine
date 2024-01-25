@@ -77,7 +77,7 @@ namespace Rocket::Core
 		XMVECTOR R = GetRight();
 		XMVECTOR U = GetUp();
 		XMVECTOR L = GetForward();
-		XMVECTOR P = XMLoadFloat3(&_position);
+		XMVECTOR P = DirectX::XMLoadFloat3(&_position);
 
 		// Keep camera's axes orthogonal to each other and of unit length.
 		L = XMVector3Normalize(L);
@@ -95,9 +95,9 @@ namespace Rocket::Core
 		DirectX::XMFLOAT3 _up;
 		DirectX::XMFLOAT3 _look;
 
-		XMStoreFloat3(&_right, R);
-		XMStoreFloat3(&_up, U);
-		XMStoreFloat3(&_look, L);
+		DirectX::XMStoreFloat3(&_right, R);
+		DirectX::XMStoreFloat3(&_up, U);
+		DirectX::XMStoreFloat3(&_look, L);
 
 		_viewMatrix(0, 0) = _right.x;
 		_viewMatrix(1, 0) = _right.y;
@@ -130,12 +130,12 @@ namespace Rocket::Core
 
 	DirectX::XMMATRIX Camera::GetViewMatrix() const
 	{
-		return XMLoadFloat4x4(&_viewMatrix);
+		return DirectX::XMLoadFloat4x4(&_viewMatrix);
 	}
 
 	DirectX::XMMATRIX Camera::GetProjectionMatrix() const
 	{
-		return XMLoadFloat4x4(&_projectionMatrix);
+		return DirectX::XMLoadFloat4x4(&_projectionMatrix);
 	}
 
 	DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
@@ -146,24 +146,24 @@ namespace Rocket::Core
 	DirectX::XMVECTOR Camera::GetForward() const
 	{
 		XMFLOAT3 forward = { 0.0f,0.0f,1.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&forward), rotationMatrix);
+		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&forward), rotationMatrix);
 		return result;
 	}
 
 	DirectX::XMVECTOR Camera::GetUp() const
 	{
 		XMFLOAT3 up = { 0.0f,1.0f,0.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&up), rotationMatrix);
+		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&up), rotationMatrix);
 		return result;
 	}
 
 	DirectX::XMVECTOR Camera::GetRight() const
 	{
 		XMFLOAT3 right = { 1.0f,0.0f,0.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&right), rotationMatrix);
+		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&right), rotationMatrix);
 		return result;
 	}
 
@@ -205,7 +205,7 @@ namespace Rocket::Core
 	void Camera::UpdateProjectionMatrix()
 	{
 		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
-		XMStoreFloat4x4(&_projectionMatrix, temp);
+		DirectX::XMStoreFloat4x4(&_projectionMatrix, temp);
 	}
 
 	void Camera::SetAsMainCamera()

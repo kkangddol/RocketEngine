@@ -35,5 +35,8 @@ namespace Rocket::Core
 		virtual void OnCollisionEnter() abstract;
 		virtual void OnCollisionStay() abstract;
 		virtual void OnCollisionExit() abstract;
+
+	protected:
+		virtual void SetRenderData() abstract;
 	};
 }

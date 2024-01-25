@@ -15,7 +15,7 @@ namespace Rocket
 		PointLight(GameObject* owner);
 
 	public:
-		Rocket::Core::PointLightData GetLightData() const;
+		//Rocket::Core::PointLightData GetLightData() const;
 
 	public:
 		float GetRange() const;

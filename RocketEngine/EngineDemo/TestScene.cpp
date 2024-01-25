@@ -18,4 +18,5 @@ void TestScene::Initialize()
 
 	auto camObj = scene->GetMainCamera()->gameObject;
 	camObj->AddComponent<DebugCameraMove>();	
+	scene->GetMainCamera()->GetCamera().SetAsMainCamera();
 }

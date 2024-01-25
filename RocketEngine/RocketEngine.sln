@@ -6,17 +6,22 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RocketEngine", "RocketEngine\RocketEngine.vcxproj", "{4A2705DD-E703-4843-99EA-8E9766FAAB5D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{10305140-23EA-43AE-8FD3-8E9851317D65} = {10305140-23EA-43AE-8FD3-8E9851317D65}
+		{1D9E43E5-A3EC-4841-8DAB-32BFFF18BCC6} = {1D9E43E5-A3EC-4841-8DAB-32BFFF18BCC6}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngineDemo", "EngineDemo\EngineDemo.vcxproj", "{5AFEF623-963F-4361-B25C-7ABADEE1C2E6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{10305140-23EA-43AE-8FD3-8E9851317D65} = {10305140-23EA-43AE-8FD3-8E9851317D65}
+		{1D9E43E5-A3EC-4841-8DAB-32BFFF18BCC6} = {1D9E43E5-A3EC-4841-8DAB-32BFFF18BCC6}
 		{4A2705DD-E703-4843-99EA-8E9766FAAB5D} = {4A2705DD-E703-4843-99EA-8E9766FAAB5D}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RocketGraphicsInterface", "RocketGraphicsInterface\RocketGraphicsInterface.vcxproj", "{10305140-23EA-43AE-8FD3-8E9851317D65}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RocketDX11", "RocketDX11\RocketDX11.vcxproj", "{1D9E43E5-A3EC-4841-8DAB-32BFFF18BCC6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{10305140-23EA-43AE-8FD3-8E9851317D65} = {10305140-23EA-43AE-8FD3-8E9851317D65}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

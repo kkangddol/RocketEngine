@@ -15,19 +15,19 @@ namespace Rocket
 
 	}
 
-	Rocket::Core::PointLightData PointLight::GetLightData() const
-	{
-		Rocket::Core::PointLightData data;
-		data.ambient = _ambient;
-		data.diffuse = _diffuse;
-		data.specular = _specular;
-		data.position = gameObject->transform.GetLocalPosition();
-		data.range = _range;
-		data.attenuation = _attenuation;
-		data.tPad = 666.0f;
-
-		return data;
-	}
+// 	Rocket::Core::PointLightData PointLight::GetLightData() const
+// 	{
+// 		Rocket::Core::PointLightData data;
+// 		data.ambient = _ambient;
+// 		data.diffuse = _diffuse;
+// 		data.specular = _specular;
+// 		data.position = gameObject->transform.GetLocalPosition();
+// 		data.range = _range;
+// 		data.attenuation = _attenuation;
+// 		data.tPad = 666.0f;
+// 
+// 		return data;
+// 	}
 
 	float PointLight::GetRange() const
 	{

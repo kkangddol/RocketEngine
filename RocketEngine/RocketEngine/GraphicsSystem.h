@@ -5,6 +5,7 @@
 #include <memory>
 #include <unordered_map>
 #include "../RocketGraphicsInterface/I3DRenderer.h"
+#include "../RocketGraphicsInterface/IFactory.h"
 #include "../RocketGraphicsInterface/IGraphicsSystem.h"
 #include "RocketAPI.h"
 
@@ -59,8 +60,8 @@ namespace Rocket::Core
 	public:
 		void DrawProcess();
 
-// 	private:
-// 		void UpdateRenderData();
+ 	private:
+ 		void SetRenderData();
 // 		void UpdateConstantData(Rocket::Core::RenderConstantData& data);
 // 		void DrawCurrentScene();
 // 
@@ -70,6 +71,7 @@ namespace Rocket::Core
 	public:
 		int GetScreenWidth() const;
 		int GetScreenHeight() const;
+		IFactory* GetFactory() const;
 
 		/// 기본 정보(윈도우 핸들, 윈도우 사이즈 등)
 	private:
@@ -81,5 +83,6 @@ namespace Rocket::Core
 	private:
 		HMODULE hGraphicsModule;
 		std::unique_ptr<Rocket::Core::I3DRenderer> _rocketGraphics;
+		std::unique_ptr<Rocket::Core::IFactory> _factory;
 	};
 }

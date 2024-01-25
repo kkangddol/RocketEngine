@@ -1,16 +1,22 @@
 #pragma once
-#include "..\\HODO3DGraphicsInterface\\IFactory.h"
+#include "..\\RocketGraphicsInterface\\IFactory.h"
 
 namespace Rocket::Core
 {
 	class ObjectFactory : public Rocket::Core::IFactory
 	{
 	public:
-		virtual Rocket::Core::ICamera* CreateCamera() override;
-		virtual Rocket::Core::IStaticMesh* CreateStaticMeshObject() override;
-		virtual Rocket::Core::ISketchableText* CreateText() override;
-		virtual Rocket::Core::ISketchableImage* CreateImage() override;
-		virtual Rocket::Core::ILineRenderer* CreateLineRenderer() override;
+		virtual ICamera* CreateCamera() override;
+		virtual IStaticMesh* CreateStaticMeshObject() override;
+		virtual ISketchableText* CreateText() override;
+		virtual ISketchableImage* CreateImage() override;
+		virtual ILineRenderer* CreateLineRenderer() override;
+
+		// IFactory을(를) 통해 상속됨
+		virtual ISkinnedMesh* CreateSkinnedMeshObject() override;
+		virtual CubePrimitive* CreateCubePrimitive() override;
+		virtual SpherePrimitive* CreateSpherePrimitive() override;
+		virtual CylinderPrimitive* CreateCylinderPrimitive() override;
 	};
 }
 

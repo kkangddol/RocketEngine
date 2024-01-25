@@ -1,6 +1,5 @@
 #include "TextRenderer.h"
 #include "ResourceManager.h"
-#include "..\\HODOmath\\HODOmath.h"
 
 Rocket::Core::TextRenderer::TextRenderer()
 	: _renderFloat(),
@@ -40,7 +39,7 @@ void Rocket::Core::TextRenderer::SetWorldSpace()
 
 }
 
-void Rocket::Core::TextRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+void Rocket::Core::TextRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	if (_isTranslated != true)
 	{
@@ -71,6 +70,16 @@ void Rocket::Core::TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
 	std::wstring wstr(_str.begin(), _str.end());
 	_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
+}
+
+float Rocket::Core::TextRenderer::GetWidth()
+{
+	return 0.0f;
+}
+
+float Rocket::Core::TextRenderer::GetHeight()
+{
+	return 0.0f;
 }
 
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <DXTK/SimpleMath.h>
+#include <SimpleMath.h>
 
 namespace Rocket::Core
 {

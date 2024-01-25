@@ -15,7 +15,7 @@ namespace Rocket
 		DirectionalLight(GameObject* owner);
 
 	public:
-		Rocket::Core::DirectionalLightData GetLightData() const;
+		//Rocket::Core::DirectionalLightData GetLightData() const;
 
 	public:
 		float GetIntensity() const;

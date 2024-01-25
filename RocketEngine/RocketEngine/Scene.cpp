@@ -19,8 +19,7 @@ namespace Rocket
 		{
 			GameObject* mainCameraObj = CreateObject("MainCamera");
 			_mainCamera = mainCameraObj->AddComponent<Camera>();
-			_mainCamera->gameObject->transform.SetPosition(0.0f, 5.0f, 20.0f);
-			_mainCamera->gameObject->transform.Rotate(0.0f, 180.0f, 0.0f);
+			_mainCamera->gameObject->transform.SetPosition(0.0f, 5.0f, -20.0f);
 		}
 	}
 
