@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -34,16 +34,16 @@ namespace Rocket::Core
 	{
 		std::string name;
 
-		float _nearZ = 0.f;				// frustumÀÇ °¡±î¿î Æò¸é±îÁöÀÇ °Å¸®
-		float _farZ = 0.f;				// frustumÀÇ ¸Õ Æò¸é±îÁöÀÇ °Å¸®
-		float _aspect = 0.f;				// °¡·Î / ¼¼·Î ºñÀ²
-		float _fovY = 0.f;				// fov°¢µµ¸¦ 60ºĞ¹ıÀ¸·Î °®°íÀÖÀ½
-		float _nearWindowHeight = 0.f;	// frustumÀÇ °¡±î¿î Æò¸éÀÇ ³ôÀÌ
-		float _nearWindowWidth = 0.f;		// frustumÀÇ ¸Õ Æò¸éÀÇ ³ôÀÌ
+		float _nearZ = 0.f;				// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _farZ = 0.f;				// frustumì˜ ë¨¼ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _aspect = 0.f;				// ê°€ë¡œ / ì„¸ë¡œ ë¹„ìœ¨
+		float _fovY = 0.f;				// fovê°ë„ë¥¼ 60ë¶„ë²•ìœ¼ë¡œ ê°–ê³ ìˆìŒ
+		float _nearWindowHeight = 0.f;	// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ì˜ ë†’ì´
+		float _nearWindowWidth = 0.f;		// frustumì˜ ë¨¼ í‰ë©´ì˜ ë†’ì´
 
-		// Çà·Ä°ª
-		Matrix _viewMatrix;		// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'
-		Matrix _projMatrix;		// Ä«¸Ş¶óÀÇ Åõ¿µ Çà·Ä
+		// í–‰ë ¬ê°’
+		Matrix _viewMatrix;		// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'
+		Matrix _projMatrix;		// ì¹´ë©”ë¼ì˜ íˆ¬ì˜ í–‰ë ¬
 	};
 
 	struct rayCastData
@@ -132,10 +132,10 @@ namespace Rocket::Core
 		// size
 		float width = 0.f;
 		float height = 0.f;
-		int sortOrder = 0.f;
+		int sortOrder = 0;
 		bool isFocused = 0.f;
 
-		/// ÇÔ¼ö Æ÷ÀÎÅÍ ½Ã¸®¾ó¶óÀÌÁî ¹æ½Ä °í¹ÎÇØº¼ °Í 2023.08.14 ¿À¼ö¾È && °­¼®¿ø
+		/// í•¨ìˆ˜ í¬ì¸í„° ì‹œë¦¬ì–¼ë¼ì´ì¦ˆ ë°©ì‹ ê³ ë¯¼í•´ë³¼ ê²ƒ 2023.08.14 ì˜¤ìˆ˜ì•ˆ && ê°•ì„ì›
 		//std::function<void()> onClickEvent;
 	};
 
@@ -279,7 +279,7 @@ namespace Rocket::Core
 
 		float range = 0.f;
 
-		//ÇØ´ç °Å¸®¸¦ ³Ñ¾î¼­¸é ºûÀ» ³»Áö ¸øÇÔ
+		//í•´ë‹¹ ê±°ë¦¬ë¥¼ ë„˜ì–´ì„œë©´ ë¹›ì„ ë‚´ì§€ ëª»í•¨
 		float x = 0.f;
 		float y = 0.f;
 		float z = 0.f;
@@ -298,7 +298,7 @@ namespace Rocket::Core
 		float spot = 0.f;
 
 
-		//ÇØ´ç °Å¸®¸¦ ³Ñ¾î¼­¸é ºûÀ» ³»Áö ¸øÇÔ
+		//í•´ë‹¹ ê±°ë¦¬ë¥¼ ë„˜ì–´ì„œë©´ ë¹›ì„ ë‚´ì§€ ëª»í•¨
 		float x = 0.f;
 		float y = 0.f;
 		float z = 0.f;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
 #include <wrl.h>

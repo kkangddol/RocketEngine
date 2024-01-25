@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"

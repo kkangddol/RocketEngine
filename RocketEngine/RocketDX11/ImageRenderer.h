@@ -1,15 +1,11 @@
-#pragma once
-
+﻿#pragma once
 #include <d3d11.h>
 #include <memory>
-//#include <vector>
 #include <SpriteBatch.h>
 #include <WICTextureLoader.h>
 #include <wrl\client.h>
 
 #include "..\\RocketGraphicsInterface\\ISketchableImage.h"
-
-
 
 namespace Rocket::Core
 {
@@ -69,7 +65,5 @@ namespace Rocket::Core
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
 		bool _isTranslated;
-
-
 	};
 }

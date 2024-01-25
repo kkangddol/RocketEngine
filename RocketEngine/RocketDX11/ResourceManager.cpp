@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+﻿#include "ResourceManager.h"
 #include "Camera.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
@@ -13,6 +13,12 @@
 namespace Rocket::Core
 {
 	ResourceManager::ResourceManager()
+		: _device(nullptr),
+		_deviceContext(nullptr),
+		_defaultFont(nullptr),
+		_cubeMesh(nullptr),
+		_defaultTexture(nullptr),
+		_defaultMaterial(nullptr)
 	{
 		
 	}

@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
+#include <unordered_map>
+#include <string>
 #include "DLLExporter.h"
 #include "Component.h"
 #include "eSoundGroup.h"
-#include <unordered_map>
-#include <string>
 
 namespace Rocket::Core
 {
@@ -21,7 +21,7 @@ namespace Rocket
 	class GameObject;
 
 	/// <summary>
-	/// User°¡ Á¢±Ù ¹× »ç¿ë°¡´ÉÇÑ ÇÔ¼ö¿Í Á¤º¸¸¦ ´ãÀº class.
+	/// Userê°€ ì ‘ê·¼ ë° ì‚¬ìš©ê°€ëŠ¥í•œ í•¨ìˆ˜ì™€ ì •ë³´ë¥¼ ë‹´ì€ class.
 	/// 
 	/// </summary>
 	class ROCKET_API AudioClip final : public Component
@@ -32,45 +32,45 @@ namespace Rocket
 	protected:
 		virtual void Start() override;
 
-		/// Àç»ı°ü·Ã.
+		/// ì¬ìƒê´€ë ¨.
 	public:
-		// 2D Sound ÇÔ¼ö.
-		void PlayOnce(std::string audioName);		// ÇÑ¹ø¸¸ Àç»ı
-		void PlayRepeat(std::string audioName);		// ¹İº¹ Àç»ı
+		// 2D Sound í•¨ìˆ˜.
+		void PlayOnce(std::string audioName);		// í•œë²ˆë§Œ ì¬ìƒ
+		void PlayRepeat(std::string audioName);		// ë°˜ë³µ ì¬ìƒ
 
-		// 3D Sound ÇÔ¼ö.
-		void Play3DOnce(std::string audioName);		// ÇÑ¹ø¸¸ Àç»ı
-		void Play3DRepeat(std::string audioName);	// ¹İº¹ Àç»ı
+		// 3D Sound í•¨ìˆ˜.
+		void Play3DOnce(std::string audioName);		// í•œë²ˆë§Œ ì¬ìƒ
+		void Play3DRepeat(std::string audioName);	// ë°˜ë³µ ì¬ìƒ
 
-		// °øÅë ÇÔ¼ö.
-		void Allplay();								// ¸ğµç Sound Àç»ı
-		void PlayEnd(std::string audioName);		// Sound Á¾·á
-		void PlayAllEnd();							// Sound All Á¾·á
+		// ê³µí†µ í•¨ìˆ˜.
+		void Allplay();								// ëª¨ë“  Sound ì¬ìƒ
+		void PlayEnd(std::string audioName);		// Sound ì¢…ë£Œ
+		void PlayAllEnd();							// Sound All ì¢…ë£Œ
 
-		/// Sound ¼³Á¤
-		// °³º° Sound
+		/// Sound ì„¤ì •
+		// ê°œë³„ Sound
 		void PlayMute(std::string audioName);
 		void PlayPaused(std::string audioName);
 		void SoundVolumeSet(std::string audioName);
 		
 		bool IsSoundPlaying(std::string audioName);
 
-		// Group °ü·Ã ÇÔ¼ö
+		// Group ê´€ë ¨ í•¨ìˆ˜
 		void PlayGroupMute(std::string audioName);			// Sound OnOff
 		void PlayGroupAllMute();							// Sound All OnOff
-		void PlayGroupPaused(eSoundGroup soundGroupName);	// Sound ÀÏ½ÃÁ¤Áö
-		void PlayGroupAllPaused();							// Sound All ÀÏ½ÃÁ¤Áö
-		void SoundGroupVolumeSet(eSoundGroup soundGroupName);	// Sound º½·ı ¼³Á¤
-		void SoundGroupAllVolumeSet();						// Sound All º½·ı ¼³Á¤
+		void PlayGroupPaused(eSoundGroup soundGroupName);	// Sound ì¼ì‹œì •ì§€
+		void PlayGroupAllPaused();							// Sound All ì¼ì‹œì •ì§€
+		void SoundGroupVolumeSet(eSoundGroup soundGroupName);	// Sound ë´„ë¥¨ ì„¤ì •
+		void SoundGroupAllVolumeSet();						// Sound All ë´„ë¥¨ ì„¤ì •
 
-		/// ¿Àµğ¿À Ãß°¡ °ü·Ã.
+		/// ì˜¤ë””ì˜¤ ì¶”ê°€ ê´€ë ¨.
 	public:
-		// Audio »ı¼º
-		void AddAudio(std::string audioName, std::string audioPath, eSoundGroup group);		// 2D Sound Ãß°¡
+		// Audio ìƒì„±
+		void AddAudio(std::string audioName, std::string audioPath, eSoundGroup group);		// 2D Sound ì¶”ê°€
 		void Add3DAudio(std::string audioName, std::string audioPath, eSoundGroup group,
-			float minDistance, float maxDistance);		// 3D Sound Ãß°¡ 
+			float minDistance, float maxDistance);		// 3D Sound ì¶”ê°€ 
 
-		/// ¿Àµğ¿À Á¦¾î¿¡ ÇÊ¿äÇÑ º¯¼öµé.
+		/// ì˜¤ë””ì˜¤ ì œì–´ì— í•„ìš”í•œ ë³€ìˆ˜ë“¤.
 	public:
 		float GetVolume();
 		std::unordered_map<std::string, std::string>& GetAudios();
@@ -78,13 +78,13 @@ namespace Rocket
 	private:
 		Rocket::Core::SoundSystem& _soundSystem;							// FMOD System
 
-		std::unordered_map<std::string, std::string> _audioMap;			// audioÀÌ¸§, audioPath
-		float _volume = 1.f;													// Sound º½·ı Å©±â
+		std::unordered_map<std::string, std::string> _audioMap;			// audioì´ë¦„, audioPath
+		float _volume = 1.f;													// Sound ë´„ë¥¨ í¬ê¸°
 	};
 }
 
-// Play(¼±ÅÃÇØ¼­) -> ¿©·¯ »ç¿îµå ¹ŞÀ» ¼ö ÀÖ¾î¾ß ÇÔ
-// ÀÏ½ÃÁ¤Áö
-// Á¤Áö
-// ·çÇÁ¿©ºÎ
-// Á¾·ù¼³Á¤ ±×·ìÁş±â? -> ½Ã½ºÅÛ¿¡ µî·ÏÇÒ¶§
+// Play(ì„ íƒí•´ì„œ) -> ì—¬ëŸ¬ ì‚¬ìš´ë“œ ë°›ì„ ìˆ˜ ìˆì–´ì•¼ í•¨
+// ì¼ì‹œì •ì§€
+// ì •ì§€
+// ë£¨í”„ì—¬ë¶€
+// ì¢…ë¥˜ì„¤ì • ê·¸ë£¹ì§“ê¸°? -> ì‹œìŠ¤í…œì— ë“±ë¡í• ë•Œ

@@ -1,4 +1,4 @@
-#include "MeshRenderer.h"
+﻿#include "MeshRenderer.h"
 #include "RocketMacroDX11.h"
 #include "GraphicsStruct.h"
 
@@ -139,5 +139,4 @@ namespace Rocket::Core
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
-
 }

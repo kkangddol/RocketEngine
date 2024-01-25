@@ -14,7 +14,11 @@
 namespace Rocket::Core
 {
 	ObjectManager::ObjectManager()
-		: _resourceManager(ResourceManager::Instance())
+		: _resourceManager(ResourceManager::Instance()),
+		_lineRenderer(nullptr),
+		_meshRendererList(),
+		_cameraList(),
+		_textList()
 	{
 
 	}

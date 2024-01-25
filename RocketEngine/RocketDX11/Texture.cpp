@@ -1,16 +1,19 @@
-#include <DDSTextureLoader.h>
+﻿#include <DDSTextureLoader.h>
 #include "Texture.h"
 #include "RocketMacroDX11.h"
 
 namespace Rocket::Core
 {
 	Texture::Texture()
-		: _texture(nullptr), _textureView(nullptr)
+		: _texture(nullptr),
+		_textureView(nullptr)
 	{
 
 	}
 
 	Texture::Texture(const Texture& other)
+		: _texture(other._texture),
+		_textureView(other._textureView)
 	{
 
 	}

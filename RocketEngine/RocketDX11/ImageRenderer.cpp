@@ -1,4 +1,4 @@
-#include <locale>
+﻿#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
@@ -8,7 +8,10 @@
 #define FILEPATH "..\\Resources\\"
 
 Rocket::Core::ImageRenderer::ImageRenderer()
-	: _xlocation(),
+	: _device(),
+	_deviceContext(),
+	_isTranslated(false),
+	_xlocation(),
 	_ylocation(),
 	_scaleX(1.0f),
 	_scaleY(1.0f),
@@ -67,8 +70,8 @@ void Rocket::Core::ImageRenderer::SetImage(const std::string& filePath)
 	ID3D11Texture2D* texture2D = static_cast<ID3D11Texture2D*>(resource);
 	texture2D->GetDesc(&textureDesc);
 
-	_imageWidth = textureDesc.Width;
-	_imageHeight = textureDesc.Height;
+	_imageWidth = static_cast<float>(textureDesc.Width);
+	_imageHeight = static_cast<float>(textureDesc.Height);
 
 }
 

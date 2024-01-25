@@ -1,4 +1,4 @@
-#include "InputSystem.h"
+ï»¿#include "InputSystem.h"
 
 #include "SceneSystem.h"
 #include "Scene.h"
@@ -9,7 +9,8 @@
 namespace Rocket::Core
 {
 	InputSystem::InputSystem()
-		:_currentMousePosition(0,0),
+		: _hWnd(),
+		_currentMousePosition(0,0),
 		_previousMousePosition(0,0),
 		_screenWidth(),
 		_screenHeight(),
@@ -18,7 +19,9 @@ namespace Rocket::Core
 		_mousePoint(),
 		_mouseSensitivity(0.5f),
 		_currentMouseDelta(0,0),
-		_previousMouseDelta(0,0)
+		_previousMouseDelta(0,0),
+		currentKeyState(),
+		previousKeyState()
 	{
 
 	}
@@ -87,12 +90,12 @@ namespace Rocket::Core
 		RECT windowRect;
 		GetWindowRect(_hWnd, &windowRect);
 
-		POINT mousePoint;
-
-		LONG x = 0;
-		LONG y = 0;
-
-		/// ¸¶¿ì½º À§Ä¡ ÀÌµ¿ ¹æ½Ä
+		/// ë§ˆìš°ìŠ¤ ìœ„ì¹˜ ì´ë™ ë°©ì‹
+// 		POINT mousePoint;
+// 
+// 		LONG x = 0;
+// 		LONG y = 0;
+// 
 // 		if (windowRect.right - 1 <= _mousePoint.x)
 // 		{
 // 			x = windowRect.left + 2;

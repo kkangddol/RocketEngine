@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <SimpleMath.h>
 #include <d3d11.h>
 #include <wrl.h>
@@ -17,7 +17,6 @@ namespace Rocket::Core
 	public:
 		Camera();
 		~Camera();
-
 
 		virtual void SetPositionAndRotation(const Vector3& pos, const Quaternion& rot) override;
 

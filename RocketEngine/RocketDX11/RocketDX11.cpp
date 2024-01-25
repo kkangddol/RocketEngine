@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "RocketDX11.h"
 #include "Grid.h"
@@ -47,7 +47,11 @@ namespace Rocket::Core
 		_swapChain(), _backBuffer(),
 		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
 		_viewport(),
-		_resourceManager(ResourceManager::Instance())
+		_resourceManager(ResourceManager::Instance()),
+		_axis(), _grid(),
+		_spriteBatch(), _lineBatch(), _basicEffect(),
+		_lineInputLayout(),
+		_deltaTime()
 	{
 
 	}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -59,9 +59,5 @@ namespace Rocket::Core
 		float _yLocation;
 
 		bool _isTranslated;
-
-
-
-
 	};
 }

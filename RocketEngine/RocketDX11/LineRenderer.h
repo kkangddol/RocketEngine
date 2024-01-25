@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <PrimitiveBatch.h>
 #include <SimpleMath.h>
 #include <VertexTypes.h>
