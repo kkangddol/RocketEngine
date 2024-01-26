@@ -81,6 +81,9 @@
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>DX11DeviceBuilder</Filter>
     </ClCompile>
+    <ClCompile Include="SphereMesh.cpp">
+      <Filter>Resource\3DResource\Primitive</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Font.h" />
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="IBuilder.h">
       <Filter>Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereMesh.h">
+      <Filter>Resource\3DResource\Primitive</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

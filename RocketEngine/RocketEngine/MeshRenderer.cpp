@@ -1,5 +1,6 @@
-#include "MeshRenderer.h"
+﻿#include "MeshRenderer.h"
 #include "GraphicsSystem.h"
+#include "../RocketGraphicsInterface/IMeshRenderer.h"
 
 namespace Rocket
 {
@@ -8,4 +9,10 @@ namespace Rocket
 	{
 		_renderable = _meshRenderer;
 	}
+
+	void MeshRenderer::SetMesh(eMeshType meshType)
+	{
+		_meshRenderer->SetMesh(meshType);
+	}
+
 }

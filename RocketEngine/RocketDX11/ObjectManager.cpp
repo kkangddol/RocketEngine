@@ -1,4 +1,4 @@
-#include "ObjectManager.h"
+﻿#include "ObjectManager.h"
 
 #include "..\\RocketGraphicsInterface\\IRenderable.h"
 
@@ -58,7 +58,7 @@ namespace Rocket::Core
 		return _ImageList;
 	}
 
-	std::vector<MeshRenderer*>& ObjectManager::GetStaticMeshObjList()
+	std::vector<MeshRenderer*>& ObjectManager::GetStaticMeshRenderers()
 	{
 		return _meshRendererList;
 	}

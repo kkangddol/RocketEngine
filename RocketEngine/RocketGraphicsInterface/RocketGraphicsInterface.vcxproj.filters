@@ -22,6 +22,9 @@
     <Filter Include="Rendererable">
       <UniqueIdentifier>{33d52df8-ae25-4f78-8f91-11965881e1ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enum">
+      <UniqueIdentifier>{1527d487-93ec-4820-92db-9eeb6fa37306}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathHeader.h">
@@ -56,5 +59,10 @@
     <ClInclude Include="IRenderable.h">
       <Filter>Rendererable</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GraphicsEnum.h">
+      <Filter>Enum</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

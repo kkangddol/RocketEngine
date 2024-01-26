@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include "IRenderable.h"
+#include "GraphicsEnum.h"
 
 namespace Rocket::Core
 {
@@ -8,5 +9,7 @@ namespace Rocket::Core
 	{
 	public:
 		virtual ~IMeshRenderer() {}
+		virtual void SetMesh(eMeshType meshType) = 0;
+
 	};
 }

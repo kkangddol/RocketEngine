@@ -38,6 +38,9 @@
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="PrimitiveHeader.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GraphicsEnum.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

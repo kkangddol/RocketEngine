@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 
 #include "Singleton.h"
@@ -21,7 +21,7 @@ namespace Rocket::Core
 		ObjectManager();
 
 	public:
-		std::vector<MeshRenderer*>& GetStaticMeshObjList();
+		std::vector<MeshRenderer*>& GetStaticMeshRenderers();
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<ImageRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();

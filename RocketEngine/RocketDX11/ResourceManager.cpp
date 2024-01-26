@@ -1,6 +1,7 @@
 ﻿#include "ResourceManager.h"
 #include "Camera.h"
 #include "CubeMesh.h"
+#include "SphereMesh.h"
 #include "Mesh.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
@@ -10,15 +11,17 @@
 #include "texture.h"
 #include "material.h"
 
+
 namespace Rocket::Core
 {
 	ResourceManager::ResourceManager()
-		: _device(nullptr),
-		_deviceContext(nullptr),
-		_defaultFont(nullptr),
-		_cubeMesh(nullptr),
-		_defaultTexture(nullptr),
-		_defaultMaterial(nullptr)
+		: _device(),
+		_deviceContext(),
+		_defaultFont(),
+		_cubeMesh(),
+		_sphereMesh(),
+		_defaultTexture(),
+		_defaultMaterial()
 	{
 		
 	}
@@ -89,6 +92,9 @@ namespace Rocket::Core
 		_cubeMesh = new CubeMesh();
 		_cubeMesh->Initialize(device);
 
+		_sphereMesh = new SphereMesh();
+		_sphereMesh->Initialize(device);
+
 		_defaultTexture = new Texture();
 		_defaultTexture->Initialize(device, L"Resources/Textures/darkbrickdxt1.dds");
 
@@ -99,6 +105,10 @@ namespace Rocket::Core
 		_defaultMaterial->SetPixelShader(GetPixelShader("LightPS"));
 		_defaultMaterial->SetRenderState(GetRenderState(eRenderState::SOLID));
 		_defaultMaterial->SetTexture(_defaultTexture);
+
+		_cubePrimitive = DirectX::DX11::GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
+		_spherePrimitive = DirectX::DX11::GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
+		_cylinderPrimitive = DirectX::DX11::GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -163,6 +173,19 @@ namespace Rocket::Core
 	ID3D11RasterizerState* ResourceManager::GetRenderState(eRenderState eState)
 	{
 		return _renderStates[static_cast<int>(eState)];
+	}
+
+	Mesh* ResourceManager::GetMesh(eMeshType meshType) const
+	{
+		switch (meshType)
+		{
+		case eMeshType::CUBE:
+			return _cubeMesh;
+		case eMeshType::SPHERE:
+			return _sphereMesh;
+		default:
+			return nullptr;
+		}
 	}
 
 }

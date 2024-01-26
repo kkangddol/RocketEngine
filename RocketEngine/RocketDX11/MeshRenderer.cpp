@@ -1,6 +1,10 @@
 ﻿#include "MeshRenderer.h"
 #include "RocketMacroDX11.h"
 #include "GraphicsStruct.h"
+#include "ResourceManager.h"
+#include "CubeMesh.h"
+#include "SphereMesh.h"
+
 
 namespace Rocket::Core
 {
@@ -21,6 +25,11 @@ namespace Rocket::Core
 	void MeshRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
+	}
+
+	void MeshRenderer::SetMesh(eMeshType meshType)
+	{
+		_mesh = ResourceManager::Instance().GetMesh(meshType);
 	}
 
 	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)

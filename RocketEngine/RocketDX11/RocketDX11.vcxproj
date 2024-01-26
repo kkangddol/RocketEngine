@@ -164,6 +164,7 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="SphereMesh.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="IShader.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="SphereMesh.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexShader.h" />

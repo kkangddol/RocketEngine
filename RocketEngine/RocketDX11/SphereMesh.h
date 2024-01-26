@@ -10,16 +10,16 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class CubeMesh : public Mesh
+	class SphereMesh : public Mesh
 	{
 	public:
-		CubeMesh();
-		~CubeMesh();
+		SphereMesh();
+		~SphereMesh();
 
 	public:
 		virtual void Initialize(ID3D11Device* device) override;
 
 	private:
-		void BuildGeometryBuffers(ID3D11Device* device);
+		void BuildGeometryBuffers(ID3D11Device* device, float radius = 0.5f, UINT sliceCount = 10, UINT stackCount = 10);
 	};
 }

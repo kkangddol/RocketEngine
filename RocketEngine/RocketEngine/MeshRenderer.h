@@ -1,7 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "MeshRendererBase.h"
 #include "DLLExporter.h"
-#include "../RocketGraphicsInterface/IMeshRenderer.h"
+#include "../RocketGraphicsInterface/GraphicsEnum.h"
+
+namespace Rocket::Core
+{
+	class IMeshRenderer;
+}
 
 namespace Rocket
 {
@@ -11,6 +16,7 @@ namespace Rocket
 	{
 	public:
 		MeshRenderer();
+		void SetMesh(eMeshType meshType);
 
 	protected:
 		Core::IMeshRenderer* _meshRenderer;

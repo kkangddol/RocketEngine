@@ -326,9 +326,9 @@ namespace Rocket::Core
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}
 
-		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
+		for (auto meshRenderer : ObjectManager::Instance().GetStaticMeshRenderers())
 		{
-			staticMeshObj->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 	}
 

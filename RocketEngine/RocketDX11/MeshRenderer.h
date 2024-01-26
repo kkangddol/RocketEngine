@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <wrl.h>
 
 #include "..\\RocketGraphicsInterface\\IMeshRenderer.h"
+#include "../RocketGraphicsInterface/GraphicsEnum.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -20,6 +21,7 @@ namespace Rocket::Core
 	public:
 		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
+		virtual void SetMesh(eMeshType meshType) override;
 
 	public:
 		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
@@ -39,4 +41,3 @@ namespace Rocket::Core
 		bool _isActive;
 	};
 }
-	

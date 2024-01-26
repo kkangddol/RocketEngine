@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "..\\RocketEngine\\RocketAPI.h"
 #include "DebugCameraMove.h"
 #include <cassert>
@@ -21,5 +21,6 @@ void TestScene::Initialize()
 	scene->GetMainCamera()->GetCamera().SetAsMainCamera();
 
 	auto cube = scene->CreateObject("Cube");
-	cube->AddComponent<Rocket::MeshRenderer>();
+	auto meshRenderer = cube->AddComponent<Rocket::MeshRenderer>();
+	meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
 }
