@@ -1,31 +1,25 @@
-#include "SpriteRenderer.h"
-
-//µð¹ö±×¿ë
-#include <windows.h>
+ï»¿#include "SpriteRenderer.h"
+#include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "TimeSystem.h"
+#include "../RocketGraphicsInterface/ISpriteRenderer.h"
 
 namespace Rocket
 {
 	SpriteRenderer::SpriteRenderer()
-		: _spritePath()
+		: _spriteRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateSpriteRenderer())
 	{
 
 	}
 
-	std::string SpriteRenderer::GetSketchData()
+	void SpriteRenderer::UpdateRenderData()
 	{
-		return _spritePath;
+		_spriteRenderer->SetWorldTM(gameObject->transform.GetWorldTM());
+		_spriteRenderer->SetActive(gameObject->IsActive());
 	}
 
 	void SpriteRenderer::SetPath(std::string path)
 	{
-		_spritePath = path;
-	}
-
-	std::string SpriteRenderer::GetPath() const
-	{
-		return _spritePath;
+		_spriteRenderer->SetImage(path);
 	}
 }

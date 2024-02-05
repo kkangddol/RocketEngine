@@ -1,14 +1,11 @@
-#include "MeshRendererBase.h"
-#include "EngineProcess.h"
-#include "GameObject.h"
-#include "Transform.h"
+﻿#include "MeshRendererBase.h"
+#include "GraphicsSystem.h"
 
 namespace Rocket::Core
 {
-	void MeshRendererBase::SetRenderData()
+	MeshRendererBase::MeshRendererBase()
 	{
-		_renderable->SetWorldTM(gameObject->transform.GetWorldTM());
-		_renderable->SetActive(gameObject->IsActive());
+		GraphicsSystem::Instance().AddToList(this);
 	}
 
 }

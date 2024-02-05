@@ -1,7 +1,13 @@
-#pragma once
+﻿#pragma once
+#include <string>
 #include "DLLExporter.h"
 #include "UIRenderer.h"
-#include <string>
+
+
+namespace Rocket::Core
+{
+	class ISpriteRenderer;
+}
 
 namespace Rocket
 {
@@ -12,14 +18,13 @@ namespace Rocket
 	public:
 		SpriteRenderer();
 
-	public:
-		virtual std::string GetSketchData() override;
+	protected:
+		virtual void UpdateRenderData() override;
 
 	public:
-		std::string GetPath() const;
 		void SetPath(std::string path);
 
 	private:
-		std::string _spritePath;
+		Core::ISpriteRenderer* _spriteRenderer;
 	};
 }

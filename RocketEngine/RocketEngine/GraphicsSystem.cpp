@@ -1,28 +1,13 @@
-#include <cassert>
-#include "GraphicsSystem.h"
-#include "MeshRendererBase.h"
-#include "MeshRenderer.h"
-#include "SkinnedMeshRenderer.h"
-#include "SceneSystem.h"
-#include "Scene.h"
-#include "GameObject.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "AnimationController.h"
-#include "Animator.h"
-#include "State.h"
-#include "TimeSystem.h"
-#include "PhysicsSystem.h"
-#include "DynamicCollider.h"
-#include "BoxCollider.h"
-#include "MathHeader.h"
-#include "TextBox.h"
-#include "SpriteRenderer.h"
-#include "DebugSystem.h"
-#include "DirectionalLight.h"
-#include "PointLight.h"
-#include "SpotLight.h"
+ï»¿#include <cassert>
 #include <algorithm>
+#include <windows.h>
+#include "GraphicsSystem.h"
+#include "SceneSystem.h"
+#include "TimeSystem.h"
+#include "MeshRendererBase.h"
+#include "UIRenderer.h"
+#include "Scene.h"
+
 
 using GRAPHICS_CREATE_SIGNATURE = Rocket::Core::IDX11Renderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
@@ -76,15 +61,25 @@ namespace Rocket::Core
 
 	void GraphicsSystem::DrawProcess()
 	{
-		SetRenderData(); //SetRenderData + ÀüÃ¼ ·»´õ ½ÃÀÛ,
+		UpdateRenderData(); //SetRenderData + ì „ì²´ ë Œë” ì‹œì‘,
 		_rocketGraphics->Update(TimeSystem::GetDeltaTime());
 		_rocketGraphics->Render();
 	}
 
-	void GraphicsSystem::SetRenderData()
+	void GraphicsSystem::UpdateRenderData()
 	{
 		auto mainCam = SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
-		mainCam->SetRenderData();
+		mainCam->UpdateRenderData();
+
+		for (auto& meshRenderer : _meshRendererList)
+		{
+			meshRenderer->UpdateRenderData();
+		}
+
+		for (auto& uiRenderer : _uiRendererList)
+		{
+			uiRenderer->UpdateRenderData();
+		}
 	}
 
 	int GraphicsSystem::GetScreenWidth() const
@@ -102,6 +97,21 @@ namespace Rocket::Core
 		return _factory.get();
 	}
 
+	void GraphicsSystem::AddToList(MeshRendererBase* comp)
+	{
+		_meshRendererList.emplace_back(comp);
+	}
+
+	void GraphicsSystem::AddToList(UIRenderer* comp)
+	{
+		_uiRendererList.emplace_back(comp);
+	}
+
+	void GraphicsSystem::DestroyWindow()
+	{
+		::DestroyWindow(_hWnd);
+	}
+
 // 	void GraphicsSystem::MakeRenderableAll()
 // 	{
 // 		for (auto& sceneIter : SceneSystem::Instance().GetAllScenes())
@@ -113,8 +123,8 @@ namespace Rocket::Core
 // 
 // 			for (auto& object : sceneIter.second->GetOriginalList())
 // 			{
-// 				// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 				// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 				// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 				// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 				// object->GetRenderData();
 // 
 // 				MeshRendererBase* renderer = object->GetComponent<Rocket::MeshRenderer>();
@@ -158,8 +168,8 @@ namespace Rocket::Core
 // 
 // 			for (auto& object : sceneIter.second->GetOriginalList())
 // 			{
-// 				// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 				// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 				// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 				// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 				// object->GetRenderData();
 // 
 // 				Rocket::AnimationController* animCtr = object->GetComponent<Rocket::AnimationController>();
@@ -188,8 +198,8 @@ namespace Rocket::Core
 // 
 // 			for (auto& object : sceneIter.second->GetOriginalList())
 // 			{
-// 				// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 				// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 				// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 				// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 				// object->GetRenderData();
 // 
 // 				std::vector<UIRenderer*> uiVec = object->GetComponentsDynamic<UIRenderer>();
@@ -221,9 +231,9 @@ namespace Rocket::Core
 
 // 	void GraphicsSystem::UpdateConstantData(Rocket::Core::RenderConstantData& data)
 // 	{
-// 		// TODO : ¾À Àü¿ªÀûÀ¸·Î °ü¸®ÇÏÁö¸»°í ¾À´ÜÀ§·Î °ü¸®ÇÒ°Í ¤§¤§;;
-// 		// Áö±İ ¶óÀÌÆ®°¡ ¾À¿¡ µû¶ó °¡Á®¿ÀÁö ¾Ê°í ±×³É Àü¿ªÀûÀ¸·Î °®°í¿Â´Ù ¼¼»ó¿¡..
-// 		// 23.08.23 °­¼®¿ø ÀÎÀç¿ø.
+// 		// TODO : ì”¬ ì „ì—­ì ìœ¼ë¡œ ê´€ë¦¬í•˜ì§€ë§ê³  ì”¬ë‹¨ìœ„ë¡œ ê´€ë¦¬í• ê²ƒ ã„·ã„·;;
+// 		// ì§€ê¸ˆ ë¼ì´íŠ¸ê°€ ì”¬ì— ë”°ë¼ ê°€ì ¸ì˜¤ì§€ ì•Šê³  ê·¸ëƒ¥ ì „ì—­ì ìœ¼ë¡œ ê°–ê³ ì˜¨ë‹¤ ì„¸ìƒì—..
+// 		// 23.08.23 ê°•ì„ì› ì¸ì¬ì›.
 // 
 // 		for (auto& light : _lights)
 // 		{
@@ -267,19 +277,19 @@ namespace Rocket::Core
 // {
 // 		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 // 
-// 		// ÇöÀç ¾ÀÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Return.
+// 		// í˜„ì¬ ì”¬ì´ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ Return.
 // 		if (currentScene == nullptr)
 // 		{
 // 			return;
 // 		}
 // 
-// 		/// ÇöÀç¾ÀÀÌ Á¸ÀçÇÑ´Ù¸é ÁøÇàµÉ µ¿ÀÛµé.
+// 		/// í˜„ì¬ì”¬ì´ ì¡´ì¬í•œë‹¤ë©´ ì§„í–‰ë  ë™ì‘ë“¤.
 // 		_rocketGraphics->UpdateCamera(currentScene->GetMainCamera()->GetCameraData());
 // 
 // 		for (auto& object : currentScene->GetOriginalList())
 // 		{ 
-// 			// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 			// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 			// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 			// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 			// object->GetRenderData();
 // 
 // 			if (!object->IsActive())
@@ -294,7 +304,7 @@ namespace Rocket::Core
 // 				continue;
 // 			}
 // 
-// 			// À§ÇèÇÏÁö¸¸ ¿ì¼± ºÎÇÏ¶§¹®¿¡ ÁÖ¼®Ã³¸®..?
+// 			// ìœ„í—˜í•˜ì§€ë§Œ ìš°ì„  ë¶€í•˜ë•Œë¬¸ì— ì£¼ì„ì²˜ë¦¬..?
 // // 			if (_renderMap.find(renderer) == _renderMap.end())
 // // 			{
 // // 				Rocket::Core::IRenderable* renderableObj = _rocketGraphics->MakeRenderable(renderer->GetModelData());
@@ -308,7 +318,7 @@ namespace Rocket::Core
 // 	{
 // 		Rocket::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 // 
-// 		// ÇöÀç ¾ÀÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Return.
+// 		// í˜„ì¬ ì”¬ì´ ì¡´ì¬í•˜ì§€ ì•Šìœ¼ë©´ Return.
 // 		if (currentScene == nullptr)
 // 		{
 // 			return;
@@ -318,8 +328,8 @@ namespace Rocket::Core
 // 
 // 		for (auto& object : currentScene->GetOriginalList())
 // 		{
-// 			// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 			// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 			// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 			// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 			// object->GetRenderData();
 // 
 // 			if (!object->IsActive())
@@ -332,7 +342,7 @@ namespace Rocket::Core
 // 
 // 			for (auto& renderer : renderers)
 // 			{
-// 				// buttonÀÏ¶§.. buttonÀº sketchableÀ» ¸¸µéÁö ¾Ê´Â´Ù.
+// 				// buttonì¼ë•Œ.. buttonì€ sketchableì„ ë§Œë“¤ì§€ ì•ŠëŠ”ë‹¤.
 // 				if (dynamic_cast<Rocket::Button*>(renderer))
 // 				{
 // 					continue;

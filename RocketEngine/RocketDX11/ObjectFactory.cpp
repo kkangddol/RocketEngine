@@ -1,4 +1,4 @@
-#include "ObjectFactory.h"
+﻿#include "ObjectFactory.h"
 #include "ObjectManager.h"
 
 #include "Camera.h"
@@ -39,12 +39,12 @@ namespace Rocket::Core
 		return _objectManager.CreateMeshRenderer();
 	}
 
-	ISketchableText* ObjectFactory::CreateText()
+	ITextRenderer* ObjectFactory::CreateText()
 	{
 		return _objectManager.CreateText();
 	}
 
-	ISketchableImage* ObjectFactory::CreateImage()
+	ISpriteRenderer* ObjectFactory::CreateImage()
 	{
 		return _objectManager.CreateImage();
 	}

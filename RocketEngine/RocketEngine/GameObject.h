@@ -1,13 +1,12 @@
-#pragma once
-#include "DLLExporter.h"
+ï»¿#pragma once
 #include <unordered_map>
 #include <typeinfo>
 #include <string>
 #include <vector>
+#include "DLLExporter.h"
 
 namespace Rocket::Core
 {
-	class IComponent;
 	class ObjectSystem;
 	class MeshRendererBase;
 	class PhysicsSystem;
@@ -19,25 +18,27 @@ namespace Rocket::Core
 namespace Rocket
 {
 	class Transform;
+	class Component;
+	class Scene;
 }
 
 /// <summary>
-/// Component Based ¿£Áø µğÀÚÀÎ ÆĞÅÏÀÇ EntityÀÎ GameObject Å¬·¡½º.
-/// ¸ğµç GameObject´Â Transform Á¤º¸¸¦ ±âº»ÀûÀ¸·Î °®°í ÀÖ´Ù.
-/// ¿©·¯ Component¸¦ ºÙ¿©¼­ »ç¿ëÇÑ´Ù.
+/// Component Based ì—”ì§„ ë””ìì¸ íŒ¨í„´ì˜ Entityì¸ GameObject í´ë˜ìŠ¤.
+/// ëª¨ë“  GameObjectëŠ” Transform ì •ë³´ë¥¼ ê¸°ë³¸ì ìœ¼ë¡œ ê°–ê³  ìˆë‹¤.
+/// ì—¬ëŸ¬ Componentë¥¼ ë¶™ì—¬ì„œ ì‚¬ìš©í•œë‹¤.
 /// 
-/// 23.06.26 °­¼®¿ø ÀÎÀç¿ø.
+/// 23.06.26 ê°•ì„ì› ì¸ì¬ì›.
 /// </summary>
 namespace Rocket
 {
 	class ROCKET_API GameObject final
 	{
-		/// GameObjectÀÇ LifeCycleÀ» °ü¸®ÇÏ´Â Å¬·¡½ºµé¿¡°Ô friend °É¾îÁÜ.
+		/// GameObjectì˜ LifeCycleì„ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤ë“¤ì—ê²Œ friend ê±¸ì–´ì¤Œ.
 		friend class Scene;
-		friend class Rocket::Core::PhysicsSystem;
-		friend class Rocket::Core::ObjectSystem;
+		friend class Core::PhysicsSystem;
+		friend class Core::ObjectSystem;
 
-		/// »ı¼ºÀÚ, ¼Ò¸êÀÚ
+		/// ìƒì„±ì, ì†Œë©¸ì
 		/// Rule of Three..
 	public:
 		GameObject(std::string objName);
@@ -63,19 +64,15 @@ namespace Rocket
 		void OnDestroy();
 
 	public:
-		void Destroy();		// ¼Ò¸êÀÚ¸¦ ´ë½ÅÇÒ Destroy ÇÔ¼ö.
+		void Destroy();		// ì†Œë©¸ìë¥¼ ëŒ€ì‹ í•  Destroy í•¨ìˆ˜.
 
-		/// Transform ÄÄÆ÷³ÍÆ®´Â ¸ğµç °ÔÀÓ¿ÀºêÁ§Æ®°¡ ÇÊ¼öÀûÀ¸·Î °®´Â´Ù.
-		/// »õ·Î¿î TransformÀ¸·Î º¯°æÇÒ ¼ö ¾øµµ·Ï ÂüÁ¶ ¸â¹ö·Î ¼³Á¤.
+		/// Transform ì»´í¬ë„ŒíŠ¸ëŠ” ëª¨ë“  ê²Œì„ì˜¤ë¸Œì íŠ¸ê°€ í•„ìˆ˜ì ìœ¼ë¡œ ê°–ëŠ”ë‹¤.
+		/// ìƒˆë¡œìš´ Transformìœ¼ë¡œ ë³€ê²½í•  ìˆ˜ ì—†ë„ë¡ ì°¸ì¡° ë©¤ë²„ë¡œ ì„¤ì •.
 	public:
 		std::string objName;
 		Transform& transform;
-
-		/// ·»´õ¸µÀ» ´ã´çÇÒ ÄÄÆ÷³ÍÆ®.
-	private:
-		Rocket::Core::MeshRendererBase* _renderer;
 	
-		/// GameObjectÀÇ È°¼º,ºñÈ°¼ºÈ­ °ü¸®
+		/// GameObjectì˜ í™œì„±,ë¹„í™œì„±í™” ê´€ë¦¬
 	public:
 		void Enable();
 		void Disable();
@@ -93,9 +90,16 @@ namespace Rocket
 	private:
 		bool _isStarted;
 
-		/// ÄÄÆ÷³ÍÆ® °ü·Ã
 	public:
-		// ÄÄÆ÷³ÍÆ®¸¦ Ãß°¡ ¶Ç´Â È¹µæ
+		void SetScene(Scene* scene) { _scene = scene; }
+		Scene* GetScene() { return _scene; }
+
+	private:
+		Scene* _scene;
+
+		/// ì»´í¬ë„ŒíŠ¸ ê´€ë ¨
+	public:
+		// ì»´í¬ë„ŒíŠ¸ë¥¼ ì¶”ê°€ ë˜ëŠ” íšë“
 		template <typename T>
 		T* AddComponent();
 
@@ -105,26 +109,23 @@ namespace Rocket
 		template <typename T>
 		std::vector<T*> GetComponents();
 
-		//template <typename T>
-		//bool GetComponents2(std::vector<T>& vec);
-		
 		template <typename T>
 		T* GetComponentDynamic();
 		
 		template <typename T>
 		std::vector<T*> GetComponentsDynamic();
 
-		std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>>& GetAllComponents();
+		std::unordered_map<std::string, std::vector<Component*>>& GetAllComponents();
 
 	private:
-		std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>> _components;
+		std::unordered_map<std::string, std::vector<Component*>> _components;
 	};
 
-	/// ÄÄÆ÷³ÍÆ®¸¦ Ãß°¡ÇÏ´Â ÇÔ¼ö.
-	/// ÀÌ¹Ì Ãß°¡ µÇ¾îÀÖ´Â ÄÄÆ÷³ÍÆ®¶ó¸é ±× ³à¼®À» ¹İÈ¯ÇÑ´Ù.
-	/// ±Ùµ¥ ³»°¡ ÄÄÆ÷³ÍÆ®¸¦ º¤ÅÍ·Î ¹Ş°íÀÖ´Âµ¥ ±×·¯¸é ¿©·¯°³¸¦ ¹ŞÀ» ¼ö ÀÖ´Â°Å ¾Æ´Ñ°¡?
+	/// ì»´í¬ë„ŒíŠ¸ë¥¼ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜.
+	/// ì´ë¯¸ ì¶”ê°€ ë˜ì–´ìˆëŠ” ì»´í¬ë„ŒíŠ¸ë¼ë©´ ê·¸ ë…€ì„ì„ ë°˜í™˜í•œë‹¤.
+	/// ê·¼ë° ë‚´ê°€ ì»´í¬ë„ŒíŠ¸ë¥¼ ë²¡í„°ë¡œ ë°›ê³ ìˆëŠ”ë° ê·¸ëŸ¬ë©´ ì—¬ëŸ¬ê°œë¥¼ ë°›ì„ ìˆ˜ ìˆëŠ”ê±° ì•„ë‹Œê°€?
 	/// 
-	/// 23.06.27 °­¼®¿ø ÀÎÀç¿ø.
+	/// 23.06.27 ê°•ì„ì› ì¸ì¬ì›.
 	template <typename T>
 	T* GameObject::AddComponent()
 	{
@@ -134,10 +135,10 @@ namespace Rocket
 		return component;
 	}
 	
-	/// Ã£´Â ÄÄÆ÷³ÍÆ®ÀÇ Æ÷ÀÎÅÍ¸¦ "ÇÏ³ª" ¹İÈ¯ÇÏ´Â ÇÔ¼ö.
-	/// Ã£´Â ÄÄÆ÷³ÍÆ®°¡ ¾ø´Ù¸é nullptrÀ» ¹İÈ¯ÇÑ´Ù.
+	/// ì°¾ëŠ” ì»´í¬ë„ŒíŠ¸ì˜ í¬ì¸í„°ë¥¼ "í•˜ë‚˜" ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜.
+	/// ì°¾ëŠ” ì»´í¬ë„ŒíŠ¸ê°€ ì—†ë‹¤ë©´ nullptrì„ ë°˜í™˜í•œë‹¤.
 	/// 
-	/// 23.06.27 °­¼®¿ø ÀÎÀç¿ø.
+	/// 23.06.27 ê°•ì„ì› ì¸ì¬ì›.
 	template <typename T>
 	T* GameObject::GetComponent()
 	{
@@ -172,23 +173,6 @@ namespace Rocket
 
 		return result;
 	}
-
-	/// ¸¾´ë·Î Ãß°¡ÇØº¸¾ÒÀ¾´Ï´Ù 23.8.19.AJY
-	//template <typename T>
-	//bool GameObject::GetComponents2(std::vector<T>& vec)
-	//{
-	//	auto iter = _components.find(typeid(T).name());
-	//	if (iter != _components.end())
-	//	{
-	//		//for (iter++ != _components.end())
-	//		//{
-	//		//	vec.push_back(iter->second);
-	//		//}
-	//		return true;
-	//	}
-
-	//	return false;
-	//}
 
 	template <typename T>
 	T* GameObject::GetComponentDynamic()

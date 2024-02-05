@@ -1,94 +1,55 @@
-#include "TextRenderer.h"
+﻿#include "TextRenderer.h"
 #include "ResourceManager.h"
 
-Rocket::Core::TextRenderer::TextRenderer()
-	: _renderFloat(),
-	_renderInt(),
-	_xLocation(),
-	_yLocation()
+namespace Rocket::Core
 {
-	_font = ResourceManager::Instance().GetDefaultFont();
-	_str = "Default Text";
-	_color = DirectX::Colors::White;
-	_isTranslated = false;
-
-}
-
-Rocket::Core::TextRenderer::~TextRenderer()
-{
-
-}
-
-void Rocket::Core::TextRenderer::SetText(const std::string& str)
-{
-	_str = str;
-}
-
-const std::string Rocket::Core::TextRenderer::GetText()
-{
-	return _str;
-}
-
-void Rocket::Core::TextRenderer::SetScreenSpace()
-{
-
-}
-
-void Rocket::Core::TextRenderer::SetWorldSpace()
-{
-
-}
-
-void Rocket::Core::TextRenderer::SetWorldTM(const Matrix& worldTM)
-{
-	if (_isTranslated != true)
+	TextRenderer::TextRenderer()
+		: _font(ResourceManager::Instance().GetDefaultFont()), 
+		_text("Default Text"), 
+		_color(DirectX::Colors::White)
 	{
-		_xLocation = worldTM._41;
-		_yLocation = worldTM._42;
+
 	}
-}
 
-void Rocket::Core::TextRenderer::SetActive(bool isActive)
-{
-	isActive = 1;
-}
+	TextRenderer::~TextRenderer()
+	{
 
-void Rocket::Core::TextRenderer::SetColor(DirectX::FXMVECTOR color)
-{
-	_color = color;
-}
+	}
 
-void Rocket::Core::TextRenderer::SetScreenSpacePosition(float x, float y)
-{
-	_xLocation = x;
-	_yLocation = y;
+	void TextRenderer::SetText(const std::string& str)
+	{
+		_text = str;
+	}
 
-	_isTranslated = true;
-}
+	std::string& TextRenderer::GetText()
+	{
+		return _text;
+	}
 
-void Rocket::Core::TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
-{
-	std::wstring wstr(_str.begin(), _str.end());
-	_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
-}
+	void TextRenderer::SetWorldTM(const Matrix& worldTM)
+	{
+		_worldTM = worldTM;
+	}
 
-float Rocket::Core::TextRenderer::GetWidth()
-{
-	return 0.0f;
-}
+	void TextRenderer::SetActive(bool isActive)
+	{
+		isActive = 1;
+	}
 
-float Rocket::Core::TextRenderer::GetHeight()
-{
-	return 0.0f;
-}
+	void TextRenderer::SetColor(Color color)
+	{
+		_color = color;
+	}
 
+	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
+	{
+		std::wstring wstr(_text.begin(), _text.end());
+		_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_worldTM.m[3][0], _worldTM.m[3][1]), _color);
+	}
 
-void Rocket::Core::TextRenderer::SetFloatValue(const float value)
-{
-	_renderFloat = value;
-}
+	Color TextRenderer::GetColor()
+	{
+		return _color;
+	}
 
-void Rocket::Core::TextRenderer::SetintValue(const int value)
-{
-	_renderInt = value;
 }

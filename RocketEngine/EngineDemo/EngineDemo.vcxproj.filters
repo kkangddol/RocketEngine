@@ -27,6 +27,9 @@
     <ClCompile Include="DebugCameraMove.cpp">
       <Filter>ClientComponent</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>ClientComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -36,6 +39,9 @@
       <Filter>SceneView</Filter>
     </ClInclude>
     <ClInclude Include="DebugCameraMove.h">
+      <Filter>ClientComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
       <Filter>ClientComponent</Filter>
     </ClInclude>
   </ItemGroup>

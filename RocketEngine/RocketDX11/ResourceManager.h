@@ -21,7 +21,7 @@ namespace Rocket::Core
 	class SphereMesh;
 	class VertexShader;
 	class PixelShader;
-	class ImageRenderer;
+	class SpriteRenderer;
 	class Texture;
 	class Material;
 

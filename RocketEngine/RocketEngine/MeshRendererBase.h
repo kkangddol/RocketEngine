@@ -1,30 +1,15 @@
-#pragma once
-#include <string>
-
+ï»¿#pragma once
 #include "Component.h"
-#include "DLLExporter.h"
-#include "../RocketGraphicsInterface/IRenderable.h"
 
-namespace Rocket
-{
-	class GameObject;
-}
-
+/// <summary>
+/// MeshRendererë“¤ì´ ìƒì†ë°›ì„ Base Class
+/// </summary>
 namespace Rocket::Core
 {
-
-	/// <summary>
-	/// Renderer ÄÄÆ÷³ÍÆ®µéÀÌ »ó¼Ó¹ŞÀ» ÀÎÅÍÆäÀÌ½º.
-	/// ±Ùµ¥ ¾ê´Â abstractÀÎµ¥ Component º£ÀÌ½ºÅ¬·¡½º¸¦ »ó¼Ó¹Ş¾Æµµ µÇ´Â°Ç°¡?
-	/// 
-	/// 23.06.29 °­¼®¿ø ÀÎÀç¿ø.
-	/// </summary>
-	class ROCKET_API MeshRendererBase : public Component
+	class MeshRendererBase : public Component
 	{
-	protected:
-		virtual void SetRenderData() override;
-
-	protected:
-		Core::IRenderable* _renderable;
+	public:
+		MeshRendererBase();
+		virtual ~MeshRendererBase() = default;
 	};
 }

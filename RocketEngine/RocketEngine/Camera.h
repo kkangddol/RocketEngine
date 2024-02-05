@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DLLExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
@@ -21,7 +21,7 @@ namespace Rocket
 
 	protected:
 		virtual void Start() override;
-		virtual void SetRenderData() override;
+		virtual void UpdateRenderData() override;
 
 	public:
 		Core::ICamera& GetCamera();
@@ -32,19 +32,19 @@ namespace Rocket
 	public:
 		float GetNearZ() const;
 		float GetFarZ() const;
-		float GetAspect() const;			// Ä«¸Ş¶ó ºñÀ² screen.width/screen.height
-		float GetFovX() const;				// FovX°ªÀ» 60ºĞ¹ıÀ¸·Î ¹İÈ¯
-		float GetRadianFovX() const;		// FovX°ªÀ» È£µµ¹ıÀ¸·Î ¹İÈ¯
-		float GetFovY() const;				// FovY°ªÀ» 60ºĞ¹ıÀ¸·Î ¹İÈ¯
-		float GetRadianFovY() const;		// FovY°ªÀ» È£µµ¹ıÀ¸·Î ¹İÈ¯
+		float GetAspect() const;			// ì¹´ë©”ë¼ ë¹„ìœ¨ screen.width/screen.height
+		float GetFovX() const;				// FovXê°’ì„ 60ë¶„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetRadianFovX() const;		// FovXê°’ì„ í˜¸ë„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetFovY() const;				// FovYê°’ì„ 60ë¶„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetRadianFovY() const;		// FovYê°’ì„ í˜¸ë„ë²•ìœ¼ë¡œ ë°˜í™˜
 
 		float GetNearWindowWidth() const;
 		float GetNearWindowHeight() const;
 		float GetFarWindowWidth() const;
 		float GetFarWindowHeight() const;
 
-		Matrix GetViewMatrix() const;	// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'¸¦ ¹İÈ¯
-		Matrix GetProjMatrix() const;	// Ä«¸Ş¶óÀÇ Åõ¿µÇà·ÄÀ» ¹İÈ¯
+		Matrix GetViewMatrix() const;	// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'ë¥¼ ë°˜í™˜
+		Matrix GetProjMatrix() const;	// ì¹´ë©”ë¼ì˜ íˆ¬ì˜í–‰ë ¬ì„ ë°˜í™˜
 
 		void SetNearZ(float nearZ);
 		void SetFarZ(float farZ);
@@ -67,15 +67,15 @@ namespace Rocket
 		void SetIsCameraShakeOnShoot(bool cameraShake);
 
 	private:
-		float _nearZ;				// frustumÀÇ °¡±î¿î Æò¸é±îÁöÀÇ °Å¸®
-		float _farZ;				// frustumÀÇ ¸Õ Æò¸é±îÁöÀÇ °Å¸®
-		float _aspect;				// °¡·Î / ¼¼·Î ºñÀ²
-		float _fovY;				// fov°¢µµ¸¦ 60ºĞ¹ıÀ¸·Î °®°íÀÖÀ½
-		float _nearWindowHeight;	// frustumÀÇ °¡±î¿î Æò¸éÀÇ ³ôÀÌ
-		float _farWindowHeight;		// frustumÀÇ ¸Õ Æò¸éÀÇ ³ôÀÌ
+		float _nearZ;				// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _farZ;				// frustumì˜ ë¨¼ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _aspect;				// ê°€ë¡œ / ì„¸ë¡œ ë¹„ìœ¨
+		float _fovY;				// fovê°ë„ë¥¼ 60ë¶„ë²•ìœ¼ë¡œ ê°–ê³ ìˆìŒ
+		float _nearWindowHeight;	// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ì˜ ë†’ì´
+		float _farWindowHeight;		// frustumì˜ ë¨¼ í‰ë©´ì˜ ë†’ì´
 
-		Matrix _viewMatrix;		// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'
-		Matrix _projMatrix;		// Ä«¸Ş¶óÀÇ Åõ¿µ Çà·Ä
+		Matrix _viewMatrix;		// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'
+		Matrix _projMatrix;		// ì¹´ë©”ë¼ì˜ íˆ¬ì˜ í–‰ë ¬
 
 		bool _isShakeCameraOnHit;
 		bool _isShakeCameraOnShoot;

@@ -1,14 +1,7 @@
-#include "Component.h"
-#include <typeinfo>
+﻿#include "Component.h"
 
 namespace Rocket
 {
-// 	Component::Component(GameObject* owner)
-// 		: gameObject(owner)
-// 	{
-// 
-// 	}
-
 	void Component::SetRestart()
 	{
 		_isStarted = false;

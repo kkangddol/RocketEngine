@@ -10,8 +10,8 @@ namespace Rocket::Core
 	class ICamera;
 	class IMeshRenderer;
 	class ISkinnedMesh;
-	class ISketchableText;
-	class ISketchableImage;
+	class ITextRenderer;
+	class ISpriteRenderer;
 	class ILineRenderer;
 	struct CubePrimitive;
 	struct SpherePrimitive;
@@ -23,8 +23,8 @@ namespace Rocket::Core
 		virtual ICamera* CreateCamera() = 0;
 		virtual IMeshRenderer* CreateMeshRenderer() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
-		virtual ISketchableText* CreateText() = 0;
-		virtual ISketchableImage* CreateImage() = 0;
+		virtual ITextRenderer* CreateText() = 0;
+		virtual ISpriteRenderer* CreateImage() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;

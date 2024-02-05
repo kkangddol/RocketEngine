@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Singleton.h"
 #include <windows.h>
 #include <vector>
@@ -7,8 +7,6 @@
 #include "../RocketGraphicsInterface/IDX11Renderer.h"
 #include "../RocketGraphicsInterface/IFactory.h"
 #include "../RocketGraphicsInterface/IGraphicsSystem.h"
-#include "RocketAPI.h"
-
 #define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 
 namespace Rocket::Core
@@ -30,22 +28,20 @@ namespace Rocket
 }
 
 /// <summary>
-/// ¿£Áø¿¡¼­ Graphics ¸ğµâÀ» ºÒ·¯¿Í ÃÊ±âÈ­½ÃÅ°°í
-/// ·»´õ¸µ ÄÄÆ÷³ÍÆ®¸¦ ÃÑ°ıÇÏ¿© ±×¸± ¼ö ÀÖµµ·Ï °ü¸®ÇÏ´Â Å¬·¡½º.
+/// ì—”ì§„ì—ì„œ Graphics ëª¨ë“ˆì„ ë¶ˆëŸ¬ì™€ ì´ˆê¸°í™”ì‹œí‚¤ê³ 
+/// ë Œë”ë§ ì»´í¬ë„ŒíŠ¸ë¥¼ ì´ê´„í•˜ì—¬ ê·¸ë¦´ ìˆ˜ ìˆë„ë¡ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤.
 /// 
-/// 23.06.20 °­¼®¿ø ÀÎÀç¿ø.
+/// 23.06.20 ê°•ì„ì› ì¸ì¬ì›.
 /// </summary>
 namespace Rocket::Core
 {
 	class GraphicsSystem : public Singleton<GraphicsSystem>, public IGraphicsSystem
 	{
 		friend Singleton;
-		friend void Rocket::RocketDestroyWindow();
-
 	private:
-		GraphicsSystem();		// ½Ì±ÛÅÏÀÌ±â ¶§¹®¿¡ ¿ÜºÎ¿¡¼­ »ı¼ºÇÒ ¼ö ¾øµµ·Ï.
+		GraphicsSystem();		// ì‹±ê¸€í„´ì´ê¸° ë•Œë¬¸ì— ì™¸ë¶€ì—ì„œ ìƒì„±í•  ìˆ˜ ì—†ë„ë¡.
 
-		/// ½Ã½ºÅÛ ÃÊ±âÈ­ °ü·Ã
+		/// ì‹œìŠ¤í…œ ì´ˆê¸°í™” ê´€ë ¨
 	public:
 		void Initialize(HWND hWnd, int screenWidth, int screenHeight, bool isEditor = false);
 		void Finalize();
@@ -56,12 +52,15 @@ namespace Rocket::Core
 	public:
 		void OnResize(int width, int height);
 
-		/// ·»´õ¸µ °ü·Ã
+	public:
+		void DestroyWindow();
+
+		/// ë Œë”ë§ ê´€ë ¨
 	public:
 		void DrawProcess();
 
  	private:
- 		void SetRenderData();
+ 		void UpdateRenderData();
 // 		void UpdateConstantData(Rocket::Core::RenderConstantData& data);
 // 		void DrawCurrentScene();
 // 
@@ -73,16 +72,24 @@ namespace Rocket::Core
 		int GetScreenHeight() const;
 		IFactory* GetFactory() const;
 
-		/// ±âº» Á¤º¸(À©µµ¿ì ÇÚµé, À©µµ¿ì »çÀÌÁî µî)
+		/// ê¸°ë³¸ ì •ë³´(ìœˆë„ìš° í•¸ë“¤, ìœˆë„ìš° ì‚¬ì´ì¦ˆ ë“±)
 	private:
 		HWND _hWnd;
 		int _screenWidth;
 		int _screenHeight;
 
-		/// DLL °ü·Ã
+		/// DLL ê´€ë ¨
 	private:
 		HMODULE hGraphicsModule;
 		std::unique_ptr<Rocket::Core::IDX11Renderer> _rocketGraphics;
 		std::unique_ptr<Rocket::Core::IFactory> _factory;
+
+	public:
+		void AddToList(MeshRendererBase* comp);
+		void AddToList(UIRenderer* comp);
+
+	private:
+		std::vector<MeshRendererBase*> _meshRendererList;
+		std::vector<UIRenderer*> _uiRendererList;
 	};
 }

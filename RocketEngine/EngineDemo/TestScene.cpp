@@ -1,9 +1,7 @@
 ﻿#include "TestScene.h"
 #include "..\\RocketEngine\\RocketAPI.h"
 #include "DebugCameraMove.h"
-#include <cassert>
-#include <cstdlib>
-#include <ctime>
+#include "PlayerController.h"
 
 TestScene::TestScene()
 	: scene()
@@ -20,7 +18,12 @@ void TestScene::Initialize()
 	camObj->AddComponent<DebugCameraMove>();	
 	scene->GetMainCamera()->GetCamera().SetAsMainCamera();
 
-	auto cube = scene->CreateObject("Cube");
-	auto meshRenderer = cube->AddComponent<Rocket::MeshRenderer>();
+	auto player = scene->CreateObject("Sphere");
+	auto meshRenderer = player->AddComponent<Rocket::MeshRenderer>();
 	meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
+	player->AddComponent<PlayerController>();
+
+	auto text = scene->CreateObject("text");
+	text->AddComponent<Rocket::TextBox>();
+	text->GetComponent<Rocket::TextBox>()->SetText("Hello World");
 }

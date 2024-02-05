@@ -37,9 +37,6 @@
     <Filter Include="Component\Renderer\Mesh\SkinnedMeshRenderer">
       <UniqueIdentifier>{39f79bdb-8626-4e6b-9ef3-4bfc18c95330}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\0_Interface">
-      <UniqueIdentifier>{d79bd589-afdc-484b-af1c-9dd855a0e213}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component\Camera">
       <UniqueIdentifier>{ef92ac9a-e862-4ff0-bd1b-f145251ffbad}</UniqueIdentifier>
     </Filter>
@@ -194,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="GraphicsSystem.h">
       <Filter>System\GraphicsSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>Component\0_Interface</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>

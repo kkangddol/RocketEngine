@@ -391,7 +391,8 @@ namespace Rocket::Core
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		RenderHelperObject();
 		RenderStaticMesh();
-		//RenderText();
+
+		RenderText();
 		
 		//RenderTexture();
 		//RenderLine();

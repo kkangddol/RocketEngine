@@ -31,8 +31,8 @@
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
-    <ClInclude Include="ISketchableImage.h" />
-    <ClInclude Include="ISketchableText.h" />
+    <ClInclude Include="ISpriteRenderer.h" />
+    <ClInclude Include="ITextRenderer.h" />
     <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="IMeshRenderer.h" />
     <ClInclude Include="MathHeader.h" />

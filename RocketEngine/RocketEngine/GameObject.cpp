@@ -1,16 +1,15 @@
-#include "GameObject.h"
+ï»¿#include "GameObject.h"
 
+#include "Component.h"
 #include "Transform.h"
-#include "MeshRendererBase.h"
 #include "ObjectSystem.h"
 
 namespace Rocket
 {
-	// »ý¼ºÀÚ ¼ø¼­ Á¶½ÉÇÒ °Í.
-	// transformÀÌ ¸ÕÀú ÃÊ±âÈ­ µÇÁö ¾ÊÀ¸¸é Object ÃÊ±âÈ­ÇÒ ¶§ ¹®Á¦ »ý±è.
+	// ìƒì„±ìž ìˆœì„œ ì¡°ì‹¬í•  ê²ƒ.
+	// transformì´ ë¨¼ì € ì´ˆê¸°í™” ë˜ì§€ ì•Šìœ¼ë©´ Object ì´ˆê¸°í™”í•  ë•Œ ë¬¸ì œ ìƒê¹€.
 	GameObject::GameObject(std::string objName)
 		:transform(*(new Transform())),
-		_renderer(nullptr),
 		objName(objName),
 		_isActive(true),
 		_isStarted(false),
@@ -177,25 +176,6 @@ namespace Rocket
 		}
 	}
 
-// 	Rocket::Core::RenderData* GameObject::GetRenderData()
-// 	{
-// 		if (_renderer)
-// 		{
-// 			return _renderer->GetData();
-// 		}
-// 
-// 		for (auto& iter : _components)
-// 		{
-// 			if (dynamic_cast<Rocket::Core::Renderer*>(iter.second))
-// 			{
-// 				_renderer = dynamic_cast<Rocket::Core::Renderer*>(iter.second);
-// 				return _renderer->GetData();
-// 			}
-// 		}
-// 
-// 		return nullptr;
-// 	}
-
 	void GameObject::Enable()
 	{
 		Rocket::Core::ObjectSystem::Instance().AddEnable(this);
@@ -245,7 +225,7 @@ namespace Rocket
 		_isStarted = false;
 	}
 
-	std::unordered_map<std::string, std::vector<Rocket::Core::IComponent*>>& GameObject::GetAllComponents()
+	std::unordered_map<std::string, std::vector<Component*>>& GameObject::GetAllComponents()
 	{
 		return _components;
 	}

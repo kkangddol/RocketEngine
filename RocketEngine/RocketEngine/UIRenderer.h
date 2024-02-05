@@ -1,8 +1,10 @@
-#pragma once
-#include "DLLExporter.h"
-#include "Component.h"
+ï»¿#pragma once
 #include <string>
+
 #include "MathHeader.h"
+#include "Component.h"
+#include "DLLExporter.h"
+#include "../RocketGraphicsInterface/IRenderable.h"
 
 namespace Rocket
 {
@@ -11,17 +13,13 @@ namespace Rocket
 
 namespace Rocket::Core
 {
-	class ROCKET_API UIRenderer : public Rocket::Component
+	class ROCKET_API UIRenderer : public Component
 	{
 	public:
 		UIRenderer();
 
 	protected:
 		virtual void Start() override;
-
-	public:
-		Matrix Get2DWorldTM();
-		virtual std::string GetSketchData() { return "default"; }
 
 	public:
 		virtual void OnFocusEvent() {};
@@ -35,11 +33,11 @@ namespace Rocket::Core
 		float GetHeight() const;
 
 	public:
-		/// ½ºÅ©¸° ±âÁØ À§Ä¡ (Scaleµµ °öÇØÁü)
-		float GetLeft() const;		// ½ºÅ©¸° ±âÁØ left (Scaleµµ °öÇØÁü)
-		float GetTop() const;		// ½ºÅ©¸° ±âÁØ up (Scaleµµ °öÇØÁü)
-		float GetRight() const;		// ½ºÅ©¸° ±âÁØ right (Scaleµµ °öÇØÁü)
-		float GetBottom() const;		// ½ºÅ©¸° ±âÁØ down (Scaleµµ °öÇØÁü)
+		/// ìŠ¤í¬ë¦° ê¸°ì¤€ ìœ„ì¹˜ (Scaleë„ ê³±í•´ì§)
+		float GetLeft() const;		// ìŠ¤í¬ë¦° ê¸°ì¤€ left (Scaleë„ ê³±í•´ì§)
+		float GetTop() const;		// ìŠ¤í¬ë¦° ê¸°ì¤€ up (Scaleë„ ê³±í•´ì§)
+		float GetRight() const;		// ìŠ¤í¬ë¦° ê¸°ì¤€ right (Scaleë„ ê³±í•´ì§)
+		float GetBottom() const;		// ìŠ¤í¬ë¦° ê¸°ì¤€ down (Scaleë„ ê³±í•´ì§)
 		int GetSortOrder() const;
 		bool GetIsFocused() const;
 		bool GetIgnoreFocus() const;
@@ -54,7 +52,7 @@ namespace Rocket::Core
 	protected:
 		float _width;
 		float _height;
-		int _sortOrder;		// ¼ıÀÚ°¡ ³ôÀ»¼ö·Ï ¾ÕÀ¸·Î ³ª¿È.
+		int _sortOrder;		// ìˆ«ìê°€ ë†’ì„ìˆ˜ë¡ ì•ìœ¼ë¡œ ë‚˜ì˜´.
 		bool _isFocused;
 		bool _ignoreFocus;
 

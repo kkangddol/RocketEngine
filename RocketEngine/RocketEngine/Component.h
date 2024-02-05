@@ -1,6 +1,5 @@
-#pragma once
+ï»¿#pragma once
 #include "DLLExporter.h"
-#include "IComponent.h"
 
 namespace Rocket
 {
@@ -14,16 +13,16 @@ namespace Rocket::Core
 }
 
 /// <summary>
-/// ÄÄÆ÷³ÍÆ®ÀÇ º£ÀÌ½º Å¬·¡½º.
-/// IComponent ÀÎÅÍÆäÀÌ½º¸¦ »ó¼Ó¹Ş°í ºó ±¸ÇöÀ¸·Î µĞ´Ù.
-/// ´Ù¸¥ ÄÄÆ÷³ÍÆ®°¡ ÀÌ Å¬·¡½º¸¦ »ó¼Ó¹Ş´Â´Ù.
-/// ÀÌ°Ô ¸Â³Ä? -> ±â´Éº°·Î ÀÎÅÍÆäÀÌ½º¸¦ ³ª´²?
+/// ì»´í¬ë„ŒíŠ¸ì˜ ë² ì´ìŠ¤ í´ë˜ìŠ¤.
+/// IComponent ì¸í„°í˜ì´ìŠ¤ë¥¼ ìƒì†ë°›ê³  ë¹ˆ êµ¬í˜„ìœ¼ë¡œ ë‘”ë‹¤.
+/// ë‹¤ë¥¸ ì»´í¬ë„ŒíŠ¸ê°€ ì´ í´ë˜ìŠ¤ë¥¼ ìƒì†ë°›ëŠ”ë‹¤.
+/// ì´ê²Œ ë§ëƒ? -> ê¸°ëŠ¥ë³„ë¡œ ì¸í„°í˜ì´ìŠ¤ë¥¼ ë‚˜ëˆ ?
 /// 
-/// 23.06.29 °­¼®¿ø ÀÎÀç¿ø.
+/// 23.06.29 ê°•ì„ì› ì¸ì¬ì›.
 /// </summary>
 namespace Rocket
 {
-	class ROCKET_API Component : public Core::IComponent
+	class ROCKET_API Component
 	{
 		friend class GameObject;
 		friend class Core::ObjectSystem;
@@ -36,24 +35,24 @@ namespace Rocket
 
 		}
 
-		//virtual ~Component() = default;
+		virtual ~Component() = default;
 
 	protected:
-		virtual void Awake() override {}
-		virtual void Start() override {}
-		virtual void FixedUpdate() override {}
-		virtual void Update() override {}
-		virtual void LateUpdate() override {}
-		virtual void Finalize() override {}
+		virtual void Awake() {}
+		virtual void Start() {}
+		virtual void FixedUpdate() {}
+		virtual void Update() {}
+		virtual void LateUpdate() {}
+		virtual void Finalize() {}
 
 	protected:
-		virtual void OnDestroy() override {}
-		virtual void OnCollisionEnter() override {}
-		virtual void OnCollisionStay() override {}
-		virtual void OnCollisionExit() override {}
+		virtual void OnDestroy() {}
+		virtual void OnCollisionEnter() {}
+		virtual void OnCollisionStay() {}
+		virtual void OnCollisionExit() {}
 
 	protected:
-		virtual void SetRenderData() override {}
+		virtual void UpdateRenderData() {}
 
 
 	public:

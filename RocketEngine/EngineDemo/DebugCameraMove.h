@@ -1,5 +1,4 @@
-#pragma once
-#pragma once
+﻿#pragma once
 #include "..\\RocketEngine\\RocketAPI.h"
 
 namespace Rocket

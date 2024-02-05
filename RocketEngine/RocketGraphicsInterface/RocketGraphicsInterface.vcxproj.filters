@@ -37,8 +37,6 @@
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
-    <ClInclude Include="ISketchableImage.h" />
-    <ClInclude Include="ISketchableText.h" />
     <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="IDX11Renderer.h">
@@ -58,6 +56,12 @@
     </ClInclude>
     <ClInclude Include="IRenderable.h">
       <Filter>Rendererable</Filter>
+    </ClInclude>
+    <ClInclude Include="ITextRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ISpriteRenderer.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,14 @@
-#pragma once
-#include "DLLExporter.h"
-#include "UIRenderer.h"
+ï»¿#pragma once
 #include <string>
+#include "UIRenderer.h"
+#include "DLLExporter.h"
 #include "MathHeader.h"
+#include "../RocketGraphicsInterface/ITextRenderer.h"
+
+namespace Rocket::Core
+{
+	class InputSystem;
+}
 
 namespace Rocket
 {
@@ -12,22 +18,20 @@ namespace Rocket
 namespace Rocket
 {
 	/// <summary>
-	/// Text Á¤º¸¸¦ ´ã°í Ãâ·ÂÀ» ´ã´çÇÏ´Â ÄÄÆ÷³ÍÆ®.
-	/// TextBoxÀÇ ¿ªÇÒµµ ÇÑ´Ù.
+	/// Text ì •ë³´ë¥¼ ë‹´ê³  ì¶œë ¥ì„ ë‹´ë‹¹í•˜ëŠ” ì»´í¬ë„ŒíŠ¸.
+	/// TextBoxì˜ ì—­í• ë„ í•œë‹¤.
 	/// 
-	/// 23.08.11 °­¼®¿ø
+	/// 23.08.11 ê°•ì„ì›
 	/// </summary>
 	class ROCKET_API TextBox : public Rocket::Core::UIRenderer
 	{
 	public:
 		TextBox();
 
-	public:
-		virtual std::string GetSketchData() override;
-
 	protected:
 		virtual void Update() override;
 		virtual void LateUpdate() override;
+		virtual void UpdateRenderData() override;
 
 	public:
 		std::string GetText() const;
@@ -38,14 +42,12 @@ namespace Rocket
 		void PopBackText();
 
 	public:
-		float GetFontSize() const;
-		Color GetColor() const;
-		void SetFontSize(float size);
+		Color GetFontColor() const;
 		void SetFontColor(Color color);
 
 	private:
-		std::string _text;
-		float _fontSize;
-		Color _color;
+		Core::ITextRenderer* _textRenderer;
+
+		Core::InputSystem& _inputSystem;
 	};
 }

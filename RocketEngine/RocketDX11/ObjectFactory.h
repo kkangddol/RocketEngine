@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "..\\RocketGraphicsInterface\\IFactory.h"
 
 namespace Rocket::Core
@@ -13,11 +13,11 @@ namespace Rocket::Core
 	public:
 		virtual ICamera* CreateCamera() override;
 		virtual IMeshRenderer* CreateMeshRenderer() override;
-		virtual ISketchableText* CreateText() override;
-		virtual ISketchableImage* CreateImage() override;
+		virtual ITextRenderer* CreateText() override;
+		virtual ISpriteRenderer* CreateImage() override;
 		virtual ILineRenderer* CreateLineRenderer() override;
 
-		// IFactoryÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+		// IFactoryì„(ë¥¼) í†µí•´ ìƒì†ë¨
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() override;
 		virtual CubePrimitive* CreateCubePrimitive() override;
 		virtual SpherePrimitive* CreateSpherePrimitive() override;

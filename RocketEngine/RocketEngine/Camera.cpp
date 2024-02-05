@@ -1,9 +1,9 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 #include <cmath>
 #include "GameObject.h"
 #include "Transform.h"
 #include "MathHeader.h"
-#include <windows.h>	// µð¹ö±×¿ëÀ¸·Î ¿­¾úÀ½
+#include <windows.h>	// ë””ë²„ê·¸ìš©ìœ¼ë¡œ ì—´ì—ˆìŒ
 #include "GraphicsSystem.h"
 
 namespace Rocket
@@ -31,7 +31,7 @@ namespace Rocket
 
 	}
 
-	void Camera::SetRenderData()
+	void Camera::UpdateRenderData()
 	{
 		_camera->SetPositionAndRotation(gameObject->transform.GetPosition(), gameObject->transform.GetRotation());
 	}

@@ -26,7 +26,7 @@ namespace Rocket::Core
 	class VertexShader;
 	class PixelShader;
 	class ResourceManager;
-	class ImageRenderer;
+	class SpriteRenderer;
 	
 	class RocketDX11 final : public IDX11Renderer
 	{

@@ -35,7 +35,6 @@
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="EventSystem.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="IComponent.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="IRocketAPI.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

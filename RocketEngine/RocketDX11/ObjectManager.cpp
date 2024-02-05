@@ -43,9 +43,9 @@ namespace Rocket::Core
 		return meshRenderer;
 	}
 
-	Rocket::Core::ImageRenderer* ObjectManager::CreateImage()
+	Rocket::Core::SpriteRenderer* ObjectManager::CreateImage()
 	{
-		ImageRenderer* temp = new ImageRenderer();
+		SpriteRenderer* temp = new SpriteRenderer();
 		temp->InitalizeImageRenderer(_resourceManager.GetDevice(), _resourceManager.GetDeviceContext());
 		temp->SetImage("abcd.jpg");
 		_ImageList.emplace_back(temp);
@@ -53,7 +53,7 @@ namespace Rocket::Core
 		return temp;
 	}
 
-	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
+	std::vector<SpriteRenderer*>& ObjectManager::GetImageList()
 	{
 		return _ImageList;
 	}

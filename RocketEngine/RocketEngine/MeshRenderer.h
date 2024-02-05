@@ -19,6 +19,9 @@ namespace Rocket
 		void SetMesh(eMeshType meshType);
 
 	protected:
+		virtual void UpdateRenderData() override;
+
+	private:
 		Core::IMeshRenderer* _meshRenderer;
 	};
 }

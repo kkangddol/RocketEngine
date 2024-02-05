@@ -1,4 +1,4 @@
-#include "Scene.h"
+ï»¿#include "Scene.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "Camera.h"
@@ -85,6 +85,7 @@ namespace Rocket
 	Rocket::GameObject* Scene::CreateObject(std::string objName)
 	{
 		GameObject* gameObject = new GameObject(objName);
+		gameObject->SetScene(this);
 		_originalList.push_back(gameObject);
 		return gameObject;
 	}
@@ -98,7 +99,7 @@ namespace Rocket
 	{
 		std::erase_if(_originalList, [gameObjectName](GameObject* obj) {return obj->objName == gameObjectName; });
 
-		// ÀÓ½Ã·Î ¹ÝÈ¯°ª true ³Ö¾î³õÀ½. »èÁ¦ ¼º°ø ¿©ºÎ¿¡ µû¶ó ¹ÝÈ¯ÇÏµµ·Ï ¼öÁ¤ ÇÊ¿ä. 23.8.8.AJY.
+		// ìž„ì‹œë¡œ ë°˜í™˜ê°’ true ë„£ì–´ë†“ìŒ. ì‚­ì œ ì„±ê³µ ì—¬ë¶€ì— ë”°ë¼ ë°˜í™˜í•˜ë„ë¡ ìˆ˜ì • í•„ìš”. 23.8.8.AJY.
 		return true;
 	}
 
@@ -134,9 +135,9 @@ namespace Rocket
 		return _originalList;
 	}
 
-	// ¿ø·¡ ¿À¸®Áö³Î ¸®½ºÆ® ÀÖ°í, ·¯´×¸®½ºÆ®·Î º¹»çÇØ¼­ ½á¾ßÇÑ´Ù.
-	// ¾ÆÁ÷ GameObject º¹»çÇÏ´Â °Í ±¸ÇöÇÏÁö ¾Ê¾ÒÀ¸¹Ç·Î ´ë±â
-	// 23.07.20 °­¼®¿ø ÀÎÀç¿ø
+	// ì›ëž˜ ì˜¤ë¦¬ì§€ë„ ë¦¬ìŠ¤íŠ¸ ìžˆê³ , ëŸ¬ë‹ë¦¬ìŠ¤íŠ¸ë¡œ ë³µì‚¬í•´ì„œ ì¨ì•¼í•œë‹¤.
+	// ì•„ì§ GameObject ë³µì‚¬í•˜ëŠ” ê²ƒ êµ¬í˜„í•˜ì§€ ì•Šì•˜ìœ¼ë¯€ë¡œ ëŒ€ê¸°
+	// 23.07.20 ê°•ì„ì› ì¸ìž¬ì›
 	std::vector<GameObject*>& Scene::GetRunningList()
 	{
 		return _runningList;

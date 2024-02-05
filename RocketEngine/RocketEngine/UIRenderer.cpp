@@ -1,4 +1,4 @@
-#include "UIRenderer.h"
+﻿#include "UIRenderer.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "UISystem.h"
@@ -19,11 +19,6 @@ namespace Rocket::Core
 	void UIRenderer::Start()
 	{
 		_isFocused = false;
-	}
-
-	Matrix UIRenderer::Get2DWorldTM()
-	{
-		return gameObject->transform.GetWorldTM();
 	}
 
 	bool UIRenderer::CheckFocus()
@@ -143,5 +138,4 @@ namespace Rocket::Core
 	{
 		return _height;
 	}
-
 }
