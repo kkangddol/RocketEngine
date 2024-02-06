@@ -5,7 +5,7 @@
 #include "MeshRenderer.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
-#include "ImageRenderer.h"
+#include "SpriteRenderer.h"
 #include "LineRenderer.h"
 
 namespace Rocket::Core
@@ -39,12 +39,12 @@ namespace Rocket::Core
 		return _objectManager.CreateMeshRenderer();
 	}
 
-	ITextRenderer* ObjectFactory::CreateText()
+	ITextRenderer* ObjectFactory::CreateTextRenderer()
 	{
 		return _objectManager.CreateText();
 	}
 
-	ISpriteRenderer* ObjectFactory::CreateImage()
+	ISpriteRenderer* ObjectFactory::CreateSpriteRenderer()
 	{
 		return _objectManager.CreateImage();
 	}

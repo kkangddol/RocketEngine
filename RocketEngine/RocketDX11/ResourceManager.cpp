@@ -1,4 +1,7 @@
-﻿#include "ResourceManager.h"
+﻿#include <DDSTextureLoader.h>
+#include <cassert>
+
+#include "ResourceManager.h"
 #include "Camera.h"
 #include "CubeMesh.h"
 #include "SphereMesh.h"
@@ -6,11 +9,13 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "TextRenderer.h"
-#include "ImageRenderer.h"
+#include "SpriteRenderer.h"
 #include "RocketMacroDX11.h"
 #include "texture.h"
 #include "material.h"
 
+
+const std::string TEXTURE_PATH = "Resources/Textures/";
 
 namespace Rocket::Core
 {
@@ -95,8 +100,7 @@ namespace Rocket::Core
 		_sphereMesh = new SphereMesh();
 		_sphereMesh->Initialize(device);
 
-		_defaultTexture = new Texture();
-		_defaultTexture->Initialize(device, L"Resources/Textures/darkbrickdxt1.dds");
+		_defaultTexture = LoadTexture("darkbrickdxt1.dds");
 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 		
@@ -188,4 +192,44 @@ namespace Rocket::Core
 		}
 	}
 
+	Texture* ResourceManager::GetTexture(std::string fileName)
+	{
+		if (_textures.find(fileName) == _textures.end())
+		{
+			return LoadTexture(fileName);
+		}
+
+		return _textures.at(fileName);
+	}
+
+	Texture* ResourceManager::LoadTexture(std::string fileName)
+	{
+		std::string fullPath = TEXTURE_PATH + fileName;
+		std::wstring wFileName(fullPath.begin(), fullPath.end());
+
+		std::string extension = fileName.substr(fileName.find_last_of(".") + 1);
+
+		ID3D11Resource* rawTexture = nullptr;
+		ID3D11ShaderResourceView* textureView = nullptr;
+
+		if (extension == "dds")
+		{
+			HR(DirectX::CreateDDSTextureFromFile(_device.Get(), wFileName.c_str(), &rawTexture, &textureView));
+		}
+		else if (extension == "jpg" || extension == "png")
+		{
+			HR(DirectX::CreateWICTextureFromFile(_device.Get(), wFileName.c_str(), &rawTexture, &textureView));
+		}
+		else
+		{
+			assert(false);
+		}
+
+
+		Texture* texture = new Texture(rawTexture, textureView);
+
+		_textures.insert({ fileName,texture });
+
+		return texture;
+	}
 }

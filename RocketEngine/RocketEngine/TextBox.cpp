@@ -11,9 +11,10 @@ namespace Rocket
 	float downTime = 0.0f;
 
 	TextBox::TextBox()
-		: _textRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateText()),
+		: _textRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateTextRenderer()),
 		_inputSystem(Core::InputSystem::Instance())
 	{
+
 	}
 
 	void TextBox::Update()

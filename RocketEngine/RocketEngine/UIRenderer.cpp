@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "UISystem.h"
 #include "InputSystem.h"
+#include "GraphicsSystem.h"
 
 namespace Rocket::Core
 {
@@ -14,6 +15,7 @@ namespace Rocket::Core
 		_ignoreFocus(false)
 	{
 		UISystem::Instance().AddUICurrentScene(this);
+		GraphicsSystem::Instance().AddToList(this);
 	}
 
 	void UIRenderer::Start()

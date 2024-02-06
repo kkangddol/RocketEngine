@@ -5,7 +5,7 @@
 #include "Axis.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
-#include "ImageRenderer.h"
+#include "SpriteRenderer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -16,7 +16,7 @@
 #include "ObjectManager.h"
 
 #include "MeshRenderer.h"
-#include "ImageRenderer.h"
+#include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "RocketMacroDX11.h"
 
@@ -344,12 +344,13 @@ namespace Rocket::Core
 
 	void RocketDX11::RenderTexture()
 	{
+		_spriteBatch->Begin();
 		// 이미지(UI)를 그리기 위한 함수
 		for (auto imageRenderer : ObjectManager::Instance().GetImageList())
 		{
 			imageRenderer->Render(_spriteBatch);
 		}
-		
+		_spriteBatch->End();
 	}
 
 	void RocketDX11::EndRender()
@@ -393,8 +394,7 @@ namespace Rocket::Core
 		RenderStaticMesh();
 
 		RenderText();
-		
-		//RenderTexture();
+		RenderTexture();
 		//RenderLine();
 
 		//_deviceContext->OMSetBlendState(nullptr, );

@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "MeshRenderer.h"
 #include "TextRenderer.h"
-#include "ImageRenderer.h"
+#include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "Mesh.h"
 #include "CubeMesh.h"
@@ -46,8 +46,7 @@ namespace Rocket::Core
 	Rocket::Core::SpriteRenderer* ObjectManager::CreateImage()
 	{
 		SpriteRenderer* temp = new SpriteRenderer();
-		temp->InitalizeImageRenderer(_resourceManager.GetDevice(), _resourceManager.GetDeviceContext());
-		temp->SetImage("abcd.jpg");
+		temp->SetImage("test.jpg");
 		_ImageList.emplace_back(temp);
 
 		return temp;

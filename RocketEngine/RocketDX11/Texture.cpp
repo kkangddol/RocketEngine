@@ -1,5 +1,4 @@
-﻿#include <DDSTextureLoader.h>
-#include "Texture.h"
+﻿#include "Texture.h"
 #include "RocketMacroDX11.h"
 
 namespace Rocket::Core
@@ -18,16 +17,16 @@ namespace Rocket::Core
 
 	}
 
-	Texture::~Texture()
+	Texture::Texture(ID3D11Resource* texture, ID3D11ShaderResourceView* textureView)
+		: _texture(texture),
+		_textureView(textureView)
 	{
 
 	}
 
-	bool Texture::Initialize(ID3D11Device* device, const std::wstring& path)
+	Texture::~Texture()
 	{
-		HR(DirectX::CreateDDSTextureFromFile(device, path.c_str(), &_texture, &_textureView));
 
-		return true;
 	}
 
 	void Texture::Shutdown()
@@ -48,12 +47,11 @@ namespace Rocket::Core
 
 	ID3D11ShaderResourceView* Texture::GetTexture()
 	{
-		return _textureView;
+		return _textureView.Get();
 	}
 
 	ID3D11ShaderResourceView** Texture::GetAddressOfTextureView()
 	{
-		return &_textureView;
+		return _textureView.GetAddressOf();
 	}
-
 }

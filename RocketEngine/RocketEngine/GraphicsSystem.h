@@ -25,6 +25,7 @@ namespace Rocket::Core
 namespace Rocket
 {
 	class Light;
+	class Component;
 }
 
 /// <summary>
@@ -85,11 +86,9 @@ namespace Rocket::Core
 		std::unique_ptr<Rocket::Core::IFactory> _factory;
 
 	public:
-		void AddToList(MeshRendererBase* comp);
-		void AddToList(UIRenderer* comp);
+		void AddToList(Component* comp);
 
 	private:
-		std::vector<MeshRendererBase*> _meshRendererList;
-		std::vector<UIRenderer*> _uiRendererList;
+		std::vector<Component*> _renderableList;
 	};
 }

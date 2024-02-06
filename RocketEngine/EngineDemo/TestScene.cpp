@@ -26,4 +26,9 @@ void TestScene::Initialize()
 	auto text = scene->CreateObject("text");
 	text->AddComponent<Rocket::TextBox>();
 	text->GetComponent<Rocket::TextBox>()->SetText("Hello World");
+	text->transform.Translate(500.0f, 500.0f, 0.0f);
+
+	auto sprite = scene->CreateObject("sprite");
+	sprite->AddComponent<Rocket::SpriteRenderer>();
+	sprite->transform.Translate(100.0f, 100.0f, 0.0f);
 }

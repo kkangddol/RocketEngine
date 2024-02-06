@@ -23,8 +23,8 @@ namespace Rocket::Core
 		virtual ICamera* CreateCamera() = 0;
 		virtual IMeshRenderer* CreateMeshRenderer() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
-		virtual ITextRenderer* CreateText() = 0;
-		virtual ISpriteRenderer* CreateImage() = 0;
+		virtual ITextRenderer* CreateTextRenderer() = 0;
+		virtual ISpriteRenderer* CreateSpriteRenderer() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;

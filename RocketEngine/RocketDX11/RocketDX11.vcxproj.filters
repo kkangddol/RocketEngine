@@ -36,7 +36,7 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Object\HelperObject</Filter>
     </ClCompile>
-    <ClCompile Include="ImageRenderer.cpp">
+    <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Object\ImageRenderer</Filter>
     </ClCompile>
     <ClCompile Include="LineRenderer.cpp">
@@ -105,7 +105,7 @@
     <ClInclude Include="Grid.h">
       <Filter>Object\HelperObject</Filter>
     </ClInclude>
-    <ClInclude Include="ImageRenderer.h">
+    <ClInclude Include="SpriteRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
     </ClInclude>
     <ClInclude Include="IResource.h">

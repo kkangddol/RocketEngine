@@ -1,4 +1,4 @@
-#include "RocketAPI.h"
+Ôªø#include "RocketAPI.h"
 
 #include <windows.h>
 
@@ -78,7 +78,7 @@ namespace Rocket
 		TextBox* textRenderer = textBox->AddComponent<TextBox>();
 
 		imageRenderer->SetPath(DEFAULT_IMAGE_PATH);
-		textRenderer->SetText("±‚∫ª ≈ÿΩ∫∆Æ ¿‘¥œ¥Ÿ.");
+		textRenderer->SetText("Í∏∞Î≥∏ ÌÖçÏä§Ìä∏ ÏûÖÎãàÎã§.");
 		textRenderer->SetSortOrder(1);
 
 		return textBox;
@@ -96,7 +96,7 @@ namespace Rocket
 
 	void RocketDestroyWindow()
 	{
-		DestroyWindow(Rocket::Core::GraphicsSystem::Instance()._hWnd);
+		Rocket::Core::GraphicsSystem::Instance().DestroyWindow();
 	}
 
 	bool LoadScene(const std::string& sceneName)
@@ -161,7 +161,7 @@ namespace Rocket
 
 	ROCKET_API Collider* ShootRay(Vector3 origin, Vector3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
 	{
-		// type¿Ã 1¿Ã∏È rigidStatic, 2∏È rigidDynamic
+		// typeÏù¥ 1Ïù¥Î©¥ rigidStatic, 2Î©¥ rigidDynamic
 		return Rocket::Core::PhysicsSystem::Instance().RayCast(origin, direction, length, type);
 	}
 

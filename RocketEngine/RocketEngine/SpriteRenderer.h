@@ -3,7 +3,6 @@
 #include "DLLExporter.h"
 #include "UIRenderer.h"
 
-
 namespace Rocket::Core
 {
 	class ISpriteRenderer;

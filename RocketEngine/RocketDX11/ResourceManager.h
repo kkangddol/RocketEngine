@@ -7,8 +7,8 @@
 #include <vector>
 #include <GeometricPrimitive.h>
 #include <memory>
+#include <string>
 
-#include "string"
 #include "Singleton.h"
 #include "../RocketGraphicsInterface/GraphicsEnum.h"
 
@@ -43,6 +43,7 @@ namespace Rocket::Core
 
 		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
 		Mesh* GetMesh(eMeshType meshType) const;
+		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
 		Material* GetDefaultMaterial() const { return _defaultMaterial; }
 		VertexShader* GetVertexShader(const std::string& name);
@@ -60,6 +61,7 @@ namespace Rocket::Core
 
 	private:
 		void CreateRenderStates();
+		Texture* LoadTexture(std::string fileName);
 
 	private:
 		ComPtr<ID3D11Device> _device;
@@ -85,6 +87,7 @@ namespace Rocket::Core
 
 		std::unordered_map<std::string, VertexShader*> _vertexShaders;
 		std::unordered_map<std::string, PixelShader*> _pixelShaders;
+		std::unordered_map<std::string, Texture*> _textures;
 		std::vector<ID3D11RasterizerState*> _renderStates;
 	};
 }

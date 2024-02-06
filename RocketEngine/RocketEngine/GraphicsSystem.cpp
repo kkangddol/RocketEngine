@@ -1,12 +1,13 @@
 ﻿#include <cassert>
 #include <algorithm>
 #include <windows.h>
+
 #include "GraphicsSystem.h"
 #include "SceneSystem.h"
 #include "TimeSystem.h"
-#include "MeshRendererBase.h"
-#include "UIRenderer.h"
 #include "Scene.h"
+#include "Camera.h"
+#include "Component.h"
 
 
 using GRAPHICS_CREATE_SIGNATURE = Rocket::Core::IDX11Renderer* (*)(void);
@@ -71,14 +72,9 @@ namespace Rocket::Core
 		auto mainCam = SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
 		mainCam->UpdateRenderData();
 
-		for (auto& meshRenderer : _meshRendererList)
+		for (auto& renderComp : _renderableList)
 		{
-			meshRenderer->UpdateRenderData();
-		}
-
-		for (auto& uiRenderer : _uiRendererList)
-		{
-			uiRenderer->UpdateRenderData();
+			renderComp->UpdateRenderData();
 		}
 	}
 
@@ -97,14 +93,9 @@ namespace Rocket::Core
 		return _factory.get();
 	}
 
-	void GraphicsSystem::AddToList(MeshRendererBase* comp)
+	void GraphicsSystem::AddToList(Component* comp)
 	{
-		_meshRendererList.emplace_back(comp);
-	}
-
-	void GraphicsSystem::AddToList(UIRenderer* comp)
-	{
-		_uiRendererList.emplace_back(comp);
+		_renderableList.emplace_back(comp);
 	}
 
 	void GraphicsSystem::DestroyWindow()
