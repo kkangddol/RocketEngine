@@ -1,6 +1,6 @@
 ﻿#include <vector>
 #include "SphereMesh.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 
 namespace Rocket::Core

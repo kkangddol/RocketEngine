@@ -4,7 +4,8 @@
 namespace Rocket::Core
 {
 	TextRenderer::TextRenderer()
-		: _font(ResourceManager::Instance().GetDefaultFont()), 
+		: _isActive(true),
+		_font(ResourceManager::Instance().GetDefaultFont()), 
 		_text("Default Text"), 
 		_color(DirectX::Colors::White)
 	{
@@ -33,7 +34,7 @@ namespace Rocket::Core
 
 	void TextRenderer::SetActive(bool isActive)
 	{
-		isActive = 1;
+		_isActive = isActive;
 	}
 
 	void TextRenderer::SetColor(Color color)
@@ -43,6 +44,9 @@ namespace Rocket::Core
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	{
+		if(!_isActive)
+			return;
+
 		std::wstring wstr(_text.begin(), _text.end());
 		_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_worldTM.m[3][0], _worldTM.m[3][1]), _color);
 	}
@@ -51,5 +55,4 @@ namespace Rocket::Core
 	{
 		return _color;
 	}
-
 }

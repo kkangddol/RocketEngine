@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 
 #include "VertexShader.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 
 namespace Rocket::Core
 {

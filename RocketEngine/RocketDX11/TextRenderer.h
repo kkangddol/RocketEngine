@@ -33,6 +33,7 @@ public:
 
 	private:
 		// 내부 변수들
+		bool _isActive;
 		std::string _text;
 		Color _color;
 		Matrix _worldTM;

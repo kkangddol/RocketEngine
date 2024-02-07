@@ -1,5 +1,5 @@
 ﻿#include "Texture.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 
 namespace Rocket::Core
 {

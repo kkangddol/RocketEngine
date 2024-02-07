@@ -1,6 +1,6 @@
 ﻿#include <DirectXColors.h>	// 이미 많은 부분 DX11과 겹친다.
 #include "CubeMesh.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 
 namespace Rocket::Core

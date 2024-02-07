@@ -24,10 +24,19 @@ namespace Rocket::Core
 	class SpriteRenderer;
 	class Texture;
 	class Material;
+	class FBXLoader;
+
+	struct ModelData
+	{
+		std::vector<Mesh*> meshes;
+		// Node* rootNode;
+		// std::unordered_map<std::string, Animation*> animations;
+	};
 
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 		friend Singleton;
+		friend FBXLoader;
 	private:
 		ResourceManager();
 
@@ -43,6 +52,7 @@ namespace Rocket::Core
 
 		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
 		Mesh* GetMesh(eMeshType meshType) const;
+		std::vector<Mesh*>& GetMeshes(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
 		Material* GetDefaultMaterial() const { return _defaultMaterial; }
@@ -61,11 +71,12 @@ namespace Rocket::Core
 
 	private:
 		void CreateRenderStates();
-		Texture* LoadTexture(std::string fileName);
+		Texture* LoadTextureFile(std::string fileName);
 
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;
+		FBXLoader* _fbxLoader;
 
 		// 기본 메쉬들
 		CubeMesh* _cubeMesh;
@@ -89,5 +100,6 @@ namespace Rocket::Core
 		std::unordered_map<std::string, PixelShader*> _pixelShaders;
 		std::unordered_map<std::string, Texture*> _textures;
 		std::vector<ID3D11RasterizerState*> _renderStates;
+		std::unordered_map<std::string, ModelData> _models;
 	};
 }

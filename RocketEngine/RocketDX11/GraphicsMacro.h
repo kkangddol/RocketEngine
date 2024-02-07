@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #if defined(DEBUG) | defined(_DEBUG)
 #ifndef HR
@@ -32,7 +32,7 @@
 //---------------------------------------------------------------------------------------
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
-#define SAFE_RELEASE(x) { if(x){ x->Release(); x = 0; } }	// ¿¹Àü ½ºÅ¸ÀÏ
+#define SAFE_RELEASE(x) { if(x){ x->Release(); x = 0; } }	// ì˜ˆì „ ìŠ¤íƒ€ì¼
 
 
 //---------------------------------------------------------------------------------------

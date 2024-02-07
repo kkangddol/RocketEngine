@@ -1,10 +1,10 @@
-#include <sstream>
+﻿#include <sstream>
 #include <fstream>
 #include <vector>
 #include <DirectXMath.h>
 
 #include "PixelShader.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 
 namespace Rocket::Core

@@ -1,5 +1,5 @@
 ﻿#include "MeshRenderer.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 #include "ResourceManager.h"
 #include "CubeMesh.h"

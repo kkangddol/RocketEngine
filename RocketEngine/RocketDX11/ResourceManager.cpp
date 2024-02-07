@@ -10,12 +10,14 @@
 #include "PixelShader.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "texture.h"
 #include "material.h"
-
+#include "GraphicsStruct.h"
+#include "FBXLoader.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
+const std::string MODEL_PATH = "Resources/Models/";
 
 namespace Rocket::Core
 {
@@ -26,7 +28,8 @@ namespace Rocket::Core
 		_cubeMesh(),
 		_sphereMesh(),
 		_defaultTexture(),
-		_defaultMaterial()
+		_defaultMaterial(),
+		_fbxLoader()
 	{
 		
 	}
@@ -35,6 +38,9 @@ namespace Rocket::Core
 	{
 		_device = device;
 		_deviceContext = deviceContext;
+
+		_fbxLoader->Initialize(device);
+
 		// Color Shader
 		{
 			VertexShader* colorVS = new VertexShader();
@@ -92,15 +98,13 @@ namespace Rocket::Core
 
 		CreateRenderStates();
 
-
-
 		_cubeMesh = new CubeMesh();
 		_cubeMesh->Initialize(device);
 
 		_sphereMesh = new SphereMesh();
 		_sphereMesh->Initialize(device);
 
-		_defaultTexture = LoadTexture("darkbrickdxt1.dds");
+		_defaultTexture = LoadTextureFile("darkbrickdxt1.dds");
 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 		
@@ -196,13 +200,13 @@ namespace Rocket::Core
 	{
 		if (_textures.find(fileName) == _textures.end())
 		{
-			return LoadTexture(fileName);
+			return LoadTextureFile(fileName);
 		}
 
 		return _textures.at(fileName);
 	}
 
-	Texture* ResourceManager::LoadTexture(std::string fileName)
+	Texture* ResourceManager::LoadTextureFile(std::string fileName)
 	{
 		std::string fullPath = TEXTURE_PATH + fileName;
 		std::wstring wFileName(fullPath.begin(), fullPath.end());
@@ -232,4 +236,15 @@ namespace Rocket::Core
 
 		return texture;
 	}
+
+	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
+	{
+		if (_models.find(fileName) == _models.end())
+		{
+			_fbxLoader->LoadFBXFile(fileName);
+		}
+
+		return _models[fileName].meshes;
+	}
+
 }

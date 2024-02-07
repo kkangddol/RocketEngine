@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 
 using namespace DirectX;
 

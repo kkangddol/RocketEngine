@@ -9,7 +9,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 #include "DeviceBuilderDX11.h"
 
 #include "ResourceManager.h"
@@ -18,7 +18,7 @@
 #include "MeshRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
-#include "RocketMacroDX11.h"
+#include "GraphicsMacro.h"
 
 
 namespace Rocket::Core

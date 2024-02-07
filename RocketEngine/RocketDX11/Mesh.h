@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <vector>
 
 #include "IResource.h"
 #include "GraphicsStruct.h"
@@ -14,6 +15,8 @@ namespace Rocket::Core
 	class Mesh : public IResource
 	{
 	public:
+		Mesh();
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<UINT>& indices);
 		virtual void Initialize(ID3D11Device* device) {}
 
 		int GetVertexCount() const;

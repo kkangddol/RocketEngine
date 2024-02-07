@@ -135,7 +135,7 @@
     <ClInclude Include="RocketDX11.h">
       <Filter>GraphicsProcess</Filter>
     </ClInclude>
-    <ClInclude Include="RocketMacroDX11.h">
+    <ClInclude Include="GraphicsMacro.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="MeshRenderer.h">
@@ -167,6 +167,15 @@
     </ClInclude>
     <ClInclude Include="SphereMesh.h">
       <Filter>Resource\3DResource\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpMathConverter.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
