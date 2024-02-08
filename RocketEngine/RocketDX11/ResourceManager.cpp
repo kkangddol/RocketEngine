@@ -29,7 +29,7 @@ namespace Rocket::Core
 		_sphereMesh(),
 		_defaultTexture(),
 		_defaultMaterial(),
-		_fbxLoader()
+		_fbxLoader(new FBXLoader())
 	{
 		
 	}

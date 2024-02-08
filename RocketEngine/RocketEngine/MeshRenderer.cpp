@@ -17,6 +17,11 @@ namespace Rocket
 		_meshRenderer->SetMesh(meshType);
 	}
 
+	void MeshRenderer::SetMesh(std::string fileName)
+	{
+		_meshRenderer->SetMesh(fileName);
+	}
+
 	void MeshRenderer::UpdateRenderData()
 	{
 		_meshRenderer->SetWorldTM(gameObject->transform.GetWorldTM());

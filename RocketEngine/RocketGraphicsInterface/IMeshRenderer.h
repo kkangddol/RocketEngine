@@ -10,6 +10,7 @@ namespace Rocket::Core
 	public:
 		virtual ~IMeshRenderer() {}
 		virtual void SetMesh(eMeshType meshType) = 0;
+		virtual void SetMesh(std::string fileName) = 0;
 
 	};
 }

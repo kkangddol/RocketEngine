@@ -85,7 +85,4 @@ namespace Rocket::Core
 	{
 		return _vertexType;
 	}
-
-
-
 }

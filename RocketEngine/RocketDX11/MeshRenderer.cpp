@@ -32,6 +32,11 @@ namespace Rocket::Core
 		_mesh = ResourceManager::Instance().GetMesh(meshType);
 	}
 
+	void MeshRenderer::SetMesh(std::string fileName)
+	{
+		_meshes = &(ResourceManager::Instance().GetMeshes(fileName));
+	}
+
 	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
@@ -102,6 +107,7 @@ namespace Rocket::Core
 		UINT stride = 0;
 		UINT offset = 0;
 
+		/*
 		switch (_mesh->GetVertexType())
 		{
 			case VertexType::COLOR_VERTEX:
@@ -113,6 +119,9 @@ namespace Rocket::Core
 			case VertexType::LIGHT_VERTEX:
 				stride = sizeof(LightVertex);
 				break;
+			case VertexType::VERTEX:
+				stride = sizeof(Vertex);
+				break;
 			default:
 				break;
 		}
@@ -123,6 +132,40 @@ namespace Rocket::Core
 		deviceContext->PSSetShaderResources(0, 1, _material->GetTexture()->GetAddressOfTextureView());
 
 		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
+		*/
+
+		if(_meshes == nullptr)
+		{
+			return;
+		}
+
+		for (auto& mesh : *_meshes)
+		{
+			switch (mesh->GetVertexType())
+			{
+				case VertexType::COLOR_VERTEX:
+					stride = sizeof(ColorVertex);
+					break;
+				case VertexType::TEXTURE_VERTEX:
+					stride = sizeof(TextureVertex);
+					break;
+				case VertexType::LIGHT_VERTEX:
+					stride = sizeof(LightVertex);
+					break;
+				case VertexType::VERTEX:
+					stride = sizeof(Vertex);
+					break;
+				default:
+					break;
+			}
+
+			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
+			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+			deviceContext->PSSetShaderResources(0, 1, _material->GetTexture()->GetAddressOfTextureView());
+
+			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		}
 	}
 
 	void MeshRenderer::SetTexture(Texture* texture)

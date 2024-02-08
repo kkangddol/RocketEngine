@@ -49,6 +49,7 @@ namespace Rocket::Core
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
 			MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
+			assert(false);
 		}
 
 		ProcessNode(_scene->mRootNode, _scene);
@@ -61,7 +62,7 @@ namespace Rocket::Core
 	{
 		for (UINT i = 0; i < node->mNumMeshes; ++i)
 		{
-			aiMesh* mesh = scene->mMeshes[i];
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			ProcessMesh(mesh, scene);
 		}
 

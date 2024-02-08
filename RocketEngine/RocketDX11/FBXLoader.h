@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
+#include <wrl.h>
 #include <string>
 #include <assimp/Importer.hpp>		// C++ importer interface
 #include <assimp/scene.h>			// Output data structure
 #include <assimp/postprocess.h>		// Post processing flags
-#include <wrl.h>
 
 using Microsoft::WRL::ComPtr;
 
