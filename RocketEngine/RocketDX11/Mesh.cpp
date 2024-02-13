@@ -6,8 +6,8 @@ namespace Rocket::Core
 {
 	Mesh::Mesh()
 		: _vertexBuffer(), _indexBuffer(),
-		vertexCount(0),
-		indexCount(0),
+		_vertexCount(0),
+		_indexCount(0),
 		_vertexType(VertexType::VERTEX)
 	{
 
@@ -15,13 +15,13 @@ namespace Rocket::Core
 
 	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<UINT>& indices)
 		: _vertexBuffer(), _indexBuffer(),
-		vertexCount((int)vertices.size()),
-		indexCount((int)indices.size()),
+		_vertexCount((int)vertices.size()),
+		_indexCount((int)indices.size()),
 		_vertexType(VertexType::VERTEX)
 	{
 		D3D11_BUFFER_DESC vertexBufferDesc = {};
 		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexBufferDesc.ByteWidth = sizeof(Vertex) * vertexCount;
+		vertexBufferDesc.ByteWidth = sizeof(Vertex) * _vertexCount;
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufferDesc.CPUAccessFlags = 0;
 		vertexBufferDesc.MiscFlags = 0;
@@ -34,7 +34,7 @@ namespace Rocket::Core
 
 		D3D11_BUFFER_DESC indexBufferDesc = {};
 		indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		indexBufferDesc.ByteWidth = sizeof(UINT) * indexCount;
+		indexBufferDesc.ByteWidth = sizeof(UINT) * _indexCount;
 		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		indexBufferDesc.CPUAccessFlags = 0;
 		indexBufferDesc.MiscFlags = 0;
@@ -68,12 +68,12 @@ namespace Rocket::Core
 
 	int Mesh::GetVertexCount() const
 	{
-		return vertexCount;
+		return _vertexCount;
 	}
 
 	int Mesh::GetIndexCount() const
 	{
-		return indexCount;
+		return _indexCount;
 	}
 
 	void Mesh::SetVertexType(VertexType type)

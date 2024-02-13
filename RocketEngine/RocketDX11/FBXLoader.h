@@ -11,6 +11,9 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
+	struct ModelData;
+	struct Node;
+
 	class FBXLoader
 	{
 	public:
@@ -19,11 +22,12 @@ namespace Rocket::Core
 
 	public:
 		void LoadFBXFile(std::string fileName);
-	
+
 	private:
-		void ProcessNode(aiNode* node, const aiScene* scene);
-		void ProcessMesh(aiMesh* mesh, const aiScene* scene);
-		void ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
+		void ProcessModel(aiNode* rootaiNode, const aiScene* scene);
+		void ProcessNode(Node* node, aiNode* ainode, const aiScene* scene);
+		void ProcessMesh(Node* node, aiMesh* mesh, const aiScene* scene);
+		void ProcessStaticMesh(Node* node, aiMesh* mesh, const aiScene* scene);
 		void ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene);
 		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
@@ -32,6 +36,6 @@ namespace Rocket::Core
 
 	private:
 		ComPtr<ID3D11Device> _device;
-		std::string _nowFileName;
+		ModelData* _nowModelData;
 	};
 }

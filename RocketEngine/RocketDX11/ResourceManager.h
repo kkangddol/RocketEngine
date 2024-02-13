@@ -25,11 +25,13 @@ namespace Rocket::Core
 	class Texture;
 	class Material;
 	class FBXLoader;
+	struct Node;
 
 	struct ModelData
 	{
+		std::string name;
 		std::vector<Mesh*> meshes;
-		// Node* rootNode;
+		Node* rootNode;
 		// std::unordered_map<std::string, Animation*> animations;
 	};
 
@@ -100,6 +102,6 @@ namespace Rocket::Core
 		std::unordered_map<std::string, PixelShader*> _pixelShaders;
 		std::unordered_map<std::string, Texture*> _textures;
 		std::vector<ID3D11RasterizerState*> _renderStates;
-		std::unordered_map<std::string, ModelData> _models;
+		std::unordered_map<std::string, ModelData*> _models;
 	};
 }

@@ -98,41 +98,10 @@ namespace Rocket::Core
 		deviceContext->RSSetState(_material->GetRenderState());
 
 
-
-		
-
 		/// 그린다
-
 		// 인덱스버퍼와 버텍스버퍼 셋팅
 		UINT stride = 0;
 		UINT offset = 0;
-
-		/*
-		switch (_mesh->GetVertexType())
-		{
-			case VertexType::COLOR_VERTEX:
-				stride = sizeof(ColorVertex);
-				break;
-			case VertexType::TEXTURE_VERTEX:
-				stride = sizeof(TextureVertex);
-				break;
-			case VertexType::LIGHT_VERTEX:
-				stride = sizeof(LightVertex);
-				break;
-			case VertexType::VERTEX:
-				stride = sizeof(Vertex);
-				break;
-			default:
-				break;
-		}
-
-		deviceContext->IASetVertexBuffers(0, 1, _mesh->GetAddressOfVertexBuffer(), &stride, &offset);
-		deviceContext->IASetIndexBuffer(_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-
-		deviceContext->PSSetShaderResources(0, 1, _material->GetTexture()->GetAddressOfTextureView());
-
-		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
-		*/
 
 		if(_meshes == nullptr)
 		{

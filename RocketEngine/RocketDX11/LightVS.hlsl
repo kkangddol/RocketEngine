@@ -11,6 +11,12 @@ cbuffer CameraBuffer
     float padding;
 };
 
+cbuffer NodeBuffer
+{
+    // TODO : 이거 배열 개수 고민하다가.. 흠..
+    float4x4 nodeTransform;
+};
+
 struct VertexInputType
 {
     float4 position : POSITION;

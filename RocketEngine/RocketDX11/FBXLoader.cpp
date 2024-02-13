@@ -1,4 +1,5 @@
 ﻿#include <windows.h>
+
 #include "FBXLoader.h"
 #include "MathHelper.h"
 #include "AssimpMathConverter.h"
@@ -25,18 +26,20 @@ namespace Rocket::Core
 
 	void FBXLoader::LoadFBXFile(std::string fileName)
 	{
+		std::string fileNameWithExtension;
+
 		/// 경로 제외하기 위한 로직
 		UINT slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
-			_nowFileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+			fileNameWithExtension = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
 		}
 		else
 		{
-			_nowFileName = fileName;
+			fileNameWithExtension = fileName;
 		}
 
-		std::string path = MODEL_PATH + _nowFileName;
+		std::string path = MODEL_PATH + fileNameWithExtension;
 
 		Assimp::Importer importer;
 
@@ -52,23 +55,43 @@ namespace Rocket::Core
 			assert(false);
 		}
 
-		ProcessNode(_scene->mRootNode, _scene);
+		// Node를 Process 하면서 이 ModelData에 저장
+		_nowModelData = new ModelData();
+		_nowModelData->name = fileNameWithExtension;
+
+		ProcessModel(_scene->mRootNode, _scene);
 
 		/// 임시 주석
 		//LoadAnimation(_scene);
+
+		// 모든 작업이 끝나면 리소스매니저에 해당 모델 데이터 등록
+		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModelData });
 	}
 
-	void FBXLoader::ProcessNode(aiNode* node, const aiScene* scene)
+
+	void FBXLoader::ProcessModel(aiNode* rootaiNode, const aiScene* scene)
 	{
-		for (UINT i = 0; i < node->mNumMeshes; ++i)
+		Node* rootNode = new Node();
+		_nowModelData->rootNode = rootNode;
+		ProcessNode(rootNode, rootaiNode, scene);
+	}
+
+	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
+	{
+		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation);
+
+		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
-			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			ProcessMesh(mesh, scene);
+			aiMesh* mesh = scene->mMeshes[ainode->mMeshes[i]];
+			ProcessMesh(node, mesh, scene);
 		}
 
-		for (UINT i = 0; i < node->mNumChildren; ++i)
+		for (UINT i = 0; i < ainode->mNumChildren; ++i)
 		{
-			ProcessNode(node->mChildren[i], scene);
+			Node* newNode = new Node();
+			node->children.emplace_back(newNode);
+
+			ProcessNode(newNode, ainode->mChildren[i], scene);
 		}
 	}
 
@@ -124,7 +147,7 @@ namespace Rocket::Core
 	}
 	*/
 
-	void FBXLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+	void FBXLoader::ProcessMesh(Node* node, aiMesh* mesh, const aiScene* scene)
 	{
 		if (scene->HasAnimations())
 		{
@@ -133,12 +156,12 @@ namespace Rocket::Core
 		}
 		else
 		{
-			ProcessStaticMesh(mesh, scene);
+			ProcessStaticMesh(node, mesh, scene);
 		}
 	}
 
-	void FBXLoader::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
-	{
+	void FBXLoader::ProcessStaticMesh(Node* node, aiMesh* mesh, const aiScene* scene)
+	{		
 		std::vector<Vertex> vertices;
 		std::vector<UINT> indices;
 
@@ -180,8 +203,10 @@ namespace Rocket::Core
 		}
 
 		Mesh* newMesh = new Mesh(vertices, indices);
+		newMesh->SetNode(node);
 
-		ResourceManager::Instance()._models[_nowFileName].meshes.emplace_back(newMesh);
+		_nowModelData->meshes.emplace_back(newMesh);
+
 		/// 임시 주석
 		/*
 

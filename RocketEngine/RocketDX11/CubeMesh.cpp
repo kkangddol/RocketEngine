@@ -111,8 +111,8 @@ namespace Rocket::Core
 		iinitData.pSysMem = indices;
 		HR(device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
 
-		vertexCount = ARRAYSIZE(vertices);
-		indexCount = ARRAYSIZE(indices);
+		_vertexCount = ARRAYSIZE(vertices);
+		_indexCount = ARRAYSIZE(indices);
 	}
 }
 

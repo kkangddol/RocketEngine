@@ -12,6 +12,8 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
+	struct Node;
+
 	class Mesh : public IResource
 	{
 	public:
@@ -30,11 +32,15 @@ namespace Rocket::Core
 		void SetVertexType(VertexType type);
 		VertexType GetVertexType() const;
 
+		Node* GetNode() const { return _node; }
+		void SetNode(Node* val) { _node = val; }
+
 	protected:
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
-		int vertexCount;
-		int indexCount;
+		int _vertexCount;
+		int _indexCount;
 		VertexType _vertexType;
+		Node* _node;
 	};
 }

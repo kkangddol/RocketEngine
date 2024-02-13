@@ -15,6 +15,7 @@
 #include "material.h"
 #include "GraphicsStruct.h"
 #include "FBXLoader.h"
+#include "Animation.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string MODEL_PATH = "Resources/Models/";
@@ -244,7 +245,7 @@ namespace Rocket::Core
 			_fbxLoader->LoadFBXFile(fileName);
 		}
 
-		return _models[fileName].meshes;
+		return _models[fileName]->meshes;
 	}
 
 }
