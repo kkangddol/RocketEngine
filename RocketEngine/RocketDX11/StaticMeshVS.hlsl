@@ -1,4 +1,4 @@
-cbuffer MatrixBuffer : register( b0 )
+cbuffer MatrixBuffer : register(b0)
 {
     matrix worldMatrix;
     matrix viewMatrix;
@@ -11,11 +11,19 @@ cbuffer CameraBuffer
     float padding;
 };
 
+cbuffer NodeBuffer
+{
+    // 60개인 이유는? 아직 잘 모르겠다.    
+    matrix nodeTransform[60];
+};
+
 struct VertexInputType
 {
     float4 position : POSITION;
     float2 tex : TEXCOORD0;
     float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    uint nodeIndex : BLENDINDICES;
 };
     
 struct PixelInputType
@@ -28,13 +36,17 @@ struct PixelInputType
 
 PixelInputType main(VertexInputType input)
 {
-    PixelInputType output = (PixelInputType)0;
+    PixelInputType output = (PixelInputType) 0;
     
     // Change the position vector to be 4 units for proper matrix calculations.
     input.position.w = 1.0f;
 
     // Calculate the position of the vertex against the world, view, and projection matrices.
-    output.position = mul(input.position, worldMatrix);
+    
+    matrix nodeTransformMatrix = nodeTransform[input.nodeIndex];
+    
+    output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
+    //output.position = mul(input.position, worldMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     

@@ -18,8 +18,10 @@ namespace Rocket::Core
 	{
 	public:
 		Mesh();
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<UINT>& indices);
+		Mesh(std::vector<Vertex> vertices, std::vector<UINT> indices);
 		virtual void Initialize(ID3D11Device* device) {}
+		
+		void CreateBuffers();
 
 		int GetVertexCount() const;
 		int GetIndexCount() const;
@@ -36,6 +38,8 @@ namespace Rocket::Core
 		void SetNode(Node* val) { _node = val; }
 
 	protected:
+		std::vector<Vertex> _vertices;
+		std::vector<UINT> _indices;
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
 		int _vertexCount;

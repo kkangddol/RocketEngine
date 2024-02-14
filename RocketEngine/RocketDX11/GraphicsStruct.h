@@ -53,15 +53,21 @@ namespace Rocket::Core
 		float padding;
 	};
 
+	struct NodeBufferType
+	{
+		DirectX::XMMATRIX transformMatrix[60];
+	};
+
 	/// <summary>
 	/// assimp 용 vertex 구조체?
 	/// </summary>
 	struct Vertex
 	{
 		DirectX::XMFLOAT3 position;	// The position of the vertex
+		DirectX::XMFLOAT2 UV;		// UV Coordinate for texturing
 		DirectX::XMFLOAT3 normal;	// Normal for lighting
 		DirectX::XMFLOAT3 tangent;	// For normal mapping
-		DirectX::XMFLOAT2 UV;		// UV Coordinate for texturing
+		UINT nodeIndex;				// 노드 인덱스
 
 		Vertex() {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT3& t)

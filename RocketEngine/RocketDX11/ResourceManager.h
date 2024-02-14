@@ -55,6 +55,7 @@ namespace Rocket::Core
 		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
 		Mesh* GetMesh(eMeshType meshType) const;
 		std::vector<Mesh*>& GetMeshes(const std::string& fileName);
+		ModelData* GetModel(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
 		Material* GetDefaultMaterial() const { return _defaultMaterial; }

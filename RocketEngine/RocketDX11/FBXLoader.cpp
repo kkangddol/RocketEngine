@@ -7,6 +7,7 @@
 #include "GraphicsStruct.h"
 #include "Mesh.h"
 #include "ResourceManager.h"
+#include "GraphicsMacro.h"
 
 const std::string MODEL_PATH = "Resources/Models/";
 
@@ -74,6 +75,36 @@ namespace Rocket::Core
 		Node* rootNode = new Node();
 		_nowModelData->rootNode = rootNode;
 		ProcessNode(rootNode, rootaiNode, scene);
+
+		Node* node = rootNode;
+		UINT index = 0;
+		SetNodeIndex(index, node);
+
+		D3D11_BUFFER_DESC nodeBufferDesc;
+		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		nodeBufferDesc.ByteWidth = sizeof(NodeBufferType);
+		nodeBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		nodeBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		nodeBufferDesc.MiscFlags = 0;
+		nodeBufferDesc.StructureByteStride = 0;
+
+ 		for (auto& mesh : _nowModelData->meshes)
+		{
+			mesh->CreateBuffers();		// SetNodeIndex()를 통해 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
+			HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &mesh->GetNode()->nodeBuffer));
+		}
+	}
+
+	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
+	{
+		node->bone.id = index++;
+		if(node->children.size() > 0)
+		{
+			for (auto& child : node->children)
+			{
+				SetNodeIndex(index, child);
+			}
+		}
 	}
 
 	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
@@ -82,8 +113,9 @@ namespace Rocket::Core
 
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
-			aiMesh* mesh = scene->mMeshes[ainode->mMeshes[i]];
-			ProcessMesh(node, mesh, scene);
+			Mesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
+			mesh->SetNode(node);
+			_nowModelData->meshes.emplace_back(mesh);
 		}
 
 		for (UINT i = 0; i < ainode->mNumChildren; ++i)
@@ -147,20 +179,20 @@ namespace Rocket::Core
 	}
 	*/
 
-	void FBXLoader::ProcessMesh(Node* node, aiMesh* mesh, const aiScene* scene)
+	Mesh* FBXLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		if (scene->HasAnimations())
 		{
 			/// 임시 주석
-			//ProcessSkinnedMesh(mesh, scene);
+			//return ProcessSkinnedMesh(mesh, scene);
 		}
 		else
 		{
-			ProcessStaticMesh(node, mesh, scene);
+			return ProcessStaticMesh(mesh, scene);
 		}
 	}
 
-	void FBXLoader::ProcessStaticMesh(Node* node, aiMesh* mesh, const aiScene* scene)
+	Mesh* FBXLoader::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
 	{		
 		std::vector<Vertex> vertices;
 		std::vector<UINT> indices;
@@ -203,9 +235,8 @@ namespace Rocket::Core
 		}
 
 		Mesh* newMesh = new Mesh(vertices, indices);
-		newMesh->SetNode(node);
 
-		_nowModelData->meshes.emplace_back(newMesh);
+		return newMesh;
 
 		/// 임시 주석
 		/*

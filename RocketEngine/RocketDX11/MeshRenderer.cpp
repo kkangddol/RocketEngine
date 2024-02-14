@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "SphereMesh.h"
+#include "Animation.h"
 
 
 namespace Rocket::Core
@@ -34,7 +35,7 @@ namespace Rocket::Core
 
 	void MeshRenderer::SetMesh(std::string fileName)
 	{
-		_meshes = &(ResourceManager::Instance().GetMeshes(fileName));
+		_model = ResourceManager::Instance().GetModel(fileName);
 	}
 
 	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
@@ -76,6 +77,26 @@ namespace Rocket::Core
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
 
+			///
+			for (auto& mesh : _model->meshes)
+			{
+				HR(deviceContext->Map(mesh->GetNode()->nodeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+				NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
+
+				DirectX::XMMATRIX nodeTM = DirectX::XMMatrixTranspose(mesh->GetNode()->transformMatrix);
+
+				int temp = mesh->GetNode()->bone.id;
+				nodeBufferDataPtr->transformMatrix[mesh->GetNode()->bone.id] = nodeTM;
+
+				deviceContext->Unmap(mesh->GetNode()->nodeBuffer, 0);
+
+				bufferNumber = 2;
+
+				deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
+			}
+			///
+
 			// 픽셀 쉐이더
 			HR(deviceContext->Map(_material->GetPixelShader()->GetLightBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 		
@@ -103,12 +124,12 @@ namespace Rocket::Core
 		UINT stride = 0;
 		UINT offset = 0;
 
-		if(_meshes == nullptr)
-		{
-			return;
-		}
+// 		if(_meshes == nullptr)
+// 		{
+// 			return;
+// 		}
 
-		for (auto& mesh : *_meshes)
+		for (auto& mesh : _model->meshes)
 		{
 			switch (mesh->GetVertexType())
 			{

@@ -21,7 +21,7 @@ void TestScene::Initialize()
 	auto player = scene->CreateObject("Sphere");
 	auto meshRenderer = player->AddComponent<Rocket::MeshRenderer>();
 	//meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-	meshRenderer->SetMesh("4QCharacter_tpose.fbx");
+	meshRenderer->SetMesh("spider.fbx");
 	player->AddComponent<PlayerController>();
 
 	auto text = scene->CreateObject("text");

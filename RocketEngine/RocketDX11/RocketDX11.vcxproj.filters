@@ -19,6 +19,12 @@
     <FxCompile Include="LightPS.hlsl">
       <Filter>Resource\Shader\HLSL\Light</Filter>
     </FxCompile>
+    <FxCompile Include="StaticMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshPS.hlsl">
+      <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">
@@ -28,7 +34,7 @@
       <Filter>Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\3DResource\Primitive</Filter>
+      <Filter>Resource\Mesh\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>FBXLoader</Filter>
@@ -41,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="LineRenderer.cpp">
       <Filter>Object\LineRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Resource\3DResource\BaseClass</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>ObjectFactory</Filter>
@@ -76,17 +79,28 @@
       <Filter>Light</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Object\Material</Filter>
+      <Filter>Material</Filter>
     </ClCompile>
     <ClCompile Include="DeviceBuilderDX11.cpp">
-      <Filter>DX11DeviceBuilder</Filter>
+      <Filter>GraphicsProcess\DX11DeviceBuilder</Filter>
     </ClCompile>
     <ClCompile Include="SphereMesh.cpp">
-      <Filter>Resource\3DResource\Primitive</Filter>
+      <Filter>Resource\Mesh\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Resource\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resource\Mesh\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Resource\Mesh\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>Resource\Mesh\SkinnedMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Font.h" />
     <ClInclude Include="Axis.h">
       <Filter>Object\HelperObject</Filter>
     </ClInclude>
@@ -94,7 +108,7 @@
       <Filter>Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\3DResource\Primitive</Filter>
+      <Filter>Resource\Mesh\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>FBXLoader</Filter>
@@ -116,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>Resource\Shader\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Resource\3DResource\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
       <Filter>ObjectFactory</Filter>
@@ -157,16 +168,16 @@
       <Filter>Singleton</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Object\Material</Filter>
+      <Filter>Material</Filter>
     </ClInclude>
     <ClInclude Include="DeviceBuilderDX11.h">
-      <Filter>DX11DeviceBuilder</Filter>
+      <Filter>GraphicsProcess\DX11DeviceBuilder</Filter>
     </ClInclude>
     <ClInclude Include="IBuilder.h">
-      <Filter>Builder</Filter>
+      <Filter>GraphicsProcess\Builder</Filter>
     </ClInclude>
     <ClInclude Include="SphereMesh.h">
-      <Filter>Resource\3DResource\Primitive</Filter>
+      <Filter>Resource\Mesh\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Struct</Filter>
@@ -177,11 +188,20 @@
     <ClInclude Include="AssimpMathConverter.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Resource\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resource\Mesh\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Resource\Mesh\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMesh.h">
+      <Filter>Resource\Mesh\SkinnedMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Builder">
-      <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FBXLoader">
       <UniqueIdentifier>{9e7db707-89b2-42b9-94c7-8b4977f88a36}</UniqueIdentifier>
     </Filter>
@@ -211,9 +231,6 @@
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{5a459304-e098-43fa-9b09-91426347a350}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\2DResource">
-      <UniqueIdentifier>{53e4fd8b-8d60-4ee1-af38-c0b85702c652}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Interface">
       <UniqueIdentifier>{09e22f74-861b-465b-87d5-06f2a3723283}</UniqueIdentifier>
@@ -269,20 +286,35 @@
     <Filter Include="Singleton">
       <UniqueIdentifier>{9ab8b4fc-e7cd-4859-9c52-eb203fd87a12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\3DResource">
-      <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
+    <Filter Include="Resource\Shader\HLSL\StaticMesh">
+      <UniqueIdentifier>{30f2938b-1c24-4d04-9178-291218ee142d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\3DResource\BaseClass">
-      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\3DResource\Primitive">
-      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Material">
+    <Filter Include="Material">
       <UniqueIdentifier>{bfe75a22-e57e-483a-bb7c-22c13248a61e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DX11DeviceBuilder">
+    <Filter Include="GraphicsProcess\DX11DeviceBuilder">
       <UniqueIdentifier>{55b87733-0089-4254-9c2c-20eb7765c321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsProcess\Builder">
+      <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh">
+      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\Primitive">
+      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Model">
+      <UniqueIdentifier>{af0a3348-847a-46d8-ab56-fc6e3fa64ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\BaseClass">
+      <UniqueIdentifier>{40afbd11-a45a-49ec-bf92-c0cb46f1b52a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\StaticMesh">
+      <UniqueIdentifier>{d8a32370-25e8-48b4-afa0-d37b95e7cc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\SkinnedMesh">
+      <UniqueIdentifier>{3841b88c-81d2-4e48-8f6b-5892ec1b3733}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

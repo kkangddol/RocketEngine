@@ -97,6 +97,27 @@ namespace Rocket::Core
 			_pixelShaders["LightPS"] = lightPS;
 		}
 
+		// StaticMesh Shader
+		{
+			VertexShader* staticMeshVS = new VertexShader();
+			D3D11_INPUT_ELEMENT_DESC staticMeshDesc[] =
+			{
+				{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+				{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+				{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+				{"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+				{"BLENDINDICES", 0, DXGI_FORMAT_R32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			};
+			staticMeshVS->SetVertexDesc(staticMeshDesc, ARRAYSIZE(staticMeshDesc));
+			staticMeshVS->Initialize(_device.Get(), "Resources/Shaders/StaticMeshVS.cso");
+			staticMeshVS->SetVertexType(VertexType::VERTEX);
+			_vertexShaders["StaticMeshVS"] = staticMeshVS;
+
+			PixelShader* staticMeshPS = new PixelShader();
+			staticMeshPS->Initialize(_device.Get(), "Resources/Shaders/StaticMeshPS.cso");
+			_pixelShaders["StaticMeshPS"] = staticMeshPS;
+		}
+
 		CreateRenderStates();
 
 		_cubeMesh = new CubeMesh();
@@ -246,6 +267,16 @@ namespace Rocket::Core
 		}
 
 		return _models[fileName]->meshes;
+	}
+
+	Rocket::Core::ModelData* ResourceManager::GetModel(const std::string& fileName)
+	{
+		if (_models.find(fileName) == _models.end())
+		{
+			_fbxLoader->LoadFBXFile(fileName);
+		}
+
+		return _models[fileName];
 	}
 
 }

@@ -13,6 +13,7 @@ namespace Rocket::Core
 {
 	struct ModelData;
 	struct Node;
+	class Mesh;
 
 	class FBXLoader
 	{
@@ -26,13 +27,14 @@ namespace Rocket::Core
 	private:
 		void ProcessModel(aiNode* rootaiNode, const aiScene* scene);
 		void ProcessNode(Node* node, aiNode* ainode, const aiScene* scene);
-		void ProcessMesh(Node* node, aiMesh* mesh, const aiScene* scene);
-		void ProcessStaticMesh(Node* node, aiMesh* mesh, const aiScene* scene);
+		Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
+		Mesh* ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
 		void ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene);
 		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void LoadAnimation(const aiScene* scene);
 
+		void SetNodeIndex(UINT& index, Node* node);
 
 	private:
 		ComPtr<ID3D11Device> _device;

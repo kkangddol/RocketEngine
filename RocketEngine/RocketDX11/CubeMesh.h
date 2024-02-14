@@ -4,13 +4,13 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
-#include "Mesh.h"
+#include "StaticMesh.h"
 
 using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class CubeMesh : public Mesh
+	class CubeMesh : public StaticMesh
 	{
 	public:
 		CubeMesh();
