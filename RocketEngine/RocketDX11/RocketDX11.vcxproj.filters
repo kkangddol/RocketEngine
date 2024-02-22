@@ -99,6 +99,9 @@
     <ClCompile Include="SkinnedMesh.cpp">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="SkinnedMesh.h">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -315,6 +321,12 @@
     </Filter>
     <Filter Include="Resource\Mesh\SkinnedMesh">
       <UniqueIdentifier>{3841b88c-81d2-4e48-8f6b-5892ec1b3733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{38971765-e48e-41bc-b21b-d52fbd0feb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{8f1b0f81-d5a9-451d-abf3-fc25780e3330}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
