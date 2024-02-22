@@ -5,8 +5,8 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\RocketGraphicsInterface\\IMeshRenderer.h"
-#include "../RocketGraphicsInterface/GraphicsEnum.h"
+#include "..\\GraphicsInterface\\IMeshRenderer.h"
+#include "../GraphicsInterface/GraphicsEnum.h"
 #include "Mesh.h"
 #include "Material.h"
 

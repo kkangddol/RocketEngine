@@ -9,7 +9,7 @@
 #include <VertexTypes.h>
 #include <Effects.h>
 
-#include "../RocketGraphicsInterface/IDX11Renderer.h"
+#include "../GraphicsInterface/IDX11Renderer.h"
 #include "Camera.h"
 #include "Light.h"
 

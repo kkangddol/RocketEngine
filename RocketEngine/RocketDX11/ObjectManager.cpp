@@ -1,6 +1,6 @@
 ﻿#include "ObjectManager.h"
 
-#include "..\\RocketGraphicsInterface\\IRenderable.h"
+#include "..\\GraphicsInterface\\IRenderable.h"
 
 #include "ResourceManager.h"
 #include "Camera.h"

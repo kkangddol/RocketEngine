@@ -2,7 +2,7 @@
 #include <string>
 #include "MeshRendererBase.h"
 #include "DLLExporter.h"
-#include "../RocketGraphicsInterface/GraphicsEnum.h"
+#include "../GraphicsInterface/GraphicsEnum.h"
 
 namespace Rocket::Core
 {

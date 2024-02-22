@@ -10,7 +10,7 @@
 #include <string>
 
 #include "Singleton.h"
-#include "../RocketGraphicsInterface/GraphicsEnum.h"
+#include "../GraphicsInterface/GraphicsEnum.h"
 
 using Microsoft::WRL::ComPtr;
 

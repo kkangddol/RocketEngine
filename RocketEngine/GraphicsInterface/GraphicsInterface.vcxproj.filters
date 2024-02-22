@@ -4,9 +4,6 @@
     <Filter Include="MathHeader">
       <UniqueIdentifier>{0f0cad57-503c-444c-934a-3a2f1cf477f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{98c3388b-9d26-4b56-b276-1976c0307a3e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Factory">
       <UniqueIdentifier>{77428ffd-d685-4021-844a-113a47a40d0a}</UniqueIdentifier>
     </Filter>
@@ -19,9 +16,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{3ce0ed3c-0348-4d6d-97e7-1867392971f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rendererable">
-      <UniqueIdentifier>{33d52df8-ae25-4f78-8f91-11965881e1ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enum">
       <UniqueIdentifier>{1527d487-93ec-4820-92db-9eeb6fa37306}</UniqueIdentifier>
     </Filter>
@@ -30,20 +24,12 @@
     <ClInclude Include="MathHeader.h">
       <Filter>MathHeader</Filter>
     </ClInclude>
-    <ClInclude Include="ICamera.h" />
-    <ClInclude Include="IDebugCube.h" />
-    <ClInclude Include="IDebugObject.h" />
-    <ClInclude Include="ILineRenderer.h" />
     <ClInclude Include="IMaterial.h" />
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
-    <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="IDX11Renderer.h">
       <Filter>DX11Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="IObject.h">
-      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="IFactory.h">
       <Filter>Factory</Filter>
@@ -54,13 +40,25 @@
     <ClInclude Include="IMeshRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>Rendererable</Filter>
-    </ClInclude>
     <ClInclude Include="ITextRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ISpriteRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ILineRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ISkinnedMesh.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ITransform.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

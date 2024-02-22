@@ -4,7 +4,7 @@
 #include <VertexTypes.h>
 #include <vector>
 
-#include "../RocketGraphicsInterface/ILineRenderer.h"
+#include "../GraphicsInterface/ILineRenderer.h"
 
 namespace Rocket::Core
 {

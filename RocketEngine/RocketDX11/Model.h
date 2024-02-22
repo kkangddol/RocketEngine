@@ -27,7 +27,7 @@ namespace Rocket::Core
 	private:
 		std::string name;
 		std::vector<Mesh*> meshes;
-		std::vector<Node*> nodes;	// 0 is the root node
+//		std::vector<Node*> nodes;	// 0 is the root node
 		// TODO : Node를 Process 할 때 index를 그 때 매겨주자. 어때?
 	};
 }

@@ -5,7 +5,7 @@
 #include <WICTextureLoader.h>
 #include <wrl\client.h>
 
-#include "..\\RocketGraphicsInterface\\ISpriteRenderer.h"
+#include "..\\GraphicsInterface\\ISpriteRenderer.h"
 
 namespace Rocket::Core
 {

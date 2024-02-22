@@ -3,7 +3,7 @@
 #include "UIRenderer.h"
 #include "DLLExporter.h"
 #include "MathHeader.h"
-#include "../RocketGraphicsInterface/ITextRenderer.h"
+#include "../GraphicsInterface/ITextRenderer.h"
 
 namespace Rocket::Core
 {
