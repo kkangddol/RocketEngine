@@ -19,7 +19,6 @@ namespace Rocket::Core
 		virtual Vector3 GetEuler() const = 0;				// world 기준 (radians)
 		virtual Vector3 GetScale() const = 0;				// world 기준
 
-
 		/// Local 기준 Getter Setter
 		virtual void SetLocalPosition(const Vector3& position) = 0;
 		virtual void SetLocalRotation(const Quaternion& rotation) = 0;
@@ -30,6 +29,11 @@ namespace Rocket::Core
 		virtual Quaternion GetLocalRotation() const = 0;	// local 기준
 		virtual Vector3 GetLocalEuler() const = 0;			// local 기준 (radians)
 		virtual Vector3 GetLocalScale() const = 0;			// local 기준
+
+		/// Local 기준 포인터 반환 (Tween Animation 고려)
+		virtual Vector3* GetLocalPositionPtr() = 0;
+		virtual Quaternion* GetLocalRotationPtr() = 0;
+		virtual Vector3* GetLocalScalePtr() = 0;
 
 		/// World 기준 방향 벡터
 		virtual Vector3 GetForward() const = 0;			// world 기준
@@ -69,7 +73,8 @@ namespace Rocket::Core
 		virtual std::vector<ITransform*>& GetChildren() = 0;
 		virtual int GetChildCount() const = 0;
 
+	protected:
 		virtual void AddChild(ITransform* child) = 0;
-		virtual void RemoveChild(ITransform* child) = 0;
+		virtual void ReleaseChild(ITransform* child) = 0;
 	};
 }

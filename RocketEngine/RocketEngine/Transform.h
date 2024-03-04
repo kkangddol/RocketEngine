@@ -5,6 +5,11 @@
 #include "Component.h"
 #include "MathHeader.h"
 
+namespace Rocket::Core
+{
+	class ITransform;
+}
+
 namespace Rocket
 {
 	class GameObject;
@@ -43,9 +48,9 @@ namespace Rocket
 		/// 참조로 전달하기 더 좋고 안전한 방법 생각해보셈.
 		/// 23.07.26 강석원 && 오수안 인재원
 	public:
-		Vector3& GetLocalPositionRef();
-		Quaternion& GetLocalRotationRef();
-		Vector3& GetLocalScaleRef();
+		Vector3* GetLocalPositionPointer();
+		Quaternion* GetLocalRotationPointer();
+		Vector3* GetLocalScalePointer();
 
 		/// Get Local Position, Rotation, Scale 정보
 	public:
@@ -89,11 +94,6 @@ namespace Rocket
 
 		void LookAt(const Vector3& target, const Vector3& up);
 
-	private:
-		Vector3 _position;
-		Quaternion _rotation;		// 쿼터니언
-		Vector3 _scale;
-
 		/// 계층구조.
 	public:
 		void SetParent(Transform* parent);
@@ -102,18 +102,17 @@ namespace Rocket
 		Transform* GetChild(int index);
 
 		void ReleaseParent();
-
 	private:
 		void ReleaseChild(Transform* child);
+		void AddChild(Transform* child);
 		
 	public:
 		std::vector<Transform*>& GetChildrenVec();
 
 	private:
-		void AddChild(Transform* child);
-
-	private:
+		Core::ITransform* _transform;
 		Transform* _parent;
 		std::vector<Transform*> _children;
+
 	};
 }

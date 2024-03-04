@@ -1,6 +1,7 @@
 ﻿#include "ObjectFactory.h"
 #include "ObjectManager.h"
 
+#include "Transform.h"
 #include "Camera.h"
 #include "MeshRenderer.h"
 #include "CubeMesh.h"
@@ -27,6 +28,11 @@ namespace Rocket::Core
 		: _objectManager(ObjectManager::Instance())
 	{
 
+	}
+
+	ITransform* ObjectFactory::CreateTransform()
+	{
+		return new Transform();
 	}
 
 	ICamera* ObjectFactory::CreateCamera()
@@ -73,5 +79,4 @@ namespace Rocket::Core
 	{
 		return nullptr;
 	}
-
 }

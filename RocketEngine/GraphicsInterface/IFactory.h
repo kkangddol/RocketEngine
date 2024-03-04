@@ -7,6 +7,7 @@
 
 namespace Rocket::Core
 {
+	class ITransform;
 	class ICamera;
 	class IMeshRenderer;
 	class ISkinnedMesh;
@@ -20,6 +21,7 @@ namespace Rocket::Core
 	class IFactory
 	{
 	public:
+		virtual ITransform* CreateTransform() = 0;
 		virtual ICamera* CreateCamera() = 0;
 		virtual IMeshRenderer* CreateMeshRenderer() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
