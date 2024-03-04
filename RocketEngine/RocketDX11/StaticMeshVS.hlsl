@@ -11,10 +11,9 @@ cbuffer CameraBuffer
     float padding;
 };
 
-cbuffer NodeBuffer
+cbuffer NodeBuffer : register(b1)
 {
-    // 60개인 이유는? 아직 잘 모르겠다.    
-    matrix nodeTransform[60];
+    matrix nodeTransform[256];
 };
 
 struct VertexInputType
@@ -45,8 +44,9 @@ PixelInputType main(VertexInputType input)
     
     matrix nodeTransformMatrix = nodeTransform[input.nodeIndex];
     
-    output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
+    //output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
     //output.position = mul(input.position, worldMatrix);
+    output.position = mul(input.position, nodeTransformMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     

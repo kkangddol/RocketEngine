@@ -55,7 +55,7 @@ namespace Rocket::Core
 
 	struct NodeBufferType
 	{
-		DirectX::XMMATRIX transformMatrix[60];
+		DirectX::XMMATRIX transformMatrix[256];
 	};
 
 	/// <summary>

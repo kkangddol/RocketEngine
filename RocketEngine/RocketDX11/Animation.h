@@ -21,7 +21,6 @@ namespace Rocket::Core
 		Bone bone;
 		DirectX::XMMATRIX transformMatrix = DirectX::XMMatrixIdentity();
 		std::vector<Node*> children = {};
-		ID3D11Buffer* nodeBuffer;
 	};
 
 	// structure containing each node's animation information in one animation

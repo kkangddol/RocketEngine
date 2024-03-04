@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "ResourceManager.h"
 #include "GraphicsMacro.h"
+#include "Texture.h"
 
 const std::string MODEL_PATH = "Resources/Models/";
 
@@ -76,9 +77,8 @@ namespace Rocket::Core
 		_nowModelData->rootNode = rootNode;
 		ProcessNode(rootNode, rootaiNode, scene);
 
-		Node* node = rootNode;
 		UINT index = 0;
-		SetNodeIndex(index, node);
+		SetNodeIndex(index, rootNode);
 
 		D3D11_BUFFER_DESC nodeBufferDesc;
 		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -91,8 +91,9 @@ namespace Rocket::Core
  		for (auto& mesh : _nowModelData->meshes)
 		{
 			mesh->CreateBuffers();		// SetNodeIndex()를 통해 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
-			HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &mesh->GetNode()->nodeBuffer));
 		}
+
+		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &(_nowModelData->nodeBuffer)));
 	}
 
 	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
@@ -234,10 +235,6 @@ namespace Rocket::Core
 			}
 		}
 
-		Mesh* newMesh = new Mesh(vertices, indices);
-
-		return newMesh;
-
 		/// 임시 주석
 		/*
 
@@ -283,13 +280,7 @@ namespace Rocket::Core
 			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
-
-		// create node hierarchy
-		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-
-		_loadedFileInfo[_fileName].node = rootNode;
+*/
 
 		if (mesh->mMaterialIndex >= 0)
 		{
@@ -300,7 +291,10 @@ namespace Rocket::Core
 			}
 		}
 
-		*/
+		Mesh* newMesh = new Mesh(vertices, indices);
+
+		return newMesh;
+
 	}
 
 	/// 임시 주석
@@ -482,7 +476,6 @@ namespace Rocket::Core
 	*/
 
 	/// 임시 주석
-/*
 	void FBXLoader::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
 	{
 		UINT textureCount = material->GetTextureCount(type);
@@ -493,14 +486,16 @@ namespace Rocket::Core
 			std::string s = std::string(str.C_Str());
 			std::string fileName = s.substr(s.find_last_of("/\\") + 1, s.length() - s.find_last_of("/\\"));
 			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			auto iter = _loadedTextures.find(fileName);
-			if (iter == _loadedTextures.end())
+			auto iter = ResourceManager::Instance()._textures.find(fileName);
+			if (iter == ResourceManager::Instance()._textures.end())
 			{
 				const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
 				if (embeddedTexture != nullptr)
 				{
-					ID3D11ShaderResourceView* texture = LoadEmbeddedTexture(embeddedTexture);
-					_loadedTextures.insert(std::make_pair(fileName, texture));
+					// Map에서 내가 만든 클래스말고 그냥 SRV만 관리할까..?
+					ID3D11ShaderResourceView* textureSRV = LoadEmbeddedTexture(embeddedTexture);
+					Texture* texture = new Texture(nullptr, textureSRV);
+					ResourceManager::Instance()._textures.insert(std::make_pair(fileName, texture));
 				}
 				else
 				{
@@ -509,7 +504,6 @@ namespace Rocket::Core
 			}
 		}
 	}
-*/
 
 	ID3D11ShaderResourceView* FBXLoader::LoadEmbeddedTexture(const aiTexture* embeddedTexture)
 	{

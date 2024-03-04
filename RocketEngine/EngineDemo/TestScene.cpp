@@ -21,7 +21,9 @@ void TestScene::Initialize()
 	auto player = scene->CreateObject("Sphere");
 	auto meshRenderer = player->AddComponent<Rocket::MeshRenderer>();
 	//meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-	meshRenderer->SetMesh("spider.fbx");
+// 	meshRenderer->SetMesh("SK_TP_CH_Default.fbx");
+// 	meshRenderer->SetTexture("T_TP_CH_Camo_006_003_D.png");
+	meshRenderer->SetMesh("SM_Box_Cargo.fbx");
 	player->AddComponent<PlayerController>();
 
 	auto text = scene->CreateObject("text");

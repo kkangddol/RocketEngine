@@ -32,6 +32,7 @@ namespace Rocket::Core
 		std::string name;
 		std::vector<Mesh*> meshes;
 		Node* rootNode;
+		ID3D11Buffer* nodeBuffer;
 		// std::unordered_map<std::string, Animation*> animations;
 	};
 

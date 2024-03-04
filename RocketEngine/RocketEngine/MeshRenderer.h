@@ -19,6 +19,7 @@ namespace Rocket
 		MeshRenderer();
 		void SetMesh(eMeshType meshType);
 		void SetMesh(std::string fileName);
+		void SetTexture(std::string fileName);
 
 	protected:
 		virtual void UpdateRenderData() override;

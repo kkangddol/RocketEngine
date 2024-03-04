@@ -6,7 +6,6 @@
 #include "SphereMesh.h"
 #include "Animation.h"
 
-
 namespace Rocket::Core
 {
 	MeshRenderer::MeshRenderer()
@@ -28,14 +27,19 @@ namespace Rocket::Core
 		_isActive = isActive;
 	}
 
-	void MeshRenderer::SetMesh(eMeshType meshType)
+	void MeshRenderer::LoadMesh(eMeshType meshType)
 	{
 		_mesh = ResourceManager::Instance().GetMesh(meshType);
 	}
 
-	void MeshRenderer::SetMesh(std::string fileName)
+	void MeshRenderer::LoadMesh(std::string fileName)
 	{
 		_model = ResourceManager::Instance().GetModel(fileName);
+	}
+
+	void MeshRenderer::LoadTexture(std::string fileName)
+	{
+		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
 	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
@@ -78,23 +82,19 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
 
 			///
-			for (auto& mesh : _model->meshes)
-			{
-				HR(deviceContext->Map(mesh->GetNode()->nodeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+			HR(deviceContext->Map(_model->nodeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
-				NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
+			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-				DirectX::XMMATRIX nodeTM = DirectX::XMMatrixTranspose(mesh->GetNode()->transformMatrix);
+			UINT index = 0;
 
-				int temp = mesh->GetNode()->bone.id;
-				nodeBufferDataPtr->transformMatrix[mesh->GetNode()->bone.id] = nodeTM;
+			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
+			
+			deviceContext->Unmap(_model->nodeBuffer, 0);
 
-				deviceContext->Unmap(mesh->GetNode()->nodeBuffer, 0);
+			bufferNumber = 2;
 
-				bufferNumber = 2;
-
-				deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
-			}
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, &(_model->nodeBuffer));
 			///
 
 			// 픽셀 쉐이더
@@ -181,4 +181,17 @@ namespace Rocket::Core
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
+
+	void MeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	{
+		nodeBuffer->transformMatrix[node->bone.id] = node->transformMatrix;
+		index++;
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			SetNodeBuffer(node->children[i], index, nodeBuffer);
+		}
+	}
+
+
+
 }
