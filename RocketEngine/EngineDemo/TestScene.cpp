@@ -20,10 +20,16 @@ void TestScene::Initialize()
 
 	auto player = scene->CreateObject("Sphere");
 	auto meshRenderer = player->AddComponent<Rocket::MeshRenderer>();
-	//meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-// 	meshRenderer->SetMesh("SK_TP_CH_Default.fbx");
-// 	meshRenderer->SetTexture("T_TP_CH_Camo_006_003_D.png");
-	meshRenderer->SetMesh("SM_Box_Cargo.fbx");
+//	meshRenderer->SetMesh(Rocket::eMeshType::SPHERE);
+
+	meshRenderer->SetMesh("SK_TP_CH_Default.fbx");
+	meshRenderer->SetTexture("T_TP_CH_Camo_006_003_D.png");
+
+// 	meshRenderer->SetMesh("4QCharacter_tpose.fbx");
+// 	meshRenderer->SetTexture("TT_checker_2048x2048_UV_GRID_BaseColor.png");
+
+//	meshRenderer->SetMesh("SM_Box_Cargo.fbx");
+
 	player->AddComponent<PlayerController>();
 
 	auto text = scene->CreateObject("text");

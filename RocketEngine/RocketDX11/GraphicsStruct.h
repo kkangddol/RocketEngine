@@ -69,28 +69,29 @@ namespace Rocket::Core
 		DirectX::XMFLOAT3 tangent;	// For normal mapping
 		UINT nodeIndex;				// 노드 인덱스
 
-		Vertex() {}
+		Vertex() 
+		: position(), UV(), normal(), tangent(), nodeIndex() {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT3& t)
-			: position(p), UV(uv), normal(n), tangent(t) {}
+			: position(p), UV(uv), normal(n), tangent(t),nodeIndex() {}
 		Vertex(
 			float px, float py, float pz,
 			float u, float v,
 			float nx, float ny, float nz,
 			float tx, float ty, float tz)
 			: position(px, py, pz), UV(u, v),
-			normal(nx, ny, nz), tangent(tx, ty, tz) {}
+			normal(nx, ny, nz), tangent(tx, ty, tz), nodeIndex() {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv)
 			: position(p), UV(uv), normal{ 0, 0, 0 }, tangent{ 0, 0, 0 } {}
 	};
 
 	struct VertexSkinned
 	{
-		DirectX::XMFLOAT3 Position;
-		DirectX::XMFLOAT3 Normal;
-		DirectX::XMFLOAT3 Tangent;
+		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT3 normal;
+		DirectX::XMFLOAT3 tangent;
 		DirectX::XMFLOAT2 UV;
-		DirectX::XMFLOAT4 Weights;
-		DirectX::XMUINT4 BoneIndices;
+		DirectX::XMFLOAT4 weights;
+		DirectX::XMUINT4 boneIndices;
 	};
 
 	struct PosColor		// For debug object

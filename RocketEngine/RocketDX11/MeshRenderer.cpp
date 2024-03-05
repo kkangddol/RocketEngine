@@ -67,11 +67,15 @@ namespace Rocket::Core
 
 			MatrixBufferType* matrixBufferDataPtr = (MatrixBufferType*)mappedResource.pData;
 
+			// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
+			// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
+			// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
+
 			DirectX::XMMATRIX w = DirectX::XMMatrixTranspose(_worldTM);
 			DirectX::XMMATRIX v = DirectX::XMMatrixTranspose(view);
 			DirectX::XMMATRIX p = DirectX::XMMatrixTranspose(proj);
 
-			matrixBufferDataPtr->world = w;
+			matrixBufferDataPtr->world = _worldTM;
 			matrixBufferDataPtr->view = v;
 			matrixBufferDataPtr->projection = p;
 
@@ -184,7 +188,10 @@ namespace Rocket::Core
 
 	void MeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
 	{
-		nodeBuffer->transformMatrix[node->bone.id] = node->transformMatrix;
+		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
+		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
+		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
+		nodeBuffer->transformMatrix[node->bone.id] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
 		index++;
 		for (int i = 0; i < node->children.size(); i++)
 		{

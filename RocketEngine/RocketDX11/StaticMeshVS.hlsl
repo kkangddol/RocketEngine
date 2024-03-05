@@ -5,13 +5,13 @@ cbuffer MatrixBuffer : register(b0)
     matrix projectionMatrix;
 };
 
-cbuffer CameraBuffer
+cbuffer CameraBuffer : register(b1)
 {
     float3 cameraPosition;
     float padding;
 };
 
-cbuffer NodeBuffer : register(b1)
+cbuffer NodeBuffer : register(b2)
 {
     matrix nodeTransform[256];
 };
@@ -44,9 +44,9 @@ PixelInputType main(VertexInputType input)
     
     matrix nodeTransformMatrix = nodeTransform[input.nodeIndex];
     
-    //output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
+    output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
     //output.position = mul(input.position, worldMatrix);
-    output.position = mul(input.position, nodeTransformMatrix);
+    //output.position = mul(input.position, nodeTransformMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     
