@@ -20,13 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICamera.h" />
-    <ClInclude Include="IDebugCube.h" />
-    <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="IFactory.h" />
     <ClInclude Include="IGraphicsSystem.h" />
     <ClInclude Include="ILineRenderer.h" />
     <ClInclude Include="IMaterial.h" />
-    <ClInclude Include="IObject.h" />
     <ClInclude Include="IDX11Renderer.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="IResourceManager.h" />
@@ -35,6 +32,7 @@
     <ClInclude Include="ITextRenderer.h" />
     <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="IMeshRenderer.h" />
+    <ClInclude Include="ITransform.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="PrimitiveHeader.h" />
   </ItemGroup>
@@ -45,8 +43,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{10305140-23ea-43ae-8fd3-8e9851317d65}</ProjectGuid>
-    <RootNamespace>RocketGraphicsInterface</RootNamespace>
+    <RootNamespace>GraphicsInterface</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GraphicsInterface</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

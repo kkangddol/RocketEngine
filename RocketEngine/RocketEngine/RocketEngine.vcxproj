@@ -217,7 +217,7 @@
       <PreprocessorDefinitions>_EXPORT_API;_DX11;_DEBUG;_WINDOWS;_SILENCE_CXX20_CISO646_REMOVED_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)RocketGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include\FMOD</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include\FMOD;$(SolutionDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -241,7 +241,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
       <PreprocessorDefinitions>_EXPORT_API;_DX11;NDEBUG;_WINDOWS;_SILENCE_CXX20_CISO646_REMOVED_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)RocketGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include\FMOD</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include\FMOD;$(SolutionDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

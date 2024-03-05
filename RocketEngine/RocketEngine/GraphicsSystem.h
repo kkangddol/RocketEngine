@@ -4,9 +4,9 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "../RocketGraphicsInterface/IDX11Renderer.h"
-#include "../RocketGraphicsInterface/IFactory.h"
-#include "../RocketGraphicsInterface/IGraphicsSystem.h"
+#include "../GraphicsInterface/IDX11Renderer.h"
+#include "../GraphicsInterface/IFactory.h"
+#include "../GraphicsInterface/IGraphicsSystem.h"
 #define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 
 namespace Rocket::Core

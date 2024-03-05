@@ -1,6 +1,6 @@
 ﻿#include "ObjectManager.h"
 
-#include "..\\RocketGraphicsInterface\\IRenderable.h"
+#include "..\\GraphicsInterface\\IRenderable.h"
 
 #include "ResourceManager.h"
 #include "Camera.h"
@@ -35,7 +35,7 @@ namespace Rocket::Core
 	{
 		MeshRenderer* meshRenderer = new MeshRenderer();
 
-		meshRenderer->SetMesh(_resourceManager.GetCubeMesh());
+		meshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 		meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 
 		_meshRendererList.emplace_back(meshRenderer);

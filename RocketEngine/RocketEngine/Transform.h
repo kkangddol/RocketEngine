@@ -1,31 +1,36 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 
 #include "DLLExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
 
+namespace Rocket::Core
+{
+	class ITransform;
+}
+
 namespace Rocket
 {
 	class GameObject;
 
 	/// <summary>
-	/// GameObject¿¡ ºÙÀ» Transform Å¬·¡½º.
+	/// GameObjectì— ë¶™ì„ Transform í´ë˜ìŠ¤.
 	/// 
-	/// 23.06.29 °­¼®¿ø ÀÎÀç¿ø.
+	/// 23.06.29 ê°•ì„ì› ì¸ì¬ì›.
 	/// </summary>
 	class ROCKET_API Transform final : public Component
 	{
-		/// »ı¼ºÀÚ.
+		/// ìƒì„±ì.
 	public:
-		Transform();		// »ı¼ºÇÒ ¶§ ³» Entity°¡ ¹«¾ùÀÎÁö ÀúÀåÇÑ´Ù.
+		Transform();		// ìƒì„±í•  ë•Œ ë‚´ Entityê°€ ë¬´ì—‡ì¸ì§€ ì €ì¥í•œë‹¤.
 
 		/// Get World Position, Rotation, Scale
 	public:
-		Vector3 GetPosition() const;	// world ±âÁØ
-		Quaternion GetRotation() const;	// world ±âÁØ ÄõÅÍ´Ï¾ğ
-		Vector3 GetEuler() const;		// world ±âÁØ 60ºĞ¹ı
-		Vector3 GetScale() const;		// world ±âÁØ
+		Vector3 GetPosition() const;	// world ê¸°ì¤€
+		Quaternion GetRotation() const;	// world ê¸°ì¤€ ì¿¼í„°ë‹ˆì–¸
+		Vector3 GetEuler() const;		// world ê¸°ì¤€ radians
+		Vector3 GetScale() const;		// world ê¸°ì¤€
 
 		/// Set World Position, Rotation, Scale
 	public:
@@ -39,15 +44,15 @@ namespace Rocket
 		void SetScale(float x, float y, float z);
 		
 
-		/// Tween¿¡°Ô ÂüÁ¶·Î Àü´ŞÇÏ±â À§ÇÔ.(ÀÓ½Ã)
-		/// ÂüÁ¶·Î Àü´ŞÇÏ±â ´õ ÁÁ°í ¾ÈÀüÇÑ ¹æ¹ı »ı°¢ÇØº¸¼À.
-		/// 23.07.26 °­¼®¿ø && ¿À¼ö¾È ÀÎÀç¿ø
+		/// Tweenì—ê²Œ ì°¸ì¡°ë¡œ ì „ë‹¬í•˜ê¸° ìœ„í•¨.(ì„ì‹œ)
+		/// ì°¸ì¡°ë¡œ ì „ë‹¬í•˜ê¸° ë” ì¢‹ê³  ì•ˆì „í•œ ë°©ë²• ìƒê°í•´ë³´ì…ˆ.
+		/// 23.07.26 ê°•ì„ì› && ì˜¤ìˆ˜ì•ˆ ì¸ì¬ì›
 	public:
-		Vector3& GetLocalPositionRef();
-		Quaternion& GetLocalRotationRef();
-		Vector3& GetLocalScaleRef();
+		Vector3* GetLocalPositionPointer();
+		Quaternion* GetLocalRotationPointer();
+		Vector3* GetLocalScalePointer();
 
-		/// Get Local Position, Rotation, Scale Á¤º¸
+		/// Get Local Position, Rotation, Scale ì •ë³´
 	public:
 		Vector3 GetLocalPosition() const;
 		Quaternion GetLocalRotation() const;
@@ -66,7 +71,7 @@ namespace Rocket
 		void SetLocalScale(float x, float y, float z);
 
 	public:
-		/// Forwar,Up,Right vector (World ±âÁØ)
+		/// Forwar,Up,Right vector (World ê¸°ì¤€)
 		Vector3 GetForward() const;
 		Vector3 GetUp() const;
 		Vector3 GetRight() const;
@@ -84,17 +89,12 @@ namespace Rocket
 	public:
 		void Translate(const Vector3& position);
 		void Translate(float x, float y, float z);
-		void Rotate(Quaternion quaternion);					// ÄõÅÍ´Ï¾ğ ±âÁØ È¸Àü
-		void Rotate(float angleX, float angleY, float angleZ);	// ¿ÀÀÏ·¯ °¢ ±âÁØ È¸Àü, radian
+		void Rotate(Quaternion quaternion);					// ì¿¼í„°ë‹ˆì–¸ ê¸°ì¤€ íšŒì „
+		void Rotate(float angleX, float angleY, float angleZ);	// ì˜¤ì¼ëŸ¬ ê° ê¸°ì¤€ íšŒì „, radian
 
 		void LookAt(const Vector3& target, const Vector3& up);
 
-	private:
-		Vector3 _position;
-		Quaternion _rotation;		// ÄõÅÍ´Ï¾ğ
-		Vector3 _scale;
-
-		/// °èÃş±¸Á¶.
+		/// ê³„ì¸µêµ¬ì¡°.
 	public:
 		void SetParent(Transform* parent);
 		void SetParent(GameObject* parentObj);
@@ -102,18 +102,17 @@ namespace Rocket
 		Transform* GetChild(int index);
 
 		void ReleaseParent();
-
 	private:
 		void ReleaseChild(Transform* child);
+		void AddChild(Transform* child);
 		
 	public:
 		std::vector<Transform*>& GetChildrenVec();
 
 	private:
-		void AddChild(Transform* child);
-
-	private:
+		Core::ITransform* _transform;
 		Transform* _parent;
 		std::vector<Transform*> _children;
+
 	};
 }

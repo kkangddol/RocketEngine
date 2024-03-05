@@ -2,7 +2,7 @@
 #include <string>
 #include "MeshRendererBase.h"
 #include "DLLExporter.h"
-#include "../RocketGraphicsInterface/GraphicsEnum.h"
+#include "../GraphicsInterface/GraphicsEnum.h"
 
 namespace Rocket::Core
 {
@@ -19,6 +19,7 @@ namespace Rocket
 		MeshRenderer();
 		void SetMesh(eMeshType meshType);
 		void SetMesh(std::string fileName);
+		void SetTexture(std::string fileName);
 
 	protected:
 		virtual void UpdateRenderData() override;

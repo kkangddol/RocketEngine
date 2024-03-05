@@ -20,8 +20,20 @@ namespace Rocket::Core
 		std::string name = "";
 		Bone bone;
 		DirectX::XMMATRIX transformMatrix = DirectX::XMMatrixIdentity();
+		Node* parent;
 		std::vector<Node*> children = {};
-		ID3D11Buffer* nodeBuffer;
+
+		DirectX::XMMATRIX GetWorldMatrix()
+		{
+			if (parent)
+			{
+				return transformMatrix * parent->GetWorldMatrix();
+			}
+			else
+			{
+				return transformMatrix;
+			}
+		}
 	};
 
 	// structure containing each node's animation information in one animation

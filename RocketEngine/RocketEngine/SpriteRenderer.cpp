@@ -2,7 +2,7 @@
 #include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "../RocketGraphicsInterface/ISpriteRenderer.h"
+#include "../GraphicsInterface/ISpriteRenderer.h"
 
 namespace Rocket
 {

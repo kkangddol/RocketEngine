@@ -9,8 +9,9 @@ namespace Rocket::Core
 	{
 	public:
 		virtual ~IMeshRenderer() {}
-		virtual void SetMesh(eMeshType meshType) = 0;
-		virtual void SetMesh(std::string fileName) = 0;
+		virtual void LoadMesh(eMeshType meshType) = 0;
+		virtual void LoadMesh(std::string fileName) = 0;
+		virtual void LoadTexture(std::string fileName) = 0;
 
 	};
 }

@@ -6,8 +6,11 @@
 #include "Animation.h"
 #include "GraphicsStruct.h"
 #include "Mesh.h"
+#include "StaticMesh.h"
+#include "SkinnedMesh.h"
 #include "ResourceManager.h"
 #include "GraphicsMacro.h"
+#include "Texture.h"
 
 const std::string MODEL_PATH = "Resources/Models/";
 
@@ -48,7 +51,6 @@ namespace Rocket::Core
 			aiProcess_Triangulate |
 			aiProcess_ConvertToLeftHanded |
 			aiProcess_CalcTangentSpace);
-		//const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
@@ -76,9 +78,8 @@ namespace Rocket::Core
 		_nowModelData->rootNode = rootNode;
 		ProcessNode(rootNode, rootaiNode, scene);
 
-		Node* node = rootNode;
 		UINT index = 0;
-		SetNodeIndex(index, node);
+		SetNodeIndex(index, rootNode);
 
 		D3D11_BUFFER_DESC nodeBufferDesc;
 		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -91,8 +92,9 @@ namespace Rocket::Core
  		for (auto& mesh : _nowModelData->meshes)
 		{
 			mesh->CreateBuffers();		// SetNodeIndex()를 통해 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
-			HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &mesh->GetNode()->nodeBuffer));
 		}
+
+		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &(_nowModelData->nodeBuffer)));
 	}
 
 	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
@@ -109,7 +111,8 @@ namespace Rocket::Core
 
 	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
 	{
-		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation);
+		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
+		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
 
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
@@ -122,6 +125,7 @@ namespace Rocket::Core
 		{
 			Node* newNode = new Node();
 			node->children.emplace_back(newNode);
+			newNode->parent = node;
 
 			ProcessNode(newNode, ainode->mChildren[i], scene);
 		}
@@ -183,8 +187,8 @@ namespace Rocket::Core
 	{
 		if (scene->HasAnimations())
 		{
-			/// 임시 주석
-			//return ProcessSkinnedMesh(mesh, scene);
+			
+			return ProcessSkinnedMesh(mesh, scene);
 		}
 		else
 		{
@@ -234,11 +238,7 @@ namespace Rocket::Core
 			}
 		}
 
-		Mesh* newMesh = new Mesh(vertices, indices);
-
-		return newMesh;
-
-		/// 임시 주석
+		/// 메타 데이터 활용하는 부분인 것 같은데 우선 주석
 		/*
 
 		int upAxis = 0;
@@ -283,13 +283,7 @@ namespace Rocket::Core
 			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
-
-		// create node hierarchy
-		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-
-		_loadedFileInfo[_fileName].node = rootNode;
+*/
 
 		if (mesh->mMaterialIndex >= 0)
 		{
@@ -300,12 +294,12 @@ namespace Rocket::Core
 			}
 		}
 
-		*/
+		StaticMesh* newMesh = new StaticMesh(vertices, indices);
+
+		return newMesh;
 	}
 
-	/// 임시 주석
-	/*
-	void FBXLoader::ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene)
+	Mesh* FBXLoader::ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<VertexSkinned> vertices;
 		std::vector<UINT> indices;
@@ -316,21 +310,21 @@ namespace Rocket::Core
 			VertexSkinned vertex;
 
 			// process position
-			vertex.Position.x = mesh->mVertices[i].x;
-			vertex.Position.y = mesh->mVertices[i].y;
-			vertex.Position.z = mesh->mVertices[i].z;
+			vertex.position.x = mesh->mVertices[i].x;
+			vertex.position.y = mesh->mVertices[i].y;
+			vertex.position.z = mesh->mVertices[i].z;
 
 			// process normal
-			vertex.Normal.x = mesh->mNormals[i].x;
-			vertex.Normal.y = mesh->mNormals[i].y;
-			vertex.Normal.z = mesh->mNormals[i].z;
+			vertex.normal.x = mesh->mNormals[i].x;
+			vertex.normal.y = mesh->mNormals[i].y;
+			vertex.normal.z = mesh->mNormals[i].z;
 
 			// process uv
 			vertex.UV.x = mesh->mTextureCoords[0][i].x;
 			vertex.UV.y = mesh->mTextureCoords[0][i].y;
 
-			vertex.BoneIndices = DirectX::XMUINT4{ 0, 0, 0, 0 };
-			vertex.Weights = DirectX::XMFLOAT4{ 0.0f, 0.0f, 0.0f, 0.0f };
+			vertex.boneIndices = DirectX::XMUINT4{ 0, 0, 0, 0 };
+			vertex.weights = DirectX::XMFLOAT4{ 0.0f, 0.0f, 0.0f, 0.0f };
 
 			vertices.push_back(vertex);
 		}
@@ -340,12 +334,14 @@ namespace Rocket::Core
 		std::vector<UINT> boneCounts;
 		boneCounts.resize(vertices.size(), 0);
 
+		mesh->mBones->mArmature
+
 		int _boneCount = mesh->mNumBones;
 		// loop through each bone
 		for (UINT i = 0; i < _boneCount; ++i)
 		{
 			aiBone* bone = mesh->mBones[i];
-			DirectX::XMMATRIX m = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix);
+			DirectX::XMMATRIX m = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix.Transpose());
 			boneInfo[bone->mName.C_Str()] = { i, m };
 
 			// loop through each vertex that have that bone
@@ -360,20 +356,20 @@ namespace Rocket::Core
 				switch (boneCounts[id])
 				{
 					case 1:
-						vertices[id].BoneIndices.x = i;
-						vertices[id].Weights.x = weight;
+						vertices[id].boneIndices.x = i;
+						vertices[id].weights.x = weight;
 						break;
 					case 2:
-						vertices[id].BoneIndices.y = i;
-						vertices[id].Weights.y = weight;
+						vertices[id].boneIndices.y = i;
+						vertices[id].weights.y = weight;
 						break;
 					case 3:
-						vertices[id].BoneIndices.z = i;
-						vertices[id].Weights.z = weight;
+						vertices[id].boneIndices.z = i;
+						vertices[id].weights.z = weight;
 						break;
 					case 4:
-						vertices[id].BoneIndices.w = i;
-						vertices[id].Weights.w = weight;
+						vertices[id].boneIndices.w = i;
+						vertices[id].weights.w = weight;
 						break;
 					default:
 						break;
@@ -384,11 +380,11 @@ namespace Rocket::Core
 		// normalize weights to make all weights sum 1
 		for (UINT i = 0; i < vertices.size(); ++i)
 		{
-			DirectX::XMFLOAT4 boneWeights = vertices[i].Weights;
+			DirectX::XMFLOAT4 boneWeights = vertices[i].weights;
 			float totalWeight = boneWeights.x + boneWeights.y + boneWeights.z + boneWeights.w;
 			if (totalWeight > 0.0f)
 			{
-				vertices[i].Weights = DirectX::XMFLOAT4{
+				vertices[i].weights = DirectX::XMFLOAT4{
 					boneWeights.x / totalWeight,
 					boneWeights.y / totalWeight,
 					boneWeights.z / totalWeight,
@@ -416,42 +412,42 @@ namespace Rocket::Core
 		//	auto type = entry->mType;
 		// }
 
-		int upAxis = 0;
-		scene->mMetaData->Get<int>("UpAxis", upAxis);
-		int upAxisSign = 1;
-		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
-		int frontAxis = 0;
-		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
-		int frontAxisSign = 1;
-		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
-		int coordAxis = 0;
-		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
-		int coordAxisSign = 1;
-		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
-
-		int originalUpAxis = 0;
-		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
-		int originalUpAxisSign = 1;
-		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
-
-		float unitScaleFactor = 1.0f;
-		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
-		float originalUnitScaleFactor = 1.0f;
-		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
-
-		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
-		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
-		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
-
-		upVec *= unitScaleFactor;
-		forwardVec *= unitScaleFactor;
-		rightVec *= unitScaleFactor;
-
-		aiMatrix4x4 mat(
-			rightVec.x, rightVec.y, rightVec.z, 0.0f,
-			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);
+// 		int upAxis = 0;
+// 		scene->mMetaData->Get<int>("UpAxis", upAxis);
+// 		int upAxisSign = 1;
+// 		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+// 		int frontAxis = 0;
+// 		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
+// 		int frontAxisSign = 1;
+// 		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
+// 		int coordAxis = 0;
+// 		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
+// 		int coordAxisSign = 1;
+// 		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
+// 
+// 		int originalUpAxis = 0;
+// 		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
+// 		int originalUpAxisSign = 1;
+// 		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
+// 
+// 		float unitScaleFactor = 1.0f;
+// 		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
+// 		float originalUnitScaleFactor = 1.0f;
+// 		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
+// 
+// 		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+// 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+// 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+// 
+// 		upVec *= unitScaleFactor;
+// 		forwardVec *= unitScaleFactor;
+// 		rightVec *= unitScaleFactor;
+// 
+// 		aiMatrix4x4 mat(
+// 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
+// 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
+// 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
+// 			0.0f, 0.0f, 0.0f, 1.0f);
 
 		// aiMatrix4x4 mat(
 		//	rightVec.x, forwardVec.x, -upVec.x, 0.0f,
@@ -479,10 +475,8 @@ namespace Rocket::Core
 			}
 		}
 	}
-	*/
 
 	/// 임시 주석
-/*
 	void FBXLoader::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
 	{
 		UINT textureCount = material->GetTextureCount(type);
@@ -493,14 +487,16 @@ namespace Rocket::Core
 			std::string s = std::string(str.C_Str());
 			std::string fileName = s.substr(s.find_last_of("/\\") + 1, s.length() - s.find_last_of("/\\"));
 			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			auto iter = _loadedTextures.find(fileName);
-			if (iter == _loadedTextures.end())
+			auto iter = ResourceManager::Instance()._textures.find(fileName);
+			if (iter == ResourceManager::Instance()._textures.end())
 			{
 				const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
 				if (embeddedTexture != nullptr)
 				{
-					ID3D11ShaderResourceView* texture = LoadEmbeddedTexture(embeddedTexture);
-					_loadedTextures.insert(std::make_pair(fileName, texture));
+					// Map에서 내가 만든 클래스말고 그냥 SRV만 관리할까..?
+					ID3D11ShaderResourceView* textureSRV = LoadEmbeddedTexture(embeddedTexture);
+					Texture* texture = new Texture(nullptr, textureSRV);
+					ResourceManager::Instance()._textures.insert(std::make_pair(fileName, texture));
 				}
 				else
 				{
@@ -509,7 +505,6 @@ namespace Rocket::Core
 			}
 		}
 	}
-*/
 
 	ID3D11ShaderResourceView* FBXLoader::LoadEmbeddedTexture(const aiTexture* embeddedTexture)
 	{

@@ -5,8 +5,8 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\RocketGraphicsInterface\\IMeshRenderer.h"
-#include "../RocketGraphicsInterface/GraphicsEnum.h"
+#include "..\\GraphicsInterface\\IMeshRenderer.h"
+#include "../GraphicsInterface/GraphicsEnum.h"
 #include "Mesh.h"
 #include "Material.h"
 
@@ -21,22 +21,28 @@ namespace Rocket::Core
 	public:
 		MeshRenderer();
 
+
+
 	public:
 		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
-		virtual void SetMesh(eMeshType meshType) override;
-		virtual void SetMesh(std::string fileName) override;
+		virtual void LoadMesh(eMeshType meshType) override;
+		virtual void LoadMesh(std::string fileName) override;
+		virtual void LoadTexture(std::string fileName) override;
 
 	public:
 		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
 
 	public:
-		void SetMesh(Mesh* mesh) { _mesh = mesh; }
+		void LoadMesh(Mesh* mesh) { _mesh = mesh; }
 		void SetMaterial(Material* val) { _material = val; }
 		void SetTexture(Texture* texture);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
+
+	private:
+		void SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer);
 
 	private:
 		ModelData* _model;

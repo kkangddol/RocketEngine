@@ -2,7 +2,7 @@
 #include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "../RocketGraphicsInterface/IMeshRenderer.h"
+#include "../GraphicsInterface/IMeshRenderer.h"
 
 namespace Rocket
 {
@@ -14,12 +14,17 @@ namespace Rocket
 
 	void MeshRenderer::SetMesh(eMeshType meshType)
 	{
-		_meshRenderer->SetMesh(meshType);
+		_meshRenderer->LoadMesh(meshType);
 	}
 
 	void MeshRenderer::SetMesh(std::string fileName)
 	{
-		_meshRenderer->SetMesh(fileName);
+		_meshRenderer->LoadMesh(fileName);
+	}
+
+	void MeshRenderer::SetTexture(std::string fileName)
+	{
+		_meshRenderer->LoadTexture(fileName);
 	}
 
 	void MeshRenderer::UpdateRenderData()
