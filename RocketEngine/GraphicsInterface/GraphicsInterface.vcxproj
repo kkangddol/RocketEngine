@@ -30,7 +30,7 @@
     <ClInclude Include="ISketchable.h" />
     <ClInclude Include="ISpriteRenderer.h" />
     <ClInclude Include="ITextRenderer.h" />
-    <ClInclude Include="ISkinnedMesh.h" />
+    <ClInclude Include="ISkinnedMeshRenderer.h" />
     <ClInclude Include="IMeshRenderer.h" />
     <ClInclude Include="ITransform.h" />
     <ClInclude Include="MathHeader.h" />

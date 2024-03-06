@@ -55,7 +55,7 @@
     <ClInclude Include="ILineRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ISkinnedMesh.h">
+    <ClInclude Include="ISkinnedMeshRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ITransform.h">

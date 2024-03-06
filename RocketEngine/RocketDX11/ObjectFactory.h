@@ -19,7 +19,7 @@ namespace Rocket::Core
 		virtual ILineRenderer* CreateLineRenderer() override;
 
 		// IFactory을(를) 통해 상속됨
-		virtual ISkinnedMesh* CreateSkinnedMeshObject() override;
+		virtual ISkinnedMeshRenderer* CreateSkinnedMeshRenderer() override;
 		virtual CubePrimitive* CreateCubePrimitive() override;
 		virtual SpherePrimitive* CreateSpherePrimitive() override;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() override;

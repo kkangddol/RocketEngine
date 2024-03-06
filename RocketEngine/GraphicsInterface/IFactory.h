@@ -10,7 +10,7 @@ namespace Rocket::Core
 	class ITransform;
 	class ICamera;
 	class IMeshRenderer;
-	class ISkinnedMesh;
+	class ISkinnedMeshRenderer;
 	class ITextRenderer;
 	class ISpriteRenderer;
 	class ILineRenderer;
@@ -24,7 +24,7 @@ namespace Rocket::Core
 		virtual ITransform* CreateTransform() = 0;
 		virtual ICamera* CreateCamera() = 0;
 		virtual IMeshRenderer* CreateMeshRenderer() = 0;
-		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
+		virtual ISkinnedMeshRenderer* CreateSkinnedMeshRenderer() = 0;
 		virtual ITextRenderer* CreateTextRenderer() = 0;
 		virtual ISpriteRenderer* CreateSpriteRenderer() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;

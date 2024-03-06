@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "MeshRenderer.h"
+#include "SkinnedMeshRenderer.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
@@ -83,6 +84,23 @@ namespace Rocket::Core
 	LineRenderer* ObjectManager::GetLineRenderer()
 	{
 		return _lineRenderer;
+	}
+
+	std::vector<SkinnedMeshRenderer*>& ObjectManager::GetSkinnedMeshRenderers()
+	{
+		return _skinnedMeshRendererList;
+	}
+
+	SkinnedMeshRenderer* ObjectManager::CreateSkinnedMeshRenderer()
+	{
+		SkinnedMeshRenderer* skinnedMeshRenderer = new SkinnedMeshRenderer();
+
+		skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
+		skinnedMeshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
+
+		_skinnedMeshRendererList.emplace_back(skinnedMeshRenderer);
+
+		return skinnedMeshRenderer;
 	}
 
 }

@@ -25,6 +25,12 @@
     <FxCompile Include="StaticMeshPS.hlsl">
       <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
     </FxCompile>
+    <FxCompile Include="SkinnedMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\SkinnedMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinnedMeshPS.hlsl">
+      <Filter>Resource\Shader\HLSL\SkinnedMesh</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshRenderer.cpp">
+      <Filter>Object\SkinnedMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshRenderer.h">
+      <Filter>Object\SkinnedMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +339,9 @@
     </Filter>
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{8f1b0f81-d5a9-451d-abf3-fc25780e3330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SkinnedMesh">
+      <UniqueIdentifier>{a2656c4f-0de9-4c9a-be05-d5876d4313b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

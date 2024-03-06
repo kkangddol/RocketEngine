@@ -1,4 +1,4 @@
-﻿#include "MeshRenderer.h"
+﻿#include "SkinnedMeshRenderer.h"
 #include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 #include "ResourceManager.h"
@@ -8,7 +8,7 @@
 
 namespace Rocket::Core
 {
-	MeshRenderer::MeshRenderer()
+	SkinnedMeshRenderer::SkinnedMeshRenderer()
 		: _mesh(nullptr),
 		_material(nullptr),
 		_isActive(true),
@@ -17,32 +17,27 @@ namespace Rocket::Core
 
 	}
 
-	void MeshRenderer::SetWorldTM(const Matrix& worldTM)
+	void SkinnedMeshRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
 	}
 
-	void MeshRenderer::SetActive(bool isActive)
+	void SkinnedMeshRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
 	}
 
-	void MeshRenderer::LoadMesh(eMeshType meshType)
-	{
-		_mesh = ResourceManager::Instance().GetMesh(meshType);
-	}
-
-	void MeshRenderer::LoadMesh(std::string fileName)
+	void SkinnedMeshRenderer::LoadMesh(const std::string& fileName)
 	{
 		_model = ResourceManager::Instance().GetModel(fileName);
 	}
 
-	void MeshRenderer::LoadTexture(std::string fileName)
+	void SkinnedMeshRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
-	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void SkinnedMeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
 		{
@@ -98,7 +93,7 @@ namespace Rocket::Core
 			UINT index = 0;
 
 			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
-			
+
 			deviceContext->Unmap(_model->nodeBuffer, 0);
 
 			bufferNumber = 2;
@@ -108,7 +103,7 @@ namespace Rocket::Core
 
 			// 픽셀 쉐이더
 			HR(deviceContext->Map(_material->GetPixelShader()->GetLightBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-		
+
 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
 			lightBufferDataPtr->ambientColor = { 0.15f,0.15f,0.15f,1.0f };
@@ -133,33 +128,15 @@ namespace Rocket::Core
 		UINT stride = 0;
 		UINT offset = 0;
 
-// 		if(_meshes == nullptr)
-// 		{
-// 			return;
-// 		}
+		// 		if(_meshes == nullptr)
+		// 		{
+		// 			return;
+		// 		}
 
-		stride = sizeof(Vertex);
-
+		stride = sizeof(VertexSkinned);
+		
 		for (auto& mesh : _model->meshes)
 		{
-// 			switch (mesh->GetVertexType())
-// 			{
-// 				case eVertexType::COLOR_VERTEX:
-// 					stride = sizeof(ColorVertex);
-// 					break;
-// 				case eVertexType::TEXTURE_VERTEX:
-// 					stride = sizeof(TextureVertex);
-// 					break;
-// 				case eVertexType::LIGHT_VERTEX:
-// 					stride = sizeof(LightVertex);
-// 					break;
-// 				case eVertexType::VERTEX:
-// 					stride = sizeof(Vertex);
-// 					break;
-// 				default:
-// 					break;
-// 			}
-
 			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
 			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
@@ -169,31 +146,31 @@ namespace Rocket::Core
 		}
 	}
 
-	void MeshRenderer::SetTexture(Texture* texture)
+	void SkinnedMeshRenderer::SetTexture(Texture* texture)
 	{
 		assert(_material);
 		_material->SetTexture(texture);
 	}
 
-	void MeshRenderer::SetVertexShader(VertexShader* shader)
+	void SkinnedMeshRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
 		_material->SetVertexShader(shader);
 	}
 
-	void MeshRenderer::SetPixelShader(PixelShader* shader)
+	void SkinnedMeshRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
 		_material->SetPixelShader(shader);
 	}
 
-	void MeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
+	void SkinnedMeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
 	{
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
 
-	void MeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void SkinnedMeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
@@ -205,7 +182,4 @@ namespace Rocket::Core
 			SetNodeBuffer(node->children[i], index, nodeBuffer);
 		}
 	}
-
-
-
 }

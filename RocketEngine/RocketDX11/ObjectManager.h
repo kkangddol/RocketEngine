@@ -10,6 +10,7 @@ namespace Rocket::Core
 
 	class Camera;
 	class MeshRenderer;
+	class SkinnedMeshRenderer;
 	class TextRenderer;
 	class SpriteRenderer;
 	class LineRenderer;
@@ -22,6 +23,7 @@ namespace Rocket::Core
 
 	public:
 		std::vector<MeshRenderer*>& GetStaticMeshRenderers();
+		std::vector<SkinnedMeshRenderer*>& GetSkinnedMeshRenderers();
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<SpriteRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();
@@ -29,6 +31,7 @@ namespace Rocket::Core
 	public:
 		Camera* CreateCamera();
 		MeshRenderer* CreateMeshRenderer();
+		SkinnedMeshRenderer* CreateSkinnedMeshRenderer();
 		TextRenderer* CreateText();
 		SpriteRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
@@ -36,6 +39,7 @@ namespace Rocket::Core
 	private:
 		std::vector<Camera*> _cameraList;
 		std::vector<MeshRenderer*> _meshRendererList;
+		std::vector<SkinnedMeshRenderer*> _skinnedMeshRendererList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<SpriteRenderer*> _ImageList;
 		LineRenderer* _lineRenderer;
