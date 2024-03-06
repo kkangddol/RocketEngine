@@ -36,6 +36,11 @@ namespace Rocket::Core
 		// std::unordered_map<std::string, Animation*> animations;
 	};
 
+	struct SkinnedModelData : public ModelData
+	{
+		std::unordered_map<std::string, Node*> nodeMap;
+	};
+
 	class ResourceManager : public Singleton<ResourceManager>
 	{
 		friend Singleton;

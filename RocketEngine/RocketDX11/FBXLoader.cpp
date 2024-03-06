@@ -50,6 +50,7 @@ namespace Rocket::Core
 		const aiScene* _scene = importer.ReadFile(path,
 			aiProcess_Triangulate |
 			aiProcess_ConvertToLeftHanded |
+//			aiProcess_PopulateArmatureData |
 			aiProcess_CalcTangentSpace);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
@@ -59,10 +60,20 @@ namespace Rocket::Core
 		}
 
 		// Node를 Process 하면서 이 ModelData에 저장
-		_nowModelData = new ModelData();
-		_nowModelData->name = fileNameWithExtension;
+		if (_scene->HasAnimations())
+		{
+			SkinnedModelData* skinnedModelData = new SkinnedModelData();
+			skinnedModelData->name = fileNameWithExtension;
+			_nowModelData = skinnedModelData;
+		}
+		else
+		{
+			ModelData* modelData = new ModelData();
+			modelData->name = fileNameWithExtension;
+			_nowModelData = modelData;
+		}
 
-		ProcessModel(_scene->mRootNode, _scene);
+		ProcessModel(_scene->mRootNode, _scene);	
 
 		/// 임시 주석
 		//LoadAnimation(_scene);
@@ -99,7 +110,7 @@ namespace Rocket::Core
 
 	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
 	{
-		node->bone.id = index++;
+		node->id = index++;
 		if(node->children.size() > 0)
 		{
 			for (auto& child : node->children)
@@ -111,6 +122,14 @@ namespace Rocket::Core
 
 	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
 	{
+		node->name = ainode->mName.C_Str();
+
+		// TODO : reinterpret_cast 사용하지 않도록 수정하기. modelData는 ResourceManager.h에 있음.
+		if (scene->HasAnimations())
+		{
+			reinterpret_cast<SkinnedModelData*>(_nowModelData)->nodeMap.insert(std::make_pair(node->name, node));
+		}
+
 		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
 		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
 
@@ -329,68 +348,46 @@ namespace Rocket::Core
 			vertices.push_back(vertex);
 		}
 
-		// Load boneData to vertices
-		std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>> boneInfo = {};
-		std::vector<UINT> boneCounts;
-		boneCounts.resize(vertices.size(), 0);
+		// TODO : aiProcess_PopulateArmatureData 이걸 써서 Armature 데이터로도 애니메이션 구성해보자
+		//		  ㄴ> 지금은 이 플래그를 사용하지 않고 bone과 node를 따로 읽어서 만들어 보고있다.
+		//		  ㄴ> mesh->mBones[0]->mArmature->mMeshes 뭐 이런식으로? 바로 노드에 접근하는거같은데..
 
-		mesh->mBones->mArmature
 
-		int _boneCount = mesh->mNumBones;
-		// loop through each bone
-		for (UINT i = 0; i < _boneCount; ++i)
+		// 각각의 버텍스에 영향을 주는 모든 본에 대해서 저장한 다음
+		// 버텍스 기준으로 본인의 position과 normal을 다시 계산한다.
+		std::unordered_map<int, std::vector<std::pair<float, DirectX::XMMATRIX>>> weightDataPerVertex;	// 버텍스 인덱스, 가중치 데이터(가중치,트랜스폼)
+
+		for (int i = 0; i < mesh->mNumBones; i++)
 		{
 			aiBone* bone = mesh->mBones[i];
-			DirectX::XMMATRIX m = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix.Transpose());
-			boneInfo[bone->mName.C_Str()] = { i, m };
 
-			// loop through each vertex that have that bone
-			for (UINT j = 0; j < bone->mNumWeights; ++j)
+			for (int j = 0; j < bone->mNumWeights; j++)
 			{
-				if (bone->mWeights == nullptr)
-					break;
-
-				UINT id = bone->mWeights[j].mVertexId;
+				int vertexIndex = bone->mWeights[j].mVertexId;
 				float weight = bone->mWeights[j].mWeight;
-				boneCounts[id]++;
-				switch (boneCounts[id])
-				{
-					case 1:
-						vertices[id].boneIndices.x = i;
-						vertices[id].weights.x = weight;
-						break;
-					case 2:
-						vertices[id].boneIndices.y = i;
-						vertices[id].weights.y = weight;
-						break;
-					case 3:
-						vertices[id].boneIndices.z = i;
-						vertices[id].weights.z = weight;
-						break;
-					case 4:
-						vertices[id].boneIndices.w = i;
-						vertices[id].weights.w = weight;
-						break;
-					default:
-						break;
-				}
+				DirectX::XMMATRIX offsetTM = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix);
+
+				weightDataPerVertex[vertexIndex].push_back({ weight,offsetTM });
 			}
 		}
 
-		// normalize weights to make all weights sum 1
-		for (UINT i = 0; i < vertices.size(); ++i)
+		// 지금은 읽은 Vertex 데이터에 직접 Bone의 가중치를 곱해서 Vertex 정보를 갱신해주고있다.
+		// 어차피 Bone의 가중치는 바뀌지 않을거니까..?
+		for (auto& iter : weightDataPerVertex)
 		{
-			DirectX::XMFLOAT4 boneWeights = vertices[i].weights;
-			float totalWeight = boneWeights.x + boneWeights.y + boneWeights.z + boneWeights.w;
-			if (totalWeight > 0.0f)
+			Vector3 resultPosition = Vector3::Zero;
+			Vector3 resultNormal = Vector3::Zero;
+			for (auto& weightData : iter.second)
 			{
-				vertices[i].weights = DirectX::XMFLOAT4{
-					boneWeights.x / totalWeight,
-					boneWeights.y / totalWeight,
-					boneWeights.z / totalWeight,
-					boneWeights.w / totalWeight
-				};
+				DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(weightData.second);
+				DirectX::XMMATRIX offsetInverse = DirectX::XMMatrixInverse(&det, weightData.second);
+
+				resultPosition += Vector3::Transform(vertices[iter.first].position, weightData.first * weightData.second);
+				resultNormal += Vector3::Transform(vertices[iter.first].normal, weightData.first * offsetInverse);
 			}
+
+			vertices[iter.first].position = resultPosition;
+			vertices[iter.first].normal = resultNormal;
 		}
 
 		// Load indices
@@ -455,17 +452,6 @@ namespace Rocket::Core
 		//	rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 		//	0.0f, 0.0f, 0.0f, 1.0f);
 
-			// create node hierarchy
-		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
-
-		_loadedFileInfo[_fileName].node = rootNode;
-
-		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
-
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -474,6 +460,10 @@ namespace Rocket::Core
 				LoadMaterialTextures(material, (aiTextureType)i, scene);
 			}
 		}
+
+		SkinnedMesh* newMesh = new SkinnedMesh(vertices, indices);
+
+		return newMesh;
 	}
 
 	/// 임시 주석

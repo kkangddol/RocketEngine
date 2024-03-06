@@ -23,7 +23,7 @@ namespace Rocket::Core
 
 	void CubeMesh::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		_vertexType = VertexType::LIGHT_VERTEX;
+		_vertexType = eVertexType::LIGHT_VERTEX;
 		
 		LightVertex vertices[] =
 		{

@@ -1,6 +1,7 @@
 cbuffer MatrixBuffer : register(b0)
 {
     matrix worldMatrix;
+    matrix worldInverse;
     matrix viewMatrix;
     matrix projectionMatrix;
 };
@@ -45,19 +46,16 @@ PixelInputType main(VertexInputType input)
     matrix nodeTransformMatrix = nodeTransform[input.nodeIndex];
     
     output.position = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
-    //output.position = mul(input.position, worldMatrix);
-    //output.position = mul(input.position, nodeTransformMatrix);
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
     
     // Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
     
-    output.normal = mul(input.normal, (float3x3) worldMatrix);
-    
+    output.normal = mul(input.normal, (float3x3)transpose(worldInverse));
     output.normal = normalize(output.normal);
     
-    float4 worldPosition = mul(input.position, worldMatrix);
+    float4 worldPosition = mul(input.position, mul(nodeTransformMatrix, worldMatrix));
     
     output.viewDiretion = cameraPosition.xyz - worldPosition.xyz;
     

@@ -10,6 +10,7 @@ namespace Rocket::Core
 	// structure containing bone information
 	struct Bone
 	{
+		std::string name = "";
 		int id = 0;	// position of the bone in final upload array
 		DirectX::XMMATRIX offset = DirectX::XMMatrixIdentity();
 	};
@@ -18,9 +19,9 @@ namespace Rocket::Core
 	struct Node
 	{
 		std::string name = "";
-		Bone bone;
+		int id = 0;
 		DirectX::XMMATRIX transformMatrix = DirectX::XMMatrixIdentity();
-		Node* parent;
+		Node* parent = nullptr;
 		std::vector<Node*> children = {};
 
 		DirectX::XMMATRIX GetWorldMatrix()

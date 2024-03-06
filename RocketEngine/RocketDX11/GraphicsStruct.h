@@ -3,7 +3,7 @@
 
 namespace Rocket::Core
 {
-	enum class VertexType
+	enum class eVertexType
 	{
 		COLOR_VERTEX,
 		TEXTURE_VERTEX,
@@ -34,6 +34,7 @@ namespace Rocket::Core
 	struct MatrixBufferType
 	{
 		DirectX::XMMATRIX world;
+		DirectX::XMMATRIX worldInverse;
 		DirectX::XMMATRIX view;
 		DirectX::XMMATRIX projection;
 	};
@@ -81,17 +82,18 @@ namespace Rocket::Core
 			: position(px, py, pz), UV(u, v),
 			normal(nx, ny, nz), tangent(tx, ty, tz), nodeIndex() {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv)
-			: position(p), UV(uv), normal{ 0, 0, 0 }, tangent{ 0, 0, 0 } {}
+			: position(p), UV(uv), normal{ 0, 0, 0 }, tangent{ 0, 0, 0 }, nodeIndex() {}
 	};
 
 	struct VertexSkinned
 	{
 		DirectX::XMFLOAT3 position;
+		DirectX::XMFLOAT2 UV;
 		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT3 tangent;
-		DirectX::XMFLOAT2 UV;
-		DirectX::XMFLOAT4 weights;
-		DirectX::XMUINT4 boneIndices;
+		UINT nodeIndex;
+		DirectX::XMFLOAT4 weights;			// 최대 4개의 본에 대한 가중치
+		DirectX::XMUINT4 boneIndices;		// 최대 4개의 본에 대한 인덱스
 	};
 
 	struct PosColor		// For debug object
