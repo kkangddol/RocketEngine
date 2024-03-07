@@ -5,10 +5,10 @@
 
 namespace Rocket::Core
 {
-	class IMeshRenderer : public IRenderable
+	class IStaticModelRenderer : public IRenderable
 	{
 	public:
-		virtual ~IMeshRenderer() {}
+		virtual ~IStaticModelRenderer() {}
 		virtual void LoadMesh(eMeshType meshType) = 0;
 		virtual void LoadMesh(std::string fileName) = 0;
 		virtual void LoadTexture(std::string fileName) = 0;

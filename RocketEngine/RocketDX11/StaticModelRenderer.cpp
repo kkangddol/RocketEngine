@@ -1,4 +1,4 @@
-﻿#include "MeshRenderer.h"
+﻿#include "StaticModelRenderer.h"
 #include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 #include "ResourceManager.h"
@@ -8,7 +8,7 @@
 
 namespace Rocket::Core
 {
-	MeshRenderer::MeshRenderer()
+	StaticModelRenderer::StaticModelRenderer()
 		: _mesh(nullptr),
 		_material(nullptr),
 		_isActive(true),
@@ -17,32 +17,32 @@ namespace Rocket::Core
 
 	}
 
-	void MeshRenderer::SetWorldTM(const Matrix& worldTM)
+	void StaticModelRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
 	}
 
-	void MeshRenderer::SetActive(bool isActive)
+	void StaticModelRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
 	}
 
-	void MeshRenderer::LoadMesh(eMeshType meshType)
+	void StaticModelRenderer::LoadMesh(eMeshType meshType)
 	{
 		_mesh = ResourceManager::Instance().GetMesh(meshType);
 	}
 
-	void MeshRenderer::LoadMesh(std::string fileName)
+	void StaticModelRenderer::LoadMesh(std::string fileName)
 	{
 		_model = ResourceManager::Instance().GetModel(fileName);
 	}
 
-	void MeshRenderer::LoadTexture(std::string fileName)
+	void StaticModelRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
-	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void StaticModelRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
 		{
@@ -170,31 +170,31 @@ namespace Rocket::Core
 		}
 	}
 
-	void MeshRenderer::SetTexture(Texture* texture)
+	void StaticModelRenderer::SetTexture(Texture* texture)
 	{
 		assert(_material);
 		_material->SetTexture(texture);
 	}
 
-	void MeshRenderer::SetVertexShader(VertexShader* shader)
+	void StaticModelRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
 		_material->SetVertexShader(shader);
 	}
 
-	void MeshRenderer::SetPixelShader(PixelShader* shader)
+	void StaticModelRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
 		_material->SetPixelShader(shader);
 	}
 
-	void MeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
+	void StaticModelRenderer::SetRenderState(ID3D11RasterizerState* renderState)
 	{
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
 
-	void MeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void StaticModelRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.

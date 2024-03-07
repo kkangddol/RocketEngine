@@ -40,7 +40,7 @@
       <Filter>Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\Mesh\Primitive</Filter>
+      <Filter>Resource\Mesh\StaticMeshes\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>FBXLoader</Filter>
@@ -69,8 +69,8 @@
     <ClCompile Include="RocketDX11.cpp">
       <Filter>GraphicsProcess</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Object\StaticMesh</Filter>
+    <ClCompile Include="StaticModelRenderer.cpp">
+      <Filter>Object\StaticModelRenderer</Filter>
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Object\TextObject</Filter>
@@ -91,16 +91,10 @@
       <Filter>GraphicsProcess\DX11DeviceBuilder</Filter>
     </ClCompile>
     <ClCompile Include="SphereMesh.cpp">
-      <Filter>Resource\Mesh\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Resource\Model</Filter>
+      <Filter>Resource\Mesh\StaticMeshes\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Resource\Mesh\BaseClass</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticMesh.cpp">
-      <Filter>Resource\Mesh\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedMesh.cpp">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
@@ -108,8 +102,20 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMeshRenderer.cpp">
-      <Filter>Object\SkinnedMesh</Filter>
+    <ClCompile Include="DynamicModelRenderer.cpp">
+      <Filter>Object\DynamicModelRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Resource\ModelStruct\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Resource\Mesh\StaticMeshes\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicModel.cpp">
+      <Filter>Resource\ModelStruct\DynamicModel</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticModel.cpp">
+      <Filter>Resource\ModelStruct\StaticModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +126,7 @@
       <Filter>Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\Mesh\Primitive</Filter>
+      <Filter>Resource\Mesh\StaticMeshes\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>FBXLoader</Filter>
@@ -161,8 +167,8 @@
     <ClInclude Include="GraphicsMacro.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>Object\StaticMesh</Filter>
+    <ClInclude Include="StaticModelRenderer.h">
+      <Filter>Object\StaticModelRenderer</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
       <Filter>Object\TextObject</Filter>
@@ -189,7 +195,7 @@
       <Filter>GraphicsProcess\Builder</Filter>
     </ClInclude>
     <ClInclude Include="SphereMesh.h">
-      <Filter>Resource\Mesh\Primitive</Filter>
+      <Filter>Resource\Mesh\StaticMeshes\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Struct</Filter>
@@ -200,14 +206,8 @@
     <ClInclude Include="AssimpMathConverter.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Resource\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Resource\Mesh\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticMesh.h">
-      <Filter>Resource\Mesh\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedMesh.h">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
@@ -215,8 +215,20 @@
     <ClInclude Include="Transform.h">
       <Filter>Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedMeshRenderer.h">
-      <Filter>Object\SkinnedMesh</Filter>
+    <ClInclude Include="DynamicModelRenderer.h">
+      <Filter>Object\DynamicModelRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Resource\ModelStruct\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Resource\Mesh\StaticMeshes\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicModel.h">
+      <Filter>Resource\ModelStruct\DynamicModel</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticModel.h">
+      <Filter>Resource\ModelStruct\StaticModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -237,12 +249,6 @@
     </Filter>
     <Filter Include="Object\LineRenderer">
       <UniqueIdentifier>{29601c1e-6dd6-412d-8f40-c8d66e78a994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\SkinnedMesh">
-      <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\StaticMesh">
-      <UniqueIdentifier>{b06c9dce-0c2e-4e80-9d78-36595b5a6d4d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\TextObject">
       <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
@@ -316,24 +322,6 @@
     <Filter Include="GraphicsProcess\Builder">
       <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Mesh">
-      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Mesh\Primitive">
-      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Model">
-      <UniqueIdentifier>{af0a3348-847a-46d8-ab56-fc6e3fa64ee1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Mesh\BaseClass">
-      <UniqueIdentifier>{40afbd11-a45a-49ec-bf92-c0cb46f1b52a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Mesh\StaticMesh">
-      <UniqueIdentifier>{d8a32370-25e8-48b4-afa0-d37b95e7cc29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Mesh\SkinnedMesh">
-      <UniqueIdentifier>{3841b88c-81d2-4e48-8f6b-5892ec1b3733}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{38971765-e48e-41bc-b21b-d52fbd0feb59}</UniqueIdentifier>
     </Filter>
@@ -342,6 +330,42 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\SkinnedMesh">
       <UniqueIdentifier>{a2656c4f-0de9-4c9a-be05-d5876d4313b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\DynamicModelRenderer">
+      <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\StaticModelRenderer">
+      <UniqueIdentifier>{b06c9dce-0c2e-4e80-9d78-36595b5a6d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh">
+      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\BaseClass">
+      <UniqueIdentifier>{40afbd11-a45a-49ec-bf92-c0cb46f1b52a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\StaticMeshes">
+      <UniqueIdentifier>{d8a32370-25e8-48b4-afa0-d37b95e7cc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\StaticMeshes\Primitive">
+      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\StaticMeshes\StaticMesh">
+      <UniqueIdentifier>{c800284e-4086-415e-b988-692c1bddad27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\SkinnedMesh">
+      <UniqueIdentifier>{3841b88c-81d2-4e48-8f6b-5892ec1b3733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\ModelStruct">
+      <UniqueIdentifier>{af0a3348-847a-46d8-ab56-fc6e3fa64ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\ModelStruct\BaseClass">
+      <UniqueIdentifier>{053506e8-7a16-4f26-b2ce-a986d11245be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\ModelStruct\StaticModel">
+      <UniqueIdentifier>{7f775017-1f56-4978-8fa5-3f1b27843424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\ModelStruct\DynamicModel">
+      <UniqueIdentifier>{c5fa46d8-6f5e-45ce-9470-c26cae7aab93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

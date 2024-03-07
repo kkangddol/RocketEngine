@@ -1,22 +1,22 @@
 ﻿#pragma once
 #include <string>
 #include "DLLExporter.h"
-#include "MeshRendererBase.h"
+#include "ModelRendererBase.h"
 #include "../GraphicsInterface/GraphicsEnum.h"
 
 namespace Rocket::Core
 {
-	class IMeshRenderer;
+	class IStaticModelRenderer;
 }
 
 namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API MeshRenderer final : public Core::MeshRendererBase
+	class ROCKET_API StaticModelRenderer final : public Core::ModelRendererBase
 	{
 	public:
-		MeshRenderer();
+		StaticModelRenderer();
 		void SetMesh(eMeshType meshType);
 		void SetMesh(std::string fileName);
 		void SetTexture(std::string fileName);
@@ -25,7 +25,7 @@ namespace Rocket
 		virtual void UpdateRenderData() override;
 
 	private:
-		Core::IMeshRenderer* _meshRenderer;
+		Core::IStaticModelRenderer* _meshRenderer;
 	};
 }
 

@@ -1,4 +1,4 @@
-﻿#include "SkinnedMeshRenderer.h"
+﻿#include "DynamicModelRenderer.h"
 #include "GraphicsMacro.h"
 #include "GraphicsStruct.h"
 #include "ResourceManager.h"
@@ -8,7 +8,7 @@
 
 namespace Rocket::Core
 {
-	SkinnedMeshRenderer::SkinnedMeshRenderer()
+	DynamicModelRenderer::DynamicModelRenderer()
 		: _mesh(nullptr),
 		_material(nullptr),
 		_isActive(true),
@@ -17,27 +17,27 @@ namespace Rocket::Core
 
 	}
 
-	void SkinnedMeshRenderer::SetWorldTM(const Matrix& worldTM)
+	void DynamicModelRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
 	}
 
-	void SkinnedMeshRenderer::SetActive(bool isActive)
+	void DynamicModelRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
 	}
 
-	void SkinnedMeshRenderer::LoadMesh(const std::string& fileName)
+	void DynamicModelRenderer::LoadMesh(const std::string& fileName)
 	{
 		_model = ResourceManager::Instance().GetModel(fileName);
 	}
 
-	void SkinnedMeshRenderer::LoadTexture(std::string fileName)
+	void DynamicModelRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
-	void SkinnedMeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void DynamicModelRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
 		{
@@ -146,31 +146,31 @@ namespace Rocket::Core
 		}
 	}
 
-	void SkinnedMeshRenderer::SetTexture(Texture* texture)
+	void DynamicModelRenderer::SetTexture(Texture* texture)
 	{
 		assert(_material);
 		_material->SetTexture(texture);
 	}
 
-	void SkinnedMeshRenderer::SetVertexShader(VertexShader* shader)
+	void DynamicModelRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
 		_material->SetVertexShader(shader);
 	}
 
-	void SkinnedMeshRenderer::SetPixelShader(PixelShader* shader)
+	void DynamicModelRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
 		_material->SetPixelShader(shader);
 	}
 
-	void SkinnedMeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
+	void DynamicModelRenderer::SetRenderState(ID3D11RasterizerState* renderState)
 	{
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
 
-	void SkinnedMeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void DynamicModelRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.

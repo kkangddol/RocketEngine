@@ -151,9 +151,10 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
+    <ClCompile Include="DynamicModel.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
-    <ClCompile Include="SkinnedMeshRenderer.cpp" />
+    <ClCompile Include="DynamicModelRenderer.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -166,7 +167,8 @@
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="StaticModel.cpp" />
+    <ClCompile Include="StaticModelRenderer.cpp" />
     <ClCompile Include="SphereMesh.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
@@ -181,10 +183,11 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
+    <ClInclude Include="DynamicModel.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="SkinnedMesh.h" />
-    <ClInclude Include="SkinnedMeshRenderer.h" />
+    <ClInclude Include="DynamicModelRenderer.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GraphicsStruct.h" />
@@ -203,7 +206,8 @@
     <ClInclude Include="GraphicsMacro.h" />
     <ClInclude Include="IShader.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="StaticModel.h" />
+    <ClInclude Include="StaticModelRenderer.h" />
     <ClInclude Include="SphereMesh.h" />
     <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="TextRenderer.h" />

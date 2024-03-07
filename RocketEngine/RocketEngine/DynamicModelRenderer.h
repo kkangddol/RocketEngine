@@ -2,21 +2,21 @@
 #include <string>
 
 #include "DLLExporter.h"
-#include "MeshRendererBase.h"
+#include "ModelRendererBase.h"
 
 namespace Rocket::Core
 {
-	class ISkinnedMeshRenderer;
+	class IDynamicModelRenderer;
 }
 
 namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API SkinnedMeshRenderer final : public Core::MeshRendererBase
+	class ROCKET_API DynamicModelRenderer final : public Core::ModelRendererBase
 	{
 	public:
-		SkinnedMeshRenderer();
+		DynamicModelRenderer();
 		void SetMesh(std::string fileName);
 		void SetTexture(std::string fileName);
 
@@ -24,6 +24,6 @@ namespace Rocket
 		virtual void UpdateRenderData() override;
 
 	private:
-		Core::ISkinnedMeshRenderer* _skinnedMeshRenderer;
+		Core::IDynamicModelRenderer* _skinnedMeshRenderer;
 	};
 }

@@ -4,8 +4,8 @@
 
 #include "ResourceManager.h"
 #include "Camera.h"
-#include "MeshRenderer.h"
-#include "SkinnedMeshRenderer.h"
+#include "StaticModelRenderer.h"
+#include "DynamicModelRenderer.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
@@ -32,9 +32,9 @@ namespace Rocket::Core
 		return temp;
 	}
 
-	MeshRenderer* ObjectManager::CreateMeshRenderer()
+	StaticModelRenderer* ObjectManager::CreateMeshRenderer()
 	{
-		MeshRenderer* meshRenderer = new MeshRenderer();
+		StaticModelRenderer* meshRenderer = new StaticModelRenderer();
 
 		meshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 
@@ -67,7 +67,7 @@ namespace Rocket::Core
 		return _ImageList;
 	}
 
-	std::vector<MeshRenderer*>& ObjectManager::GetStaticMeshRenderers()
+	std::vector<StaticModelRenderer*>& ObjectManager::GetStaticModelRenderers()
 	{
 		return _meshRendererList;
 	}
@@ -95,14 +95,14 @@ namespace Rocket::Core
 		return _lineRenderer;
 	}
 
-	std::vector<SkinnedMeshRenderer*>& ObjectManager::GetSkinnedMeshRenderers()
+	std::vector<DynamicModelRenderer*>& ObjectManager::GetDynamicModelRenderers()
 	{
 		return _skinnedMeshRendererList;
 	}
 
-	SkinnedMeshRenderer* ObjectManager::CreateSkinnedMeshRenderer()
+	DynamicModelRenderer* ObjectManager::CreateSkinnedMeshRenderer()
 	{
-		SkinnedMeshRenderer* skinnedMeshRenderer = new SkinnedMeshRenderer();
+		DynamicModelRenderer* skinnedMeshRenderer = new DynamicModelRenderer();
 
 		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자

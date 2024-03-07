@@ -4,10 +4,10 @@
 
 namespace Rocket::Core
 {
-	class ISkinnedMeshRenderer : public IRenderable
+	class IDynamicModelRenderer : public IRenderable
 	{
 	public:
-		virtual ~ISkinnedMeshRenderer() {}
+		virtual ~IDynamicModelRenderer() {}
 		virtual void LoadMesh(const std::string& fileName) = 0;
 		virtual void LoadTexture(std::string fileName) = 0;
 // 		virtual void LoadNormalMap(const std::string& fileName) = 0;

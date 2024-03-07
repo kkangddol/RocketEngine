@@ -5,7 +5,7 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\GraphicsInterface\\ISkinnedMeshRenderer.h"
+#include "..\\GraphicsInterface\\IDynamicModelRenderer.h"
 #include "../GraphicsInterface/GraphicsEnum.h"
 #include "SkinnedMesh.h"
 #include "Material.h"
@@ -17,10 +17,10 @@ namespace Rocket::Core
 	struct ModelData;
 	struct SkinnedModelData;
 
-	class SkinnedMeshRenderer : public Rocket::Core::ISkinnedMeshRenderer
+	class DynamicModelRenderer : public Rocket::Core::IDynamicModelRenderer
 	{
 	public:
-		SkinnedMeshRenderer();
+		DynamicModelRenderer();
 
 	public:
 		virtual void SetWorldTM(const Matrix& worldTM) override;

@@ -5,7 +5,7 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\GraphicsInterface\\IMeshRenderer.h"
+#include "..\\GraphicsInterface\\IStaticModelRenderer.h"
 #include "../GraphicsInterface/GraphicsEnum.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -16,10 +16,10 @@ namespace Rocket::Core
 {
 	struct ModelData;
 
-	class MeshRenderer : public Rocket::Core::IMeshRenderer
+	class StaticModelRenderer : public Rocket::Core::IStaticModelRenderer
 	{
 	public:
-		MeshRenderer();
+		StaticModelRenderer();
 
 	public:
 		virtual void SetWorldTM(const Matrix& worldTM) override;

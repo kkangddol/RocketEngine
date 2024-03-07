@@ -1,34 +1,40 @@
 ﻿#pragma once
-#include <d3d11.h>
-#include <dxgi.h>
-#include <DirectXMath.h>
+#include <d3d11_2.h>
+#include <dxgi1_3.h>
 #include <wrl.h>
-#include <string>
 #include <vector>
+#include <string>
+#include <unordered_map>
 
 #include "IResource.h"
+#include "Animation.h"
+
+using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class Mesh;
-
 	class Model : public IResource
 	{
 	public:
 		Model();
 		~Model();
 
-		std::string GetName() const { return name; }
-		void SetName(std::string val) { name = val; }
+		std::string GetName() const { return _name; }
+		void SetName(std::string val) { _name = val; }
 
-		std::vector<Mesh*> GetMeshes() const { return meshes; }
-		void SetMeshes(std::vector<Mesh*> val) { meshes = val; }
+		Rocket::Core::Node* GetRootNode() const { return _rootNode; }
+		void SetRootNode(Node* val) { _rootNode = val; }
 
-	private:
-		std::string name;
-		std::vector<Mesh*> meshes;
-//		std::vector<Node*> nodes;	// 0 is the root node
-		// TODO : Node를 Process 할 때 index를 그 때 매겨주자. 어때?
+		std::unordered_map<std::string, Node*>& GetNodeMap() { return _nodeMap; }
+
+		ID3D11Buffer* GetNodeBuffer() const { return _nodeBuffer.Get(); }
+		ID3D11Buffer** GetAddressOfNodeBuffer() { return _nodeBuffer.GetAddressOf(); }
+
+	protected:
+		std::string _name;
+		Node* _rootNode;
+		std::unordered_map<std::string, Node*> _nodeMap;
+		ComPtr<ID3D11Buffer> _nodeBuffer;
 	};
 }
 
