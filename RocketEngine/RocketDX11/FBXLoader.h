@@ -26,7 +26,7 @@ namespace Rocket::Core
 
 	private:
 		void ProcessModel(aiNode* rootaiNode, const aiScene* scene);
-		void ProcessNode(Node* node, aiNode* ainode, const aiScene* scene);
+		void ProcessNode(Node* node, aiNode* ainode, const aiScene* scene, UINT& index);
 		Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
 		Mesh* ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
 		Mesh* ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene);

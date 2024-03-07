@@ -34,7 +34,7 @@ float4 main(PixelInputType input) : SV_TARGET
     specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
     
     // 계산을 위해 빛 방향을 반전
-    lightDir = -lightDirection;
+    lightDir = -normalize(lightDirection);
     
     // 이 픽셀의 빛의 양을 계산
     lightIntensity = saturate(dot(input.normal, lightDir));
@@ -46,18 +46,22 @@ float4 main(PixelInputType input) : SV_TARGET
         
         color = saturate(color);
     
-        float3 reflection = normalize(2 * lightIntensity * input.normal - lightDir);
+        // 반사된 빛의 방향을 계산
+        float3 reflection = reflect(-lightDir, input.normal);
         
-        specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
+        // specular 계산 및 강도 조절
+        specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower) * specularColor;
 
     }
     
     // 텍스처 픽셀과 최종 확산 색을 곱하여 최종 픽셀 색상 결과를 얻음
     color = color * textureColor;
     
+    // 투명도 설정
+    color.a = textureColor.a;
+
+    // specular 색상 추가
     color = saturate(color + specular);
-    
-    //color.a = 1.0f;
     
     return color;
 }

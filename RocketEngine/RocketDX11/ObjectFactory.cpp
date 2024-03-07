@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "MeshRenderer.h"
+#include "SkinnedMeshRenderer.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"

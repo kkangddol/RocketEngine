@@ -16,6 +16,7 @@
 #include "ObjectManager.h"
 
 #include "MeshRenderer.h"
+#include "SkinnedMeshRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "GraphicsMacro.h"
@@ -304,7 +305,7 @@ namespace Rocket::Core
 		return;
 	}
 
-	void RocketDX11::RenderStaticMesh()
+	void RocketDX11::RenderMesh()
 	{
 		Camera* mainCam = Camera::GetMainCamera();
 
@@ -329,6 +330,11 @@ namespace Rocket::Core
 		for (auto meshRenderer : ObjectManager::Instance().GetStaticMeshRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+		}
+
+		for (auto skinnedMeshRenderer : ObjectManager::Instance().GetSkinnedMeshRenderers())
+		{
+			skinnedMeshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 	}
 
@@ -391,7 +397,7 @@ namespace Rocket::Core
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		RenderHelperObject();
-		RenderStaticMesh();
+		RenderMesh();
 
 		RenderText();
 		RenderTexture();

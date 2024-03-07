@@ -47,7 +47,7 @@ namespace Rocket::Core
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
 		void RenderHelperObject();
-		void RenderStaticMesh();
+		void RenderMesh();
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();

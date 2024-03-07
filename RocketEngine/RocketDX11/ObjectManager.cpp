@@ -37,8 +37,17 @@ namespace Rocket::Core
 		MeshRenderer* meshRenderer = new MeshRenderer();
 
 		meshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
-		meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 
+		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
+		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
+		//meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
+		Material* material = new Material();
+		material->SetTexture(_resourceManager.GetDefaultTexture());
+		material->SetVertexShader(_resourceManager.GetVertexShader("StaticMeshVS"));
+		material->SetPixelShader(_resourceManager.GetPixelShader("StaticMeshPS"));
+		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
+		meshRenderer->SetMaterial(material);
+		
 		_meshRendererList.emplace_back(meshRenderer);
 
 		return meshRenderer;
@@ -95,8 +104,15 @@ namespace Rocket::Core
 	{
 		SkinnedMeshRenderer* skinnedMeshRenderer = new SkinnedMeshRenderer();
 
-		skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
-		skinnedMeshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
+		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
+		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
+		//skinnedMeshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
+		Material* material = new Material();
+		material->SetTexture(_resourceManager.GetDefaultTexture());
+		material->SetVertexShader(_resourceManager.GetVertexShader("SkinnedMeshVS"));
+		material->SetPixelShader(_resourceManager.GetPixelShader("SkinnedMeshPS"));
+		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
+		skinnedMeshRenderer->SetMaterial(material);
 
 		_skinnedMeshRendererList.emplace_back(skinnedMeshRenderer);
 

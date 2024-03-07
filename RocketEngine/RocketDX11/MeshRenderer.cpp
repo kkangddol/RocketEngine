@@ -111,11 +111,12 @@ namespace Rocket::Core
 		
 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
+			// TODO : LightDirection이 왜 Y축과 Z축이 바뀌어서 나오지? 해결해야한다.
 			lightBufferDataPtr->ambientColor = { 0.15f,0.15f,0.15f,1.0f };
 			lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
-			lightBufferDataPtr->lightDirection = { 1.0f,-1.0f,1.0f };
+			lightBufferDataPtr->lightDirection = { 1.0f,0.0f,0.0f };
 			lightBufferDataPtr->specularPower = 2.0f;
-			lightBufferDataPtr->specularColor = { 0.0f,0.0f,1.0f,1.0f };
+			lightBufferDataPtr->specularColor = { 0.5f,0.5f,0.5f,1.0f };
 
 			deviceContext->Unmap(_material->GetPixelShader()->GetLightBuffer(), 0);
 

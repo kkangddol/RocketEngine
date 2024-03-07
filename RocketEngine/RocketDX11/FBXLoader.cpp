@@ -50,7 +50,7 @@ namespace Rocket::Core
 		const aiScene* _scene = importer.ReadFile(path,
 			aiProcess_Triangulate |
 			aiProcess_ConvertToLeftHanded |
-//			aiProcess_PopulateArmatureData |
+			aiProcess_PopulateArmatureData |
 			aiProcess_CalcTangentSpace);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
@@ -85,12 +85,10 @@ namespace Rocket::Core
 
 	void FBXLoader::ProcessModel(aiNode* rootaiNode, const aiScene* scene)
 	{
+		UINT index = 0;
 		Node* rootNode = new Node();
 		_nowModelData->rootNode = rootNode;
-		ProcessNode(rootNode, rootaiNode, scene);
-
-		UINT index = 0;
-		SetNodeIndex(index, rootNode);
+		ProcessNode(rootNode, rootaiNode, scene, index);
 
 		D3D11_BUFFER_DESC nodeBufferDesc;
 		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -102,27 +100,17 @@ namespace Rocket::Core
 
  		for (auto& mesh : _nowModelData->meshes)
 		{
-			mesh->CreateBuffers();		// SetNodeIndex()를 통해 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
+			mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
 		}
 
 		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &(_nowModelData->nodeBuffer)));
 	}
 
-	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
-	{
-		node->id = index++;
-		if(node->children.size() > 0)
-		{
-			for (auto& child : node->children)
-			{
-				SetNodeIndex(index, child);
-			}
-		}
-	}
-
-	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
+	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene, UINT& index)
 	{
 		node->name = ainode->mName.C_Str();
+		node->id = index;
+		index++;
 
 		// TODO : reinterpret_cast 사용하지 않도록 수정하기. modelData는 ResourceManager.h에 있음.
 		if (scene->HasAnimations())
@@ -136,7 +124,12 @@ namespace Rocket::Core
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
 			Mesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
-			mesh->SetNode(node);
+			
+			// TODO : 여기서 if문으로 분기타지않게 할 것.
+			if (!scene->HasAnimations())
+			{
+				mesh->SetNode(node);
+			}
 			_nowModelData->meshes.emplace_back(mesh);
 		}
 
@@ -146,7 +139,7 @@ namespace Rocket::Core
 			node->children.emplace_back(newNode);
 			newNode->parent = node;
 
-			ProcessNode(newNode, ainode->mChildren[i], scene);
+			ProcessNode(newNode, ainode->mChildren[i], scene, index);
 		}
 	}
 
@@ -366,6 +359,7 @@ namespace Rocket::Core
 				int vertexIndex = bone->mWeights[j].mVertexId;
 				float weight = bone->mWeights[j].mWeight;
 				DirectX::XMMATRIX offsetTM = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix);
+				offsetTM = DirectX::XMMatrixTranspose(offsetTM);
 
 				weightDataPerVertex[vertexIndex].push_back({ weight,offsetTM });
 			}
@@ -377,13 +371,14 @@ namespace Rocket::Core
 		{
 			Vector3 resultPosition = Vector3::Zero;
 			Vector3 resultNormal = Vector3::Zero;
+
 			for (auto& weightData : iter.second)
 			{
 				DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(weightData.second);
 				DirectX::XMMATRIX offsetInverse = DirectX::XMMatrixInverse(&det, weightData.second);
 
-				resultPosition += Vector3::Transform(vertices[iter.first].position, weightData.first * weightData.second);
-				resultNormal += Vector3::Transform(vertices[iter.first].normal, weightData.first * offsetInverse);
+				resultPosition += Vector3::Transform(vertices[iter.first].position, weightData.second) * weightData.first;
+				resultNormal += Vector3::Transform(vertices[iter.first].normal, DirectX::XMMatrixTranspose(offsetInverse)) * weightData.first;
 			}
 
 			vertices[iter.first].position = resultPosition;

@@ -1,4 +1,4 @@
-#include "DebugCameraMove.h"
+﻿#include "DebugCameraMove.h"
 
 DebugCameraMove::DebugCameraMove()
 	: moveSpeed(2.0f)
@@ -14,11 +14,11 @@ void DebugCameraMove::Update()
 {
 	//float deltaTime = rocket.GetDeltaTime();
 	float deltaTime = Rocket::GetDeltaTime();
-	moveSpeed = 5.0f;
+	moveSpeed = 2.0f;
 
 	if (Rocket::GetKey(VK_SHIFT))
 	{
-		moveSpeed *= 2.0f;
+		moveSpeed *= 5.0f;
 	}
 
 	if (Rocket::GetKey('W'))
