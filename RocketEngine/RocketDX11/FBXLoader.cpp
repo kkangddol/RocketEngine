@@ -1,9 +1,8 @@
 ﻿#include <windows.h>
 
 #include "FBXLoader.h"
-#include "MathHelper.h"
+#include "MathHeader.h"
 #include "AssimpMathConverter.h"
-#include "Animation.h"
 #include "VertexStruct.h"
 #include "Mesh.h"
 #include "StaticMesh.h"
@@ -62,15 +61,15 @@ namespace Rocket::Core
 		// Node를 Process 하면서 이 ModelData에 저장
 		if (_scene->HasAnimations())
 		{
-			SkinnedModelData* skinnedModelData = new SkinnedModelData();
-			skinnedModelData->name = fileNameWithExtension;
-			_nowModelData = skinnedModelData;
+			DynamicModel* dynamicModel = new DynamicModel();
+			dynamicModel->name = fileNameWithExtension;
+			_nowModel = dynamicModel;
 		}
 		else
 		{
-			ModelData* modelData = new ModelData();
-			modelData->name = fileNameWithExtension;
-			_nowModelData = modelData;
+			StaticModel* staticModel = new StaticModel();
+			staticModel->name = fileNameWithExtension;
+			_nowModel = staticModel;
 		}
 
 		ProcessModel(_scene->mRootNode, _scene);	
@@ -79,7 +78,7 @@ namespace Rocket::Core
 		//LoadAnimation(_scene);
 
 		// 모든 작업이 끝나면 리소스매니저에 해당 모델 데이터 등록
-		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModelData });
+		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModel });
 	}
 
 
@@ -87,7 +86,7 @@ namespace Rocket::Core
 	{
 		UINT index = 0;
 		Node* rootNode = new Node();
-		_nowModelData->rootNode = rootNode;
+		_nowModel->rootNode = rootNode;
 		ProcessNode(rootNode, rootaiNode, scene, index);
 
 		D3D11_BUFFER_DESC nodeBufferDesc;
@@ -98,24 +97,44 @@ namespace Rocket::Core
 		nodeBufferDesc.MiscFlags = 0;
 		nodeBufferDesc.StructureByteStride = 0;
 
- 		for (auto& mesh : _nowModelData->meshes)
+// 		// TODO : reinterpret_cast 사용하지 않도록 수정하기.
+// 		if (scene->HasAnimations())
+// 		{
+// 			auto dModel = reinterpret_cast<DynamicModel*>(_nowModel);
+// 
+// 			for (auto& mesh : dModel->meshes)
+// 			{
+// 				mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
+// 			}
+// 		}
+// 		else
+// 		{
+// 			auto sModel = reinterpret_cast<StaticModel*>(_nowModel);
+// 
+// 			for (auto& mesh : sModel->meshes)
+// 			{
+// 				mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
+// 			}
+// 		}
+
+		for (auto& mesh : _nowModel->GetMeshes())
 		{
-			mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
+			mesh->CreateBuffers();
 		}
 
-		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &(_nowModelData->nodeBuffer)));
+		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, _nowModel->nodeBuffer.GetAddressOf()));
 	}
 
 	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene, UINT& index)
 	{
 		node->name = ainode->mName.C_Str();
-		node->id = index;
+		node->index = index;
 		index++;
 
 		// TODO : reinterpret_cast 사용하지 않도록 수정하기. modelData는 ResourceManager.h에 있음.
 		if (scene->HasAnimations())
 		{
-			reinterpret_cast<SkinnedModelData*>(_nowModelData)->nodeMap.insert(std::make_pair(node->name, node));
+			_nowModel->nodeMap.insert(std::make_pair(node->name, node));
 		}
 
 		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
@@ -126,11 +145,20 @@ namespace Rocket::Core
 			Mesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
 			
 			// TODO : 여기서 if문으로 분기타지않게 할 것.
+			// TODO : reinterpret_cast 및 dynamic_cast 사용하지 않도록 수정하기.
 			if (!scene->HasAnimations())
 			{
 				mesh->SetNode(node);
+				auto staticMesh = dynamic_cast<StaticMesh*>(mesh);
+				reinterpret_cast<StaticModel*>(_nowModel)->meshes.emplace_back(staticMesh);
 			}
-			_nowModelData->meshes.emplace_back(mesh);
+			else
+			{
+				// 얘는 메쉬랑 본 읽으면서 각각의 버텍스한테 노드를 셋 해줬을것이다.. 아님말고?
+				auto skinnedMesh = dynamic_cast<SkinnedMesh*>(mesh);
+				reinterpret_cast<DynamicModel*>(_nowModel)->meshes.emplace_back(skinnedMesh);
+			}
+			//_nowModel->meshes.emplace_back(mesh);
 		}
 
 		for (UINT i = 0; i < ainode->mNumChildren; ++i)

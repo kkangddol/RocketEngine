@@ -36,7 +36,8 @@ namespace Rocket::Core
 	{
 		StaticModelRenderer* meshRenderer = new StaticModelRenderer();
 
-		meshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
+		// TODO : 기본 Mesh를 넣어주기로 했는데 이거 일단 보류.
+		// meshRenderer->LoadModel(_resourceManager.GetCubeMesh());
 
 		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자

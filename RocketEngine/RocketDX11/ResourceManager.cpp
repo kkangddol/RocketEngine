@@ -13,9 +13,9 @@
 #include "GraphicsMacro.h"
 #include "texture.h"
 #include "material.h"
-#include "VertexStruct.h"
 #include "FBXLoader.h"
-#include "Animation.h"
+#include "VertexStruct.h"
+#include "ModelStruct.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string MODEL_PATH = "Resources/Models/";
@@ -290,17 +290,17 @@ namespace Rocket::Core
 		return texture;
 	}
 
-	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
-	{
-		if (_models.find(fileName) == _models.end())
-		{
-			_fbxLoader->LoadFBXFile(fileName);
-		}
+// 	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
+// 	{
+// 		if (_models.find(fileName) == _models.end())
+// 		{
+// 			_fbxLoader->LoadFBXFile(fileName);
+// 		}
+// 
+// 		return _models[fileName]->meshes;
+// 	}
 
-		return _models[fileName]->meshes;
-	}
-
-	Rocket::Core::ModelData* ResourceManager::GetModel(const std::string& fileName)
+	Rocket::Core::Model* ResourceManager::GetModel(const std::string& fileName)
 	{
 		if (_models.find(fileName) == _models.end())
 		{
@@ -309,5 +309,4 @@ namespace Rocket::Core
 
 		return _models[fileName];
 	}
-
 }

@@ -2,14 +2,12 @@
 #include "GraphicsMacro.h"
 #include "VertexStruct.h"
 #include "ResourceManager.h"
-#include "CubeMesh.h"
-#include "SphereMesh.h"
-#include "Animation.h"
+#include "SkinnedMesh.h"
 
 namespace Rocket::Core
 {
 	DynamicModelRenderer::DynamicModelRenderer()
-		: _mesh(nullptr),
+		: _model(nullptr),
 		_material(nullptr),
 		_isActive(true),
 		_worldTM(Matrix::Identity)
@@ -27,9 +25,9 @@ namespace Rocket::Core
 		_isActive = isActive;
 	}
 
-	void DynamicModelRenderer::LoadMesh(const std::string& fileName)
+	void DynamicModelRenderer::LoadModel(const std::string& fileName)
 	{
-		_model = ResourceManager::Instance().GetModel(fileName);
+		_model = reinterpret_cast<DynamicModel*>(ResourceManager::Instance().GetModel(fileName));
 	}
 
 	void DynamicModelRenderer::LoadTexture(std::string fileName)
@@ -86,7 +84,7 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
 
 			///
-			HR(deviceContext->Map(_model->nodeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+			HR(deviceContext->Map(_model->nodeBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
@@ -94,11 +92,11 @@ namespace Rocket::Core
 
 			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
 
-			deviceContext->Unmap(_model->nodeBuffer, 0);
+			deviceContext->Unmap(_model->nodeBuffer.Get(), 0);
 
 			bufferNumber = 2;
 
-			deviceContext->VSSetConstantBuffers(bufferNumber, 1, &(_model->nodeBuffer));
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _model->nodeBuffer.GetAddressOf());
 			///
 
 			// 픽셀 쉐이더
@@ -146,12 +144,6 @@ namespace Rocket::Core
 		}
 	}
 
-	void DynamicModelRenderer::SetTexture(Texture* texture)
-	{
-		assert(_material);
-		_material->SetTexture(texture);
-	}
-
 	void DynamicModelRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
@@ -175,7 +167,7 @@ namespace Rocket::Core
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
-		nodeBuffer->transformMatrix[node->id] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
 		index++;
 		for (int i = 0; i < node->children.size(); i++)
 		{

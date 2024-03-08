@@ -14,7 +14,7 @@ namespace Rocket
 
 	void DynamicModelRenderer::SetMesh(std::string fileName)
 	{
-		_skinnedMeshRenderer->LoadMesh(fileName);
+		_skinnedMeshRenderer->LoadModel(fileName);
 	}
 
 	void DynamicModelRenderer::SetTexture(std::string fileName)

@@ -12,14 +12,14 @@ namespace Rocket
 
 	}
 
-	void StaticModelRenderer::SetMesh(eMeshType meshType)
-	{
-		_meshRenderer->LoadMesh(meshType);
-	}
+// 	void StaticModelRenderer::SetMesh(eMeshType meshType)
+// 	{
+// 		_meshRenderer->LoadModel(meshType);
+// 	}
 
 	void StaticModelRenderer::SetMesh(std::string fileName)
 	{
-		_meshRenderer->LoadMesh(fileName);
+		_meshRenderer->LoadModel(fileName);
 	}
 
 	void StaticModelRenderer::SetTexture(std::string fileName)

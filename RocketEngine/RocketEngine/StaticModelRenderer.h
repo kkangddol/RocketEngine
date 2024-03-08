@@ -17,7 +17,7 @@ namespace Rocket
 	{
 	public:
 		StaticModelRenderer();
-		void SetMesh(eMeshType meshType);
+		//void SetMesh(eMeshType meshType);
 		void SetMesh(std::string fileName);
 		void SetTexture(std::string fileName);
 

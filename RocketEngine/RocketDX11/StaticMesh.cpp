@@ -1,7 +1,7 @@
 ﻿#include "StaticMesh.h"
 #include "ResourceManager.h"
 #include "GraphicsMacro.h"
-#include "Animation.h"
+#include "ModelStruct.h"
 
 namespace Rocket::Core
 {
@@ -24,7 +24,7 @@ namespace Rocket::Core
 	{
 		for (auto& vertex : _vertices)
 		{
-			vertex.nodeIndex = _node->id;
+			vertex.nodeIndex = _node->index;
 		}
 
 		D3D11_BUFFER_DESC vertexBufferDesc = {};

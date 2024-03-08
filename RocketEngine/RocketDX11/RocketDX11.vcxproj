@@ -151,8 +151,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
-    <ClCompile Include="DynamicModel.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelStruct.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="DynamicModelRenderer.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
@@ -167,7 +166,6 @@
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
-    <ClCompile Include="StaticModel.cpp" />
     <ClCompile Include="StaticModelRenderer.cpp" />
     <ClCompile Include="SphereMesh.cpp" />
     <ClCompile Include="StaticMesh.cpp" />
@@ -182,9 +180,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
-    <ClInclude Include="DynamicModel.h" />
     <ClInclude Include="MathHeader.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="ModelStruct.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="DynamicModelRenderer.h" />
@@ -206,7 +202,6 @@
     <ClInclude Include="GraphicsMacro.h" />
     <ClInclude Include="IShader.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="StaticModel.h" />
     <ClInclude Include="StaticModelRenderer.h" />
     <ClInclude Include="SphereMesh.h" />
     <ClInclude Include="StaticMesh.h" />

@@ -8,7 +8,7 @@ namespace Rocket::Core
 	{
 	public:
 		virtual ~IDynamicModelRenderer() {}
-		virtual void LoadMesh(const std::string& fileName) = 0;
+		virtual void LoadModel(const std::string& fileName) = 0;
 		virtual void LoadTexture(std::string fileName) = 0;
 // 		virtual void LoadNormalMap(const std::string& fileName) = 0;
 // 		virtual void LoadDiffuseMap(const std::string& fileName) = 0;
