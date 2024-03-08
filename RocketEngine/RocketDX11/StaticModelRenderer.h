@@ -35,7 +35,7 @@ namespace Rocket::Core
 		void SetRenderState(ID3D11RasterizerState* renderState);
 
 	private:
-		void SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer);
+		void SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer);
 
 	private:
 		StaticModel* _model;

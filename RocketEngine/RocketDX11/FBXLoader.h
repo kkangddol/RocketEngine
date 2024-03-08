@@ -6,6 +6,7 @@
 #include <assimp/Importer.hpp>		// C++ importer interface
 #include <assimp/scene.h>			// Output data structure
 #include <assimp/postprocess.h>		// Post processing flags
+#include <unordered_map>
 
 #include "ModelStruct.h"
 
@@ -27,7 +28,7 @@ namespace Rocket::Core
 
 	private:
 		void ProcessModel(aiNode* rootaiNode, const aiScene* scene);
-		void ProcessNode(Node* node, aiNode* ainode, const aiScene* scene, UINT& index);
+		void ProcessNode(aiNode* ainode, const aiScene* scene);
 		Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
 		Mesh* ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
 		Mesh* ProcessSkinnedMesh(aiMesh* mesh, const aiScene* scene);
@@ -35,10 +36,13 @@ namespace Rocket::Core
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void LoadAnimation(const aiScene* scene);
 
-		void SetNodeIndex(UINT& index, Node* node);
+		Node* ReadNodeHierarchy(aiNode* ainode, const aiScene* scene);
+		void ReadNodeRecur(Node* node, aiNode* ainode, const aiScene* scene, UINT& index);
 
 	private:
 		ComPtr<ID3D11Device> _device;
 		Model* _nowModel;
+		std::unordered_map<aiNode*, Node*> _aiNodeToNodeMap;
+		std::unordered_map<std::string, Bone*> _boneMap;
 	};
 }

@@ -88,15 +88,26 @@ namespace Rocket::Core
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-			UINT index = 0;
-
-			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
+			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
 
 			deviceContext->Unmap(_model->nodeBuffer.Get(), 0);
 
 			bufferNumber = 2;
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _model->nodeBuffer.GetAddressOf());
+
+
+			HR(deviceContext->Map(_model->boneBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			BoneBufferType* boneBufferDataPtr = (BoneBufferType*)mappedResource.pData;
+
+			SetBoneBuffer(_model->rootNode, boneBufferDataPtr);
+
+			deviceContext->Unmap(_model->boneBuffer.Get(), 0);
+
+			bufferNumber = 3;
+
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _model->boneBuffer.GetAddressOf());
 			///
 
 			// 픽셀 쉐이더
@@ -162,16 +173,30 @@ namespace Rocket::Core
 		_material->SetRenderState(renderState);
 	}
 
-	void DynamicModelRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void DynamicModelRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
 		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
-		index++;
 		for (int i = 0; i < node->children.size(); i++)
 		{
-			SetNodeBuffer(node->children[i], index, nodeBuffer);
+			SetNodeBuffer(node->children[i], nodeBuffer);
 		}
 	}
+
+	void DynamicModelRenderer::SetBoneBuffer(Node* node, BoneBufferType* boneBuffer)
+	{	
+		Bone* bone = node->bindedBone;
+		if (bone)
+		{
+			boneBuffer->transformMatrix[node->bindedBone->index] = DirectX::XMMatrixTranspose(bone->offsetMatrix);
+		}
+
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			SetBoneBuffer(node->children[i], boneBuffer);
+		}
+	}
+
 }

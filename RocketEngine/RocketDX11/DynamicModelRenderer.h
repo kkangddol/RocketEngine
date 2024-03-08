@@ -35,7 +35,8 @@ namespace Rocket::Core
 		void SetRenderState(ID3D11RasterizerState* renderState);
 
 	private:
-		void SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer);
+		void SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer);
+		void SetBoneBuffer(Node* node, BoneBufferType* boneBuffer);
 
 	private:
 		// TODO : 이거 상속구조 잘 만들던가.. 어떻게든 해서 ModelData와 SkinnedModelData 잘 나눠보자..ㅠㅠ

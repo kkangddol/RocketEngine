@@ -89,9 +89,7 @@ namespace Rocket::Core
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-			UINT index = 0;
-
-			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
+			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
 			
 			deviceContext->Unmap(_model->nodeBuffer.Get(), 0);
 
@@ -182,16 +180,15 @@ namespace Rocket::Core
 		_material->SetRenderState(renderState);
 	}
 
-	void StaticModelRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void StaticModelRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
 		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
-		index++;
 		for (int i = 0; i < node->children.size(); i++)
 		{
-			SetNodeBuffer(node->children[i], index, nodeBuffer);
+			SetNodeBuffer(node->children[i], nodeBuffer);
 		}
 	}
 

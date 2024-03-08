@@ -59,6 +59,11 @@ namespace Rocket::Core
 		DirectX::XMMATRIX transformMatrix[256];
 	};
 
+	struct BoneBufferType
+	{
+		DirectX::XMMATRIX transformMatrix[256];
+	};
+
 	/// <summary>
 	/// assimp 용 vertex 구조체?
 	/// </summary>

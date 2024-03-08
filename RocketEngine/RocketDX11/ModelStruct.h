@@ -32,7 +32,6 @@ namespace Rocket::Core
 
 		std::string name;
 		Node* rootNode;
-		std::unordered_map<std::string, Node*> nodeMap;
 		ComPtr<ID3D11Buffer> nodeBuffer;
 	};
 
@@ -48,6 +47,7 @@ namespace Rocket::Core
 		virtual std::vector<Mesh*> GetMeshes() override;
 
 		std::vector<SkinnedMesh*> meshes;
+		ComPtr<ID3D11Buffer> boneBuffer;
 	};
 
 	// structure containing bone information

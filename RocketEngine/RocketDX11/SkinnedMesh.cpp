@@ -22,11 +22,6 @@ namespace Rocket::Core
 
 	void SkinnedMesh::CreateBuffers()
 	{
-		for (auto& vertex : _vertices)
-		{
-			vertex.nodeIndex = _node->index;
-		}
-
 		D3D11_BUFFER_DESC vertexBufferDesc = {};
 		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		vertexBufferDesc.ByteWidth = sizeof(VertexSkinned) * _vertexCount;

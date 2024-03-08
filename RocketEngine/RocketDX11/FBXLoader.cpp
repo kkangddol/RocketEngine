@@ -27,6 +27,10 @@ namespace Rocket::Core
 		_device = device;
 	}
 
+
+	// TODO : 지금은 읽으면서 처리하고 있는데, 미리 다 읽어놓고 데이터 별로 넣어주는 식으로 하는게 더 좋을 거 같다.
+	//		  ㄴ> 읽으면서 조건따라 처리하는게 너무 지저분해 보인다.
+	//		  ㄴ> 그리고 매개변수랑 리턴타입을 이용해서 처리하는게 더 직관적으로 보일 거 같긴 한데.. 흠..
 	void FBXLoader::LoadFBXFile(std::string fileName)
 	{
 		std::string fileNameWithExtension;
@@ -84,11 +88,16 @@ namespace Rocket::Core
 
 	void FBXLoader::ProcessModel(aiNode* rootaiNode, const aiScene* scene)
 	{
-		UINT index = 0;
-		Node* rootNode = new Node();
-		_nowModel->rootNode = rootNode;
-		ProcessNode(rootNode, rootaiNode, scene, index);
+		_nowModel->rootNode = ReadNodeHierarchy(rootaiNode, scene);
 
+		ProcessNode(rootaiNode, scene);
+
+		for (auto& mesh : _nowModel->GetMeshes())
+		{
+			mesh->CreateBuffers();	// vertexBuffer와 indexBuffer 생성.
+		}
+
+		/// nodeBuffer 생성 (상수버퍼에 세팅해주기 위함)
 		D3D11_BUFFER_DESC nodeBufferDesc;
 		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		nodeBufferDesc.ByteWidth = sizeof(NodeBufferType);
@@ -97,49 +106,27 @@ namespace Rocket::Core
 		nodeBufferDesc.MiscFlags = 0;
 		nodeBufferDesc.StructureByteStride = 0;
 
-// 		// TODO : reinterpret_cast 사용하지 않도록 수정하기.
-// 		if (scene->HasAnimations())
-// 		{
-// 			auto dModel = reinterpret_cast<DynamicModel*>(_nowModel);
-// 
-// 			for (auto& mesh : dModel->meshes)
-// 			{
-// 				mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
-// 			}
-// 		}
-// 		else
-// 		{
-// 			auto sModel = reinterpret_cast<StaticModel*>(_nowModel);
-// 
-// 			for (auto& mesh : sModel->meshes)
-// 			{
-// 				mesh->CreateBuffers();		// 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
-// 			}
-// 		}
-
-		for (auto& mesh : _nowModel->GetMeshes())
-		{
-			mesh->CreateBuffers();
-		}
-
 		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, _nowModel->nodeBuffer.GetAddressOf()));
-	}
 
-	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene, UINT& index)
-	{
-		node->name = ainode->mName.C_Str();
-		node->index = index;
-		index++;
-
-		// TODO : reinterpret_cast 사용하지 않도록 수정하기. modelData는 ResourceManager.h에 있음.
+		/// dynamicModel의 경우 boneBuffer 생성 (상수버퍼에 세팅해주기 위함)
 		if (scene->HasAnimations())
 		{
-			_nowModel->nodeMap.insert(std::make_pair(node->name, node));
+			D3D11_BUFFER_DESC boneBufferDesc;
+			boneBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			boneBufferDesc.ByteWidth = sizeof(BoneBufferType);
+			boneBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			boneBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			boneBufferDesc.MiscFlags = 0;
+			boneBufferDesc.StructureByteStride = 0;
+
+			auto dModel = reinterpret_cast<DynamicModel*>(_nowModel);
+
+			HR(_device->CreateBuffer(&boneBufferDesc, NULL, dModel->boneBuffer.GetAddressOf()));
 		}
+	}
 
-		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
-		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
-
+	void FBXLoader::ProcessNode(aiNode* ainode, const aiScene* scene)
+	{
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
 			Mesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
@@ -148,7 +135,7 @@ namespace Rocket::Core
 			// TODO : reinterpret_cast 및 dynamic_cast 사용하지 않도록 수정하기.
 			if (!scene->HasAnimations())
 			{
-				mesh->SetNode(node);
+				mesh->SetNode(_aiNodeToNodeMap.at(ainode));
 				auto staticMesh = dynamic_cast<StaticMesh*>(mesh);
 				reinterpret_cast<StaticModel*>(_nowModel)->meshes.emplace_back(staticMesh);
 			}
@@ -163,11 +150,7 @@ namespace Rocket::Core
 
 		for (UINT i = 0; i < ainode->mNumChildren; ++i)
 		{
-			Node* newNode = new Node();
-			node->children.emplace_back(newNode);
-			newNode->parent = node;
-
-			ProcessNode(newNode, ainode->mChildren[i], scene, index);
+			ProcessNode(ainode->mChildren[i], scene);
 		}
 	}
 
@@ -373,44 +356,57 @@ namespace Rocket::Core
 		//		  ㄴ> 지금은 이 플래그를 사용하지 않고 bone과 node를 따로 읽어서 만들어 보고있다.
 		//		  ㄴ> mesh->mBones[0]->mArmature->mMeshes 뭐 이런식으로? 바로 노드에 접근하는거같은데..
 
-
 		// 각각의 버텍스에 영향을 주는 모든 본에 대해서 저장한 다음
 		// 버텍스 기준으로 본인의 position과 normal을 다시 계산한다.
-		std::unordered_map<int, std::vector<std::pair<float, DirectX::XMMATRIX>>> weightDataPerVertex;	// 버텍스 인덱스, 가중치 데이터(가중치,트랜스폼)
+		std::vector<uint32_t> boneIndecesPerVertex;
+		boneIndecesPerVertex.resize(vertices.size());
 
 		for (int i = 0; i < mesh->mNumBones; i++)
 		{
-			aiBone* bone = mesh->mBones[i];
+			aiBone* aibone = mesh->mBones[i];
 
-			for (int j = 0; j < bone->mNumWeights; j++)
+			Bone* bone = new Bone();
+			bone->name = aibone->mName.C_Str();
+			bone->index = _aiNodeToNodeMap.at(aibone->mNode)->index;
+			bone->bindedNode = _aiNodeToNodeMap.at(aibone->mNode);
+			bone->offsetMatrix = AIMatrix4x4ToXMMatrix(aibone->mOffsetMatrix.Transpose());
+
+			_aiNodeToNodeMap.at(aibone->mNode)->bindedBone = bone;
+
+			for (int j = 0; j < aibone->mNumWeights; j++)
 			{
-				int vertexIndex = bone->mWeights[j].mVertexId;
-				float weight = bone->mWeights[j].mWeight;
-				DirectX::XMMATRIX offsetTM = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix);
-				offsetTM = DirectX::XMMatrixTranspose(offsetTM);
+				int vertexIndex = aibone->mWeights[j].mVertexId;
+				float weight = aibone->mWeights[j].mWeight;
 
-				weightDataPerVertex[vertexIndex].push_back({ weight,offsetTM });
+				uint32_t boneCount = boneIndecesPerVertex[vertexIndex];
+
+				switch (boneCount)
+				{
+					case 0:
+						boneIndecesPerVertex[vertexIndex]++;
+						vertices[vertexIndex].weights.x = weight;
+						vertices[vertexIndex].boneIndices.x = bone->index;
+						break;
+					case 1:
+						boneIndecesPerVertex[vertexIndex]++;
+						vertices[vertexIndex].weights.y = weight;
+						vertices[vertexIndex].boneIndices.y = bone->index;
+						break;
+					case 2:
+						boneIndecesPerVertex[vertexIndex]++;
+						vertices[vertexIndex].weights.z = weight;
+						vertices[vertexIndex].boneIndices.z = bone->index;
+						break;
+					case 3:
+						boneIndecesPerVertex[vertexIndex]++;
+						vertices[vertexIndex].weights.w = weight;
+						vertices[vertexIndex].boneIndices.w = bone->index;
+						break;
+					default:
+						break;
+				}
+				vertices[vertexIndex].nodeIndex = bone->index;
 			}
-		}
-
-		// 지금은 읽은 Vertex 데이터에 직접 Bone의 가중치를 곱해서 Vertex 정보를 갱신해주고있다.
-		// 어차피 Bone의 가중치는 바뀌지 않을거니까..?
-		for (auto& iter : weightDataPerVertex)
-		{
-			Vector3 resultPosition = Vector3::Zero;
-			Vector3 resultNormal = Vector3::Zero;
-
-			for (auto& weightData : iter.second)
-			{
-				DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(weightData.second);
-				DirectX::XMMATRIX offsetInverse = DirectX::XMMatrixInverse(&det, weightData.second);
-
-				resultPosition += Vector3::Transform(vertices[iter.first].position, weightData.second) * weightData.first;
-				resultNormal += Vector3::Transform(vertices[iter.first].normal, DirectX::XMMatrixTranspose(offsetInverse)) * weightData.first;
-			}
-
-			vertices[iter.first].position = resultPosition;
-			vertices[iter.first].normal = resultNormal;
 		}
 
 		// Load indices
@@ -556,4 +552,35 @@ namespace Rocket::Core
 			return texture;
 		}
 	}
+
+	Node* FBXLoader::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
+	{
+	 	UINT index = 0;
+	 	Node* rootNode = new Node();
+
+		ReadNodeRecur(rootNode, ainode, scene, index);
+
+		return rootNode;
+	}
+
+	void FBXLoader::ReadNodeRecur(Node* node, aiNode* ainode, const aiScene* scene, UINT& index)
+	{
+		node->name = ainode->mName.C_Str();
+		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
+		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
+		node->index = index;
+		index++;
+
+		_aiNodeToNodeMap.insert({ ainode,node });
+
+ 		for (UINT i = 0; i < ainode->mNumChildren; ++i)
+		{
+			Node* newNode = new Node();
+			node->children.emplace_back(newNode);
+			newNode->parent = node;
+
+			ReadNodeRecur(newNode, ainode->mChildren[i], scene, index);
+		}
+	}
+
 }
