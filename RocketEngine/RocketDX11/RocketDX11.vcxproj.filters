@@ -131,7 +131,7 @@
     <ClInclude Include="FBXLoader.h">
       <Filter>FBXLoader</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsStruct.h">
+    <ClInclude Include="VertexStruct.h">
       <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
@@ -197,10 +197,7 @@
     <ClInclude Include="SphereMesh.h">
       <Filter>Resource\Mesh\StaticMeshes\Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="MathHelper.h">
+    <ClInclude Include="MathHeader.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="AssimpMathConverter.h">
@@ -229,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="StaticModel.h">
       <Filter>Resource\ModelStruct\StaticModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelStruct.h">
+      <Filter>Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

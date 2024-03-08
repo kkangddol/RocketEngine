@@ -1,17 +1,52 @@
 ﻿#pragma once
-#include <string>
-#include <DirectXMath.h>
+#include <d3d11_2.h>
+#include <dxgi1_3.h>
+#include <wrl.h>
 #include <vector>
+#include <string>
 #include <unordered_map>
 
+#include "MathHeader.h"
+#include "IResource.h"
+#include "StaticMesh.h"
+#include "SkinnedMesh.h"
+
+using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
+	struct Model;
+	struct StaticModel;
+	struct DynamicModel;
+	struct Node;
+	struct Bone;
+	struct NodeAnimation;
+	struct Animation;
+
+	struct Model : public IResource
+	{
+		std::string name;
+		Node* rootNode;
+		std::unordered_map<std::string, Node*> _nodeMap;
+		ComPtr<ID3D11Buffer> nodeBuffer;
+	};
+
+	struct StaticModel : public Model
+	{
+		std::vector<StaticMesh*> meshes;
+	};
+
+	struct DynamicModel : public Model
+	{
+		std::vector<SkinnedMesh*> meshes;
+	};
+
 	// structure containing bone information
 	struct Bone
 	{
 		std::string name = "";
 		int id = 0;	// position of the bone in final upload array
+		Node* bindedNode;
 		DirectX::XMMATRIX offset = DirectX::XMMatrixIdentity();
 	};
 
@@ -61,4 +96,6 @@ namespace Rocket::Core
 		bool isEnd = false;		// flag for not loop animations
 		std::vector<NodeAnimation*> nodeAnimations;
 	};
+
+
 }

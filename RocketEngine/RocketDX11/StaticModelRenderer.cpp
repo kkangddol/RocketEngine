@@ -1,6 +1,6 @@
 ﻿#include "StaticModelRenderer.h"
 #include "GraphicsMacro.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 #include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "SphereMesh.h"

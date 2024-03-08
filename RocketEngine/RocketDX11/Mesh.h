@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "IResource.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 
 using Microsoft::WRL::ComPtr;
 

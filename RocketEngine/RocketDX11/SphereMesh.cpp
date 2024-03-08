@@ -1,7 +1,7 @@
 ﻿#include <vector>
 #include "SphereMesh.h"
 #include "GraphicsMacro.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 
 namespace Rocket::Core
 {

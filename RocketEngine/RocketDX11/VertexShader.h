@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <wrl.h>
 #include "IShader.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 
 namespace Rocket::Core
 {

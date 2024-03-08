@@ -13,7 +13,7 @@
 #include "GraphicsMacro.h"
 #include "texture.h"
 #include "material.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 #include "FBXLoader.h"
 #include "Animation.h"
 

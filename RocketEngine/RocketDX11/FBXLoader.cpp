@@ -4,7 +4,7 @@
 #include "MathHelper.h"
 #include "AssimpMathConverter.h"
 #include "Animation.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 #include "Mesh.h"
 #include "StaticMesh.h"
 #include "SkinnedMesh.h"
