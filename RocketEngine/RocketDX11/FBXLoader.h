@@ -7,11 +7,12 @@
 #include <assimp/scene.h>			// Output data structure
 #include <assimp/postprocess.h>		// Post processing flags
 
+#include "ModelStruct.h"
+
 using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	struct ModelData;
 	struct Node;
 	class Mesh;
 
@@ -38,6 +39,6 @@ namespace Rocket::Core
 
 	private:
 		ComPtr<ID3D11Device> _device;
-		ModelData* _nowModelData;
+		Model* _nowModel;
 	};
 }

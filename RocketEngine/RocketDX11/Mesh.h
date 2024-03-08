@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "IResource.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -19,7 +19,7 @@ namespace Rocket::Core
 	{
 	public:
 		Mesh();
-		Mesh(std::vector<Vertex> vertices, std::vector<UINT> indices);
+		// Mesh(std::vector<Vertex> vertices, std::vector<UINT> indices);
 		virtual void Initialize(ID3D11Device* device) {}
 		
 		virtual void CreateBuffers() = 0;

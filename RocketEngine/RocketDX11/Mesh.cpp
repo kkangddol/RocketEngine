@@ -1,7 +1,6 @@
 ﻿#include "Mesh.h"
 #include "ResourceManager.h"
 #include "GraphicsMacro.h"
-#include "Animation.h"
 
 namespace Rocket::Core
 {
@@ -15,15 +14,15 @@ namespace Rocket::Core
 
 	}
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<UINT> indices)
-		: _vertexBuffer(), _indexBuffer(),
-		_vertexCount((int)vertices.size()),
-		_indexCount((int)indices.size()),
-		_vertexType(eVertexType::VERTEX),
-		_indices(indices)
-	{
-
-	}
+// 	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<UINT> indices)
+// 		: _vertexBuffer(), _indexBuffer(),
+// 		_vertexCount((int)vertices.size()),
+// 		_indexCount((int)indices.size()),
+// 		_vertexType(eVertexType::VERTEX),
+// 		_indices(indices)
+// 	{
+// 
+// 	}
 
 	ID3D11Buffer* Mesh::GetVertexBuffer() const
 	{

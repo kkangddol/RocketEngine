@@ -15,8 +15,8 @@
 #include "ResourceManager.h"
 #include "ObjectManager.h"
 
-#include "MeshRenderer.h"
-#include "SkinnedMeshRenderer.h"
+#include "StaticModelRenderer.h"
+#include "DynamicModelRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "GraphicsMacro.h"
@@ -327,12 +327,12 @@ namespace Rocket::Core
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}
 
-		for (auto meshRenderer : ObjectManager::Instance().GetStaticMeshRenderers())
+		for (auto meshRenderer : ObjectManager::Instance().GetStaticModelRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 
-		for (auto skinnedMeshRenderer : ObjectManager::Instance().GetSkinnedMeshRenderers())
+		for (auto skinnedMeshRenderer : ObjectManager::Instance().GetDynamicModelRenderers())
 		{
 			skinnedMeshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
