@@ -47,11 +47,17 @@ PixelInputType main(VertexInputType input)
     
     // Calculate the position of the vertex against the world, view, and projection matrices.
    
-    float4 resultPosition = 
-        mul(input.weights.x, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.x])) +
-        mul(input.weights.y, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.y])) +
-        mul(input.weights.z, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.z])) +
-        mul(input.weights.w, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.w]));
+    matrix finalOffsetMatrix = mul(boneTransform[input.boneIndex.x], input.weights.x) +
+                               mul(boneTransform[input.boneIndex.y], input.weights.y) +
+                               mul(boneTransform[input.boneIndex.z], input.weights.z) +
+                               mul(boneTransform[input.boneIndex.w], input.weights.w);
+    
+    float4 resultPosition = mul(float4(input.position, 1.0f), finalOffsetMatrix);
+    
+ //       mul(input.weights.x, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.x])) +
+ //       mul(input.weights.y, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.y])) +
+ //       mul(input.weights.z, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.z])) +
+ //       mul(input.weights.w, mul(float4(input.position, 1.0f), boneTransform[input.boneIndex.w]));
     
     matrix nodeTransformMatrix = nodeTransform[input.nodeIndex];
     
@@ -62,6 +68,7 @@ PixelInputType main(VertexInputType input)
     // Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
     
+    // offsetMatrix와 node matrix도 곱한 matrix의 역전치를 곱해야될거같은데 일단 보류
     output.normal = mul(input.normal, (float3x3) transpose(worldInverse));
     output.normal = normalize(output.normal);
     
