@@ -352,10 +352,6 @@ namespace Rocket::Core
 			vertices.push_back(vertex);
 		}
 
-		// TODO : aiProcess_PopulateArmatureData 이걸 써서 Armature 데이터로도 애니메이션 구성해보자
-		//		  ㄴ> 지금은 이 플래그를 사용하지 않고 bone과 node를 따로 읽어서 만들어 보고있다.
-		//		  ㄴ> mesh->mBones[0]->mArmature->mMeshes 뭐 이런식으로? 바로 노드에 접근하는거같은데..
-
 		// 각각의 버텍스에 영향을 주는 모든 본에 대해서 저장한 다음
 		// 버텍스 기준으로 본인의 position과 normal을 다시 계산한다.
 		std::vector<uint32_t> boneIndecesPerVertex;
@@ -383,28 +379,25 @@ namespace Rocket::Core
 				switch (boneCount)
 				{
 					case 0:
-						boneIndecesPerVertex[vertexIndex]++;
 						vertices[vertexIndex].weights.x = weight;
 						vertices[vertexIndex].boneIndices.x = bone->index;
 						break;
 					case 1:
-						boneIndecesPerVertex[vertexIndex]++;
 						vertices[vertexIndex].weights.y = weight;
 						vertices[vertexIndex].boneIndices.y = bone->index;
 						break;
 					case 2:
-						boneIndecesPerVertex[vertexIndex]++;
 						vertices[vertexIndex].weights.z = weight;
 						vertices[vertexIndex].boneIndices.z = bone->index;
 						break;
 					case 3:
-						boneIndecesPerVertex[vertexIndex]++;
 						vertices[vertexIndex].weights.w = weight;
 						vertices[vertexIndex].boneIndices.w = bone->index;
 						break;
 					default:
 						break;
 				}
+				boneIndecesPerVertex[vertexIndex]++;
 				vertices[vertexIndex].nodeIndex = bone->index;
 			}
 		}
