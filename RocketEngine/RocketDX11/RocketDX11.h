@@ -53,6 +53,8 @@ namespace Rocket::Core
 		void RenderTexture();
 		void EndRender();
 
+		void UpdateAnimation(float deltaTime);
+
 		/// Initialize Member
 	private:
 		HWND _hWnd;

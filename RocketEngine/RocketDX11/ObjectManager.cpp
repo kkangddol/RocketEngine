@@ -17,7 +17,7 @@ namespace Rocket::Core
 	ObjectManager::ObjectManager()
 		: _resourceManager(ResourceManager::Instance()),
 		_lineRenderer(nullptr),
-		_meshRendererList(),
+		_staticModelRendererList(),
 		_cameraList(),
 		_textList()
 	{
@@ -32,7 +32,7 @@ namespace Rocket::Core
 		return temp;
 	}
 
-	StaticModelRenderer* ObjectManager::CreateMeshRenderer()
+	StaticModelRenderer* ObjectManager::CreateStaticModelRenderer()
 	{
 		StaticModelRenderer* meshRenderer = new StaticModelRenderer();
 
@@ -49,7 +49,7 @@ namespace Rocket::Core
 		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
 		meshRenderer->SetMaterial(material);
 		
-		_meshRendererList.emplace_back(meshRenderer);
+		_staticModelRendererList.emplace_back(meshRenderer);
 
 		return meshRenderer;
 	}
@@ -70,7 +70,7 @@ namespace Rocket::Core
 
 	std::vector<StaticModelRenderer*>& ObjectManager::GetStaticModelRenderers()
 	{
-		return _meshRendererList;
+		return _staticModelRendererList;
 	}
 
 	Rocket::Core::TextRenderer* ObjectManager::CreateText()
@@ -98,12 +98,12 @@ namespace Rocket::Core
 
 	std::vector<DynamicModelRenderer*>& ObjectManager::GetDynamicModelRenderers()
 	{
-		return _skinnedMeshRendererList;
+		return dynamicModelRendererList;
 	}
 
-	DynamicModelRenderer* ObjectManager::CreateSkinnedMeshRenderer()
+	DynamicModelRenderer* ObjectManager::CreateDynamicModelRenderer()
 	{
-		DynamicModelRenderer* skinnedMeshRenderer = new DynamicModelRenderer();
+		DynamicModelRenderer* dynamicModelRenderer = new DynamicModelRenderer();
 
 		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
@@ -113,11 +113,11 @@ namespace Rocket::Core
 		material->SetVertexShader(_resourceManager.GetVertexShader("SkinnedMeshVS"));
 		material->SetPixelShader(_resourceManager.GetPixelShader("SkinnedMeshPS"));
 		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
-		skinnedMeshRenderer->SetMaterial(material);
+		dynamicModelRenderer->SetMaterial(material);
 
-		_skinnedMeshRendererList.emplace_back(skinnedMeshRenderer);
+		dynamicModelRendererList.emplace_back(dynamicModelRenderer);
 
-		return skinnedMeshRenderer;
+		return dynamicModelRenderer;
 	}
 
 }

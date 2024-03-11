@@ -43,7 +43,7 @@ namespace Rocket::Core
 
 	IStaticModelRenderer* ObjectFactory::CreateStaticModelRenderer()
 	{
-		return _objectManager.CreateMeshRenderer();
+		return _objectManager.CreateStaticModelRenderer();
 	}
 
 	ITextRenderer* ObjectFactory::CreateTextRenderer()
@@ -63,7 +63,7 @@ namespace Rocket::Core
 
 	IDynamicModelRenderer* ObjectFactory::CreateDynamicModelRenderer()
 	{
-		return _objectManager.CreateSkinnedMeshRenderer();
+		return _objectManager.CreateDynamicModelRenderer();
 	}
 
 	CubePrimitive* ObjectFactory::CreateCubePrimitive()

@@ -41,8 +41,9 @@ namespace Rocket::Core
 
 	private:
 		ComPtr<ID3D11Device> _device;
+		// TODO : 지금은 nowModel을 전역적으로 사용하는데 반환값을 이용해서 깔끔하게 정리하는게 낫지않을까?
 		Model* _nowModel;
-		std::unordered_map<aiNode*, Node*> _aiNodeToNodeMap;
+		std::unordered_map<aiNode*, Node*> _aiNodeToNodeMap;	// Bone에서 Node를 찾기위한 맵
 		std::unordered_map<std::string, Bone*> _boneMap;
 	};
 }

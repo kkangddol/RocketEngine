@@ -386,6 +386,7 @@ namespace Rocket::Core
 
 		Camera::GetMainCamera()->UpdateViewMatrix();
 		Camera::GetMainCamera()->UpdateProjectionMatrix();
+		UpdateAnimation(deltaTime);
 	}
 
 	void RocketDX11::OnResize(int _width, int _height)
@@ -446,4 +447,13 @@ namespace Rocket::Core
 		
 		ObjectManager::Instance().GetLineRenderer()->Flush();
 	}
+
+	void RocketDX11::UpdateAnimation(float deltaTime)
+	{
+		for (auto& dynamicModel : ObjectManager::Instance().GetDynamicModelRenderers())
+		{
+			dynamicModel->UpdateAnimation(deltaTime);
+		}
+	}
+
 }

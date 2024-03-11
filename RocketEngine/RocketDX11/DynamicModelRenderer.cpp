@@ -28,11 +28,126 @@ namespace Rocket::Core
 	void DynamicModelRenderer::LoadModel(const std::string& fileName)
 	{
 		_model = reinterpret_cast<DynamicModel*>(ResourceManager::Instance().GetModel(fileName));
+		_animatedRootNode = CopyNodeData(_model->rootNode);
 	}
 
 	void DynamicModelRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::UpdateAnimation(float deltaTime)
+	{
+		if (_model->animations.empty())
+		{
+			return;
+		}
+
+		// TODO : 외부에서 애니메이션 세팅하고 재생할 수 있게 바꿔야함. 지금은 임시로 첫번째 애니메이션만 실행함.
+		Animation* anim = _model->animations.begin()->second;
+		_nowAnimationName = anim->name;
+
+		if (_animationTime == anim->duration)
+		{
+			return;
+		}
+
+		_animationTime += deltaTime;
+
+		if (_animationTime > anim->duration)
+		{
+			if (_isLoop)
+			{
+				_animationTime -= anim->duration;
+			}
+			else
+			{
+				_animationTime = anim->duration;
+			}
+		}
+
+		_animationTickTime = _animationTime * anim->ticksPerSecond;
+
+		for (auto& nodeAnim : anim->nodeAnimations)
+		{
+			Vector3 position;
+			Vector4 rotation;
+			Vector3 scale;
+
+			Node* node = _animatedNodeMap[nodeAnim->nodeName];
+
+			// Position
+			{
+				int positionIndex = 0;
+				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
+				{
+					if (_animationTickTime < nodeAnim->positionTimestamps[i])
+					{
+						positionIndex = i;		// i-1 < _animationTickTime < i
+						break;
+					}
+				}
+				
+				if (positionIndex == 0)
+				{
+					position = nodeAnim->positions[0];
+				}
+				else
+				{
+					float t = (_animationTickTime - nodeAnim->positionTimestamps[positionIndex - 1]) / (nodeAnim->positionTimestamps[positionIndex] - nodeAnim->positionTimestamps[positionIndex - 1]);
+					position = DirectX::XMVectorLerp(nodeAnim->positions[positionIndex - 1], nodeAnim->positions[positionIndex], t);
+				}
+			}
+
+			// Rotation
+			{
+				int rotationIndex = 0;
+				for (int i = 0; i < nodeAnim->rotationTimestamps.size(); i++)
+				{
+					if (_animationTickTime < nodeAnim->rotationTimestamps[i])
+					{
+						rotationIndex = i;
+						break;
+					}
+				}
+
+				if (rotationIndex == 0)
+				{
+					rotation = nodeAnim->rotations[0];
+				}
+				else
+				{
+					float t = (_animationTickTime - nodeAnim->rotationTimestamps[rotationIndex - 1]) / (nodeAnim->rotationTimestamps[rotationIndex] - nodeAnim->rotationTimestamps[rotationIndex - 1]);
+					rotation = DirectX::XMQuaternionSlerp(nodeAnim->rotations[rotationIndex - 1], nodeAnim->rotations[rotationIndex], t);
+				}
+			}
+
+			// Scale
+			{
+				int scaleIndex = 0;
+				for (int i = 0; i < nodeAnim->scaleTimestamps.size(); i++)
+				{
+					if (nodeAnim->scaleTimestamps[i] > _animationTickTime)
+					{
+						scaleIndex = i;
+						break;
+					}
+				}
+
+				if (scaleIndex == 0)
+				{
+					scale = nodeAnim->scales[0];
+				}
+				else
+				{
+					float t = (_animationTickTime - nodeAnim->scaleTimestamps[scaleIndex - 1]) / (nodeAnim->scaleTimestamps[scaleIndex] - nodeAnim->scaleTimestamps[scaleIndex - 1]);
+					scale = DirectX::XMVectorLerp(nodeAnim->scales[scaleIndex - 1], nodeAnim->scales[scaleIndex], t);
+				}
+			}
+
+			node->transformMatrix = DirectX::XMMatrixAffineTransformation(scale, { 0,0,0,0 }, rotation, position);
+		}
+
 	}
 
 	void DynamicModelRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
@@ -88,7 +203,8 @@ namespace Rocket::Core
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
+			//SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
+			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
 
 			deviceContext->Unmap(_model->nodeBuffer.Get(), 0);
 
@@ -190,7 +306,7 @@ namespace Rocket::Core
 		Bone* bone = node->bindedBone;
 		if (bone)
 		{
-			boneBuffer->transformMatrix[node->bindedBone->index] = DirectX::XMMatrixTranspose(bone->offsetMatrix);
+			boneBuffer->transformMatrix[bone->index] = DirectX::XMMatrixTranspose(bone->offsetMatrix);
 		}
 
 		for (int i = 0; i < node->children.size(); i++)
@@ -198,5 +314,34 @@ namespace Rocket::Core
 			SetBoneBuffer(node->children[i], boneBuffer);
 		}
 	}
+
+	Node* DynamicModelRenderer::CopyNodeData(Node* originalRootNode)
+	{
+		Node* rootNode = new Node();
+
+		CopyNodeDataRecur(originalRootNode, rootNode);
+
+		return rootNode;
+	}
+
+	void DynamicModelRenderer::CopyNodeDataRecur(Node* from, Node* to)
+	{
+		to->name = from->name;
+		to->index = from->index;
+		to->bindedBone = from->bindedBone;
+		to->transformMatrix = from->transformMatrix;
+
+		for (int i = 0; i < from->children.size(); i++)
+		{
+			Node* newNode = new Node();
+			to->children.push_back(newNode);
+			newNode->parent = to;
+			CopyNodeDataRecur(from->children[i], newNode);
+		}
+
+		_animatedNodeMap.insert({ to->name,to });
+	}
+
+
 
 }

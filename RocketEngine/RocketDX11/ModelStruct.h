@@ -7,7 +7,9 @@
 #include <string>
 #include <unordered_map>
 
+#include "MathHeader.h"
 #include "IResource.h"
+
 
 using Microsoft::WRL::ComPtr;
 
@@ -22,7 +24,7 @@ namespace Rocket::Core
 	struct DynamicModel;
 	struct Node;
 	struct Bone;
-	struct NodeAnimation;
+	struct NodeAnimationData;
 	struct Animation;
 
 	struct Model : public IResource
@@ -33,6 +35,7 @@ namespace Rocket::Core
 		std::string name;
 		Node* rootNode;
 		ComPtr<ID3D11Buffer> nodeBuffer;
+		std::unordered_map<std::string, Node*> nodeMap;
 	};
 
 	struct StaticModel : public Model
@@ -48,6 +51,7 @@ namespace Rocket::Core
 
 		std::vector<SkinnedMesh*> meshes;
 		ComPtr<ID3D11Buffer> boneBuffer;
+		std::unordered_map<std::string, Animation*> animations;		// 애니메이션이 여러개일 수 있으므로
 	};
 
 	// structure containing bone information
@@ -83,7 +87,7 @@ namespace Rocket::Core
 	};
 
 	// structure containing each node's animation information in one animation
-	struct NodeAnimation
+	struct NodeAnimationData
 	{
 		std::string nodeName;
 
@@ -91,19 +95,18 @@ namespace Rocket::Core
 		std::vector<float> rotationTimestamps = {};
 		std::vector<float> scaleTimestamps = {};
 
-		std::vector<DirectX::XMFLOAT3> positions = {};
-		std::vector<DirectX::XMFLOAT4> rotations = {};
-		std::vector<DirectX::XMFLOAT3> scales = {};
+		std::vector<Vector3> positions = {};
+		std::vector<Vector4> rotations = {};
+		std::vector<Vector3> scales = {};
 	};
 
 	// structure containing animation information
 	struct Animation
 	{
+		std::string name = "";
 		float duration = 0.0f;
 		float ticksPerSecond = 1.0f;
 		float accumulatedTime = 0.0f;
-		bool isLoop = true;
-		bool isEnd = false;		// flag for not loop animations
-		std::vector<NodeAnimation*> nodeAnimations;
+		std::vector<NodeAnimationData*> nodeAnimations;
 	};
 }

@@ -30,16 +30,16 @@ namespace Rocket::Core
 
 	public:
 		Camera* CreateCamera();
-		StaticModelRenderer* CreateMeshRenderer();
-		DynamicModelRenderer* CreateSkinnedMeshRenderer();
+		StaticModelRenderer* CreateStaticModelRenderer();
+		DynamicModelRenderer* CreateDynamicModelRenderer();
 		TextRenderer* CreateText();
 		SpriteRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
 
 	private:
 		std::vector<Camera*> _cameraList;
-		std::vector<StaticModelRenderer*> _meshRendererList;
-		std::vector<DynamicModelRenderer*> _skinnedMeshRendererList;
+		std::vector<StaticModelRenderer*> _staticModelRendererList;
+		std::vector<DynamicModelRenderer*> dynamicModelRendererList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<SpriteRenderer*> _ImageList;
 		LineRenderer* _lineRenderer;

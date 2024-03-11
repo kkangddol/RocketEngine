@@ -76,10 +76,12 @@ namespace Rocket::Core
 			_nowModel = staticModel;
 		}
 
-		ProcessModel(_scene->mRootNode, _scene);	
+		ProcessModel(_scene->mRootNode, _scene);	// 모델 데이터 로드 (모델,메쉬,노드,본)
 
-		/// 임시 주석
-		//LoadAnimation(_scene);
+		if (_scene->HasAnimations())
+		{
+			LoadAnimation(_scene);						// 애니메이션 데이터 로드
+		}
 
 		// 모든 작업이 끝나면 리소스매니저에 해당 모델 데이터 등록
 		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModel });
@@ -153,58 +155,6 @@ namespace Rocket::Core
 			ProcessNode(ainode->mChildren[i], scene);
 		}
 	}
-
-	/// 임시 주석
-	/*
-	void FBXLoader::LoadAnimation(const aiScene* scene)
-	{
-		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
-		// numChannels == numBones
-		UINT animCount = scene->mNumAnimations;
-		for (UINT i = 0; i < animCount; ++i)
-		{
-			const aiAnimation* animation = scene->mAnimations[i];
-			Animation* newAnimation = new Animation();
-			newAnimation->duration = animation->mDuration;
-
-			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
-			{
-				newAnimation->ticksPerSecond = animation->mTicksPerSecond;
-			}
-			else
-			{
-				newAnimation->ticksPerSecond = 30.0f;
-			}
-
-			for (UINT j = 0; j < animation->mNumChannels; ++j)
-			{
-				const aiNodeAnim* nodeAnim = animation->mChannels[j];
-				NodeAnimation* newNodeAnim = new NodeAnimation();
-
-				newNodeAnim->nodeName = nodeAnim->mNodeName.C_Str();
-
-				for (int k = 0; k < nodeAnim->mNumPositionKeys; ++k)
-				{
-					newNodeAnim->positionTimestamps.push_back(nodeAnim->mPositionKeys[k].mTime);
-					newNodeAnim->positions.push_back(AIVec3ToXMFloat3(nodeAnim->mPositionKeys[k].mValue));
-				}
-				for (int k = 0; k < nodeAnim->mNumRotationKeys; ++k)
-				{
-					newNodeAnim->rotationTimestamps.push_back(nodeAnim->mRotationKeys[k].mTime);
-					newNodeAnim->rotations.push_back(AIQuaternionToXMFloat4(nodeAnim->mRotationKeys[k].mValue));
-				}
-				for (int k = 0; k < nodeAnim->mNumScalingKeys; ++k)
-				{
-					newNodeAnim->scaleTimestamps.push_back(nodeAnim->mScalingKeys[k].mTime);
-					newNodeAnim->scales.push_back(AIVec3ToXMFloat3(nodeAnim->mScalingKeys[k].mValue));
-				}
-
-				newAnimation->nodeAnimations.push_back(newNodeAnim);
-			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
-		}
-	}
-	*/
 
 	Mesh* FBXLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
@@ -398,7 +348,7 @@ namespace Rocket::Core
 						break;
 				}
 				boneIndecesPerVertex[vertexIndex]++;
-				vertices[vertexIndex].nodeIndex = bone->index;
+				//vertices[vertexIndex].nodeIndex = bone->index;	// 버텍스가 여러 본(노드)에 영향을 받으므로 셰이더에서 그것을 이용해 연산한다.
 			}
 		}
 
@@ -546,6 +496,65 @@ namespace Rocket::Core
 		}
 	}
 
+	void FBXLoader::LoadAnimation(const aiScene* scene)
+	{
+		if (!scene->HasAnimations())
+		{
+			return;
+		}
+
+		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
+		// numChannels == numBones
+		UINT animCount = scene->mNumAnimations;
+		for (UINT i = 0; i < animCount; ++i)
+		{
+			auto aiAnim = scene->mAnimations[i];
+			Animation* myAnimStruct = new Animation();
+
+			myAnimStruct->name = aiAnim->mName.C_Str();
+			myAnimStruct->duration = aiAnim->mDuration;
+		
+			// mTicksPerSeciond 이거 그건가? 초당 프레임 수?
+			if (aiAnim->mTicksPerSecond != 0.0)
+			{
+				myAnimStruct->ticksPerSecond = aiAnim->mTicksPerSecond;
+			}
+			else
+			{
+				myAnimStruct->ticksPerSecond = 30.0f;
+			}
+
+			for (UINT j = 0; j < aiAnim->mNumChannels; ++j)
+			{
+				const aiNodeAnim* aiNodeAnim = aiAnim->mChannels[j];
+				NodeAnimationData* myNodeAnim = new NodeAnimationData();
+
+				myNodeAnim->nodeName = aiNodeAnim->mNodeName.C_Str();
+
+				for (int k = 0; k < aiNodeAnim->mNumPositionKeys; ++k)
+				{
+					myNodeAnim->positionTimestamps.push_back(aiNodeAnim->mPositionKeys[k].mTime);
+					myNodeAnim->positions.push_back(AIVec3ToXMFloat3(aiNodeAnim->mPositionKeys[k].mValue));
+				}
+				for (int k = 0; k < aiNodeAnim->mNumRotationKeys; ++k)
+				{
+					myNodeAnim->rotationTimestamps.push_back(aiNodeAnim->mRotationKeys[k].mTime);
+					myNodeAnim->rotations.push_back(AIQuaternionToXMFloat4(aiNodeAnim->mRotationKeys[k].mValue));
+				}
+				for (int k = 0; k < aiNodeAnim->mNumScalingKeys; ++k)
+				{
+					myNodeAnim->scaleTimestamps.push_back(aiNodeAnim->mScalingKeys[k].mTime);
+					myNodeAnim->scales.push_back(AIVec3ToXMFloat3(aiNodeAnim->mScalingKeys[k].mValue));
+				}
+
+				myAnimStruct->nodeAnimations.push_back(myNodeAnim);
+			}
+
+			// TODO : reinterpret_cast 안쓰고싶은데 어떡하지
+			reinterpret_cast<DynamicModel*>(_nowModel)->animations.insert({ myAnimStruct->name, myAnimStruct });
+		}
+	}
+
 	Node* FBXLoader::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
 	{
 	 	UINT index = 0;
@@ -564,6 +573,7 @@ namespace Rocket::Core
 		node->index = index;
 		index++;
 
+		_nowModel->nodeMap.insert({ node->name, node });
 		_aiNodeToNodeMap.insert({ ainode,node });
 
  		for (UINT i = 0; i < ainode->mNumChildren; ++i)
@@ -575,5 +585,4 @@ namespace Rocket::Core
 			ReadNodeRecur(newNode, ainode->mChildren[i], scene, index);
 		}
 	}
-
 }
