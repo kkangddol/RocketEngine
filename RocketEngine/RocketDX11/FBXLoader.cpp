@@ -1,10 +1,9 @@
 ﻿#include <windows.h>
 
 #include "FBXLoader.h"
-#include "MathHelper.h"
+#include "MathHeader.h"
 #include "AssimpMathConverter.h"
-#include "Animation.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 #include "Mesh.h"
 #include "StaticMesh.h"
 #include "SkinnedMesh.h"
@@ -28,6 +27,10 @@ namespace Rocket::Core
 		_device = device;
 	}
 
+
+	// TODO : 지금은 읽으면서 처리하고 있는데, 미리 다 읽어놓고 데이터 별로 넣어주는 식으로 하는게 더 좋을 거 같다.
+	//		  ㄴ> 읽으면서 조건따라 처리하는게 너무 지저분해 보인다.
+	//		  ㄴ> 그리고 매개변수랑 리턴타입을 이용해서 처리하는게 더 직관적으로 보일 거 같긴 한데.. 흠..
 	void FBXLoader::LoadFBXFile(std::string fileName)
 	{
 		std::string fileNameWithExtension;
@@ -50,6 +53,7 @@ namespace Rocket::Core
 		const aiScene* _scene = importer.ReadFile(path,
 			aiProcess_Triangulate |
 			aiProcess_ConvertToLeftHanded |
+			aiProcess_PopulateArmatureData |
 			aiProcess_CalcTangentSpace);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
@@ -59,28 +63,43 @@ namespace Rocket::Core
 		}
 
 		// Node를 Process 하면서 이 ModelData에 저장
-		_nowModelData = new ModelData();
-		_nowModelData->name = fileNameWithExtension;
+		if (_scene->HasAnimations())
+		{
+			DynamicModel* dynamicModel = new DynamicModel();
+			dynamicModel->name = fileNameWithExtension;
+			_nowModel = dynamicModel;
+		}
+		else
+		{
+			StaticModel* staticModel = new StaticModel();
+			staticModel->name = fileNameWithExtension;
+			_nowModel = staticModel;
+		}
 
-		ProcessModel(_scene->mRootNode, _scene);
+		ProcessModel(_scene->mRootNode, _scene);	// 모델 데이터 로드 (모델,메쉬,노드,본)
 
-		/// 임시 주석
-		//LoadAnimation(_scene);
+		if (_scene->HasAnimations())
+		{
+			LoadAnimation(_scene);						// 애니메이션 데이터 로드
+		}
 
 		// 모든 작업이 끝나면 리소스매니저에 해당 모델 데이터 등록
-		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModelData });
+		ResourceManager::Instance()._models.insert({ fileNameWithExtension, _nowModel });
 	}
 
 
 	void FBXLoader::ProcessModel(aiNode* rootaiNode, const aiScene* scene)
 	{
-		Node* rootNode = new Node();
-		_nowModelData->rootNode = rootNode;
-		ProcessNode(rootNode, rootaiNode, scene);
+		_nowModel->rootNode = ReadNodeHierarchy(rootaiNode, scene);
 
-		UINT index = 0;
-		SetNodeIndex(index, rootNode);
+		ProcessNode(rootaiNode, scene);
 
+		for (auto& mesh : _nowModel->GetMeshes())
+		{
+			mesh->CreateBuffers();	// vertexBuffer와 indexBuffer 생성.
+		}
+
+		/// nodeBuffer 생성 (상수버퍼에 세팅해주기 위함)
 		D3D11_BUFFER_DESC nodeBufferDesc;
 		nodeBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		nodeBufferDesc.ByteWidth = sizeof(NodeBufferType);
@@ -89,99 +108,53 @@ namespace Rocket::Core
 		nodeBufferDesc.MiscFlags = 0;
 		nodeBufferDesc.StructureByteStride = 0;
 
- 		for (auto& mesh : _nowModelData->meshes)
-		{
-			mesh->CreateBuffers();		// SetNodeIndex()를 통해 모든 노드에 Index가 부여되었으므로 해당 정보를 포함해서 버퍼를 생성.
-		}
+		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, _nowModel->nodeBuffer.GetAddressOf()));
 
-		HR(_device->CreateBuffer(&nodeBufferDesc, NULL, &(_nowModelData->nodeBuffer)));
+		/// dynamicModel의 경우 boneBuffer 생성 (상수버퍼에 세팅해주기 위함)
+		if (scene->HasAnimations())
+		{
+			D3D11_BUFFER_DESC boneBufferDesc;
+			boneBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			boneBufferDesc.ByteWidth = sizeof(BoneBufferType);
+			boneBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			boneBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			boneBufferDesc.MiscFlags = 0;
+			boneBufferDesc.StructureByteStride = 0;
+
+			auto dModel = reinterpret_cast<DynamicModel*>(_nowModel);
+
+			HR(_device->CreateBuffer(&boneBufferDesc, NULL, dModel->boneBuffer.GetAddressOf()));
+		}
 	}
 
-	void FBXLoader::SetNodeIndex(UINT& index, Node* node)
+	void FBXLoader::ProcessNode(aiNode* ainode, const aiScene* scene)
 	{
-		node->bone.id = index++;
-		if(node->children.size() > 0)
-		{
-			for (auto& child : node->children)
-			{
-				SetNodeIndex(index, child);
-			}
-		}
-	}
-
-	void FBXLoader::ProcessNode(Node* node, aiNode* ainode, const aiScene* scene)
-	{
-		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
-		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
-
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
 			Mesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
-			mesh->SetNode(node);
-			_nowModelData->meshes.emplace_back(mesh);
+			
+			// TODO : 여기서 if문으로 분기타지않게 할 것.
+			// TODO : reinterpret_cast 및 dynamic_cast 사용하지 않도록 수정하기.
+			if (!scene->HasAnimations())
+			{
+				mesh->SetNode(_aiNodeToNodeMap.at(ainode));
+				auto staticMesh = dynamic_cast<StaticMesh*>(mesh);
+				reinterpret_cast<StaticModel*>(_nowModel)->meshes.emplace_back(staticMesh);
+			}
+			else
+			{
+				// 얘는 메쉬랑 본 읽으면서 각각의 버텍스한테 노드를 셋 해줬을것이다.. 아님말고?
+				auto skinnedMesh = dynamic_cast<SkinnedMesh*>(mesh);
+				reinterpret_cast<DynamicModel*>(_nowModel)->meshes.emplace_back(skinnedMesh);
+			}
+			//_nowModel->meshes.emplace_back(mesh);
 		}
 
 		for (UINT i = 0; i < ainode->mNumChildren; ++i)
 		{
-			Node* newNode = new Node();
-			node->children.emplace_back(newNode);
-			newNode->parent = node;
-
-			ProcessNode(newNode, ainode->mChildren[i], scene);
+			ProcessNode(ainode->mChildren[i], scene);
 		}
 	}
-
-	/// 임시 주석
-	/*
-	void FBXLoader::LoadAnimation(const aiScene* scene)
-	{
-		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
-		// numChannels == numBones
-		UINT animCount = scene->mNumAnimations;
-		for (UINT i = 0; i < animCount; ++i)
-		{
-			const aiAnimation* animation = scene->mAnimations[i];
-			Animation* newAnimation = new Animation();
-			newAnimation->duration = animation->mDuration;
-
-			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
-			{
-				newAnimation->ticksPerSecond = animation->mTicksPerSecond;
-			}
-			else
-			{
-				newAnimation->ticksPerSecond = 30.0f;
-			}
-
-			for (UINT j = 0; j < animation->mNumChannels; ++j)
-			{
-				const aiNodeAnim* nodeAnim = animation->mChannels[j];
-				NodeAnimation* newNodeAnim = new NodeAnimation();
-
-				newNodeAnim->nodeName = nodeAnim->mNodeName.C_Str();
-
-				for (int k = 0; k < nodeAnim->mNumPositionKeys; ++k)
-				{
-					newNodeAnim->positionTimestamps.push_back(nodeAnim->mPositionKeys[k].mTime);
-					newNodeAnim->positions.push_back(AIVec3ToXMFloat3(nodeAnim->mPositionKeys[k].mValue));
-				}
-				for (int k = 0; k < nodeAnim->mNumRotationKeys; ++k)
-				{
-					newNodeAnim->rotationTimestamps.push_back(nodeAnim->mRotationKeys[k].mTime);
-					newNodeAnim->rotations.push_back(AIQuaternionToXMFloat4(nodeAnim->mRotationKeys[k].mValue));
-				}
-				for (int k = 0; k < nodeAnim->mNumScalingKeys; ++k)
-				{
-					newNodeAnim->scaleTimestamps.push_back(nodeAnim->mScalingKeys[k].mTime);
-					newNodeAnim->scales.push_back(AIVec3ToXMFloat3(nodeAnim->mScalingKeys[k].mValue));
-				}
-
-				newAnimation->nodeAnimations.push_back(newNodeAnim);
-			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
-		}
-	}
-	*/
 
 	Mesh* FBXLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
@@ -329,67 +302,53 @@ namespace Rocket::Core
 			vertices.push_back(vertex);
 		}
 
-		// Load boneData to vertices
-		std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>> boneInfo = {};
-		std::vector<UINT> boneCounts;
-		boneCounts.resize(vertices.size(), 0);
+		// 각각의 버텍스에 영향을 주는 모든 본에 대해서 저장한 다음
+		// 버텍스 기준으로 본인의 position과 normal을 다시 계산한다.
+		std::vector<uint32_t> boneIndecesPerVertex;
+		boneIndecesPerVertex.resize(vertices.size());
 
-		mesh->mBones->mArmature
-
-		int _boneCount = mesh->mNumBones;
-		// loop through each bone
-		for (UINT i = 0; i < _boneCount; ++i)
+		for (int i = 0; i < mesh->mNumBones; i++)
 		{
-			aiBone* bone = mesh->mBones[i];
-			DirectX::XMMATRIX m = AIMatrix4x4ToXMMatrix(bone->mOffsetMatrix.Transpose());
-			boneInfo[bone->mName.C_Str()] = { i, m };
+			aiBone* aibone = mesh->mBones[i];
 
-			// loop through each vertex that have that bone
-			for (UINT j = 0; j < bone->mNumWeights; ++j)
+			Bone* bone = new Bone();
+			bone->name = aibone->mName.C_Str();
+			bone->index = _aiNodeToNodeMap.at(aibone->mNode)->index;
+			bone->bindedNode = _aiNodeToNodeMap.at(aibone->mNode);
+			bone->offsetMatrix = AIMatrix4x4ToXMMatrix(aibone->mOffsetMatrix.Transpose());
+
+			_aiNodeToNodeMap.at(aibone->mNode)->bindedBone = bone;
+
+			for (int j = 0; j < aibone->mNumWeights; j++)
 			{
-				if (bone->mWeights == nullptr)
-					break;
+				int vertexIndex = aibone->mWeights[j].mVertexId;
+				float weight = aibone->mWeights[j].mWeight;
 
-				UINT id = bone->mWeights[j].mVertexId;
-				float weight = bone->mWeights[j].mWeight;
-				boneCounts[id]++;
-				switch (boneCounts[id])
+				uint32_t boneCount = boneIndecesPerVertex[vertexIndex];
+
+				switch (boneCount)
 				{
+					case 0:
+						vertices[vertexIndex].weights.x = weight;
+						vertices[vertexIndex].boneIndices.x = bone->index;
+						break;
 					case 1:
-						vertices[id].boneIndices.x = i;
-						vertices[id].weights.x = weight;
+						vertices[vertexIndex].weights.y = weight;
+						vertices[vertexIndex].boneIndices.y = bone->index;
 						break;
 					case 2:
-						vertices[id].boneIndices.y = i;
-						vertices[id].weights.y = weight;
+						vertices[vertexIndex].weights.z = weight;
+						vertices[vertexIndex].boneIndices.z = bone->index;
 						break;
 					case 3:
-						vertices[id].boneIndices.z = i;
-						vertices[id].weights.z = weight;
-						break;
-					case 4:
-						vertices[id].boneIndices.w = i;
-						vertices[id].weights.w = weight;
+						vertices[vertexIndex].weights.w = weight;
+						vertices[vertexIndex].boneIndices.w = bone->index;
 						break;
 					default:
 						break;
 				}
-			}
-		}
-
-		// normalize weights to make all weights sum 1
-		for (UINT i = 0; i < vertices.size(); ++i)
-		{
-			DirectX::XMFLOAT4 boneWeights = vertices[i].weights;
-			float totalWeight = boneWeights.x + boneWeights.y + boneWeights.z + boneWeights.w;
-			if (totalWeight > 0.0f)
-			{
-				vertices[i].weights = DirectX::XMFLOAT4{
-					boneWeights.x / totalWeight,
-					boneWeights.y / totalWeight,
-					boneWeights.z / totalWeight,
-					boneWeights.w / totalWeight
-				};
+				boneIndecesPerVertex[vertexIndex]++;
+				//vertices[vertexIndex].nodeIndex = bone->index;	// 버텍스가 여러 본(노드)에 영향을 받으므로 셰이더에서 그것을 이용해 연산한다.
 			}
 		}
 
@@ -455,17 +414,6 @@ namespace Rocket::Core
 		//	rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 		//	0.0f, 0.0f, 0.0f, 1.0f);
 
-			// create node hierarchy
-		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
-
-		_loadedFileInfo[_fileName].node = rootNode;
-
-		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
-
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -474,6 +422,10 @@ namespace Rocket::Core
 				LoadMaterialTextures(material, (aiTextureType)i, scene);
 			}
 		}
+
+		SkinnedMesh* newMesh = new SkinnedMesh(vertices, indices);
+
+		return newMesh;
 	}
 
 	/// 임시 주석
@@ -541,6 +493,96 @@ namespace Rocket::Core
 				MessageBox(nullptr, L"CreateShaderResourceView failed!", L"Error!", MB_ICONERROR | MB_OK);
 
 			return texture;
+		}
+	}
+
+	void FBXLoader::LoadAnimation(const aiScene* scene)
+	{
+		if (!scene->HasAnimations())
+		{
+			return;
+		}
+
+		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
+		// numChannels == numBones
+		UINT animCount = scene->mNumAnimations;
+		for (UINT i = 0; i < animCount; ++i)
+		{
+			auto aiAnim = scene->mAnimations[i];
+			Animation* myAnimStruct = new Animation();
+
+			myAnimStruct->name = aiAnim->mName.C_Str();
+			myAnimStruct->duration = aiAnim->mDuration;
+		
+			// mTicksPerSeciond 이거 그건가? 초당 프레임 수?
+			if (aiAnim->mTicksPerSecond != 0.0)
+			{
+				myAnimStruct->ticksPerSecond = aiAnim->mTicksPerSecond;
+			}
+			else
+			{
+				myAnimStruct->ticksPerSecond = 30.0f;
+			}
+
+			for (UINT j = 0; j < aiAnim->mNumChannels; ++j)
+			{
+				const aiNodeAnim* aiNodeAnim = aiAnim->mChannels[j];
+				NodeAnimationData* myNodeAnim = new NodeAnimationData();
+
+				myNodeAnim->nodeName = aiNodeAnim->mNodeName.C_Str();
+
+				for (int k = 0; k < aiNodeAnim->mNumPositionKeys; ++k)
+				{
+					myNodeAnim->positionTimestamps.push_back(aiNodeAnim->mPositionKeys[k].mTime);
+					myNodeAnim->positions.push_back(AIVec3ToXMFloat3(aiNodeAnim->mPositionKeys[k].mValue));
+				}
+				for (int k = 0; k < aiNodeAnim->mNumRotationKeys; ++k)
+				{
+					myNodeAnim->rotationTimestamps.push_back(aiNodeAnim->mRotationKeys[k].mTime);
+					myNodeAnim->rotations.push_back(AIQuaternionToXMFloat4(aiNodeAnim->mRotationKeys[k].mValue));
+				}
+				for (int k = 0; k < aiNodeAnim->mNumScalingKeys; ++k)
+				{
+					myNodeAnim->scaleTimestamps.push_back(aiNodeAnim->mScalingKeys[k].mTime);
+					myNodeAnim->scales.push_back(AIVec3ToXMFloat3(aiNodeAnim->mScalingKeys[k].mValue));
+				}
+
+				myAnimStruct->nodeAnimations.push_back(myNodeAnim);
+			}
+
+			// TODO : reinterpret_cast 안쓰고싶은데 어떡하지
+			reinterpret_cast<DynamicModel*>(_nowModel)->animations.insert({ myAnimStruct->name, myAnimStruct });
+		}
+	}
+
+	Node* FBXLoader::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
+	{
+	 	UINT index = 0;
+	 	Node* rootNode = new Node();
+
+		ReadNodeRecur(rootNode, ainode, scene, index);
+
+		return rootNode;
+	}
+
+	void FBXLoader::ReadNodeRecur(Node* node, aiNode* ainode, const aiScene* scene, UINT& index)
+	{
+		node->name = ainode->mName.C_Str();
+		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
+		node->transformMatrix = AIMatrix4x4ToXMMatrix(ainode->mTransformation.Transpose());
+		node->index = index;
+		index++;
+
+		_nowModel->nodeMap.insert({ node->name, node });
+		_aiNodeToNodeMap.insert({ ainode,node });
+
+ 		for (UINT i = 0; i < ainode->mNumChildren; ++i)
+		{
+			Node* newNode = new Node();
+			node->children.emplace_back(newNode);
+			newNode->parent = node;
+
+			ReadNodeRecur(newNode, ainode->mChildren[i], scene, index);
 		}
 	}
 }

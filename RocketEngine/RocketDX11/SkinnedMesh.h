@@ -7,7 +7,11 @@ namespace Rocket::Core
 	{
 	public:
 		SkinnedMesh();
-		SkinnedMesh(std::vector<Vertex> vertices, std::vector<UINT> indices);
+		SkinnedMesh(std::vector<VertexSkinned> vertices, std::vector<UINT> indices);
+
+		virtual void CreateBuffers() override;
+
+	protected:
+		std::vector<VertexSkinned> _vertices;
 	};
 }
-

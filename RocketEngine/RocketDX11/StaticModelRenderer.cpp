@@ -1,15 +1,13 @@
-﻿#include "MeshRenderer.h"
+﻿#include "StaticModelRenderer.h"
 #include "GraphicsMacro.h"
-#include "GraphicsStruct.h"
+#include "VertexStruct.h"
 #include "ResourceManager.h"
-#include "CubeMesh.h"
-#include "SphereMesh.h"
-#include "Animation.h"
+#include "StaticMesh.h"
 
 namespace Rocket::Core
 {
-	MeshRenderer::MeshRenderer()
-		: _mesh(nullptr),
+	StaticModelRenderer::StaticModelRenderer()
+		: _model(nullptr),
 		_material(nullptr),
 		_isActive(true),
 		_worldTM(Matrix::Identity)
@@ -17,32 +15,28 @@ namespace Rocket::Core
 
 	}
 
-	void MeshRenderer::SetWorldTM(const Matrix& worldTM)
+	void StaticModelRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
 	}
 
-	void MeshRenderer::SetActive(bool isActive)
+	void StaticModelRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
 	}
 
-	void MeshRenderer::LoadMesh(eMeshType meshType)
+	void StaticModelRenderer::LoadModel(std::string fileName)
 	{
-		_mesh = ResourceManager::Instance().GetMesh(meshType);
+		// TODO : reinterpret_cast를 사용하지 않는 엑세렌또한 방법을 찾아보자.
+		_model = reinterpret_cast<StaticModel*>(ResourceManager::Instance().GetModel(fileName));
 	}
 
-	void MeshRenderer::LoadMesh(std::string fileName)
-	{
-		_model = ResourceManager::Instance().GetModel(fileName);
-	}
-
-	void MeshRenderer::LoadTexture(std::string fileName)
+	void StaticModelRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
-	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void StaticModelRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
 		{
@@ -71,11 +65,16 @@ namespace Rocket::Core
 			// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 			// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
 
+			DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(_worldTM);
+			DirectX::XMMATRIX worldInverse = DirectX::XMMatrixInverse(&det, _worldTM);
+
 			DirectX::XMMATRIX w = DirectX::XMMatrixTranspose(_worldTM);
+			DirectX::XMMATRIX wi = DirectX::XMMatrixTranspose(worldInverse);
 			DirectX::XMMATRIX v = DirectX::XMMatrixTranspose(view);
 			DirectX::XMMATRIX p = DirectX::XMMatrixTranspose(proj);
 
-			matrixBufferDataPtr->world = _worldTM;
+			matrixBufferDataPtr->world = w;
+			matrixBufferDataPtr->worldInverse = wi;
 			matrixBufferDataPtr->view = v;
 			matrixBufferDataPtr->projection = p;
 
@@ -86,19 +85,17 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfMatrixBuffer());
 
 			///
-			HR(deviceContext->Map(_model->nodeBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+			HR(deviceContext->Map(_model->nodeBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-			UINT index = 0;
-
-			SetNodeBuffer(_model->rootNode, index, nodeBufferDataPtr);
+			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
 			
-			deviceContext->Unmap(_model->nodeBuffer, 0);
+			deviceContext->Unmap(_model->nodeBuffer.Get(), 0);
 
 			bufferNumber = 2;
 
-			deviceContext->VSSetConstantBuffers(bufferNumber, 1, &(_model->nodeBuffer));
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _model->nodeBuffer.GetAddressOf());
 			///
 
 			// 픽셀 쉐이더
@@ -106,11 +103,12 @@ namespace Rocket::Core
 		
 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
+			// TODO : LightDirection이 왜 Y축과 Z축이 바뀌어서 나오지? 해결해야한다.
 			lightBufferDataPtr->ambientColor = { 0.15f,0.15f,0.15f,1.0f };
 			lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
-			lightBufferDataPtr->lightDirection = { 1.0f,-1.0f,1.0f };
+			lightBufferDataPtr->lightDirection = { 1.0f,0.0f,0.0f };
 			lightBufferDataPtr->specularPower = 2.0f;
-			lightBufferDataPtr->specularColor = { 0.0f,0.0f,1.0f,1.0f };
+			lightBufferDataPtr->specularColor = { 0.5f,0.5f,0.5f,1.0f };
 
 			deviceContext->Unmap(_material->GetPixelShader()->GetLightBuffer(), 0);
 
@@ -133,25 +131,27 @@ namespace Rocket::Core
 // 			return;
 // 		}
 
+		stride = sizeof(Vertex);
+
 		for (auto& mesh : _model->meshes)
 		{
-			switch (mesh->GetVertexType())
-			{
-				case VertexType::COLOR_VERTEX:
-					stride = sizeof(ColorVertex);
-					break;
-				case VertexType::TEXTURE_VERTEX:
-					stride = sizeof(TextureVertex);
-					break;
-				case VertexType::LIGHT_VERTEX:
-					stride = sizeof(LightVertex);
-					break;
-				case VertexType::VERTEX:
-					stride = sizeof(Vertex);
-					break;
-				default:
-					break;
-			}
+// 			switch (mesh->GetVertexType())
+// 			{
+// 				case eVertexType::COLOR_VERTEX:
+// 					stride = sizeof(ColorVertex);
+// 					break;
+// 				case eVertexType::TEXTURE_VERTEX:
+// 					stride = sizeof(TextureVertex);
+// 					break;
+// 				case eVertexType::LIGHT_VERTEX:
+// 					stride = sizeof(LightVertex);
+// 					break;
+// 				case eVertexType::VERTEX:
+// 					stride = sizeof(Vertex);
+// 					break;
+// 				default:
+// 					break;
+// 			}
 
 			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
 			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
@@ -162,40 +162,33 @@ namespace Rocket::Core
 		}
 	}
 
-	void MeshRenderer::SetTexture(Texture* texture)
-	{
-		assert(_material);
-		_material->SetTexture(texture);
-	}
-
-	void MeshRenderer::SetVertexShader(VertexShader* shader)
+	void StaticModelRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
 		_material->SetVertexShader(shader);
 	}
 
-	void MeshRenderer::SetPixelShader(PixelShader* shader)
+	void StaticModelRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
 		_material->SetPixelShader(shader);
 	}
 
-	void MeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
+	void StaticModelRenderer::SetRenderState(ID3D11RasterizerState* renderState)
 	{
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
 
-	void MeshRenderer::SetNodeBuffer(Node* node, UINT& index, NodeBufferType* nodeBuffer)
+	void StaticModelRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
-		nodeBuffer->transformMatrix[node->bone.id] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
-		index++;
+		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
 		for (int i = 0; i < node->children.size(); i++)
 		{
-			SetNodeBuffer(node->children[i], index, nodeBuffer);
+			SetNodeBuffer(node->children[i], nodeBuffer);
 		}
 	}
 

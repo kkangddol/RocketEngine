@@ -6,10 +6,10 @@
 /// </summary>
 namespace Rocket::Core
 {
-	class MeshRendererBase : public Component
+	class ModelRendererBase : public Component
 	{
 	public:
-		MeshRendererBase();
-		virtual ~MeshRendererBase() = default;
+		ModelRendererBase();
+		virtual ~ModelRendererBase() = default;
 	};
 }

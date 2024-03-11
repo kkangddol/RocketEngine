@@ -1,9 +1,9 @@
-﻿#include "MeshRendererBase.h"
+﻿#include "ModelRendererBase.h"
 #include "GraphicsSystem.h"
 
 namespace Rocket::Core
 {
-	MeshRendererBase::MeshRendererBase()
+	ModelRendererBase::ModelRendererBase()
 	{
 		GraphicsSystem::Instance().AddToList(this);
 	}
