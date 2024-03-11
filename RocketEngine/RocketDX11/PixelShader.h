@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include <wrl.h>
-#include "IShader.h"
+#include "ShaderBase.h"
 
 namespace Rocket::Core
 {
-	class PixelShader : public IShader
+	class PixelShader : public ShaderBase
 	{
 	public:
 		PixelShader();

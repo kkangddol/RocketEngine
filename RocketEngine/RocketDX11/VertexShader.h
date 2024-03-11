@@ -1,11 +1,11 @@
 ﻿#pragma once
 #include <wrl.h>
-#include "IShader.h"
+#include "ShaderBase.h"
 #include "VertexStruct.h"
 
 namespace Rocket::Core
 {
-	class VertexShader : public IShader
+	class VertexShader : public ShaderBase
 	{
 	public:
 		VertexShader();
@@ -22,17 +22,16 @@ namespace Rocket::Core
 		ID3D11SamplerState** GetAddressOfSampleState();
 
 	public:
-		void SetVertexDesc(D3D11_INPUT_ELEMENT_DESC desc[], unsigned int numElements);
 		void SetVertexType(eVertexType type);
 		eVertexType GetVertexType() const;
 
 	private:
+		void ReflectShader(ID3D11Device* device, const std::wstring& path);
 		void CreateShaderAndInputLayout(ID3D11Device* device, const std::wstring& path);
 		void CreateMatrixBuffer(ID3D11Device* device);
 		void CreateSamplerState(ID3D11Device* device);
 
 	private:
-		D3D11_INPUT_ELEMENT_DESC* _vertexDesc;
 		ComPtr<ID3D11VertexShader> _vertexShader;
 		ComPtr<ID3D11Buffer> _matrixBuffer;
 		ComPtr<ID3D11InputLayout> _inputLayout;
