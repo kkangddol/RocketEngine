@@ -53,20 +53,20 @@ namespace Rocket::Core
 		}
 
 		_animationTime += deltaTime;
+		_animationTick = _animationTime * anim->ticksPerSecond;
 
-		if (_animationTime > anim->duration)
+		if (_animationTick > anim->duration)
 		{
 			if (_isLoop)
 			{
-				_animationTime -= anim->duration;
+				_animationTime -= anim->duration / anim->ticksPerSecond;
 			}
 			else
 			{
-				_animationTime = anim->duration;
+				_animationTime = anim->duration / anim->ticksPerSecond;
 			}
 		}
 
-		_animationTickTime = _animationTime * anim->ticksPerSecond;
 
 		for (auto& nodeAnim : anim->nodeAnimations)
 		{
@@ -81,7 +81,7 @@ namespace Rocket::Core
 				int positionIndex = 0;
 				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
 				{
-					if (_animationTickTime < nodeAnim->positionTimestamps[i])
+					if (_animationTick < nodeAnim->positionTimestamps[i])
 					{
 						positionIndex = i;		// i-1 < _animationTickTime < i
 						break;
@@ -94,7 +94,7 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTickTime - nodeAnim->positionTimestamps[positionIndex - 1]) / (nodeAnim->positionTimestamps[positionIndex] - nodeAnim->positionTimestamps[positionIndex - 1]);
+					float t = (_animationTick - nodeAnim->positionTimestamps[positionIndex - 1]) / (nodeAnim->positionTimestamps[positionIndex] - nodeAnim->positionTimestamps[positionIndex - 1]);
 					position = DirectX::XMVectorLerp(nodeAnim->positions[positionIndex - 1], nodeAnim->positions[positionIndex], t);
 				}
 			}
@@ -104,7 +104,7 @@ namespace Rocket::Core
 				int rotationIndex = 0;
 				for (int i = 0; i < nodeAnim->rotationTimestamps.size(); i++)
 				{
-					if (_animationTickTime < nodeAnim->rotationTimestamps[i])
+					if (_animationTick < nodeAnim->rotationTimestamps[i])
 					{
 						rotationIndex = i;
 						break;
@@ -117,7 +117,7 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTickTime - nodeAnim->rotationTimestamps[rotationIndex - 1]) / (nodeAnim->rotationTimestamps[rotationIndex] - nodeAnim->rotationTimestamps[rotationIndex - 1]);
+					float t = (_animationTick - nodeAnim->rotationTimestamps[rotationIndex - 1]) / (nodeAnim->rotationTimestamps[rotationIndex] - nodeAnim->rotationTimestamps[rotationIndex - 1]);
 					rotation = DirectX::XMQuaternionSlerp(nodeAnim->rotations[rotationIndex - 1], nodeAnim->rotations[rotationIndex], t);
 				}
 			}
@@ -127,7 +127,7 @@ namespace Rocket::Core
 				int scaleIndex = 0;
 				for (int i = 0; i < nodeAnim->scaleTimestamps.size(); i++)
 				{
-					if (nodeAnim->scaleTimestamps[i] > _animationTickTime)
+					if (nodeAnim->scaleTimestamps[i] > _animationTick)
 					{
 						scaleIndex = i;
 						break;
@@ -140,7 +140,7 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTickTime - nodeAnim->scaleTimestamps[scaleIndex - 1]) / (nodeAnim->scaleTimestamps[scaleIndex] - nodeAnim->scaleTimestamps[scaleIndex - 1]);
+					float t = (_animationTick - nodeAnim->scaleTimestamps[scaleIndex - 1]) / (nodeAnim->scaleTimestamps[scaleIndex] - nodeAnim->scaleTimestamps[scaleIndex - 1]);
 					scale = DirectX::XMVectorLerp(nodeAnim->scales[scaleIndex - 1], nodeAnim->scales[scaleIndex], t);
 				}
 			}

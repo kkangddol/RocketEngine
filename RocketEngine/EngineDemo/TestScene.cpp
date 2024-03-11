@@ -38,7 +38,7 @@ void TestScene::Initialize()
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest = scene->CreateObject("SkinnedTest");
 	auto skinnedMeshRenderer = skinnedTest->AddComponent<Rocket::DynamicModelRenderer>();
-	skinnedMeshRenderer->SetMesh("A_TP_CH_Breathing.fbx");
+	skinnedMeshRenderer->SetMesh("A_TP_CH_Sprint_F.fbx");
 	skinnedMeshRenderer->SetTexture("T_TP_CH_Camo_001_006_D.png");
 
 	/// 텍스트 테스트
