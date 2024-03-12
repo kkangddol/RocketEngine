@@ -18,8 +18,11 @@ namespace Rocket::Core
 	VertexShader::~VertexShader()
 	{
 		_inputLayout.Reset();
-		_matrixBuffer.Reset();
 		_vertexShader.Reset();
+		for (auto& buffer : _constantBuffers)
+		{
+			buffer.Reset();
+		}
 	}
 
 	void VertexShader::Initialize(ID3D11Device* device, const std::wstring& path)
@@ -33,9 +36,9 @@ namespace Rocket::Core
 		return _vertexShader.Get();
 	}
 
-	ID3D11Buffer* VertexShader::GetMatrixBuffer() const
+	ID3D11Buffer* VertexShader::GetConstantBuffer(int registerSlot) const
 	{
-		return _matrixBuffer.Get();
+		return _constantBuffers[registerSlot].Get();
 	}
 
 	ID3D11InputLayout* VertexShader::GetInputLayout() const
@@ -43,9 +46,9 @@ namespace Rocket::Core
 		return _inputLayout.Get();
 	}
 
-	ID3D11Buffer** VertexShader::GetAddressOfMatrixBuffer()
+	ID3D11Buffer** VertexShader::GetAddressOfConstantBuffer(int registerSlot)
 	{
-		return _matrixBuffer.GetAddressOf();
+		return _constantBuffers[registerSlot].GetAddressOf();
 	}
 
 	void VertexShader::ReflectShader(ID3D11Device* device, const std::wstring& path)
@@ -161,7 +164,9 @@ namespace Rocket::Core
 		HR(device->CreateInputLayout(&inputLayoutDesc[0], (UINT)inputLayoutDesc.size(), vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &_inputLayout));
 
 		/// ConstantBuffer Reflection
-		// Vertex Shader ConstantBuffer..
+		// Vertex Shader ConstantBuffer..e
+		_constantBuffers.resize(shaderDesc.ConstantBuffers);
+
 		for (unsigned int cbindex = 0; cbindex < shaderDesc.ConstantBuffers; cbindex++)
 		{
 			ID3D11ShaderReflectionConstantBuffer* cBuffer = pReflector->GetConstantBufferByIndex(cbindex);
@@ -171,30 +176,17 @@ namespace Rocket::Core
 			{
 				CD3D11_BUFFER_DESC cBufferDesc(bufferDesc.Size, D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
 
-// 				D3D11_SHADER_INPUT_BIND_DESC bindDesc;
-// 				pReflector->GetResourceBindingDescByName(bufferDesc.Name, &bindDesc);
+				D3D11_SHADER_INPUT_BIND_DESC bindDesc;
+				pReflector->GetResourceBindingDescByName(bufferDesc.Name, &bindDesc);
+				auto str = bindDesc.Name;
 
 				// 해당 Constant Buffer 생성..
-				HR(device->CreateBuffer(&cBufferDesc, nullptr, &_matrixBuffer));
+				HR(device->CreateBuffer(&cBufferDesc, nullptr, &_constantBuffers[bindDesc.BindPoint]));
 
 				// Constant Buffer Register Slot Number..
 				//cbuffer_register_slot = bindDesc.BindPoint;
 			}
 		}
-	}
-	
-	/// Shader Reflection 이후 안쓰는 중.
-	void VertexShader::CreateMatrixBuffer(ID3D11Device* device)
-	{
-		D3D11_BUFFER_DESC matrixBufferDesc;
-		matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
-		matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		matrixBufferDesc.MiscFlags = 0;
-		matrixBufferDesc.StructureByteStride = 0;
-
-		HR(device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer));
 	}
 
 	void VertexShader::SetVertexType(eVertexType type)

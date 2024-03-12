@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <wrl.h>
+#include <vector>
+
 #include "ShaderBase.h"
 
 namespace Rocket::Core
@@ -15,16 +17,15 @@ namespace Rocket::Core
 
 	public:
 		ID3D11PixelShader* GetPixelShader() const;
-		ID3D11Buffer* GetLightBuffer() const;
-		ID3D11Buffer** GetAddressOfLightBuffer();
+		ID3D11Buffer* GetConstantBuffer(int registerSlot) const;
+		ID3D11Buffer** GetAddressOfConstantBuffer(int registerSlot);
 
 	private:
 		void CreateAndReflectShader(ID3D11Device* device, const std::wstring& path);
-		void CreateLightBuffer(ID3D11Device* device);			// Shader Reflection 이후 안씀.
 
 
 	private:
 		ComPtr<ID3D11PixelShader> _pixelShader;
-		ComPtr<ID3D11Buffer> _lightBuffer;
+		std::vector<ComPtr<ID3D11Buffer>> _constantBuffer;
 	};
 }
