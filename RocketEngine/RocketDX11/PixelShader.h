@@ -19,8 +19,8 @@ namespace Rocket::Core
 		ID3D11Buffer** GetAddressOfLightBuffer();
 
 	private:
-		void CreatePixelShader(ID3D11Device* device, const std::wstring& path);
-		void CreateLightBuffer(ID3D11Device* device);
+		void CreateAndReflectShader(ID3D11Device* device, const std::wstring& path);
+		void CreateLightBuffer(ID3D11Device* device);			// Shader Reflection 이후 안씀.
 
 
 	private:

@@ -26,9 +26,9 @@ namespace Rocket::Core
 		eVertexType GetVertexType() const;
 
 	private:
-		void ReflectShader(ID3D11Device* device, const std::wstring& path);
-		void CreateShaderAndInputLayout(ID3D11Device* device, const std::wstring& path);
-		void CreateMatrixBuffer(ID3D11Device* device);
+		void CreateAndReflectShader(ID3D11Device* device, const std::wstring& path);
+		void ReflectShader(ID3D11Device* device, const std::wstring& path);		// 안쓰는 함수.
+		void CreateMatrixBuffer(ID3D11Device* device);			// Shader Reflection 이후 안쓴다.
 		void CreateSamplerState(ID3D11Device* device);
 
 	private:

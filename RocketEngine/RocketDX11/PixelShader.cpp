@@ -23,8 +23,8 @@ namespace Rocket::Core
 
 	void PixelShader::Initialize(ID3D11Device* device, const std::wstring& path)
 	{
-		CreatePixelShader(device, path);
-		CreateLightBuffer(device);
+		CreateAndReflectShader(device, path);
+		// CreateLightBuffer(device);
 	}
 
 	ID3D11PixelShader* PixelShader::GetPixelShader() const
@@ -32,7 +32,7 @@ namespace Rocket::Core
 		return _pixelShader.Get();
 	}
 
-	void PixelShader::CreatePixelShader(ID3D11Device* device, const std::wstring& path)
+	void PixelShader::CreateAndReflectShader(ID3D11Device* device, const std::wstring& path)
 	{
 // 		std::ifstream psFile(path, std::ios::binary);
 // 		std::vector<char> psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };
@@ -57,8 +57,41 @@ namespace Rocket::Core
 		{
 			assert(false);
 		}
+
+		/// Shader Reflection
+		ID3D11ShaderReflection* pReflector = nullptr;
+
+		// Create Reflector..
+		D3DReflect(pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pReflector);
+
+		// Shader Refection
+		D3D11_SHADER_DESC shaderDesc;
+		pReflector->GetDesc(&shaderDesc);
+
+		/// ConstantBuffer Reflection
+		// Pixel Shader ConstantBuffer..
+		for (unsigned int cbindex = 0; cbindex < shaderDesc.ConstantBuffers; cbindex++)
+		{
+			ID3D11ShaderReflectionConstantBuffer* cBuffer = pReflector->GetConstantBufferByIndex(cbindex);
+			D3D11_SHADER_BUFFER_DESC bufferDesc;
+
+			if (SUCCEEDED(cBuffer->GetDesc(&bufferDesc)))
+			{
+				CD3D11_BUFFER_DESC cBufferDesc(bufferDesc.Size, D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
+
+				// 				D3D11_SHADER_INPUT_BIND_DESC bindDesc;
+				// 				pReflector->GetResourceBindingDescByName(bufferDesc.Name, &bindDesc);
+
+				// 해당 Constant Buffer 생성..
+				HR(device->CreateBuffer(&cBufferDesc, nullptr, &_lightBuffer));
+
+				// Constant Buffer Register Slot Number..
+				//cbuffer_register_slot = bindDesc.BindPoint;
+			}
+		}
 	}
 
+	/// Shader Reflection 이후 안씀.
 	void PixelShader::CreateLightBuffer(ID3D11Device* device)
 	{
 		D3D11_BUFFER_DESC lightBufferDesc;

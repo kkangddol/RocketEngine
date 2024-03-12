@@ -24,9 +24,7 @@ namespace Rocket::Core
 
 	void VertexShader::Initialize(ID3D11Device* device, const std::wstring& path)
 	{
-		ReflectShader(device, path);
-		CreateShaderAndInputLayout(device, path);
-		CreateMatrixBuffer(device);
+		CreateAndReflectShader(device, path);
 		CreateSamplerState(device);
 	}
 
@@ -53,32 +51,6 @@ namespace Rocket::Core
 	void VertexShader::ReflectShader(ID3D11Device* device, const std::wstring& path)
 	{
 		/*
-		/// ConstantBuffer Reflection
-		// Pixel Shader ConstantBuffer..
-		for (unsigned int cbindex = 0; cbindex < shaderDesc.ConstantBuffers; cbindex++)
-		{
-			ID3D11ShaderReflectionConstantBuffer* cBuffer = pReflector->GetConstantBufferByIndex(cbindex);
-			D3D11_SHADER_BUFFER_DESC bufferDesc;
-
-			if (SUCCEEDED(cBuffer->GetDesc(&bufferDesc)))
-			{
-				ID3D11Buffer* cBuffer = nullptr;
-				CD3D11_BUFFER_DESC cBufferDesc(bufferDesc.Size, D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
-
-				D3D11_SHADER_INPUT_BIND_DESC bindDesc;
-				pReflector->GetResourceBindingDescByName(bufferDesc.Name, &bindDesc);
-
-				// 해당 Constant Buffer 생성..
-				HR(device->CreateBuffer(&cBufferDesc, nullptr, &cBuffer));
-
-				// Constant Buffer Register Slot Number..
-				cbuffer_register_slot = bindDesc.BindPoint;
-
-				...
-
-			}
-		}
-
 		/// Shader Resource Reflection
 		// Shader Resource..
 		for (unsigned int rsindex = 0; rsindex < shaderDesc.BoundResources; rsindex++)
@@ -106,17 +78,8 @@ namespace Rocket::Core
 		*/
 	}
 
-	void VertexShader::CreateShaderAndInputLayout(ID3D11Device* device, const std::wstring& path)
+	void VertexShader::CreateAndReflectShader(ID3D11Device* device, const std::wstring& path)
 	{
-// 		std::ifstream vsFile(path, std::ios::binary);
-// 		std::vector<char> vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };
-
-// 		device->CreateVertexShader(vsData.data(), vsData.size(), nullptr, &_vertexShader);
-// 
-// 		assert(_vertexDesc != nullptr);
-// 
-// 		HR(device->CreateInputLayout(_vertexDesc, _numElements, vsData.data(), vsData.size(), &_inputLayout));
-
 		UINT flags1 = 0;
 #if defined(_DEBUG) || defined(_DEBUG)
 		flags1 |= D3DCOMPILE_DEBUG;
@@ -136,7 +99,7 @@ namespace Rocket::Core
 			assert(false);
 		}
 
-		/// inputlayOut Reflection & create InputLayout
+		/// Shader Reflection
 		ID3D11ShaderReflection* pReflector = nullptr;
 
 		// Create Reflector..
@@ -196,8 +159,31 @@ namespace Rocket::Core
 
 		// Shader InputLayout 생성..
 		HR(device->CreateInputLayout(&inputLayoutDesc[0], (UINT)inputLayoutDesc.size(), vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &_inputLayout));
-	}
 
+		/// ConstantBuffer Reflection
+		// Vertex Shader ConstantBuffer..
+		for (unsigned int cbindex = 0; cbindex < shaderDesc.ConstantBuffers; cbindex++)
+		{
+			ID3D11ShaderReflectionConstantBuffer* cBuffer = pReflector->GetConstantBufferByIndex(cbindex);
+			D3D11_SHADER_BUFFER_DESC bufferDesc;
+
+			if (SUCCEEDED(cBuffer->GetDesc(&bufferDesc)))
+			{
+				CD3D11_BUFFER_DESC cBufferDesc(bufferDesc.Size, D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
+
+// 				D3D11_SHADER_INPUT_BIND_DESC bindDesc;
+// 				pReflector->GetResourceBindingDescByName(bufferDesc.Name, &bindDesc);
+
+				// 해당 Constant Buffer 생성..
+				HR(device->CreateBuffer(&cBufferDesc, nullptr, &_matrixBuffer));
+
+				// Constant Buffer Register Slot Number..
+				//cbuffer_register_slot = bindDesc.BindPoint;
+			}
+		}
+	}
+	
+	/// Shader Reflection 이후 안쓰는 중.
 	void VertexShader::CreateMatrixBuffer(ID3D11Device* device)
 	{
 		D3D11_BUFFER_DESC matrixBufferDesc;
