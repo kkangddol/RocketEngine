@@ -44,6 +44,8 @@ namespace Rocket::Core
 		virtual void Finalize() override;
 
 	private:
+		void CreateDepthStencilStates();
+
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
 		void RenderHelperObject();
@@ -75,7 +77,8 @@ namespace Rocket::Core
 		ComPtr<ID3D11Texture2D> _backBuffer;
 		ComPtr<ID3D11RenderTargetView> _renderTargetView;
 		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
-		ComPtr<ID3D11DepthStencilState> _depthStencilState;
+		ComPtr<ID3D11DepthStencilState> _defaultDepthStencilState;
+		ComPtr<ID3D11DepthStencilState> _cubeMapDepthStencilState;
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		ComPtr<ID3D11BlendState > _defaultBlendState;
 		

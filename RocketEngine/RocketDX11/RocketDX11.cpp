@@ -173,38 +173,6 @@ namespace Rocket::Core
 
 		HR(_device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer));
 
-		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-		//CD3D11_DEPTH_STENCIL_DESC depthStencilDesc();
-
-		// 스텐실 상태의 description을 초기화합니다.
-		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-
-		// 스텐실 상태의 description을 작성합니다.
-		depthStencilDesc.DepthEnable = true;
-		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-		depthStencilDesc.StencilEnable = true;
-		depthStencilDesc.StencilReadMask = 0xFF;
-		depthStencilDesc.StencilWriteMask = 0xFF;
-
-		// Stencil operations if pixel is front-facing.
-		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		// Stencil operations if pixel is back-facing.
-		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		HR(_device->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState));
-
-		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 1);
-		//_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
-
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
@@ -215,6 +183,8 @@ namespace Rocket::Core
 
 		HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), &depthStencilViewDesc, &_depthStencilView));
 		//HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), NULL, &_depthStencilView));
+
+		CreateDepthStencilStates();
 
 		//BlendState Creation
 		CD3D11_BLEND_DESC tBlendDesc(D3D11_DEFAULT);
@@ -273,7 +243,7 @@ namespace Rocket::Core
 		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 
-		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
 		////Blend State Set.
 		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 		return;
@@ -287,7 +257,7 @@ namespace Rocket::Core
 		color[0] = r;	// r
 		color[1] = g;	// g
 		color[2] = b;	// b
-		color[3] = a;	// a
+		color[3] = a;	// a                                
 		// Clear the back buffer.
 		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
 		// Clear the depth buffer.
@@ -297,7 +267,7 @@ namespace Rocket::Core
 		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 
-		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
 		////Blend State Set.
 		//_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 		_deviceContext->OMSetBlendState(nullptr, nullptr, 0xFF);
@@ -454,6 +424,59 @@ namespace Rocket::Core
 		{
 			dynamicModel->UpdateAnimation(deltaTime);
 		}
+	}
+
+	void RocketDX11::CreateDepthStencilStates()
+	{
+		/// Create Default DepthStencilState
+		D3D11_DEPTH_STENCIL_DESC defaultDepthStencilDesc;
+		//CD3D11_DEPTH_STENCIL_DESC depthStencilDesc();
+
+		// 스텐실 상태의 description을 초기화합니다.
+		ZeroMemory(&defaultDepthStencilDesc, sizeof(defaultDepthStencilDesc));
+
+		// 스텐실 상태의 description을 작성합니다.
+		defaultDepthStencilDesc.DepthEnable = true;
+		defaultDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		defaultDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+		defaultDepthStencilDesc.StencilEnable = true;
+		defaultDepthStencilDesc.StencilReadMask = 0xFF;
+		defaultDepthStencilDesc.StencilWriteMask = 0xFF;
+
+		// Stencil operations if pixel is front-facing.
+		defaultDepthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		defaultDepthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		defaultDepthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		defaultDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		// Stencil operations if pixel is back-facing.
+		defaultDepthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		defaultDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		defaultDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		defaultDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		HR(_device->CreateDepthStencilState(&defaultDepthStencilDesc, &_defaultDepthStencilState));
+
+		/// Create CubeMapDepthStencilState
+		D3D11_DEPTH_STENCIL_DESC cubeMapDepthStencilDesc;
+		ZeroMemory(&cubeMapDepthStencilDesc, sizeof(cubeMapDepthStencilDesc));
+		cubeMapDepthStencilDesc.DepthEnable = false;
+		cubeMapDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		cubeMapDepthStencilDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+		cubeMapDepthStencilDesc.StencilEnable = false;
+		cubeMapDepthStencilDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+		cubeMapDepthStencilDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+		cubeMapDepthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		cubeMapDepthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		cubeMapDepthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		cubeMapDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		cubeMapDepthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		cubeMapDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		cubeMapDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		cubeMapDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+
+		HR(_device->CreateDepthStencilState(&cubeMapDepthStencilDesc, &_cubeMapDepthStencilState));
 	}
 
 }

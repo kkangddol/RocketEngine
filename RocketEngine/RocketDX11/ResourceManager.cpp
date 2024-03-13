@@ -1,4 +1,5 @@
 ﻿#include <DDSTextureLoader.h>
+#include <WICTextureLoader.h>
 #include <cassert>
 
 #include "ResourceManager.h"

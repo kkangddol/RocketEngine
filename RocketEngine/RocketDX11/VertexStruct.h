@@ -88,6 +88,8 @@ namespace Rocket::Core
 			normal(nx, ny, nz), tangent(tx, ty, tz), nodeIndex() {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv)
 			: position(p), UV(uv), normal{ 0, 0, 0 }, tangent{ 0, 0, 0 }, nodeIndex() {}
+		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT2& uv)
+			: position(p), normal(n), UV(uv), tangent{ 0, 0, 0 } {}
 	};
 
 	struct VertexSkinned
