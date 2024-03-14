@@ -1,6 +1,7 @@
 ﻿#include <cassert>
 
 #include "RocketDX11.h"
+#include "Camera.h"
 #include "Grid.h"
 #include "Axis.h"
 #include "CubeMesh.h"
@@ -8,12 +9,13 @@
 #include "SpriteRenderer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "CubeMap.h"
 
 #include "GraphicsMacro.h"
 #include "DeviceBuilderDX11.h"
 
-#include "ResourceManager.h"
 #include "ObjectManager.h"
+#include "ResourceManager.h"
 
 #include "StaticModelRenderer.h"
 #include "DynamicModelRenderer.h"
@@ -48,6 +50,7 @@ namespace Rocket::Core
 		_swapChain(), _backBuffer(),
 		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
 		_viewport(),
+		_objectManager(ObjectManager::Instance()),
 		_resourceManager(ResourceManager::Instance()),
 		_axis(), _grid(),
 		_spriteBatch(), _lineBatch(), _basicEffect(),
@@ -297,12 +300,12 @@ namespace Rocket::Core
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}
 
-		for (auto meshRenderer : ObjectManager::Instance().GetStaticModelRenderers())
+		for (auto meshRenderer : _objectManager.GetStaticModelRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 
-		for (auto skinnedMeshRenderer : ObjectManager::Instance().GetDynamicModelRenderers())
+		for (auto skinnedMeshRenderer : _objectManager.GetDynamicModelRenderers())
 		{
 			skinnedMeshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
@@ -311,7 +314,7 @@ namespace Rocket::Core
 	void RocketDX11::RenderText()
 	{
 		_spriteBatch->Begin();
-		for (auto textRenderer : ObjectManager::Instance().GetTextList())
+		for (auto textRenderer : _objectManager.GetTextList())
 		{
 			textRenderer->Render(_spriteBatch);
 		}
@@ -322,7 +325,7 @@ namespace Rocket::Core
 	{
 		_spriteBatch->Begin();
 		// 이미지(UI)를 그리기 위한 함수
-		for (auto imageRenderer : ObjectManager::Instance().GetImageList())
+		for (auto imageRenderer : _objectManager.GetImageList())
 		{
 			imageRenderer->Render(_spriteBatch);
 		}
@@ -367,6 +370,7 @@ namespace Rocket::Core
 	void RocketDX11::Render()
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
+
 		RenderHelperObject();
 		RenderMesh();
 
@@ -376,6 +380,7 @@ namespace Rocket::Core
 
 		//_deviceContext->OMSetBlendState(nullptr, );
 		//_deviceContext->OMSetDepthStencilState();
+		RenderCubeMap();
 
 		EndRender();
 	}
@@ -409,18 +414,18 @@ namespace Rocket::Core
 
 		_lineBatch->Begin();
 
-		for (const auto& line : ObjectManager::Instance().GetLineRenderer()->GetLines())
+		for (const auto& line : _objectManager.GetLineRenderer()->GetLines())
 		{
 			_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
 		}
 		_lineBatch->End();
 		
-		ObjectManager::Instance().GetLineRenderer()->Flush();
+		_objectManager.GetLineRenderer()->Flush();
 	}
 
 	void RocketDX11::UpdateAnimation(float deltaTime)
 	{
-		for (auto& dynamicModel : ObjectManager::Instance().GetDynamicModelRenderers())
+		for (auto& dynamicModel : _objectManager.GetDynamicModelRenderers())
 		{
 			dynamicModel->UpdateAnimation(deltaTime);
 		}
@@ -461,22 +466,32 @@ namespace Rocket::Core
 		/// Create CubeMapDepthStencilState
 		D3D11_DEPTH_STENCIL_DESC cubeMapDepthStencilDesc;
 		ZeroMemory(&cubeMapDepthStencilDesc, sizeof(cubeMapDepthStencilDesc));
-		cubeMapDepthStencilDesc.DepthEnable = false;
+
+		cubeMapDepthStencilDesc.DepthEnable = true;
 		cubeMapDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		cubeMapDepthStencilDesc.DepthFunc = D3D11_COMPARISON_NEVER;
-		cubeMapDepthStencilDesc.StencilEnable = false;
-		cubeMapDepthStencilDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-		cubeMapDepthStencilDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+		cubeMapDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+		cubeMapDepthStencilDesc.StencilEnable = true;
+		cubeMapDepthStencilDesc.StencilReadMask = 0xFF;
+		cubeMapDepthStencilDesc.StencilWriteMask = 0xFF;
+
 		cubeMapDepthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 		cubeMapDepthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
 		cubeMapDepthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		cubeMapDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		cubeMapDepthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
 		cubeMapDepthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 		cubeMapDepthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 		cubeMapDepthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		cubeMapDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		cubeMapDepthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 		HR(_device->CreateDepthStencilState(&cubeMapDepthStencilDesc, &_cubeMapDepthStencilState));
+	}
+
+	void RocketDX11::RenderCubeMap()
+	{
+		_deviceContext->OMSetDepthStencilState(_cubeMapDepthStencilState.Get(), 0);
+		_resourceManager.GetDefaultCubeMap()->Render(_deviceContext.Get());
 	}
 
 }

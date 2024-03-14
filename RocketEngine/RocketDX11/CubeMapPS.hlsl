@@ -1,11 +1,7 @@
-struct VS_OUTPUT_Sky
-{
-    float4 Pos : SV_POSITION;
-    float3 TexCoord : TEXCOORD0;
-};
+TextureCube CubeMapTexture : register(t0);
+SamplerState samplerLinear : register(s0);
 
-float4 main(VS_OUTPUT_Sky input) : SV_TARGET
+float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
-    return float4(0.0f, 0.0f, 0.0f, 0.0f);
-	//return cubeMap.Sample(samLinear, input.TexCoord);
+    return CubeMapTexture.Sample(samplerLinear, worldPos);
 }

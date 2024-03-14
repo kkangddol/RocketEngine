@@ -1,17 +1,25 @@
-TextureCube cubeMap	: register(t0);
-
-struct VS_INPUT
+cbuffer MatrixBuffer : register(b0)
 {
-	
+    matrix view;
+    matrix projection;
 };
 
-struct VS_OUTPUT_Sky
+struct PixelInputType
 {
-    float4 Pos : SV_POSITION;
-    float3 TexCoord : TEXCOORD0;
+    float3 worldPos : POSITION;
+    float4 pos : SV_POSITION;
 };
 
-float4 main(VS_INPUT input) : SV_POSITION
+PixelInputType main(float3 pos : POSITION)
 {
-    return float4(0.0f, 0.0f, 0.0f, 0.0f);
+    PixelInputType output = (PixelInputType) 0;
+    
+    output.worldPos = pos;
+    
+    output.pos = mul(float4(pos, 0.0f), view);
+    output.pos = mul(output.pos, projection);
+    
+    output.pos.z = output.pos.w;
+    
+    return output;
 }

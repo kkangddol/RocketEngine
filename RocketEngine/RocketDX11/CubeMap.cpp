@@ -2,6 +2,10 @@
 #include "ResourceManager.h"
 #include "VertexStruct.h"
 #include "GraphicsMacro.h"
+#include "Texture.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "Camera.h"
 
 namespace Rocket::Core
 {
@@ -30,41 +34,80 @@ namespace Rocket::Core
 		HR(device->CreateRasterizerState(&cubeMapDesc, &cubemapRS));
 		_cubeMapRenderState = cubemapRS;
 
+		// TODO : 이것도 얘가 리소스매니저한테 접근해서 받아오지말고 리소스매니저가 얘한테 부여하게끔 해야하나?
+		_vertexShader = ResourceManager::Instance().GetVertexShader("CubeMapVS");
+		_pixelShader = ResourceManager::Instance().GetPixelShader("CubeMapPS");
+
+		/// 샘플러 만들기
+		// 텍스처 샘플러 상태 구조체를 생성 및 설정한다.
+		D3D11_SAMPLER_DESC samplerDesc;
+		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.MipLODBias = 0.0f;
+		samplerDesc.MaxAnisotropy = 1;
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		samplerDesc.BorderColor[0] = 0;
+		samplerDesc.BorderColor[1] = 0;
+		samplerDesc.BorderColor[2] = 0;
+		samplerDesc.BorderColor[3] = 0;
+		samplerDesc.MinLOD = 0;
+		samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+		// 텍스처 샘플러 상태를 만듭니다.
+		HR(device->CreateSamplerState(&samplerDesc, &_samplerState));
 	}
 
-	void CubeMap::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void CubeMap::Render(ID3D11DeviceContext* deviceContext)
 	{
-		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(_cubeMapRenderState.Get());
+		Camera* mainCam = Camera::GetMainCamera();
 
-		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		XMMATRIX cameraTranslate = XMMatrixTranslation(cameraPos.x, cameraPos.y, cameraPos.z);
+		deviceContext->IASetInputLayout(_vertexShader->GetInputLayout());
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		deviceContext->RSSetState(_cubeMapRenderState.Get());
 
-		XMMATRIX scaleMatrix = XMMatrixScaling(m_size, m_size, m_size);
+		// Shader deviceContext 이용해 연결.
+		deviceContext->VSSetShader(_vertexShader->GetVertexShader(), nullptr, 0);
+		deviceContext->PSSetShader(_pixelShader->GetPixelShader(), nullptr, 0);
 
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = scaleMatrix * cameraTranslate * view * proj;
-		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
-
-		VertexShader* vertexShader = m_material->GetVertexShader();
-		PixelShader* pixelShader = m_material->GetPixelShader();
-
-		vertexShader->SetMatrix4x4("worldViewProj", invWVP);
-
-		vertexShader->CopyAllBufferData();
-		vertexShader->SetShader();
-
-		pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap());
-
-		pixelShader->CopyAllBufferData();
-		pixelShader->SetShader();
-
-		for (UINT i = 0; i < m_meshes.size(); ++i)
+		// 버텍스 쉐이더
 		{
-			m_meshes[i]->BindBuffers();
-			m_meshes[i]->Draw();
+			unsigned int bufferNumber = 0;
+
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			HR(deviceContext->Map(_vertexShader->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			CubeMapBufferType* matrixBufferDataPtr = (CubeMapBufferType*)mappedResource.pData;
+
+			DirectX::XMMATRIX v = DirectX::XMMatrixTranspose(mainCam->GetViewMatrix());
+			DirectX::XMMATRIX p = DirectX::XMMatrixTranspose(mainCam->GetProjectionMatrix());
+
+			matrixBufferDataPtr->view = v;
+			matrixBufferDataPtr->projection = p;
+
+			deviceContext->Unmap(_vertexShader->GetConstantBuffer(bufferNumber), 0);
+
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _vertexShader->GetAddressOfConstantBuffer(bufferNumber));
 		}
+
+		// 픽셀 쉐이더 세팅
+		{
+			// pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap()); 아래로 대체.
+			deviceContext->PSSetShaderResources(0, 1, _texture->GetAddressOfTextureView());
+			deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
+		}
+
+		// 인덱스버퍼와 버텍스버퍼 셋팅
+		UINT stride = 0;
+		UINT offset = 0;
+
+		stride = sizeof(CubeMapVertex);
+
+		deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
+		deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		deviceContext->DrawIndexed(_indexCount, 0, 0);
 	}
 
 	void CubeMap::LoadTexture(const std::string& fileName)
@@ -85,6 +128,7 @@ namespace Rocket::Core
 
 	void CubeMap::BuildGeometryBuffers(ID3D11Device* device)
 	{
+		/*
 		Vertex vertices[] =
 		{
 			{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT3(0.0f,  0.0f, -1.0f), DirectX::XMFLOAT2(0.0f, 0.0f) },
@@ -117,10 +161,44 @@ namespace Rocket::Core
 			{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f), DirectX::XMFLOAT3(0.0f,  1.0f,  0.0f), DirectX::XMFLOAT2(1.0f, 1.0f) },
 			{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f), DirectX::XMFLOAT3(0.0f,  1.0f,  0.0f), DirectX::XMFLOAT2(0.0f, 1.0f) }
 		};
+		*/
+
+		CubeMapVertex vertices[] =
+		{
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f)},
+
+			{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f)},
+
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f)},
+
+			{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f)},
+
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(1.0f, -1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(1.0f, -1.0f, -1.0f)},
+
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f,  1.0f)},
+			{ DirectX::XMFLOAT3(-1.0f,  1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f, -1.0f)},
+			{ DirectX::XMFLOAT3(1.0f,  1.0f,  1.0f)}
+		};
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;
-		vbd.ByteWidth = sizeof(LightVertex) * ARRAYSIZE(vertices);
+		vbd.ByteWidth = sizeof(CubeMapVertex) * ARRAYSIZE(vertices);
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;

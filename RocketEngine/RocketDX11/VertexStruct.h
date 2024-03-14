@@ -64,6 +64,17 @@ namespace Rocket::Core
 		DirectX::XMMATRIX transformMatrix[256];
 	};
 
+	struct CubeMapVertex
+	{
+		DirectX::XMFLOAT3 position;
+	};
+
+	struct CubeMapBufferType
+	{
+		DirectX::XMMATRIX view;
+		DirectX::XMMATRIX projection;
+	};
+
 	/// <summary>
 	/// assimp 용 vertex 구조체?
 	/// </summary>

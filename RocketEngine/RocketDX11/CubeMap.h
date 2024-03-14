@@ -6,12 +6,15 @@
 
 #include "IResource.h"
 #include "MathHeader.h"
-#include "Texture.h"
 
 using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
+	class Texture;
+	class VertexShader;
+	class PixelShader;
+
 	class CubeMap : public IResource
 	{
 	public:
@@ -20,7 +23,7 @@ namespace Rocket::Core
 
 	public:
 		void Initialize(ID3D11Device* device);
-		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
+		void Render(ID3D11DeviceContext* deviceContext);
 		void LoadTexture(const std::string& fileName);
 		void SetTexture(ID3D11Resource* texture, ID3D11ShaderResourceView* textureView);
 
@@ -32,7 +35,10 @@ namespace Rocket::Core
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
 		ComPtr<ID3D11RasterizerState> _cubeMapRenderState;
+		ComPtr<ID3D11SamplerState> _samplerState;
 		int _vertexCount;
 		int _indexCount;
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
 	};
 }

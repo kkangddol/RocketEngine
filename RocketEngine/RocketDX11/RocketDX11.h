@@ -10,8 +10,6 @@
 #include <Effects.h>
 
 #include "../GraphicsInterface/IDX11Renderer.h"
-#include "Camera.h"
-#include "Light.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -25,6 +23,7 @@ namespace Rocket::Core
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
+	class ObjectManager;
 	class ResourceManager;
 	class SpriteRenderer;
 	
@@ -53,6 +52,7 @@ namespace Rocket::Core
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();
+		void RenderCubeMap();
 		void EndRender();
 
 		void UpdateAnimation(float deltaTime);
@@ -93,6 +93,7 @@ namespace Rocket::Core
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
 
 	private:
+		ObjectManager& _objectManager;
 		ResourceManager& _resourceManager;
 	};
 }
