@@ -45,6 +45,7 @@ namespace Rocket::Core
 
 		// TODO : 외부에서 애니메이션 세팅하고 재생할 수 있게 바꿔야함. 지금은 임시로 첫번째 애니메이션만 실행함.
 		Animation* anim = _model->animations.begin()->second;
+		//anim = _model->animations.at("Ani_Monster2_BattleIdle");
 		_nowAnimationName = anim->name;
 
 		//if (_animationTime == anim->duration)

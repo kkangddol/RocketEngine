@@ -79,6 +79,8 @@ namespace Rocket::Core
 		}
 
 		ProcessModel(_scene->mRootNode, _scene);	// 모델 데이터 로드 (모델,메쉬,노드,본)
+		//ForSungchan(_nowModel->rootNode);
+
 
 		if (_scene->HasAnimations())
 		{
@@ -558,6 +560,19 @@ namespace Rocket::Core
 			newNode->parent = node;
 
 			ReadNodeRecur(newNode, ainode->mChildren[i], scene, index);
+		}
+	}
+
+	void FBXLoader::ForSungchan(Node* node)
+	{
+		if (node->bindedBone)
+		{
+			_sungchanBoneCount++;
+		}
+
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			ForSungchan(node->children[i]);
 		}
 	}
 }
