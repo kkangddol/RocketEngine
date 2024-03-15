@@ -58,8 +58,8 @@ namespace Rocket::Core
 		std::string _nowAnimationName;
 		Node* _animatedRootNode;		// 애니메이션을 적용한 루트 노드 (원본에서 깊은 복사해옴)
 		std::unordered_map<std::string, Node*> _animatedNodeMap;	// 애니메이션을 적용한 노드들의 맵 (원본에서 깊은 복사 해옴)
-		float _animationTime;
-		float _animationTick;
+		double _animationTime;
+		double _animationTick;
 		bool _isLoop = true;		// TODO : 지금은 임시로 Looping하도록 해뒀음. 나중에는 외부에서 설정할 수 있게 바꿔야함.
 	};
 }

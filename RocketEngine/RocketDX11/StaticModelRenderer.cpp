@@ -48,7 +48,7 @@ namespace Rocket::Core
 		deviceContext->PSSetShader(_material->GetPixelShader()->GetPixelShader(), nullptr, 0);
 		
 		// TODO : sampler 경고때문에 잠시주석처리. Sampler에 대해 다시 알아보자.
-		// deviceContext->PSSetSamplers(0, 1, _material->GetVertexShader()->GetAddressOfSampleState());
+		deviceContext->PSSetSamplers(0, 1, _material->GetPixelShader()->GetAddressOfSampleState());
 
 		// 입력 배치 객체 셋팅
 		deviceContext->IASetInputLayout(_material->GetVertexShader()->GetInputLayout());

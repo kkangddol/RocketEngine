@@ -16,7 +16,9 @@ const std::string MODEL_PATH = "Resources/Models/";
 namespace Rocket::Core
 {
 	FBXLoader::FBXLoader()
-		: _device()
+		: _device(),
+		_nowModel(nullptr),
+		_sungchanBoneCount(0)
 	{
 
 	}
@@ -36,7 +38,7 @@ namespace Rocket::Core
 		std::string fileNameWithExtension;
 
 		/// 경로 제외하기 위한 로직
-		UINT slashIndex = fileName.find_last_of("/\\");
+		size_t slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
 			fileNameWithExtension = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
@@ -284,7 +286,7 @@ namespace Rocket::Core
 		std::vector<uint32_t> boneIndecesPerVertex;
 		boneIndecesPerVertex.resize(vertices.size());
 
-		for (int i = 0; i < mesh->mNumBones; i++)
+		for (unsigned int i = 0; i < mesh->mNumBones; i++)
 		{
 			aiBone* aibone = mesh->mBones[i];
 
@@ -296,7 +298,7 @@ namespace Rocket::Core
 
 			_aiNodeToNodeMap.at(aibone->mNode)->bindedBone = bone;
 
-			for (int j = 0; j < aibone->mNumWeights; j++)
+			for (unsigned int j = 0; j < aibone->mNumWeights; j++)
 			{
 				int vertexIndex = aibone->mWeights[j].mVertexId;
 				float weight = aibone->mWeights[j].mWeight;
@@ -471,6 +473,8 @@ namespace Rocket::Core
 
 			return texture;
 		}
+
+		return texture;
 	}
 
 	void FBXLoader::LoadAnimation(const aiScene* scene)
@@ -508,17 +512,17 @@ namespace Rocket::Core
 
 				myNodeAnim->nodeName = aiNodeAnim->mNodeName.C_Str();
 
-				for (int k = 0; k < aiNodeAnim->mNumPositionKeys; ++k)
+				for (unsigned int k = 0; k < aiNodeAnim->mNumPositionKeys; ++k)
 				{
 					myNodeAnim->positionTimestamps.push_back(aiNodeAnim->mPositionKeys[k].mTime);
 					myNodeAnim->positions.push_back(AIVec3ToXMFloat3(aiNodeAnim->mPositionKeys[k].mValue));
 				}
-				for (int k = 0; k < aiNodeAnim->mNumRotationKeys; ++k)
+				for (unsigned int k = 0; k < aiNodeAnim->mNumRotationKeys; ++k)
 				{
 					myNodeAnim->rotationTimestamps.push_back(aiNodeAnim->mRotationKeys[k].mTime);
 					myNodeAnim->rotations.push_back(AIQuaternionToXMFloat4(aiNodeAnim->mRotationKeys[k].mValue));
 				}
-				for (int k = 0; k < aiNodeAnim->mNumScalingKeys; ++k)
+				for (unsigned int k = 0; k < aiNodeAnim->mNumScalingKeys; ++k)
 				{
 					myNodeAnim->scaleTimestamps.push_back(aiNodeAnim->mScalingKeys[k].mTime);
 					myNodeAnim->scales.push_back(AIVec3ToXMFloat3(aiNodeAnim->mScalingKeys[k].mValue));

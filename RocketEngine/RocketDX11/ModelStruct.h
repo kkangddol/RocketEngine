@@ -26,9 +26,9 @@ namespace Rocket::Core
 		// TODO : 여기에 가상 함수가 있는게 맞나?
 		virtual std::vector<Mesh*> GetMeshes();
 
-		std::string name;
-		Node* rootNode;
-		std::unordered_map<std::string, Node*> nodeMap;
+		std::string name = "";
+		Node* rootNode = nullptr;
+		std::unordered_map<std::string, Node*> nodeMap = std::unordered_map<std::string,Node*>();
 	};
 
 	struct StaticModel : public Model
@@ -97,9 +97,9 @@ namespace Rocket::Core
 	{
 		std::string nodeName;
 
-		std::vector<float> positionTimestamps = {};
-		std::vector<float> rotationTimestamps = {};
-		std::vector<float> scaleTimestamps = {};
+		std::vector<double> positionTimestamps = {};
+		std::vector<double> rotationTimestamps = {};
+		std::vector<double> scaleTimestamps = {};
 
 		std::vector<Vector3> positions = {};
 		std::vector<Vector4> rotations = {};
@@ -110,8 +110,8 @@ namespace Rocket::Core
 	struct Animation
 	{
 		std::string name = "";
-		float duration = 0.0f;
-		float ticksPerSecond = 1.0f;
+		double duration = 0.0;
+		double ticksPerSecond = 1.0;
 		float accumulatedTime = 0.0f;
 		std::vector<NodeAnimationData*> nodeAnimations;
 	};

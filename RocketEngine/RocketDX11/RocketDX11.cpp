@@ -376,7 +376,7 @@ namespace Rocket::Core
 
 		RenderText();
 		RenderTexture();
-		//RenderLine();
+		RenderLine();
 
 		//_deviceContext->OMSetBlendState(nullptr, );
 		//_deviceContext->OMSetDepthStencilState();
@@ -414,13 +414,19 @@ namespace Rocket::Core
 
 		_lineBatch->Begin();
 
-		for (const auto& line : _objectManager.GetLineRenderer()->GetLines())
+		if (_objectManager.GetLineRenderer())
 		{
-			_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
+			for (const auto& line : _objectManager.GetLineRenderer()->GetLines())
+			{
+				_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
+			}
 		}
 		_lineBatch->End();
 		
-		_objectManager.GetLineRenderer()->Flush();
+		if (_objectManager.GetLineRenderer())
+		{
+			_objectManager.GetLineRenderer()->Flush();
+		}
 	}
 
 	void RocketDX11::UpdateAnimation(float deltaTime)

@@ -10,7 +10,10 @@ namespace Rocket::Core
 		: _model(nullptr),
 		_material(nullptr),
 		_isActive(true),
-		_worldTM(Matrix::Identity)
+		_worldTM(Matrix::Identity),
+		_animatedRootNode(nullptr),
+		_animationTime(0.0),
+		_animationTick(0.0)
 	{
 
 	}
@@ -60,7 +63,7 @@ namespace Rocket::Core
 		{
 			if (_isLoop)
 			{
-				float secondPerTick = anim->duration / anim->ticksPerSecond;;
+				double secondPerTick = anim->duration / anim->ticksPerSecond;;
 				int count = 0;
 				while (secondPerTick * (count+1) < _animationTime)
 				{
@@ -103,8 +106,8 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTick - nodeAnim->positionTimestamps[positionIndex - 1]) / (nodeAnim->positionTimestamps[positionIndex] - nodeAnim->positionTimestamps[positionIndex - 1]);
-					position = DirectX::XMVectorLerp(nodeAnim->positions[positionIndex - 1], nodeAnim->positions[positionIndex], t);
+					double t = (_animationTick - nodeAnim->positionTimestamps[positionIndex - 1]) / (nodeAnim->positionTimestamps[positionIndex] - nodeAnim->positionTimestamps[positionIndex - 1]);
+					position = DirectX::XMVectorLerp(nodeAnim->positions[positionIndex - 1], nodeAnim->positions[positionIndex], (float)t);
 				}
 			}
 
@@ -126,8 +129,8 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTick - nodeAnim->rotationTimestamps[rotationIndex - 1]) / (nodeAnim->rotationTimestamps[rotationIndex] - nodeAnim->rotationTimestamps[rotationIndex - 1]);
-					rotation = DirectX::XMQuaternionSlerp(nodeAnim->rotations[rotationIndex - 1], nodeAnim->rotations[rotationIndex], t);
+					double t = (_animationTick - nodeAnim->rotationTimestamps[rotationIndex - 1]) / (nodeAnim->rotationTimestamps[rotationIndex] - nodeAnim->rotationTimestamps[rotationIndex - 1]);
+					rotation = DirectX::XMQuaternionSlerp(nodeAnim->rotations[rotationIndex - 1], nodeAnim->rotations[rotationIndex], (float)t);
 				}
 			}
 
@@ -149,8 +152,8 @@ namespace Rocket::Core
 				}
 				else
 				{
-					float t = (_animationTick - nodeAnim->scaleTimestamps[scaleIndex - 1]) / (nodeAnim->scaleTimestamps[scaleIndex] - nodeAnim->scaleTimestamps[scaleIndex - 1]);
-					scale = DirectX::XMVectorLerp(nodeAnim->scales[scaleIndex - 1], nodeAnim->scales[scaleIndex], t);
+					double t = (_animationTick - nodeAnim->scaleTimestamps[scaleIndex - 1]) / (nodeAnim->scaleTimestamps[scaleIndex] - nodeAnim->scaleTimestamps[scaleIndex - 1]);
+					scale = DirectX::XMVectorLerp(nodeAnim->scales[scaleIndex - 1], nodeAnim->scales[scaleIndex], (float)t);
 				}
 			}
 
@@ -171,7 +174,7 @@ namespace Rocket::Core
 		deviceContext->PSSetShader(_material->GetPixelShader()->GetPixelShader(), nullptr, 0);
 
 		// TODO : sampler 경고때문에 잠시주석처리. Sampler에 대해 다시 알아보자.
-		// deviceContext->PSSetSamplers(0, 1, _material->GetVertexShader()->GetAddressOfSampleState());
+		deviceContext->PSSetSamplers(0, 1, _material->GetPixelShader()->GetAddressOfSampleState());
 
 		// 입력 배치 객체 셋팅
 		deviceContext->IASetInputLayout(_material->GetVertexShader()->GetInputLayout());

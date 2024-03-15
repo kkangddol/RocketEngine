@@ -11,6 +11,15 @@ namespace Rocket::Core
 {
 
 	CubeMap::CubeMap()
+		:_texture(),
+		_vertexBuffer(),
+		_indexBuffer(),
+		_cubeMapRenderState(),
+		_samplerState(),
+		_vertexCount(),
+		_indexCount(),
+		_vertexShader(),
+		_pixelShader(),
 	{
 
 	}
