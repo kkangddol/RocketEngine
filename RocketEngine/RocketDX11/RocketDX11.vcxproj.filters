@@ -31,6 +31,12 @@
     <FxCompile Include="SkinnedMeshPS.hlsl">
       <Filter>Resource\Shader\HLSL\SkinnedMesh</Filter>
     </FxCompile>
+    <FxCompile Include="CubeMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\CubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\CubeMap</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">
@@ -110,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="ModelStruct.cpp">
       <Filter>Struct</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMap.cpp">
+      <Filter>Object\CubeMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="ModelStruct.h">
       <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMap.h">
+      <Filter>Object\CubeMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -342,6 +354,12 @@
     </Filter>
     <Filter Include="Object\ModelRenderer\DynamicModelRenderer">
       <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\CubeMap">
+      <UniqueIdentifier>{b69fe248-0bba-4c99-9e53-0a598b73b05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\CubeMap">
+      <UniqueIdentifier>{2f2126ff-2452-470f-8b0e-1ff1900dc15b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

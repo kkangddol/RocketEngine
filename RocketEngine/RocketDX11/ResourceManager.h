@@ -25,6 +25,7 @@ namespace Rocket::Core
 	class Texture;
 	class Material;
 	class FBXLoader;
+	class CubeMap;
 	struct Model;
 
 	class ResourceManager : public Singleton<ResourceManager>
@@ -51,6 +52,7 @@ namespace Rocket::Core
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
 		Material* GetDefaultMaterial() const { return _defaultMaterial; }
+		CubeMap* GetDefaultCubeMap() const { return _cubeMap; }
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
@@ -76,6 +78,10 @@ namespace Rocket::Core
 		// 기본 메쉬들
 		CubeMesh* _cubeMesh;
 		SphereMesh* _sphereMesh;
+
+		// TODO : 이거 여기있어도 되나? 성격상으로는 ObjectManager에 있어야 할 것 같은데..
+		// 기본 큐브맵
+		CubeMap* _cubeMap;	
 
 		// 기본 머터리얼
 		Material* _defaultMaterial;

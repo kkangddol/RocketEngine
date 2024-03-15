@@ -36,6 +36,7 @@ namespace Rocket::Core
 		void SetRenderState(ID3D11RasterizerState* renderState);
 
 	private:
+		void CalcNodeWorldMatrix(Node* node);		// TODO : 이거 여기서 이렇게 하는게 맞나? Node에서 알아서 하게끔 해야될거같은데..
 		void SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer);
 		void SetBoneBuffer(Node* node, BoneBufferType* boneBuffer);
 		Node* CopyNodeData(Node* originalRootNode);

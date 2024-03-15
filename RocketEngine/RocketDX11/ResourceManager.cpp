@@ -1,4 +1,5 @@
 ﻿#include <DDSTextureLoader.h>
+#include <WICTextureLoader.h>
 #include <cassert>
 
 #include "ResourceManager.h"
@@ -16,6 +17,7 @@
 #include "FBXLoader.h"
 #include "VertexStruct.h"
 #include "ModelStruct.h"
+#include "CubeMap.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string MODEL_PATH = "Resources/Models/";
@@ -102,6 +104,18 @@ namespace Rocket::Core
 			_pixelShaders["SkinnedMeshPS"] = skinnedMeshPS;
 		}
 
+		// CubeMap Shader
+		{
+			VertexShader* cubeMapVS = new VertexShader();
+			cubeMapVS->Initialize(_device.Get(), L"RocketDX11/CubeMapVS.hlsl");
+			cubeMapVS->SetVertexType(eVertexType::VERTEX);
+			_vertexShaders["CubeMapVS"] = cubeMapVS;
+
+			PixelShader* cubeMapPS = new PixelShader();
+			cubeMapPS->Initialize(_device.Get(), L"RocketDX11/CubeMapPS.hlsl");
+			_pixelShaders["CubeMapPS"] = cubeMapPS;
+		}
+
 		CreateRenderStates();
 
 		_cubeMesh = new CubeMesh();
@@ -109,6 +123,10 @@ namespace Rocket::Core
 
 		_sphereMesh = new SphereMesh();
 		_sphereMesh->Initialize(device);
+
+		_cubeMap = new CubeMap();
+		_cubeMap->Initialize(device);
+		_cubeMap->LoadTexture("tori1024.dds");
 
 		_defaultTexture = LoadTextureFile("darkbrickdxt1.dds");
 
@@ -234,7 +252,6 @@ namespace Rocket::Core
 		{
 			assert(false);
 		}
-
 
 		Texture* texture = new Texture(rawTexture, textureView);
 
