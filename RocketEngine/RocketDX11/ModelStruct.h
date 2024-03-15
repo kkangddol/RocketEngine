@@ -62,13 +62,27 @@ namespace Rocket::Core
 		int index = -1;
 		Bone* bindedBone = nullptr;
 		DirectX::XMMATRIX transformMatrix = DirectX::XMMatrixIdentity();
+		DirectX::XMMATRIX worldTM = DirectX::XMMatrixIdentity();
 		Node* parent = nullptr;
 		std::vector<Node*> children = {};
+
+		void CalcWorldMatrix()
+		{
+			if (parent)
+			{
+				worldTM = transformMatrix * parent->GetWorldMatrix();
+			}
+			else
+			{
+				worldTM = transformMatrix;
+			}
+		}
 
 		DirectX::XMMATRIX GetWorldMatrix()
 		{
 			if (parent)
 			{
+
 				return transformMatrix * parent->GetWorldMatrix();
 			}
 			else

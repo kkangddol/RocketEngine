@@ -56,12 +56,12 @@ namespace Rocket::Core
 
 	struct NodeBufferType
 	{
-		DirectX::XMMATRIX transformMatrix[256];
+		DirectX::XMMATRIX transformMatrix[512];
 	};
 
 	struct BoneBufferType
 	{
-		DirectX::XMMATRIX transformMatrix[256];
+		DirectX::XMMATRIX transformMatrix[512];
 	};
 
 	struct CubeMapVertex

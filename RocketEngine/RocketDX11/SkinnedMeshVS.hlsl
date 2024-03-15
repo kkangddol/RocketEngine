@@ -14,12 +14,12 @@ cbuffer CameraBuffer : register(b1)
 
 cbuffer NodeBuffer : register(b2)
 {
-    matrix nodeTransform[256];
+    matrix nodeTransform[512];
 };
 
 cbuffer BoneBuffer : register(b3)
 {
-    matrix boneTransform[256];
+    matrix boneTransform[512];
 }
 
 struct VertexInputType

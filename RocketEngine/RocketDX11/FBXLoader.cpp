@@ -54,7 +54,9 @@ namespace Rocket::Core
 			aiProcess_Triangulate |
 			aiProcess_ConvertToLeftHanded |
 			aiProcess_PopulateArmatureData |
-			aiProcess_CalcTangentSpace);
+			aiProcess_CalcTangentSpace |
+			aiProcess_LimitBoneWeights
+		);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{

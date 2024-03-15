@@ -47,10 +47,10 @@ namespace Rocket::Core
 		Animation* anim = _model->animations.begin()->second;
 		_nowAnimationName = anim->name;
 
-		if (_animationTime == anim->duration)
-		{
-			return;
-		}
+		//if (_animationTime == anim->duration)
+		//{
+		//	return;
+		//}
 
 		_animationTime += deltaTime;
 		_animationTick = _animationTime * anim->ticksPerSecond;
@@ -59,11 +59,19 @@ namespace Rocket::Core
 		{
 			if (_isLoop)
 			{
-				_animationTime -= anim->duration / anim->ticksPerSecond;
+				float secondPerTick = anim->duration / anim->ticksPerSecond;;
+				int count = 0;
+				while (secondPerTick * (count+1) < _animationTime)
+				{
+					count++;
+				}
+				_animationTime -= count * secondPerTick;
+				_animationTick = _animationTime * anim->ticksPerSecond;
 			}
 			else
 			{
 				_animationTime = anim->duration / anim->ticksPerSecond;
+				_animationTick = _animationTime * anim->ticksPerSecond;
 			}
 		}
 
@@ -205,6 +213,8 @@ namespace Rocket::Core
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
+			// TODO : 임시로 짜둔거다 이게 맞나싶다.
+			//CalcNodeWorldMatrix(_animatedRootNode);
 			//SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
 			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
 
@@ -290,12 +300,22 @@ namespace Rocket::Core
 		_material->SetRenderState(renderState);
 	}
 
+	void DynamicModelRenderer::CalcNodeWorldMatrix(Node* node)
+	{
+		node->CalcWorldMatrix();
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			CalcNodeWorldMatrix(node->children[i]);
+		}
+	}
+
 	void DynamicModelRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
 		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		//nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->worldTM);
 		for (int i = 0; i < node->children.size(); i++)
 		{
 			SetNodeBuffer(node->children[i], nodeBuffer);
