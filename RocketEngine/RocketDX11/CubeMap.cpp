@@ -19,7 +19,7 @@ namespace Rocket::Core
 		_vertexCount(),
 		_indexCount(),
 		_vertexShader(),
-		_pixelShader(),
+		_pixelShader()
 	{
 
 	}
