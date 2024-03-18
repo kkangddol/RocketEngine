@@ -21,7 +21,6 @@ namespace Rocket::Core
 	class IFactory
 	{
 	public:
-		virtual ITransform* CreateTransform() = 0;
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticModelRenderer* CreateStaticModelRenderer() = 0;
 		virtual IDynamicModelRenderer* CreateDynamicModelRenderer() = 0;

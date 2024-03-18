@@ -1,7 +1,6 @@
 ﻿#include "ObjectFactory.h"
 #include "ObjectManager.h"
 
-#include "Transform.h"
 #include "Camera.h"
 #include "StaticModelRenderer.h"
 #include "DynamicModelRenderer.h"
@@ -29,11 +28,6 @@ namespace Rocket::Core
 		: _objectManager(ObjectManager::Instance())
 	{
 
-	}
-
-	ITransform* ObjectFactory::CreateTransform()
-	{
-		return new Transform();
 	}
 
 	ICamera* ObjectFactory::CreateCamera()

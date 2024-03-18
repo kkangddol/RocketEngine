@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{89bdfe58-4f80-4ddf-bbe0-24c7b239b0a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{55e7f0ec-8b35-4aef-abc6-889c70be627e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RocketTransform.cpp">
+      <Filter>Transform</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RocketTransform.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

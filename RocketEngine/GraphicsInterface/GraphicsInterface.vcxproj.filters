@@ -58,9 +58,6 @@
     <ClInclude Include="IDynamicModelRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ITransform.h">
-      <Filter>Component</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GraphicsEnum.h">

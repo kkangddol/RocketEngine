@@ -105,9 +105,6 @@
     <ClCompile Include="SkinnedMesh.cpp">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Component\Transform</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicModelRenderer.cpp">
       <Filter>Object\ModelRenderer\DynamicModelRenderer</Filter>
     </ClCompile>
@@ -212,9 +209,6 @@
     <ClInclude Include="SkinnedMesh.h">
       <Filter>Resource\Mesh\SkinnedMesh</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Component\Transform</Filter>
-    </ClInclude>
     <ClInclude Include="DynamicModelRenderer.h">
       <Filter>Object\ModelRenderer\DynamicModelRenderer</Filter>
     </ClInclude>
@@ -318,12 +312,6 @@
     </Filter>
     <Filter Include="GraphicsProcess\Builder">
       <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{38971765-e48e-41bc-b21b-d52fbd0feb59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Transform">
-      <UniqueIdentifier>{8f1b0f81-d5a9-451d-abf3-fc25780e3330}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\HLSL\SkinnedMesh">
       <UniqueIdentifier>{a2656c4f-0de9-4c9a-be05-d5876d4313b1}</UniqueIdentifier>

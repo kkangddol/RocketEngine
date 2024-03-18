@@ -11,7 +11,6 @@ namespace Rocket::Core
 		ObjectFactory();
 
 	public:
-		virtual ITransform* CreateTransform() override;
 		virtual ICamera* CreateCamera() override;
 		virtual IStaticModelRenderer* CreateStaticModelRenderer() override;
 		virtual ITextRenderer* CreateTextRenderer() override;
