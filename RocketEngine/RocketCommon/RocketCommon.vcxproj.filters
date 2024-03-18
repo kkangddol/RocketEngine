@@ -7,10 +7,31 @@
     <Filter Include="MathHeader">
       <UniqueIdentifier>{55e7f0ec-8b35-4aef-abc6-889c70be627e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ModelLoader">
+      <UniqueIdentifier>{c21a215a-9c3a-455a-a2da-054dc9f0ca9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelLoader\FBXLoader">
+      <UniqueIdentifier>{0f3b6b00-63cb-480a-887c-81303de2ae51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelLoader\RFBXLoader">
+      <UniqueIdentifier>{cefb3a29-f5ac-4d34-98b3-da529e970b73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelLoader\Struct">
+      <UniqueIdentifier>{facc2f6f-f700-4160-8fb5-5eb76abbef09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ModelLoader\FBXLoader\Utility">
+      <UniqueIdentifier>{b5fff86f-ef57-45d3-9a93-74005e59859d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketTransform.cpp">
       <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="RFBXLoader.cpp">
+      <Filter>ModelLoader\RFBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>ModelLoader\FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -19,6 +40,18 @@
     </ClInclude>
     <ClInclude Include="MathHeader.h">
       <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="RFBXLoader.h">
+      <Filter>ModelLoader\RFBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="RawModelStruct.h">
+      <Filter>ModelLoader\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>ModelLoader\FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpMathConverter.h">
+      <Filter>ModelLoader\FBXLoader\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

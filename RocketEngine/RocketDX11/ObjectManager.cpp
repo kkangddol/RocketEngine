@@ -98,7 +98,7 @@ namespace Rocket::Core
 
 	std::vector<DynamicModelRenderer*>& ObjectManager::GetDynamicModelRenderers()
 	{
-		return dynamicModelRendererList;
+		return _dynamicModelRendererList;
 	}
 
 	DynamicModelRenderer* ObjectManager::CreateDynamicModelRenderer()
@@ -115,7 +115,7 @@ namespace Rocket::Core
 		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
 		dynamicModelRenderer->SetMaterial(material);
 
-		dynamicModelRendererList.emplace_back(dynamicModelRenderer);
+		_dynamicModelRendererList.emplace_back(dynamicModelRenderer);
 
 		return dynamicModelRenderer;
 	}

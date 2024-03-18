@@ -47,6 +47,7 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="ModelRendererBase.h" />
     <ClInclude Include="IEngineProcess.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="StaticModelRenderer.h" />
     <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="GraphicsSystem.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="StaticModelRenderer.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
