@@ -122,7 +122,7 @@ namespace Rocket::Core
 			}
 			else
 			{
-				// 얘는 메쉬랑 본 읽으면서 각각의 버텍스한테 노드를 셋 해줬을것이다.. 아님말고?
+				// 얘는 메쉬랑 본 읽으면서 각각의 버텍스한테 노드를 셋 해줬을것이다.
 				auto skinnedMesh = dynamic_cast<SkinnedMesh*>(mesh);
 				reinterpret_cast<DynamicModel*>(_nowModel)->meshes.emplace_back(skinnedMesh);
 			}
@@ -407,7 +407,6 @@ namespace Rocket::Core
 		return newMesh;
 	}
 
-	/// 임시 주석
 	void FBXLoader::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
 	{
 		UINT textureCount = material->GetTextureCount(type);

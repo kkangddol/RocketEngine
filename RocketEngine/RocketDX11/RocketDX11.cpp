@@ -300,6 +300,7 @@ namespace Rocket::Core
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}
 
+		// TODO : 전체 리스트에 있는 것들을 그리는 것이 아니라 현재 씬만 그려야 한다..
 		for (auto meshRenderer : _objectManager.GetStaticModelRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());

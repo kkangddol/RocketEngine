@@ -12,6 +12,7 @@
 
 using Microsoft::WRL::ComPtr;
 
+// TODO : 머터리얼에 대한 정보도 처리할 수 있도록 해야 함.
 namespace Rocket::Core
 {
 	struct Node;
