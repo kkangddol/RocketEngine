@@ -18,6 +18,7 @@
 #include "VertexStruct.h"
 #include "ModelStruct.h"
 #include "CubeMap.h"
+#include "../RocketCommon/RawModelStruct.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string MODEL_PATH = "Resources/Models/";
@@ -42,6 +43,7 @@ namespace Rocket::Core
 		_device = device;
 		_deviceContext = deviceContext;
 
+		// TODO : 너 Common으로 갔으니까 바뀌어야 할 필요가 있단다.
 		_fbxLoader->Initialize(device);
 
 		// Color Shader
@@ -141,6 +143,21 @@ namespace Rocket::Core
 		_cubePrimitive = DirectX::DX11::GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
 		_spherePrimitive = DirectX::DX11::GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
 		_cylinderPrimitive = DirectX::DX11::GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
+	}
+
+	void ResourceManager::LoadModel(const std::string& fileName, const RawModel* rawModel)
+	{
+		// TODO : FBXLoader에서 뭔가 생성하던 것들을 여기서 해주면 된다.
+		if (rawModel->animations.empty())
+		{
+			_models.insert({ fileName,new StaticModel });
+			ProcessStaticModel(fileName, rawModel);
+		}
+		else
+		{
+			_models.insert({ fileName, new DynamicModel });
+			ProcessDynamicModel(fileName, rawModel);
+		}
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -278,5 +295,18 @@ namespace Rocket::Core
 		}
 
 		return _models[fileName];
+	}
+
+	void ResourceManager::ProcessStaticModel(const std::string& fileName, const RawModel* rawModel)
+	{
+		StaticModel* resultModel = reinterpret_cast<StaticModel*>(_models.at(fileName));
+
+
+	}
+
+	void ResourceManager::ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel)
+	{
+		DynamicModel* resultModel = reinterpret_cast<DynamicModel*>(_models.at(fileName));
+
 	}
 }

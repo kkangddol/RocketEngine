@@ -22,6 +22,21 @@
     <Filter Include="ModelLoader\FBXLoader\Utility">
       <UniqueIdentifier>{b5fff86f-ef57-45d3-9a93-74005e59859d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{330685f8-7cd6-4a55-9b1e-63a2ef034275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Component">
+      <UniqueIdentifier>{e3e63553-2c0d-4ae4-a2e4-2340c4bdaa13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\DX11Renderer">
+      <UniqueIdentifier>{2fc4ae40-db01-42a1-b811-a66135d0df49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Enum">
+      <UniqueIdentifier>{cdc519e9-eb95-4cce-b0c1-fe15ea26eaf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Factory">
+      <UniqueIdentifier>{c35cb22d-950e-4cc7-9bfd-4d267be04e0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketTransform.cpp">
@@ -30,7 +45,7 @@
     <ClCompile Include="RFBXLoader.cpp">
       <Filter>ModelLoader\RFBXLoader</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
+    <ClCompile Include="FBXLoaderToRaw.cpp">
       <Filter>ModelLoader\FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,11 +62,53 @@
     <ClInclude Include="RawModelStruct.h">
       <Filter>ModelLoader\Struct</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
+    <ClInclude Include="FBXLoaderToRaw.h">
       <Filter>ModelLoader\FBXLoader</Filter>
     </ClInclude>
     <ClInclude Include="AssimpMathConverter.h">
       <Filter>ModelLoader\FBXLoader\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IDynamicModelRenderer.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ILineRenderer.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ISpriteRenderer.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IStaticModelRenderer.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ITextRenderer.h">
+      <Filter>Interface\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="IDX11Renderer.h">
+      <Filter>Interface\DX11Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEnum.h">
+      <Filter>Interface\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="IFactory.h">
+      <Filter>Interface\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="IMaterial.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IResourceManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ISketchable.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveHeader.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

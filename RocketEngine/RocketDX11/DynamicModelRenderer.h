@@ -5,8 +5,9 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\GraphicsInterface\\IDynamicModelRenderer.h"
-#include "../GraphicsInterface/GraphicsEnum.h"
+#include "..\\RocketCommon\\IDynamicModelRenderer.h"
+#include "../RocketCommon/GraphicsEnum.h"
+#include "../RocketCommon/RocketTransform.h"
 #include "ModelStruct.h"
 #include "Material.h"
 
@@ -57,6 +58,7 @@ namespace Rocket::Core
 	private:
 		std::string _nowAnimationName;
 		Node* _animatedRootNode;		// 애니메이션을 적용한 루트 노드 (원본에서 깊은 복사해옴)
+		RocketTransform* _rootTransform;	// 앞단에서의 GameObject의 transform의 최상위 부모
 		std::unordered_map<std::string, Node*> _animatedNodeMap;	// 애니메이션을 적용한 노드들의 맵 (원본에서 깊은 복사 해옴)
 		double _animationTime;
 		double _animationTick;

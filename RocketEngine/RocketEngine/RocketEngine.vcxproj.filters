@@ -130,12 +130,6 @@
     <Filter Include="Component\Renderer\Model\BaseClass">
       <UniqueIdentifier>{023f3669-3073-45ee-91ac-c1e75cd0c8c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Renderer\Model\MeshRenderer">
-      <UniqueIdentifier>{ca4d48c7-1965-4fdf-bf7b-ded7efe3dc5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Component\Renderer\Model\SkinnedMeshRenderer">
-      <UniqueIdentifier>{39f79bdb-8626-4e6b-9ef3-4bfc18c95330}</UniqueIdentifier>
-    </Filter>
     <Filter Include="System&amp;Manager">
       <UniqueIdentifier>{16b11710-e714-4506-9403-7489d6e5aa0d}</UniqueIdentifier>
     </Filter>
@@ -184,8 +178,14 @@
     <Filter Include="System&amp;Manager\GraphicsSystem">
       <UniqueIdentifier>{1554353f-8156-49ee-8340-7690958d55ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System&amp;Manager\ResourceManager">
+    <Filter Include="System&amp;Manager\ResourceSystem">
       <UniqueIdentifier>{baf9cb67-da11-4b94-b424-8eb294c4c301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderer\Model\DynamicModelRenderer">
+      <UniqueIdentifier>{39f79bdb-8626-4e6b-9ef3-4bfc18c95330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Renderer\Model\StaticMeshRenderer">
+      <UniqueIdentifier>{ca4d48c7-1965-4fdf-bf7b-ded7efe3dc5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -234,8 +234,8 @@
     <ClInclude Include="TimeSystem.h">
       <Filter>System&amp;Manager\TimeSystem</Filter>
     </ClInclude>
-    <ClInclude Include="StaticModelRenderer.h">
-      <Filter>Component\Renderer\Model\MeshRenderer</Filter>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Component\Renderer\Model\StaticMeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>System&amp;Manager\InputSystem</Filter>
@@ -256,7 +256,7 @@
       <Filter>Tween\TweenTimer</Filter>
     </ClInclude>
     <ClInclude Include="DynamicModelRenderer.h">
-      <Filter>Component\Renderer\Model\SkinnedMeshRenderer</Filter>
+      <Filter>Component\Renderer\Model\DynamicModelRenderer</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Animation\State</Filter>
@@ -348,8 +348,8 @@
     <ClInclude Include="MathHeader.h">
       <Filter>MathHeader</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>System&amp;Manager\ResourceManager</Filter>
+    <ClInclude Include="ResourceSystem.h">
+      <Filter>System&amp;Manager\ResourceSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -392,8 +392,8 @@
     <ClCompile Include="TimeSystem.cpp">
       <Filter>System&amp;Manager\TimeSystem</Filter>
     </ClCompile>
-    <ClCompile Include="StaticModelRenderer.cpp">
-      <Filter>Component\Renderer\Model\MeshRenderer</Filter>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Component\Renderer\Model\StaticMeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>System&amp;Manager\InputSystem</Filter>
@@ -411,7 +411,7 @@
       <Filter>Tween\TweenTimer</Filter>
     </ClCompile>
     <ClCompile Include="DynamicModelRenderer.cpp">
-      <Filter>Component\Renderer\Model\SkinnedMeshRenderer</Filter>
+      <Filter>Component\Renderer\Model\DynamicModelRenderer</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Animation\State</Filter>
@@ -491,8 +491,8 @@
     <ClCompile Include="DataSystem.cpp">
       <Filter>System&amp;Manager\DataSystem\DataSystem</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>System&amp;Manager\ResourceManager</Filter>
+    <ClCompile Include="ResourceSystem.cpp">
+      <Filter>System&amp;Manager\ResourceSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

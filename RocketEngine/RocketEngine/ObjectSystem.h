@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <vector>
 #include <string>
 #include "Singleton.h"
@@ -12,25 +12,30 @@ namespace Rocket
 
 namespace Rocket::Core
 {
+	struct RawNode;
+}
+
+namespace Rocket::Core
+{
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
 	private:
-		ObjectSystem();		// ½Ì±ÛÅÏÀÌ±â ¶§¹®¿¡ ¿ÜºÎ¿¡¼­ »ı¼ºÇÒ ¼ö ¾øµµ·Ï.
+		ObjectSystem();		// ì‹±ê¸€í„´ì´ê¸° ë•Œë¬¸ì— ì™¸ë¶€ì—ì„œ ìƒì„±í•  ìˆ˜ ì—†ë„ë¡.
 
 	public:
 		void Initialize();
 		void Finalize();
 
-		/// ¶óÀÌÇÁ »çÀÌÅ¬ °ü¸®.
+		/// ë¼ì´í”„ ì‚¬ì´í´ ê´€ë¦¬.
 	public:
 		void StartCurrentScene();
 
-		// ÇöÀç ¾À¿¡ ´ëÇØ Update¸¦ ¼öÇàÇÑ´Ù.
+		// í˜„ì¬ ì”¬ì— ëŒ€í•´ Updateë¥¼ ìˆ˜í–‰í•œë‹¤.
 		void UpdateCurrentScene();
 		void LateUpdateCurrentScene();
 
-		// ¼±ÅÃµÈ ¾À¿¡ ´ëÇØ Update¸¦ ¼öÇàÇÑ´Ù.
+		// ì„ íƒëœ ì”¬ì— ëŒ€í•´ Updateë¥¼ ìˆ˜í–‰í•œë‹¤.
 		void UpdateScene(Rocket::Scene* scene);
 
 	public:
@@ -41,15 +46,17 @@ namespace Rocket::Core
 		void AddDisable(Rocket::GameObject* obj);
 
 	public:
-		Rocket::GameObject* CreateStaticObject(std::string objName);
+		Rocket::GameObject* CreateObject(const std::string& objName);
+		Rocket::GameObject* CreateStaticObject(const std::string& objName);
+		Rocket::GameObject* CreateModelObject(const std::string& fileName);
 
-	private:
-		std::vector<Rocket::GameObject*> _staticObjList;
-
-	public:
 		void AddStaticComponent(Rocket::Component* component);
 
 	private:
+		Rocket::GameObject* CreateGameObjectFromRawNode(RawNode* node, bool isDynamic);		// ëª¨ë¸ë Œë”ëŸ¬ë„ ë¶™ì€ Hierarchyê°€ ì™„ì„±ëœ root GameObjectë¥¼ ë°˜í™˜í•œë‹¤.
+
+	private:
+		std::vector<Rocket::GameObject*> _staticObjList;
 		std::vector<Rocket::Component*> _staticComponentList;
 
 	private:

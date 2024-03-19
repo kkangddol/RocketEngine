@@ -24,7 +24,7 @@
 // 대체로 컴포넌트.
 #include "Component.h"
 #include "Camera.h"
-#include "StaticModelRenderer.h"
+#include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
 #include "Transform.h"
 #include "AnimationController.h"

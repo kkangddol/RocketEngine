@@ -14,6 +14,7 @@ namespace Rocket::Core
 	class ITextRenderer;
 	class ISpriteRenderer;
 	class ILineRenderer;
+	class IResourceManager;
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
@@ -36,4 +37,5 @@ namespace Rocket::Core
 
 	extern "C" __declspec(dllexport) IFactory* CreateGraphicsObjectFactory();
 	extern "C" __declspec(dllexport) void ReleaseFactory(IFactory* instance);
+	extern "C" __declspec(dllexport) IResourceManager* GetResourceManager();
 }

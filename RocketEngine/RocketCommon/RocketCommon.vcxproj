@@ -145,14 +145,28 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FBXLoader.cpp" />
+    <ClCompile Include="FBXLoaderToRaw.cpp" />
     <ClCompile Include="RFBXLoader.cpp" />
     <ClCompile Include="RocketTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpMathConverter.h" />
-    <ClInclude Include="FBXLoader.h" />
+    <ClInclude Include="FBXLoaderToRaw.h" />
+    <ClInclude Include="GraphicsEnum.h" />
+    <ClInclude Include="ICamera.h" />
+    <ClInclude Include="IDX11Renderer.h" />
+    <ClInclude Include="IDynamicModelRenderer.h" />
+    <ClInclude Include="IFactory.h" />
+    <ClInclude Include="ILineRenderer.h" />
+    <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="IResourceManager.h" />
+    <ClInclude Include="ISketchable.h" />
+    <ClInclude Include="ISpriteRenderer.h" />
+    <ClInclude Include="IStaticModelRenderer.h" />
+    <ClInclude Include="ITextRenderer.h" />
     <ClInclude Include="MathHeader.h" />
+    <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="RawModelStruct.h" />
     <ClInclude Include="RFBXLoader.h" />
     <ClInclude Include="RocketTransform.h" />

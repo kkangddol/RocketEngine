@@ -308,7 +308,7 @@ namespace Rocket::Core
 		_scale = Vector3::Transform(_scale, parent->GetScaleMatrix().Invert());
 
 		_parent = parent;
-		dynamic_cast<RocketTransform*>(parent)->AddChild(this);
+		parent->AddChild(this);
 	}
 
 	RocketTransform* RocketTransform::GetParent() const
@@ -356,7 +356,7 @@ namespace Rocket::Core
 		SetLocalRotation(Quaternion::Concatenate(_rotation, _parent->GetRotation()));
 		SetLocalScale(Vector3::Transform(_scale, _parent->GetScaleMatrix()));
 
-		dynamic_cast<RocketTransform*>(_parent)->ReleaseChild(this);
+		_parent->ReleaseChild(this);
 		_parent = nullptr;
 	}
 

@@ -2,7 +2,7 @@
 #include <string>
 #include "DLLExporter.h"
 #include "ModelRendererBase.h"
-#include "../GraphicsInterface/GraphicsEnum.h"
+#include "../RocketCommon/GraphicsEnum.h"
 
 namespace Rocket::Core
 {
@@ -13,10 +13,14 @@ namespace Rocket
 {
 	class GameObject;
 
-	class ROCKET_API StaticModelRenderer final : public Core::ModelRendererBase
+	/// <summary>
+	/// Static한 Mesh만을 출력해주는 Component.
+	/// Dynamic한 Model을 출력하고 싶다면, DynamicModelRenderer를 사용하자.
+	/// </summary>
+	class ROCKET_API MeshRenderer final : public Core::ModelRendererBase
 	{
 	public:
-		StaticModelRenderer();
+		MeshRenderer();
 		//void SetMesh(eMeshType meshType);
 		void SetMesh(std::string fileName);
 		void SetTexture(std::string fileName);

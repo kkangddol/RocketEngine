@@ -2,19 +2,24 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "FBXLoader.h"
+#include "FBXLoaderToRaw.h"
 #include "AssimpMathConverter.h"
 
 const std::string MODEL_PATH = "Resources/Models/";
 
 namespace Rocket::Core
 {
-	FBXLoader::~FBXLoader()
+	FBXLoaderToRaw::FBXLoaderToRaw()
 	{
 
 	}
 
-	RawModel* FBXLoader::LoadFBXFile(std::string fileName)
+	FBXLoaderToRaw::~FBXLoaderToRaw()
+	{
+
+	}
+
+	RawModel* FBXLoaderToRaw::LoadFBXFile(std::string fileName)
 	{
 		std::string fileNameWithExtension;
 
@@ -59,27 +64,21 @@ namespace Rocket::Core
 		// 3. 애니메이션 정보를 처리한다.
 		if (scene->HasAnimations())
 		{
-			LoadAnimation(scene);						// 애니메이션 데이터 로드
+			LoadAnimation(scene);			// 애니메이션 데이터 로드
 		}
 
 		return _resultModel;
 	}
 
-	void FBXLoader::ProcessNode(aiNode* ainode, const aiScene* scene)
+	void FBXLoaderToRaw::ProcessNode(aiNode* ainode, const aiScene* scene)
 	{
 		for (UINT i = 0; i < ainode->mNumMeshes; ++i)
 		{
 			RawMesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
 
-			// TODO : 여기서 if문으로 분기타지않게 할 것. -> ?
-			if (!scene->HasAnimations())
-			{
-				mesh->node = _aiNodeToNodeMap.at(ainode);
-			}
-			else
-			{
-				// 얘는 메쉬랑 본 읽으면서 각각의 버텍스한테 노드를 셋 해줬을 것이다.
-			}
+			RawNode* node = _aiNodeToNodeMap.at(ainode);
+			mesh->bindedNode = node;
+			node->meshes.emplace_back(mesh);
 			_resultModel->meshes.emplace_back(mesh);
 		}
 
@@ -89,7 +88,7 @@ namespace Rocket::Core
 		}
 	}
 
-	RawMesh* FBXLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+	RawMesh* FBXLoaderToRaw::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<RawVertex> vertices;
 		std::vector<UINT> indices;
@@ -137,19 +136,7 @@ namespace Rocket::Core
 			}
 		}
 
-		// 머터리얼 처리
-		if (mesh->mMaterialIndex >= 0)
-		{
-			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
-			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
-			}
-		}
-
 		// 본데이터 처리
-		// 각각의 버텍스에 영향을 주는 모든 본에 대해서 저장한 다음
-		// 버텍스 기준으로 본인의 position과 normal을 다시 계산한다.
 		std::vector<uint32_t> boneIndecesPerVertex;
 		boneIndecesPerVertex.resize(vertices.size());
 
@@ -198,83 +185,115 @@ namespace Rocket::Core
 			}
 		}
 
+		// 머터리얼 처리
+		RawMaterial* resultMaterial = nullptr;
+
+		if (mesh->mMaterialIndex >= 0)
+		{
+			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
+			{
+				if (material->GetTextureCount((aiTextureType)i) > 0)
+				{
+					resultMaterial = LoadMaterialTextures(material, (aiTextureType)i, scene);
+				}
+			}
+		}
+
 		RawMesh* resultMesh = new RawMesh();
+		resultMesh->name = mesh->mName.C_Str();
 		resultMesh->vertices = vertices;
 		resultMesh->indices = indices;
+		resultMesh->material = resultMaterial;
 
 		return resultMesh;
 	}
 
-	void FBXLoader::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
+	RawMaterial* FBXLoaderToRaw::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
 	{
+		RawMaterial* resultMaterial = new RawMaterial();
+
 		UINT textureCount = material->GetTextureCount(type);
+
 		for (UINT i = 0; i < textureCount; ++i)
 		{
-			aiString str;
-			material->GetTexture(type, i, &str);
-			std::string s = std::string(str.C_Str());
+			aiString path;
+			material->GetTexture(type, i, &path);
+			std::string s = std::string(path.C_Str());
 			std::string fileName = s.substr(s.find_last_of("/\\") + 1, s.length() - s.find_last_of("/\\"));
-			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			auto iter = ResourceManager::Instance()._textures.find(fileName);
-			if (iter == ResourceManager::Instance()._textures.end())
+
+			switch (type)
 			{
-				const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
-				if (embeddedTexture != nullptr)
-				{
-					// Map에서 내가 만든 클래스말고 그냥 SRV만 관리할까..?
-					ID3D11ShaderResourceView* textureSRV = LoadEmbeddedTexture(embeddedTexture);
-					Texture* texture = new Texture(nullptr, textureSRV);
-					ResourceManager::Instance()._textures.insert(std::make_pair(fileName, texture));
-				}
-				else
-				{
-					ResourceManager::Instance().LoadTextureFile(fileName);
-				}
+					// Legacy
+				case aiTextureType_DIFFUSE:
+					resultMaterial->diffuseTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_SPECULAR:
+					resultMaterial->specularTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_AMBIENT:
+					resultMaterial->ambientTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_EMISSIVE:
+					resultMaterial->emissiveTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_HEIGHT:
+					resultMaterial->heightTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_NORMALS:
+					resultMaterial->normalTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_SHININESS:
+					resultMaterial->shininessTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_OPACITY:
+					resultMaterial->opacityTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_DISPLACEMENT:
+					resultMaterial->displacementTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_LIGHTMAP:
+					resultMaterial->lightmapTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_REFLECTION:
+					resultMaterial->reflectionTexture = new RawTexture({ fileName, fileName });
+					break;
+
+					// PBR
+				case aiTextureType_BASE_COLOR:
+					resultMaterial->baseColorTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_NORMAL_CAMERA:
+					resultMaterial->normalCameraTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_EMISSION_COLOR:
+					resultMaterial->emissiveColorTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_METALNESS:
+					resultMaterial->metallicTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_DIFFUSE_ROUGHNESS:
+					resultMaterial->roughnessTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_AMBIENT_OCCLUSION:
+					resultMaterial->ambientOcclusionTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_SHEEN:
+					resultMaterial->sheenTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_TRANSMISSION:
+					resultMaterial->transmissionTexture = new RawTexture({ fileName, fileName });
+					break;
+				case aiTextureType_UNKNOWN:
+					resultMaterial->unknownTexture = new RawTexture({ fileName, fileName });
+					break;
 			}
 		}
+
+		return resultMaterial;
 	}
 
-	RawTexture* FBXLoader::LoadEmbeddedTexture(const aiTexture* embeddedTexture)
-	{
-		HRESULT hr;
-		ID3D11ShaderResourceView* texture = nullptr;
-
-		if (embeddedTexture->mHeight != 0) {
-			// Load an uncompressed ARGB8888 embedded texture
-			D3D11_TEXTURE2D_DESC desc;
-			desc.Width = embeddedTexture->mWidth;
-			desc.Height = embeddedTexture->mHeight;
-			desc.MipLevels = 1;
-			desc.ArraySize = 1;
-			desc.SampleDesc.Count = 1;
-			desc.SampleDesc.Quality = 0;
-			desc.Usage = D3D11_USAGE_DEFAULT;
-			desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-			desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-			desc.CPUAccessFlags = 0;
-			desc.MiscFlags = 0;
-
-			D3D11_SUBRESOURCE_DATA subresourceData;
-			subresourceData.pSysMem = embeddedTexture->pcData;
-			subresourceData.SysMemPitch = embeddedTexture->mWidth * 4;
-			subresourceData.SysMemSlicePitch = embeddedTexture->mWidth * embeddedTexture->mHeight * 4;
-
-			ID3D11Texture2D* texture2D = nullptr;
-			hr = _device->CreateTexture2D(&desc, &subresourceData, &texture2D);
-			if (FAILED(hr))
-				MessageBox(nullptr, L"CreateTexture2D failed!", L"Error!", MB_ICONERROR | MB_OK);
-
-			hr = _device->CreateShaderResourceView(texture2D, nullptr, &texture);
-			if (FAILED(hr))
-				MessageBox(nullptr, L"CreateShaderResourceView failed!", L"Error!", MB_ICONERROR | MB_OK);
-
-			return texture;
-		}
-
-		return texture;
-	}
-
-	void FBXLoader::LoadAnimation(const aiScene* scene)
+	void FBXLoaderToRaw::LoadAnimation(const aiScene* scene)
 	{
 		if (!scene->HasAnimations())
 		{
@@ -332,7 +351,7 @@ namespace Rocket::Core
 		}
 	}
 
-	RawNode* FBXLoader::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
+	RawNode* FBXLoaderToRaw::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
 	{
 		UINT index = 0;
 		RawNode* rootNode = new RawNode();
@@ -342,7 +361,7 @@ namespace Rocket::Core
 		return rootNode;
 	}
 
-	void FBXLoader::ReadNodeRecur(RawNode* node, aiNode* ainode, const aiScene* scene, UINT& index)
+	void FBXLoaderToRaw::ReadNodeRecur(RawNode* node, aiNode* ainode, const aiScene* scene, UINT& index)
 	{
 		node->name = ainode->mName.C_Str();
 		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.

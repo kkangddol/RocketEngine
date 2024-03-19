@@ -5,8 +5,8 @@
 #include <wrl.h>
 #include <vector>
 
-#include "..\\GraphicsInterface\\IStaticModelRenderer.h"
-#include "../GraphicsInterface/GraphicsEnum.h"
+#include "..\\RocketCommon\\IStaticModelRenderer.h"
+#include "../RocketCommon/GraphicsEnum.h"
 #include "ModelStruct.h"
 #include "Material.h"
 

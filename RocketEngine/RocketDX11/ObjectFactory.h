@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "..\\GraphicsInterface\\IFactory.h"
+#include "..\\RocketCommon\\IFactory.h"
 
 namespace Rocket::Core
 {

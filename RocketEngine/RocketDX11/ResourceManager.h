@@ -10,7 +10,8 @@
 #include <string>
 
 #include "Singleton.h"
-#include "../GraphicsInterface/GraphicsEnum.h"
+#include "../RocketCommon/IResourceManager.h"
+#include "../RocketCommon/GraphicsEnum.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -28,7 +29,7 @@ namespace Rocket::Core
 	class CubeMap;
 	struct Model;
 
-	class ResourceManager : public Singleton<ResourceManager>
+	class ResourceManager : public Singleton<ResourceManager>, public IResourceManager
 	{
 		friend Singleton;
 		friend FBXLoader;
@@ -45,8 +46,12 @@ namespace Rocket::Core
 	public:
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		/// 앞 단에서 읽은 RawModel을 이용해서 리소스들을 생성하고 저장한다.
+		virtual void LoadModel(const std::string& fileName, const RawModel* rawModel) override;
+
 		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
 		Mesh* GetMesh(eMeshType meshType) const;
+		// TODO : 근데 이거 Mesh 기반으로도 그릴 수 있도록 해놔야 하는건가?
 		// std::vector<Mesh*>& GetMeshes(const std::string& fileName);		지금은 Model 베이스로 그리게끔 해놨음.
 		Model* GetModel(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
@@ -65,6 +70,10 @@ namespace Rocket::Core
 		ID3D11Device* GetDevice();
 		ID3D11DeviceContext* GetDeviceContext();
 		ID3D11RasterizerState* GetRenderState(eRenderState eState);
+
+	private:
+		void ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel);
+		void ProcessStaticModel(const std::string& fileName, const RawModel* rawModel);
 
 	private:
 		void CreateRenderStates();

@@ -17,6 +17,7 @@ namespace Rocket::Core
 	struct RawBone;
 	struct RawMesh;
 	struct RawVertex;
+	struct RawMaterial;
 	struct RawTexture;
 		   
 	struct RawNodeAnimationData;
@@ -40,6 +41,7 @@ namespace Rocket::Core
 		Matrix transformMatrix = Matrix::Identity;
 		RawNode* parent = nullptr;
 		std::vector<RawNode*> children = {};
+		std::vector<RawMesh*> meshes = {};
 	};
 
 	// structure containing bone information
@@ -53,7 +55,9 @@ namespace Rocket::Core
 
 	struct RawMesh
 	{
-		RawNode* node = nullptr;
+		std::string name = "";
+		RawNode* bindedNode = nullptr;
+		RawMaterial* material = nullptr;
 		std::vector<RawVertex> vertices = {};
 		std::vector<unsigned int> indices = {};
 	};
@@ -69,9 +73,38 @@ namespace Rocket::Core
 		DirectX::XMUINT4 boneIndices = {};		// 최대 4개의 본에 대한 인덱스
 	};
 
+	struct RawMaterial
+	{
+		// Legacy
+		RawTexture* diffuseTexture = nullptr;
+		RawTexture* specularTexture = nullptr;
+		RawTexture* ambientTexture = nullptr;
+		RawTexture* emissiveTexture = nullptr;
+		RawTexture* heightTexture = nullptr;
+		RawTexture* normalTexture = nullptr;
+		RawTexture* shininessTexture = nullptr;
+		RawTexture* opacityTexture = nullptr;
+		RawTexture* displacementTexture = nullptr;
+		RawTexture* lightmapTexture = nullptr;
+		RawTexture* reflectionTexture = nullptr;
+
+		// PBR
+		RawTexture* baseColorTexture = nullptr;
+		RawTexture* normalCameraTexture = nullptr;
+		RawTexture* emissiveColorTexture = nullptr;
+		RawTexture* metallicTexture = nullptr;
+		RawTexture* roughnessTexture = nullptr;
+		RawTexture* ambientOcclusionTexture = nullptr;
+		RawTexture* sheenTexture = nullptr;
+		RawTexture* clearcoatTexture = nullptr;
+		RawTexture* transmissionTexture = nullptr;
+		RawTexture* unknownTexture = nullptr;
+	};
+
 	struct RawTexture
 	{
-
+		std::string name = "";
+		std::string path = "";
 	};
 
 	// structure containing each node's animation information in one animation

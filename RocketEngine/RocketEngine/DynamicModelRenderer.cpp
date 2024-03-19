@@ -2,7 +2,7 @@
 #include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "../GraphicsInterface/IDynamicModelRenderer.h"
+#include "../RocketCommon/IDynamicModelRenderer.h"
 
 namespace Rocket
 {
@@ -12,7 +12,7 @@ namespace Rocket
 
 	}
 
-	void DynamicModelRenderer::SetMesh(std::string fileName)
+	void DynamicModelRenderer::LoadModel(std::string fileName)
 	{
 		_skinnedMeshRenderer->LoadModel(fileName);
 	}
