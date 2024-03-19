@@ -11,7 +11,7 @@ namespace Rocket::Core
 	public:
 		virtual ~IResourceManager() {};
 
-		virtual void LoadModel(const std::string& fileName, const RawModel* model) = 0;
+		virtual void LoadModel(const std::string& fileName, const RawModel* rawModel) = 0;
 
 	};
 }

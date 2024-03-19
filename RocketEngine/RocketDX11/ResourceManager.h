@@ -72,8 +72,8 @@ namespace Rocket::Core
 		ID3D11RasterizerState* GetRenderState(eRenderState eState);
 
 	private:
-		void ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel);
 		void ProcessStaticModel(const std::string& fileName, const RawModel* rawModel);
+		void ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel);
 
 	private:
 		void CreateRenderStates();
