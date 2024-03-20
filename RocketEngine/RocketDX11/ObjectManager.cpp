@@ -4,7 +4,7 @@
 
 #include "ResourceManager.h"
 #include "Camera.h"
-#include "StaticModelRenderer.h"
+#include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"
@@ -32,9 +32,9 @@ namespace Rocket::Core
 		return temp;
 	}
 
-	StaticModelRenderer* ObjectManager::CreateStaticModelRenderer()
+	MeshRenderer* ObjectManager::CreateStaticModelRenderer()
 	{
-		StaticModelRenderer* meshRenderer = new StaticModelRenderer();
+		MeshRenderer* meshRenderer = new MeshRenderer();
 
 		// TODO : 기본 Mesh를 넣어주기로 했는데 이거 일단 보류.
 		// meshRenderer->LoadModel(_resourceManager.GetCubeMesh());
@@ -68,7 +68,7 @@ namespace Rocket::Core
 		return _ImageList;
 	}
 
-	std::vector<StaticModelRenderer*>& ObjectManager::GetStaticModelRenderers()
+	std::vector<MeshRenderer*>& ObjectManager::GetStaticModelRenderers()
 	{
 		return _staticModelRendererList;
 	}

@@ -163,7 +163,7 @@
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
     <ClInclude Include="ISpriteRenderer.h" />
-    <ClInclude Include="IStaticModelRenderer.h" />
+    <ClInclude Include="IMeshRenderer.h" />
     <ClInclude Include="ITextRenderer.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="PrimitiveHeader.h" />

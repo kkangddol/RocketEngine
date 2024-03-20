@@ -27,7 +27,6 @@ namespace Rocket::Core
 	{
 		std::string name = "";
 		RawNode* rootNode = nullptr;
-		std::unordered_map<std::string, RawNode*> nodeMap = std::unordered_map<std::string, RawNode*>();
 		std::vector<RawMesh*> meshes;
 		std::unordered_map<std::string, RawAnimation*> animations;
 	};
@@ -55,6 +54,16 @@ namespace Rocket::Core
 
 	struct RawMesh
 	{
+		void BindNode(RawNode* node)
+		{
+			bindedNode = node;
+
+			for (auto& vertex : vertices)
+			{
+				vertex.nodeIndex = node->index;
+			}
+		}
+
 		std::string name = "";
 		RawNode* bindedNode = nullptr;
 		RawMaterial* material = nullptr;
@@ -68,13 +77,15 @@ namespace Rocket::Core
 		Vector2 UV = Vector2::Zero;
 		Vector3 normal = Vector3::Zero;
 		Vector3 tangent = Vector3::Zero;
-		UINT nodeIndex = {};
+		UINT nodeIndex = 0;
 		Vector4 weights = Vector4::Zero;			// 최대 4개의 본에 대한 가중치
 		DirectX::XMUINT4 boneIndices = {};		// 최대 4개의 본에 대한 인덱스
 	};
 
 	struct RawMaterial
 	{
+		std::vector<RawTexture*> textures = {};
+
 		// Legacy
 		RawTexture* diffuseTexture = nullptr;
 		RawTexture* specularTexture = nullptr;

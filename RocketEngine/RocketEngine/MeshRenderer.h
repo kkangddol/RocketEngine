@@ -6,7 +6,7 @@
 
 namespace Rocket::Core
 {
-	class IStaticModelRenderer;
+	class IMeshRenderer;
 }
 
 namespace Rocket
@@ -29,7 +29,7 @@ namespace Rocket
 		virtual void UpdateRenderData() override;
 
 	private:
-		Core::IStaticModelRenderer* _meshRenderer;
+		Core::IMeshRenderer* _meshRenderer;
 	};
 }
 

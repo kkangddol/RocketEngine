@@ -7,6 +7,8 @@
 #include "CubeMesh.h"
 #include "SphereMesh.h"
 #include "Mesh.h"
+#include "StaticMesh.h"
+#include "SkinnedMesh.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "TextRenderer.h"
@@ -16,9 +18,8 @@
 #include "material.h"
 #include "FBXLoader.h"
 #include "VertexStruct.h"
-#include "ModelStruct.h"
+
 #include "CubeMap.h"
-#include "../RocketCommon/RawModelStruct.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string MODEL_PATH = "Resources/Models/";
@@ -151,12 +152,12 @@ namespace Rocket::Core
 		if (rawModel->animations.empty())
 		{
 			_models.insert({ fileName,new StaticModel });
-			ProcessStaticModel(fileName, rawModel);
+			StaticModel* staticModel = ProcessStaticModel(fileName, rawModel);
 		}
 		else
 		{
 			_models.insert({ fileName, new DynamicModel });
-			ProcessDynamicModel(fileName, rawModel);
+			DynamicModel* dynamicModel = ProcessDynamicModel(fileName, rawModel);
 		}
 	}
 
@@ -237,6 +238,16 @@ namespace Rocket::Core
 		}
 	}
 
+	Mesh* ResourceManager::GetMesh(const std::string& fileName)
+	{
+		if(_meshes.find(fileName) == _meshes.end())
+		{
+			return nullptr;
+		}
+
+		return _meshes.at(fileName);
+	}
+
 	Texture* ResourceManager::GetTexture(std::string fileName)
 	{
 		if (_textures.find(fileName) == _textures.end())
@@ -277,17 +288,7 @@ namespace Rocket::Core
 		return texture;
 	}
 
-// 	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
-// 	{
-// 		if (_models.find(fileName) == _models.end())
-// 		{
-// 			_fbxLoader->LoadFBXFile(fileName);
-// 		}
-// 
-// 		return _models[fileName]->meshes;
-// 	}
-
-	Rocket::Core::Model* ResourceManager::GetModel(const std::string& fileName)
+	Model* ResourceManager::GetModel(const std::string& fileName)
 	{
 		if (_models.find(fileName) == _models.end())
 		{
@@ -297,16 +298,156 @@ namespace Rocket::Core
 		return _models[fileName];
 	}
 
-	void ResourceManager::ProcessStaticModel(const std::string& fileName, const RawModel* rawModel)
+	StaticModel* ResourceManager::ProcessStaticModel(const std::string& fileName, const RawModel* rawModel)
 	{
 		StaticModel* resultModel = reinterpret_cast<StaticModel*>(_models.at(fileName));
 
+		// RawNode정보 순회하면서 Node Hierarchy 만들기. Bone정보도 같이 처리함.
+		resultModel->rootNode = ProcessRawNodeRecur(rawModel->rootNode);
 
+		// Mesh 정보 순회하면서 Mesh 만들기. Texture도 이때 로드해봄.
+ 		for (auto& rawMesh : rawModel->meshes)
+		{
+			StaticMesh* staticMesh = ProcessStaticMesh(rawMesh);
+			resultModel->meshes.push_back(staticMesh);
+			_meshes.insert({ rawMesh->name, staticMesh });
+		}
 	}
 
-	void ResourceManager::ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel)
+	DynamicModel* ResourceManager::ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel)
 	{
 		DynamicModel* resultModel = reinterpret_cast<DynamicModel*>(_models.at(fileName));
 
+		// RawNode정보 순회하면서 Node Hierarchy 만들기. Bone정보도 같이 처리함.
+		resultModel->rootNode = ProcessRawNodeRecur(rawModel->rootNode);
+
+		// Mesh 정보 순회하면서 Mesh 만들기. Texture도 이때 로드해봄.
+		for (auto& rawMesh : rawModel->meshes)
+		{
+			SkinnedMesh* skinnedMesh = ProcessSkinnedMesh(rawMesh);
+			resultModel->meshes.push_back(skinnedMesh);
+		}
+
+		// Animation 정보 순회하면서 Animation 만들기
+		for (auto& iter : rawModel->animations)
+		{
+			RawAnimation* rawAnimation = iter.second;
+			Animation* animation = new Animation();
+			animation->name = rawAnimation->name;
+			animation->duration = rawAnimation->duration;
+			animation->ticksPerSecond = rawAnimation->ticksPerSecond;
+
+			for (auto& nodeAnim : rawAnimation->nodeAnimations)
+			{
+				NodeAnimationData* myNodeAnim = new NodeAnimationData();
+				myNodeAnim->nodeName = nodeAnim->nodeName;
+				myNodeAnim->positionTimestamps = nodeAnim->positionTimestamps;
+				myNodeAnim->rotationTimestamps = nodeAnim->rotationTimestamps;
+				myNodeAnim->scaleTimestamps = nodeAnim->scaleTimestamps;
+				myNodeAnim->positions = nodeAnim->positions;
+				myNodeAnim->rotations = nodeAnim->rotations;
+				myNodeAnim->scales = nodeAnim->scales;
+
+				animation->nodeAnimations.push_back(myNodeAnim);
+			}
+
+			resultModel->animations.insert({ animation->name,animation });
+		}
 	}
+
+	Node* ResourceManager::ProcessRawNodeRecur(const RawNode* rawNode)
+	{
+		Node* node = new Node();
+		node->name = rawNode->name;
+		node->index = rawNode->index;
+		node->transformMatrix = rawNode->transformMatrix;
+
+		RawBone* rawBone = rawNode->bindedBone;
+		if (rawBone)
+		{
+			Bone* bone = new Bone();
+			bone->name = rawBone->name;
+			bone->index = rawBone->index;
+			bone->offsetMatrix = rawBone->offsetMatrix;
+			bone->bindedNode = node;
+
+			node->bindedBone = bone;
+		}
+
+		for (auto& child : rawNode->children)
+		{
+			Node* childNode = ProcessRawNodeRecur(child);
+			node->children.push_back(childNode);
+			childNode->parent = node;
+		}
+
+		return node;
+	}
+
+	StaticMesh* ResourceManager::ProcessStaticMesh(const RawMesh* rawMesh)
+	{
+		std::vector<Vertex> vertices;
+		for (auto& rawVertex : rawMesh->vertices)
+		{
+			Vertex vertex;
+
+			vertex.position = rawVertex.position;
+			vertex.normal = rawVertex.normal;
+			vertex.UV = rawVertex.UV;
+			vertex.tangent = rawVertex.tangent;
+			vertex.nodeIndex = rawVertex.nodeIndex;
+		}
+
+		// TODO : 이거 공통코드인데 한번에 처리할 수 있지 않을까?
+		if (rawMesh->material)
+		{
+			for (auto& rawTexture : rawMesh->material->textures)
+			{
+				if (_textures.find(rawTexture->path) == _textures.end())
+				{
+					LoadTextureFile(rawTexture->path);
+				}
+			}
+		}
+
+		StaticMesh* staticMesh = new StaticMesh(vertices, rawMesh->indices);
+		staticMesh->CreateBuffers();
+
+		return staticMesh;
+	}
+
+	SkinnedMesh* ResourceManager::ProcessSkinnedMesh(const RawMesh* rawMesh)
+	{
+		std::vector<VertexSkinned> vertices;
+		for (auto& rawVertex : rawMesh->vertices)
+		{
+			VertexSkinned vertex;
+
+			vertex.position = rawVertex.position;
+			vertex.UV = rawVertex.UV;
+			vertex.normal = rawVertex.normal;
+			vertex.tangent = rawVertex.tangent;
+			vertex.nodeIndex = rawVertex.nodeIndex;
+			vertex.weights = rawVertex.weights;
+			vertex.boneIndices = rawVertex.boneIndices;
+		}
+
+		// TODO : 이거 공통코드인데 한번에 처리할 수 있지 않을까?
+		if (rawMesh->material)
+		{
+			for (auto& rawTexture : rawMesh->material->textures)
+			{
+				if (_textures.find(rawTexture->path) == _textures.end())
+				{
+					LoadTextureFile(rawTexture->path);
+				}
+			}
+		}
+
+		SkinnedMesh* skinnedMesh = new SkinnedMesh(vertices, rawMesh->indices);
+		skinnedMesh->CreateBuffers();
+
+		return skinnedMesh;
+	}
+
 }

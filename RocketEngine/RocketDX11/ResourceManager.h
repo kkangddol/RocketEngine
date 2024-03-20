@@ -12,6 +12,8 @@
 #include "Singleton.h"
 #include "../RocketCommon/IResourceManager.h"
 #include "../RocketCommon/GraphicsEnum.h"
+#include "ModelStruct.h"
+#include "../RocketCommon/RawModelStruct.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -27,8 +29,10 @@ namespace Rocket::Core
 	class Material;
 	class FBXLoader;
 	class CubeMap;
-	struct Model;
+}
 
+namespace Rocket::Core
+{
 	class ResourceManager : public Singleton<ResourceManager>, public IResourceManager
 	{
 		friend Singleton;
@@ -51,8 +55,7 @@ namespace Rocket::Core
 
 		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
 		Mesh* GetMesh(eMeshType meshType) const;
-		// TODO : 근데 이거 Mesh 기반으로도 그릴 수 있도록 해놔야 하는건가?
-		// std::vector<Mesh*>& GetMeshes(const std::string& fileName);		지금은 Model 베이스로 그리게끔 해놨음.
+		Mesh* GetMesh(const std::string& fileName);
 		Model* GetModel(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
@@ -72,8 +75,11 @@ namespace Rocket::Core
 		ID3D11RasterizerState* GetRenderState(eRenderState eState);
 
 	private:
-		void ProcessStaticModel(const std::string& fileName, const RawModel* rawModel);
-		void ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel);
+		StaticModel* ProcessStaticModel(const std::string& fileName, const RawModel* rawModel);
+		DynamicModel* ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel);
+		Node* ProcessRawNodeRecur(const RawNode* rawNode);	// RawNode to Node, Return Root Node
+		StaticMesh* ProcessStaticMesh(const RawMesh* rawMesh);
+		SkinnedMesh* ProcessSkinnedMesh(const RawMesh* rawMesh);
 
 	private:
 		void CreateRenderStates();
@@ -111,5 +117,6 @@ namespace Rocket::Core
 		std::unordered_map<std::string, Texture*> _textures;
 		std::vector<ID3D11RasterizerState*> _renderStates;
 		std::unordered_map<std::string, Model*> _models;
+		std::unordered_map<std::string, Mesh*> _meshes;
 	};
 }

@@ -9,7 +9,7 @@ namespace Rocket::Core
 {
 	class ITransform;
 	class ICamera;
-	class IStaticModelRenderer;
+	class IMeshRenderer;
 	class IDynamicModelRenderer;
 	class ITextRenderer;
 	class ISpriteRenderer;
@@ -23,7 +23,7 @@ namespace Rocket::Core
 	{
 	public:
 		virtual ICamera* CreateCamera() = 0;
-		virtual IStaticModelRenderer* CreateStaticModelRenderer() = 0;
+		virtual IMeshRenderer* CreateStaticModelRenderer() = 0;
 		virtual IDynamicModelRenderer* CreateDynamicModelRenderer() = 0;
 		virtual ITextRenderer* CreateTextRenderer() = 0;
 		virtual ISpriteRenderer* CreateSpriteRenderer() = 0;

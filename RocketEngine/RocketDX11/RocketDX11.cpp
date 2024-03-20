@@ -17,7 +17,7 @@
 #include "ObjectManager.h"
 #include "ResourceManager.h"
 
-#include "StaticModelRenderer.h"
+#include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"

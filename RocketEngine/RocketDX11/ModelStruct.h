@@ -30,7 +30,6 @@ namespace Rocket::Core
 
 		std::string name = "";
 		Node* rootNode = nullptr;
-		std::unordered_map<std::string, Node*> nodeMap = std::unordered_map<std::string,Node*>();
 	};
 
 	struct StaticModel : public Model

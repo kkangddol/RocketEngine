@@ -116,6 +116,7 @@ namespace Rocket::Core
 			// TODO : reinterpret_cast 및 dynamic_cast 사용하지 않도록 수정하기.
 			if (!scene->HasAnimations())
 			{
+				// TODO : SetNode할때 각각의 vertex한테도 nodeIndex 넣어주면 좋을거같은데?
 				mesh->SetNode(_aiNodeToNodeMap.at(ainode));
 				auto staticMesh = dynamic_cast<StaticMesh*>(mesh);
 				reinterpret_cast<StaticModel*>(_nowModel)->meshes.emplace_back(staticMesh);
@@ -553,7 +554,6 @@ namespace Rocket::Core
 		node->index = index;
 		index++;
 
-		_nowModel->nodeMap.insert({ node->name, node });
 		_aiNodeToNodeMap.insert({ ainode,node });
 
  		for (UINT i = 0; i < ainode->mNumChildren; ++i)

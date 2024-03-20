@@ -20,7 +20,8 @@ namespace Rocket
 	/// </summary>
 	class ROCKET_API Transform final : public Component
 	{
-		/// 생성자.
+		friend DynamicModelRenderer;
+
 	public:
 		Transform();		// 생성할 때 내 Entity가 무엇인지 저장한다.
 

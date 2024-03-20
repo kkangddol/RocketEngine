@@ -22,7 +22,7 @@ void TestScene::Initialize()
 	/// 스태틱 메쉬 테스트
 	auto staticTest = scene->CreateObject("StaticTest");
 	staticTest->transform.SetPosition(1.0f, 0.0f, 0.0f);
-	auto staticTestRenderer = staticTest->AddComponent<Rocket::StaticModelRenderer>();
+	auto staticTestRenderer = staticTest->AddComponent<Rocket::MeshRenderer>();
 	staticTestRenderer->SetMesh("SK_TP_CH_Default.fbx");
 	staticTestRenderer->SetTexture("T_TP_CH_Camo_006_003_D.png");
 	staticTest->AddComponent<PlayerController>();

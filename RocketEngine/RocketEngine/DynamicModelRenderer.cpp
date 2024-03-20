@@ -7,25 +7,30 @@
 namespace Rocket
 {
 	DynamicModelRenderer::DynamicModelRenderer()
-		: _skinnedMeshRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateDynamicModelRenderer())
+		: _graphicsComponent(Core::GraphicsSystem::Instance().GetFactory()->CreateDynamicModelRenderer())
 	{
 
 	}
 
 	void DynamicModelRenderer::LoadModel(std::string fileName)
 	{
-		_skinnedMeshRenderer->LoadModel(fileName);
+		_graphicsComponent->LoadModel(fileName);
 	}
 
 	void DynamicModelRenderer::SetTexture(std::string fileName)
 	{
-		_skinnedMeshRenderer->LoadTexture(fileName);
+		_graphicsComponent->LoadTexture(fileName);
 	}
 
 	void DynamicModelRenderer::UpdateRenderData()
 	{
-		_skinnedMeshRenderer->SetWorldTM(gameObject->transform.GetWorldTM());
+		_graphicsComponent->SetWorldTM(gameObject->transform.GetWorldTM());
 
+	}
+
+	void DynamicModelRenderer::BindTransform(Transform* transform)
+	{
+		_graphicsComponent->BindTransform(transform->_rocketTransform);
 	}
 
 }

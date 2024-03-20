@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 
 #include "Camera.h"
-#include "StaticModelRenderer.h"
+#include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
@@ -41,7 +41,7 @@ namespace Rocket::Core
 		return _objectManager.CreateCamera();
 	}
 
-	IStaticModelRenderer* ObjectFactory::CreateStaticModelRenderer()
+	IMeshRenderer* ObjectFactory::CreateStaticModelRenderer()
 	{
 		return _objectManager.CreateStaticModelRenderer();
 	}

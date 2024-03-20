@@ -2,7 +2,7 @@
 #include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "../RocketCommon/IStaticModelRenderer.h"
+#include "../RocketCommon/IMeshRenderer.h"
 
 namespace Rocket
 {
@@ -19,7 +19,7 @@ namespace Rocket
 
 	void MeshRenderer::SetMesh(std::string fileName)
 	{
-		_meshRenderer->LoadModel(fileName);
+		_meshRenderer->LoadMesh(fileName);
 	}
 
 	void MeshRenderer::SetTexture(std::string fileName)

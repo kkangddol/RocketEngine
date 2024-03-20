@@ -77,7 +77,7 @@ namespace Rocket::Core
 			RawMesh* mesh = ProcessMesh(scene->mMeshes[ainode->mMeshes[i]], scene);
 
 			RawNode* node = _aiNodeToNodeMap.at(ainode);
-			mesh->bindedNode = node;
+			mesh->BindNode(node);
 			node->meshes.emplace_back(mesh);
 			_resultModel->meshes.emplace_back(mesh);
 		}
@@ -227,65 +227,85 @@ namespace Rocket::Core
 					// Legacy
 				case aiTextureType_DIFFUSE:
 					resultMaterial->diffuseTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->diffuseTexture);
 					break;
 				case aiTextureType_SPECULAR:
 					resultMaterial->specularTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->specularTexture);
 					break;
 				case aiTextureType_AMBIENT:
 					resultMaterial->ambientTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->ambientTexture);
 					break;
 				case aiTextureType_EMISSIVE:
 					resultMaterial->emissiveTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->emissiveTexture);
 					break;
 				case aiTextureType_HEIGHT:
 					resultMaterial->heightTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->heightTexture);
 					break;
 				case aiTextureType_NORMALS:
 					resultMaterial->normalTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->normalTexture);
 					break;
 				case aiTextureType_SHININESS:
 					resultMaterial->shininessTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->shininessTexture);
 					break;
 				case aiTextureType_OPACITY:
 					resultMaterial->opacityTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->opacityTexture);
 					break;
 				case aiTextureType_DISPLACEMENT:
 					resultMaterial->displacementTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->displacementTexture);
 					break;
 				case aiTextureType_LIGHTMAP:
 					resultMaterial->lightmapTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->lightmapTexture);
 					break;
 				case aiTextureType_REFLECTION:
 					resultMaterial->reflectionTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->reflectionTexture);
 					break;
 
 					// PBR
 				case aiTextureType_BASE_COLOR:
 					resultMaterial->baseColorTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->baseColorTexture);
 					break;
 				case aiTextureType_NORMAL_CAMERA:
 					resultMaterial->normalCameraTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->normalCameraTexture);
 					break;
 				case aiTextureType_EMISSION_COLOR:
 					resultMaterial->emissiveColorTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->emissiveColorTexture);
 					break;
 				case aiTextureType_METALNESS:
 					resultMaterial->metallicTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->metallicTexture);
 					break;
 				case aiTextureType_DIFFUSE_ROUGHNESS:
 					resultMaterial->roughnessTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->roughnessTexture);
 					break;
 				case aiTextureType_AMBIENT_OCCLUSION:
 					resultMaterial->ambientOcclusionTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->ambientOcclusionTexture);
 					break;
 				case aiTextureType_SHEEN:
 					resultMaterial->sheenTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->sheenTexture);
 					break;
 				case aiTextureType_TRANSMISSION:
 					resultMaterial->transmissionTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->transmissionTexture);
 					break;
 				case aiTextureType_UNKNOWN:
 					resultMaterial->unknownTexture = new RawTexture({ fileName, fileName });
+					resultMaterial->textures.push_back(resultMaterial->unknownTexture);
 					break;
 			}
 		}
@@ -369,7 +389,6 @@ namespace Rocket::Core
 		node->index = index;
 		index++;
 
-		_resultModel->nodeMap.insert({ node->name, node });
 		_aiNodeToNodeMap.insert({ ainode,node });
 
 		for (UINT i = 0; i < ainode->mNumChildren; ++i)

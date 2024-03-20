@@ -3,6 +3,7 @@
 #include "VertexStruct.h"
 #include "ResourceManager.h"
 #include "SkinnedMesh.h"
+#include "../RocketCommon/RocketTransform.h"
 
 namespace Rocket::Core
 {
@@ -37,6 +38,11 @@ namespace Rocket::Core
 	void DynamicModelRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::BindTransform(RocketTransform* rootTransform)
+	{
+		BindTransformRecur(rootTransform, _model->rootNode);
 	}
 
 	void DynamicModelRenderer::UpdateAnimation(float deltaTime)
@@ -367,6 +373,13 @@ namespace Rocket::Core
 		_animatedNodeMap.insert({ to->name,to });
 	}
 
+	void DynamicModelRenderer::BindTransformRecur(RocketTransform* transform, Node* node)
+	{
+		node->transform = transform;
 
-
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			BindTransformRecur(transform->GetChild(i), node->children[i]);
+		}
+	}
 }

@@ -83,7 +83,7 @@
     <ClInclude Include="ISpriteRenderer.h">
       <Filter>Interface\Component</Filter>
     </ClInclude>
-    <ClInclude Include="IStaticModelRenderer.h">
+    <ClInclude Include="IMeshRenderer.h">
       <Filter>Interface\Component</Filter>
     </ClInclude>
     <ClInclude Include="ITextRenderer.h">

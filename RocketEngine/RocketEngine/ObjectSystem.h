@@ -8,11 +8,13 @@ namespace Rocket
 	class Scene;
 	class GameObject;
 	class Component;
+	class DynamicModelRenderer;
 }
 
 namespace Rocket::Core
 {
 	struct RawNode;
+	class RocketTransform;
 }
 
 namespace Rocket::Core
@@ -53,7 +55,8 @@ namespace Rocket::Core
 		void AddStaticComponent(Rocket::Component* component);
 
 	private:
-		Rocket::GameObject* CreateGameObjectFromRawNode(RawNode* node, bool isDynamic);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
+		Rocket::GameObject* CreateStaticMeshObjectRecur(RawNode* node);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
+		Rocket::GameObject* CreateDynamicModelObjectRecur(RawNode* node, Rocket::DynamicModelRenderer* outModelRenderer, const std::string& fileName);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
 
 	private:
 		std::vector<Rocket::GameObject*> _staticObjList;

@@ -25,6 +25,7 @@ namespace Rocket::Core
 		virtual void SetActive(bool isActive) override;
 		virtual void LoadModel(const std::string& fileName) override;
 		virtual void LoadTexture(std::string fileName) override;
+		virtual void BindTransform(RocketTransform* rootTransform) override;
 
 	public:
 		void UpdateAnimation(float deltaTime);			// 깊은 복사 해온 Node 데이터에 애니메이션 데이터를 적용한다.
@@ -42,6 +43,7 @@ namespace Rocket::Core
 		void SetBoneBuffer(Node* node, BoneBufferType* boneBuffer);
 		Node* CopyNodeData(Node* originalRootNode);
 		void CopyNodeDataRecur(Node* from, Node* to);
+		void BindTransformRecur(RocketTransform* transform, Node* node);
 
 	private:
 		// TODO : 이거 상속구조 잘 만들던가.. 어떻게든 해서 ModelData와 SkinnedModelData 잘 나눠보자..ㅠㅠ

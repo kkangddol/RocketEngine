@@ -12,7 +12,7 @@ namespace Rocket::Core
 
 	public:
 		virtual ICamera* CreateCamera() override;
-		virtual IStaticModelRenderer* CreateStaticModelRenderer() override;
+		virtual IMeshRenderer* CreateStaticModelRenderer() override;
 		virtual ITextRenderer* CreateTextRenderer() override;
 		virtual ISpriteRenderer* CreateSpriteRenderer() override;
 		virtual ILineRenderer* CreateLineRenderer() override;
