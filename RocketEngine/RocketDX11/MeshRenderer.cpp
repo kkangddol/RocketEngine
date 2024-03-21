@@ -30,6 +30,12 @@ namespace Rocket::Core
 	{
 		// TODO : reinterpret_cast를 사용하지 않는 엑세렌또한 방법을 찾아보자.
 		_mesh = reinterpret_cast<StaticMesh*>(ResourceManager::Instance().GetMesh(fileName));
+		if (_mesh == nullptr)
+		{
+			MessageBox(NULL, TEXT("메쉬가 없습니다."), TEXT("메쉬 로드 실패"), MB_OK);
+			return;
+		}
+
 		// _model = reinterpret_cast<StaticModel*>(ResourceManager::Instance().GetModel(fileName)); 원래는 모델기준으로 그렸었음.
 	}
 

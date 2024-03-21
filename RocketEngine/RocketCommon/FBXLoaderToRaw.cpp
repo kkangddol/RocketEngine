@@ -1,8 +1,4 @@
-﻿#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-#include "FBXLoaderToRaw.h"
+﻿#include "FBXLoaderToRaw.h"
 #include "AssimpMathConverter.h"
 
 const std::string MODEL_PATH = "Resources/Models/";
@@ -54,6 +50,7 @@ namespace Rocket::Core
 
 		/// 모델 데이터 로드 (모델,메쉬,노드,본)
 		_resultModel = new RawModel();
+		_resultModel->name = fileName;
 
 		// 1. 우선 노드를 쭉 읽으면서 Node의 Hierarchy를 만든다.
 		_resultModel->rootNode = ReadNodeHierarchy(scene->mRootNode, scene);

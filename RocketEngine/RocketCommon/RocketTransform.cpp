@@ -328,7 +328,7 @@ namespace Rocket::Core
 
 	int RocketTransform::GetChildCount() const
 	{
-		return _children.size();
+		return (int)_children.size();
 	}
 
 	void RocketTransform::AddChild(RocketTransform* child)

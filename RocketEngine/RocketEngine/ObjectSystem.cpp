@@ -171,20 +171,21 @@ namespace Rocket::Core
 	{
 		RawModel* rawModel = ResourceSystem::Instance().GetModel(fileName);
 		Rocket::GameObject* resultGameObject = nullptr;
-		resultGameObject->objName = fileName;
 
 		if (0 < rawModel->animations.size())
 		{
 			// 애니메이션이 있다면 (dynamic)
-			Rocket::DynamicModelRenderer* modelRenderer;
-			resultGameObject = CreateDynamicModelObjectRecur(rawModel->rootNode, modelRenderer, fileName);
-			modelRenderer->BindTransform();
+			Rocket::DynamicModelRenderer* modelRenderer = nullptr;
+			resultGameObject = CreateDynamicModelObjectRecur(rawModel->rootNode, &modelRenderer);
+			modelRenderer->LoadModel(fileName);	// 구조가 다 만들어지고 나서 LoadModel을 해야 Transform 계층이 적용된다.
 		}
 		else
 		{
 			// 애니메이션이 없다면 (static)
 			resultGameObject = CreateStaticMeshObjectRecur(rawModel->rootNode);
 		}
+
+		resultGameObject->objName = fileName;
 
 		return resultGameObject;
 	}
@@ -218,7 +219,7 @@ namespace Rocket::Core
 		return gameObject;
 	}
 
-	Rocket::GameObject* ObjectSystem::CreateDynamicModelObjectRecur(RawNode* node, Rocket::DynamicModelRenderer* outModelRenderer, const std::string& fileName)
+	Rocket::GameObject* ObjectSystem::CreateDynamicModelObjectRecur(RawNode* node, Rocket::DynamicModelRenderer** outModelRenderer)
 	{
 		Rocket::GameObject* gameObject = new Rocket::GameObject(node->name);
 
@@ -233,13 +234,12 @@ namespace Rocket::Core
 
 		if (0 < node->meshes.size())
 		{
-			outModelRenderer = gameObject->AddComponent<Rocket::DynamicModelRenderer>();
-			outModelRenderer->LoadModel(fileName);
+			*outModelRenderer = gameObject->AddComponent<Rocket::DynamicModelRenderer>();
 		}
 
 		for (auto& child : node->children)
 		{
-			Rocket::GameObject* childObject = CreateDynamicModelObjectRecur(child, outModelRenderer, fileName);
+			Rocket::GameObject* childObject = CreateDynamicModelObjectRecur(child, outModelRenderer);
 			childObject->transform.SetParent(gameObject);
 		}
 

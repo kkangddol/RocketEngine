@@ -56,7 +56,7 @@ namespace Rocket::Core
 
 	private:
 		Rocket::GameObject* CreateStaticMeshObjectRecur(RawNode* node);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
-		Rocket::GameObject* CreateDynamicModelObjectRecur(RawNode* node, Rocket::DynamicModelRenderer* outModelRenderer, const std::string& fileName);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
+		Rocket::GameObject* CreateDynamicModelObjectRecur(RawNode* node, Rocket::DynamicModelRenderer** outModelRenderer);		// 모델렌더러도 붙은 Hierarchy가 완성된 root GameObject를 반환한다.
 
 	private:
 		std::vector<Rocket::GameObject*> _staticObjList;

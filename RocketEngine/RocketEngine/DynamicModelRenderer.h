@@ -32,9 +32,6 @@ namespace Rocket
 		virtual void UpdateRenderData() override;
 
 	private:
-		void BindTransform(Transform* transform);
-
-	private:
 		Core::IDynamicModelRenderer* _graphicsComponent;
 	};
 }

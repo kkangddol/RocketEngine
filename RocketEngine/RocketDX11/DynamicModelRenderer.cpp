@@ -32,6 +32,11 @@ namespace Rocket::Core
 	void DynamicModelRenderer::LoadModel(const std::string& fileName)
 	{
 		_model = reinterpret_cast<DynamicModel*>(ResourceManager::Instance().GetModel(fileName));
+		if(_model == nullptr)
+		{
+			MessageBox(NULL, TEXT("모델이 없습니다."), TEXT("모델 로드 실패"), MB_OK);
+			return;
+		}
 		_animatedRootNode = CopyNodeData(_model->rootNode);
 	}
 
@@ -42,7 +47,7 @@ namespace Rocket::Core
 
 	void DynamicModelRenderer::BindTransform(RocketTransform* rootTransform)
 	{
-		BindTransformRecur(rootTransform, _model->rootNode);
+		BindTransformRecur(rootTransform, _animatedRootNode);
 	}
 
 	void DynamicModelRenderer::UpdateAnimation(float deltaTime)
@@ -164,6 +169,10 @@ namespace Rocket::Core
 			}
 
 			node->transformMatrix = DirectX::XMMatrixAffineTransformation(scale, { 0,0,0,0 }, rotation, position);
+
+			node->transform->SetLocalPosition(position);
+			node->transform->SetLocalRotation(rotation);
+			node->transform->SetLocalScale(scale);			
 		}
 
 	}
@@ -324,7 +333,9 @@ namespace Rocket::Core
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
-		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		// nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->transform->GetWorldTM());
+
 		//nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->worldTM);
 		for (int i = 0; i < node->children.size(); i++)
 		{

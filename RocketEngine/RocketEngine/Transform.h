@@ -13,7 +13,11 @@ namespace Rocket::Core
 namespace Rocket
 {
 	class GameObject;
+	class DynamicModelRenderer;
+}
 
+namespace Rocket
+{
 	/// <summary>
 	/// RocketTransform이라는 실제 Transform 클래스를 갖고있는 클래스.
 	/// 사실상 RocketTransform의 랩퍼 클래스다.

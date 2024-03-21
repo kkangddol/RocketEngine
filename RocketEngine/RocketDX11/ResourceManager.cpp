@@ -16,7 +16,6 @@
 #include "GraphicsMacro.h"
 #include "texture.h"
 #include "material.h"
-#include "FBXLoader.h"
 #include "VertexStruct.h"
 
 #include "CubeMap.h"
@@ -33,8 +32,7 @@ namespace Rocket::Core
 		_cubeMesh(),
 		_sphereMesh(),
 		_defaultTexture(),
-		_defaultMaterial(),
-		_fbxLoader(new FBXLoader())
+		_defaultMaterial()
 	{
 		
 	}
@@ -43,9 +41,6 @@ namespace Rocket::Core
 	{
 		_device = device;
 		_deviceContext = deviceContext;
-
-		// TODO : 너 Common으로 갔으니까 바뀌어야 할 필요가 있단다.
-		_fbxLoader->Initialize(device);
 
 		// Color Shader
 		{
@@ -129,7 +124,7 @@ namespace Rocket::Core
 
 		_cubeMap = new CubeMap();
 		_cubeMap->Initialize(device);
-		_cubeMap->LoadTexture("tori1024.dds");
+		_cubeMap->LoadTexture("CloudCubeMap.dds");
 
 		_defaultTexture = LoadTextureFile("darkbrickdxt1.dds");
 
@@ -292,7 +287,7 @@ namespace Rocket::Core
 	{
 		if (_models.find(fileName) == _models.end())
 		{
-			_fbxLoader->LoadFBXFile(fileName);
+			return nullptr;
 		}
 
 		return _models[fileName];
@@ -312,6 +307,8 @@ namespace Rocket::Core
 			resultModel->meshes.push_back(staticMesh);
 			_meshes.insert({ rawMesh->name, staticMesh });
 		}
+
+		return resultModel;
 	}
 
 	DynamicModel* ResourceManager::ProcessDynamicModel(const std::string& fileName, const RawModel* rawModel)
@@ -353,6 +350,8 @@ namespace Rocket::Core
 
 			resultModel->animations.insert({ animation->name,animation });
 		}
+
+		return resultModel;
 	}
 
 	Node* ResourceManager::ProcessRawNodeRecur(const RawNode* rawNode)
@@ -396,6 +395,8 @@ namespace Rocket::Core
 			vertex.UV = rawVertex.UV;
 			vertex.tangent = rawVertex.tangent;
 			vertex.nodeIndex = rawVertex.nodeIndex;
+
+			vertices.push_back(vertex);
 		}
 
 		// TODO : 이거 공통코드인데 한번에 처리할 수 있지 않을까?
@@ -430,6 +431,8 @@ namespace Rocket::Core
 			vertex.nodeIndex = rawVertex.nodeIndex;
 			vertex.weights = rawVertex.weights;
 			vertex.boneIndices = rawVertex.boneIndices;
+
+			vertices.push_back(vertex);
 		}
 
 		// TODO : 이거 공통코드인데 한번에 처리할 수 있지 않을까?

@@ -95,6 +95,11 @@ namespace Rocket
 		return Rocket::Core::ObjectSystem::Instance().CreateStaticObject(objName);
 	}
 
+	Rocket::GameObject* Scene::CreateModelObject(const std::string& fileName)
+	{
+		return Rocket::Core::ObjectSystem::Instance().CreateModelObject(fileName);
+	}
+
 	bool Scene::DeleteObject(std::string gameObjectName)
 	{
 		std::erase_if(_originalList, [gameObjectName](GameObject* obj) {return obj->objName == gameObjectName; });

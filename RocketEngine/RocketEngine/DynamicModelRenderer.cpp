@@ -15,6 +15,13 @@ namespace Rocket
 	void DynamicModelRenderer::LoadModel(std::string fileName)
 	{
 		_graphicsComponent->LoadModel(fileName);
+
+		Transform* rootTransform = &(gameObject->transform);
+		while (rootTransform->GetParent() != nullptr)
+		{
+			rootTransform = rootTransform->GetParent();
+		}
+		_graphicsComponent->BindTransform(rootTransform->_rocketTransform);
 	}
 
 	void DynamicModelRenderer::SetTexture(std::string fileName)
@@ -27,10 +34,4 @@ namespace Rocket
 		_graphicsComponent->SetWorldTM(gameObject->transform.GetWorldTM());
 
 	}
-
-	void DynamicModelRenderer::BindTransform(Transform* transform)
-	{
-		_graphicsComponent->BindTransform(transform->_rocketTransform);
-	}
-
 }

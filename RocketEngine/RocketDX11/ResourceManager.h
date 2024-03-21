@@ -27,7 +27,6 @@ namespace Rocket::Core
 	class SpriteRenderer;
 	class Texture;
 	class Material;
-	class FBXLoader;
 	class CubeMap;
 }
 
@@ -36,7 +35,6 @@ namespace Rocket::Core
 	class ResourceManager : public Singleton<ResourceManager>, public IResourceManager
 	{
 		friend Singleton;
-		friend FBXLoader;
 	private:
 		ResourceManager();
 
@@ -88,7 +86,6 @@ namespace Rocket::Core
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;
-		FBXLoader* _fbxLoader;
 
 		// 기본 메쉬들
 		CubeMesh* _cubeMesh;

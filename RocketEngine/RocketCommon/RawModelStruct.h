@@ -52,6 +52,17 @@ namespace Rocket::Core
 		Matrix offsetMatrix = Matrix::Identity;
 	};
 
+	struct RawVertex
+	{
+		Vector3 position = Vector3::Zero;
+		Vector2 UV = Vector2::Zero;
+		Vector3 normal = Vector3::Zero;
+		Vector3 tangent = Vector3::Zero;
+		UINT nodeIndex = 0;
+		Vector4 weights = Vector4::Zero;			// 최대 4개의 본에 대한 가중치
+		DirectX::XMUINT4 boneIndices = {};		// 최대 4개의 본에 대한 인덱스
+	};
+
 	struct RawMesh
 	{
 		void BindNode(RawNode* node)
@@ -69,17 +80,6 @@ namespace Rocket::Core
 		RawMaterial* material = nullptr;
 		std::vector<RawVertex> vertices = {};
 		std::vector<unsigned int> indices = {};
-	};
-
-	struct RawVertex
-	{
-		Vector3 position = Vector3::Zero;
-		Vector2 UV = Vector2::Zero;
-		Vector3 normal = Vector3::Zero;
-		Vector3 tangent = Vector3::Zero;
-		UINT nodeIndex = 0;
-		Vector4 weights = Vector4::Zero;			// 최대 4개의 본에 대한 가중치
-		DirectX::XMUINT4 boneIndices = {};		// 최대 4개의 본에 대한 인덱스
 	};
 
 	struct RawMaterial

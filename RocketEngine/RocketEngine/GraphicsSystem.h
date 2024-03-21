@@ -14,12 +14,10 @@ namespace Rocket::Core
 	class IRenderable;
 	class ISketchable;
 	class RenderConstantData;
-}
 
-namespace Rocket::Core
-{
 	class ModelRendererBase;
 	class UIRenderer;
+	class ResourceSystem;
 }
 
 namespace Rocket
