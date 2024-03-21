@@ -143,7 +143,6 @@ namespace Rocket::Core
 
 	void ResourceManager::LoadModel(const std::string& fileName, const RawModel* rawModel)
 	{
-		// TODO : FBXLoader에서 뭔가 생성하던 것들을 여기서 해주면 된다.
 		if (rawModel->animations.empty())
 		{
 			_models.insert({ fileName,new StaticModel });
@@ -359,6 +358,7 @@ namespace Rocket::Core
 		Node* node = new Node();
 		node->name = rawNode->name;
 		node->index = rawNode->index;
+		int test1 = node->index;
 		node->transformMatrix = rawNode->transformMatrix;
 
 		RawBone* rawBone = rawNode->bindedBone;
@@ -367,6 +367,7 @@ namespace Rocket::Core
 			Bone* bone = new Bone();
 			bone->name = rawBone->name;
 			bone->index = rawBone->index;
+			int test2 = bone->index;
 			bone->offsetMatrix = rawBone->offsetMatrix;
 			bone->bindedNode = node;
 

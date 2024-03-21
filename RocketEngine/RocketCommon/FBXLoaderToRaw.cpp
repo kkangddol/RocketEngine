@@ -53,7 +53,7 @@ namespace Rocket::Core
 		_resultModel->name = fileName;
 
 		// 1. 우선 노드를 쭉 읽으면서 Node의 Hierarchy를 만든다.
-		_resultModel->rootNode = ReadNodeHierarchy(scene->mRootNode, scene);
+		_resultModel->rootNode = ReadNodeHierarchy(scene->mRootNode);
 
 		// 2. 노드를 읽어서 메쉬데이터를 처리한다. 이때 앞서 만든 노드 Hierarchy를 이용해 Bone 데이터도 처리한다.
 		ProcessNode(scene->mRootNode, scene);
@@ -144,6 +144,7 @@ namespace Rocket::Core
 			RawBone* bone = new RawBone();
 			bone->name = aibone->mName.C_Str();
 			bone->index = _aiNodeToNodeMap.at(aibone->mNode)->index;
+			int test = bone->index;
 			bone->bindedNode = _aiNodeToNodeMap.at(aibone->mNode);
 			bone->offsetMatrix = AIMatrix4x4ToXMMatrix(aibone->mOffsetMatrix.Transpose());
 
@@ -368,17 +369,17 @@ namespace Rocket::Core
 		}
 	}
 
-	RawNode* FBXLoaderToRaw::ReadNodeHierarchy(aiNode* ainode, const aiScene* scene)
+	RawNode* FBXLoaderToRaw::ReadNodeHierarchy(aiNode* ainode)
 	{
 		UINT index = 0;
 		RawNode* rootNode = new RawNode();
 
-		ReadNodeRecur(rootNode, ainode, scene, index);
+		ReadNodeRecur(rootNode, ainode, index);
 
 		return rootNode;
 	}
 
-	void FBXLoaderToRaw::ReadNodeRecur(RawNode* node, aiNode* ainode, const aiScene* scene, UINT& index)
+	void FBXLoaderToRaw::ReadNodeRecur(RawNode* node, aiNode* ainode, UINT& index)
 	{
 		node->name = ainode->mName.C_Str();
 		// Assimp가 Column Major로 Matrix를 읽어오므로 Row Major 하게 Transpose 해준다.
@@ -394,7 +395,7 @@ namespace Rocket::Core
 			node->children.emplace_back(newNode);
 			newNode->parent = node;
 
-			ReadNodeRecur(newNode, ainode->mChildren[i], scene, index);
+			ReadNodeRecur(newNode, ainode->mChildren[i], index);
 		}
 	}
 }

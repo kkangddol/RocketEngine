@@ -57,13 +57,16 @@ void TestScene::Initialize()
 	skinnedMeshRenderer2->SetTexture("T_TP_CH_Camo_001_006_D.png");
 	*/
 
-	auto skinnedTest1 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
-	skinnedTest1->transform.SetScale(0.1f, 0.1f, 0.1f);
-	skinnedTest1->transform.Translate(3.0f, 0.0f, 0.0f);
+	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
+	skinnedTest1->transform.Translate(0.0f, 0.0f, 3.0f);
+	
+	auto skinnedTest2 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
+	skinnedTest2->transform.SetScale(0.05f, 0.05f, 0.05f);
+	skinnedTest2->transform.Translate(3.0f, 0.0f, 0.0f);
 
-	auto skinnedTest2 = scene->CreateModelObject("Dying.fbx");
-	skinnedTest2->transform.SetScale(0.01f, 0.01f, 0.01f);
-	skinnedTest2->transform.Translate(-3.0f, 0.0f, 0.0f);
+ 	auto skinnedTest3 = scene->CreateModelObject("Dying.fbx");
+ 	skinnedTest3->transform.SetScale(0.001f, 0.001f, 0.001f);
+ 	skinnedTest3->transform.Translate(-3.0f, 0.0f, 0.0f);
 
 	/*
 	auto skinnedTest3 = scene->CreateObject("SkinnedTest");

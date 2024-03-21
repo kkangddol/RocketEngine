@@ -232,8 +232,6 @@ namespace Rocket::Core
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
 
-			// TODO : 임시로 짜둔거다 이게 맞나싶다.
-			//CalcNodeWorldMatrix(_animatedRootNode);
 			//SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
 			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
 
@@ -386,6 +384,16 @@ namespace Rocket::Core
 
 	void DynamicModelRenderer::BindTransformRecur(RocketTransform* transform, Node* node)
 	{
+		DirectX::XMVECTOR outScale;
+		DirectX::XMVECTOR outRotation;
+		DirectX::XMVECTOR outTranslation;
+
+		DirectX::XMMatrixDecompose(&outScale, &outRotation, &outTranslation, node->transformMatrix);
+
+		transform->SetLocalScale(outScale);
+		transform->SetLocalRotation(outRotation);
+		transform->SetLocalPosition(outTranslation);
+
 		node->transform = transform;
 
 		for (int i = 0; i < node->children.size(); i++)

@@ -29,8 +29,8 @@ namespace Rocket::Core
 		RawMaterial* LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
 		void LoadAnimation(const aiScene* scene);
 
-		RawNode* ReadNodeHierarchy(aiNode* ainode, const aiScene* scene);
-		void ReadNodeRecur(RawNode* node, aiNode* ainode, const aiScene* scene, UINT& index);
+		RawNode* ReadNodeHierarchy(aiNode* ainode);
+		void ReadNodeRecur(RawNode* node, aiNode* ainode, UINT& index);
 	
 	private:
 		RawModel* _resultModel;

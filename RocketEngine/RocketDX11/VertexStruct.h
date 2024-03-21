@@ -56,11 +56,27 @@ namespace Rocket::Core
 
 	struct NodeBufferType
 	{
+		NodeBufferType()
+		{
+			for (int i = 0; i < 512; ++i)
+			{
+				transformMatrix[i] = DirectX::XMMatrixIdentity();
+			}
+		}
+
 		DirectX::XMMATRIX transformMatrix[512];
 	};
 
 	struct BoneBufferType
 	{
+		BoneBufferType()
+		{
+			for (int i = 0; i < 512; ++i)
+			{
+				transformMatrix[i] = DirectX::XMMatrixIdentity();
+			}
+		}
+
 		DirectX::XMMATRIX transformMatrix[512];
 	};
 
