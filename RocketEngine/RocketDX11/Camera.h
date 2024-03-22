@@ -3,7 +3,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 
-#include "../GraphicsInterface/ICamera.h"
+#include "../RocketCommon/ICamera.h"
 
 using Microsoft::WRL::ComPtr;
 

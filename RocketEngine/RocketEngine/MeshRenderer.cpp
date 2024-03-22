@@ -1,12 +1,12 @@
-﻿#include "StaticModelRenderer.h"
+﻿#include "MeshRenderer.h"
 #include "GraphicsSystem.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "../GraphicsInterface/IStaticModelRenderer.h"
+#include "../RocketCommon/IMeshRenderer.h"
 
 namespace Rocket
 {
-	StaticModelRenderer::StaticModelRenderer()
+	MeshRenderer::MeshRenderer()
 		: _meshRenderer(Core::GraphicsSystem::Instance().GetFactory()->CreateStaticModelRenderer())
 	{
 
@@ -17,17 +17,17 @@ namespace Rocket
 // 		_meshRenderer->LoadModel(meshType);
 // 	}
 
-	void StaticModelRenderer::SetMesh(std::string fileName)
+	void MeshRenderer::SetMesh(std::string fileName)
 	{
-		_meshRenderer->LoadModel(fileName);
+		_meshRenderer->LoadMesh(fileName);
 	}
 
-	void StaticModelRenderer::SetTexture(std::string fileName)
+	void MeshRenderer::SetTexture(std::string fileName)
 	{
 		_meshRenderer->LoadTexture(fileName);
 	}
 
-	void StaticModelRenderer::UpdateRenderData()
+	void MeshRenderer::UpdateRenderData()
 	{
 		_meshRenderer->SetWorldTM(gameObject->transform.GetWorldTM());
 		_meshRenderer->SetActive(gameObject->IsActive());

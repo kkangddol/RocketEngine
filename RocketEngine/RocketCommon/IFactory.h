@@ -7,13 +7,13 @@
 
 namespace Rocket::Core
 {
-	class ITransform;
 	class ICamera;
-	class IStaticModelRenderer;
+	class IMeshRenderer;
 	class IDynamicModelRenderer;
 	class ITextRenderer;
 	class ISpriteRenderer;
 	class ILineRenderer;
+	class IResourceManager;
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
@@ -21,9 +21,8 @@ namespace Rocket::Core
 	class IFactory
 	{
 	public:
-		virtual ITransform* CreateTransform() = 0;
 		virtual ICamera* CreateCamera() = 0;
-		virtual IStaticModelRenderer* CreateStaticModelRenderer() = 0;
+		virtual IMeshRenderer* CreateStaticModelRenderer() = 0;
 		virtual IDynamicModelRenderer* CreateDynamicModelRenderer() = 0;
 		virtual ITextRenderer* CreateTextRenderer() = 0;
 		virtual ISpriteRenderer* CreateSpriteRenderer() = 0;
@@ -37,4 +36,5 @@ namespace Rocket::Core
 
 	extern "C" __declspec(dllexport) IFactory* CreateGraphicsObjectFactory();
 	extern "C" __declspec(dllexport) void ReleaseFactory(IFactory* instance);
+	extern "C" __declspec(dllexport) IResourceManager* GetResourceManager();
 }

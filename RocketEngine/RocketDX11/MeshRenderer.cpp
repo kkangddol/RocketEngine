@@ -1,4 +1,4 @@
-﻿#include "StaticModelRenderer.h"
+﻿#include "MeshRenderer.h"
 #include "GraphicsMacro.h"
 #include "VertexStruct.h"
 #include "ResourceManager.h"
@@ -6,8 +6,9 @@
 
 namespace Rocket::Core
 {
-	StaticModelRenderer::StaticModelRenderer()
-		: _model(nullptr),
+	MeshRenderer::MeshRenderer()
+		: _mesh(nullptr),
+		_model(nullptr),
 		_material(nullptr),
 		_isActive(true),
 		_worldTM(Matrix::Identity)
@@ -15,28 +16,35 @@ namespace Rocket::Core
 
 	}
 
-	void StaticModelRenderer::SetWorldTM(const Matrix& worldTM)
+	void MeshRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
 	}
 
-	void StaticModelRenderer::SetActive(bool isActive)
+	void MeshRenderer::SetActive(bool isActive)
 	{
 		_isActive = isActive;
 	}
 
-	void StaticModelRenderer::LoadModel(std::string fileName)
+	void MeshRenderer::LoadMesh(std::string fileName)
 	{
 		// TODO : reinterpret_cast를 사용하지 않는 엑세렌또한 방법을 찾아보자.
-		_model = reinterpret_cast<StaticModel*>(ResourceManager::Instance().GetModel(fileName));
+		_mesh = reinterpret_cast<StaticMesh*>(ResourceManager::Instance().GetMesh(fileName));
+		if (_mesh == nullptr)
+		{
+			MessageBox(NULL, TEXT("메쉬가 없습니다."), TEXT("메쉬 로드 실패"), MB_OK);
+			return;
+		}
+
+		// _model = reinterpret_cast<StaticModel*>(ResourceManager::Instance().GetModel(fileName)); 원래는 모델기준으로 그렸었음.
 	}
 
-	void StaticModelRenderer::LoadTexture(std::string fileName)
+	void MeshRenderer::LoadTexture(std::string fileName)
 	{
 		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
-	void StaticModelRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void MeshRenderer::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		if (!_isActive)
 		{
@@ -48,7 +56,7 @@ namespace Rocket::Core
 		deviceContext->PSSetShader(_material->GetPixelShader()->GetPixelShader(), nullptr, 0);
 		
 		// TODO : sampler 경고때문에 잠시주석처리. Sampler에 대해 다시 알아보자.
-		// deviceContext->PSSetSamplers(0, 1, _material->GetVertexShader()->GetAddressOfSampleState());
+		deviceContext->PSSetSamplers(0, 1, _material->GetPixelShader()->GetAddressOfSampleState());
 
 		// 입력 배치 객체 셋팅
 		deviceContext->IASetInputLayout(_material->GetVertexShader()->GetInputLayout());
@@ -86,19 +94,19 @@ namespace Rocket::Core
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
-			///
-			bufferNumber = 2;
-
-			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-
-			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
-
-			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
-			
-			deviceContext->Unmap(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0);
-
-
-			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
+			/// 노드버퍼를 세팅할 필요가 없어짐. 각각의 GameObject의 WorldTM을 이용하면 되므로..
+// 			bufferNumber = 2;
+// 
+// 			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+// 
+// 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
+// 
+// 			SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
+// 			
+// 			deviceContext->Unmap(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0);
+// 
+// 
+// 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 			///
 			// 픽셀 쉐이더
 			bufferNumber = 0;
@@ -115,8 +123,6 @@ namespace Rocket::Core
 			lightBufferDataPtr->specularColor = { 0.5f,0.5f,0.5f,1.0f };
 
 			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
-
-			
 
 			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _material->GetPixelShader()->GetAddressOfConstantBuffer(bufferNumber));
 		}
@@ -137,6 +143,18 @@ namespace Rocket::Core
 
 		stride = sizeof(Vertex);
 
+		/// Mesh 기반으로 그릴 때.
+
+		deviceContext->IASetVertexBuffers(0, 1, _mesh->GetAddressOfVertexBuffer(), &stride, &offset);
+		deviceContext->IASetIndexBuffer(_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+		deviceContext->PSSetShaderResources(0, 1, _material->GetTexture()->GetAddressOfTextureView());
+
+		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
+
+
+		/// Model 기반으로 그릴 때.
+		/*
 		for (auto& mesh : _model->meshes)
 		{
 // 			switch (mesh->GetVertexType())
@@ -164,27 +182,28 @@ namespace Rocket::Core
 
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
+		*/
 	}
 
-	void StaticModelRenderer::SetVertexShader(VertexShader* shader)
+	void MeshRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
 		_material->SetVertexShader(shader);
 	}
 
-	void StaticModelRenderer::SetPixelShader(PixelShader* shader)
+	void MeshRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
 		_material->SetPixelShader(shader);
 	}
 
-	void StaticModelRenderer::SetRenderState(ID3D11RasterizerState* renderState)
+	void MeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
 	{
 		assert(_material);
 		_material->SetRenderState(renderState);
 	}
 
-	void StaticModelRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
+	void MeshRenderer::SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer)
 	{
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
@@ -195,7 +214,4 @@ namespace Rocket::Core
 			SetNodeBuffer(node->children[i], nodeBuffer);
 		}
 	}
-
-
-
 }

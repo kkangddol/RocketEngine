@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <SpriteBatch.h>
 
-#include "..\\GraphicsInterface\\ISpriteRenderer.h"
+#include "..\\RocketCommon\\ISpriteRenderer.h"
 #include "MathHeader.h"
 
 namespace Rocket::Core

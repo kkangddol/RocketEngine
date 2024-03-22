@@ -17,7 +17,7 @@
 #include "ObjectManager.h"
 #include "ResourceManager.h"
 
-#include "StaticModelRenderer.h"
+#include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
@@ -300,6 +300,7 @@ namespace Rocket::Core
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}
 
+		// TODO : 전체 리스트에 있는 것들을 그리는 것이 아니라 현재 씬만 그려야 한다..
 		for (auto meshRenderer : _objectManager.GetStaticModelRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
@@ -376,10 +377,8 @@ namespace Rocket::Core
 
 		RenderText();
 		RenderTexture();
-		//RenderLine();
+		RenderLine();
 
-		//_deviceContext->OMSetBlendState(nullptr, );
-		//_deviceContext->OMSetDepthStencilState();
 		RenderCubeMap();
 
 		EndRender();
@@ -414,13 +413,19 @@ namespace Rocket::Core
 
 		_lineBatch->Begin();
 
-		for (const auto& line : _objectManager.GetLineRenderer()->GetLines())
+		if (_objectManager.GetLineRenderer())
 		{
-			_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
+			for (const auto& line : _objectManager.GetLineRenderer()->GetLines())
+			{
+				_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
+			}
 		}
 		_lineBatch->End();
 		
-		_objectManager.GetLineRenderer()->Flush();
+		if (_objectManager.GetLineRenderer())
+		{
+			_objectManager.GetLineRenderer()->Flush();
+		}
 	}
 
 	void RocketDX11::UpdateAnimation(float deltaTime)
