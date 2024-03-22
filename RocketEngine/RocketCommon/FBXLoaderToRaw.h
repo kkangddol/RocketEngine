@@ -35,5 +35,10 @@ namespace Rocket::Core
 	private:
 		RawModel* _resultModel;
 		std::unordered_map<aiNode*, RawNode*> _aiNodeToNodeMap;	// Bone에서 aiNode를 통해 Node를 찾기위한 맵
+
+
+	private:
+		void ForSungchan(RawNode* node);
+		int _sungchanBoneCount;
 	};
 }

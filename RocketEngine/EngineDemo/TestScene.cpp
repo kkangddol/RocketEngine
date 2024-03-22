@@ -65,7 +65,7 @@ void TestScene::Initialize()
 	skinnedTest2->transform.Translate(3.0f, 0.0f, 0.0f);
 
  	auto skinnedTest3 = scene->CreateModelObject("Dying.fbx");
- 	skinnedTest3->transform.SetScale(0.001f, 0.001f, 0.001f);
+ 	skinnedTest3->transform.SetScale(0.005f, 0.005f, 0.005f);
  	skinnedTest3->transform.Translate(-3.0f, 0.0f, 0.0f);
 
 	/*

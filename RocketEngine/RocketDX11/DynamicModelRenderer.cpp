@@ -246,7 +246,10 @@ namespace Rocket::Core
 
 			BoneBufferType* boneBufferDataPtr = (BoneBufferType*)mappedResource.pData;
 
-			SetBoneBuffer(_model->rootNode, boneBufferDataPtr);
+			// TODO : 이거 사실 둘 다 같은 본 데이터인건데 왜 매트릭스가 영행렬이 들어가있지..?
+			//SetBoneBuffer(_model->rootNode, boneBufferDataPtr);
+			SetBoneBuffer(_animatedRootNode, boneBufferDataPtr);
+			testCount = 0;
 
 			deviceContext->Unmap(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0);
 
@@ -346,6 +349,7 @@ namespace Rocket::Core
 		Bone* bone = node->bindedBone;
 		if (bone)
 		{
+			testCount++;
 			boneBuffer->transformMatrix[bone->index] = DirectX::XMMatrixTranspose(bone->offsetMatrix);
 		}
 

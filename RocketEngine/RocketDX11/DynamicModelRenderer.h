@@ -65,5 +65,8 @@ namespace Rocket::Core
 		double _animationTime;
 		double _animationTick;
 		bool _isLoop = true;		// TODO : 지금은 임시로 Looping하도록 해뒀음. 나중에는 외부에서 설정할 수 있게 바꿔야함.
+
+	private:
+		UINT testCount = 0;
 	};
 }

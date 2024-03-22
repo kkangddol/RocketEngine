@@ -35,11 +35,11 @@ namespace Rocket::Core
 		Assimp::Importer importer;
 
 		const aiScene* scene = importer.ReadFile(path,
-			aiProcess_Triangulate |
-			aiProcess_ConvertToLeftHanded |
-			aiProcess_PopulateArmatureData |
-			aiProcess_CalcTangentSpace |
-			aiProcess_LimitBoneWeights
+			aiProcess_Triangulate
+			| aiProcess_ConvertToLeftHanded
+			| aiProcess_PopulateArmatureData
+			| aiProcess_CalcTangentSpace
+			| aiProcess_LimitBoneWeights
 		);
 
 		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr)
@@ -57,12 +57,15 @@ namespace Rocket::Core
 
 		// 2. 노드를 읽어서 메쉬데이터를 처리한다. 이때 앞서 만든 노드 Hierarchy를 이용해 Bone 데이터도 처리한다.
 		ProcessNode(scene->mRootNode, scene);
+		ForSungchan(_resultModel->rootNode);
 
 		// 3. 애니메이션 정보를 처리한다.
 		if (scene->HasAnimations())
 		{
 			LoadAnimation(scene);			// 애니메이션 데이터 로드
 		}
+
+		_aiNodeToNodeMap.clear();
 
 		return _resultModel;
 	}
@@ -148,7 +151,7 @@ namespace Rocket::Core
 			bone->bindedNode = _aiNodeToNodeMap.at(aibone->mNode);
 			bone->offsetMatrix = AIMatrix4x4ToXMMatrix(aibone->mOffsetMatrix.Transpose());
 
-			_aiNodeToNodeMap.at(aibone->mNode)->bindedBone = bone;
+ 			_aiNodeToNodeMap.at(aibone->mNode)->bindedBone = bone;
 
 			for (unsigned int j = 0; j < aibone->mNumWeights; j++)
 			{
@@ -398,4 +401,18 @@ namespace Rocket::Core
 			ReadNodeRecur(newNode, ainode->mChildren[i], index);
 		}
 	}
+
+	void FBXLoaderToRaw::ForSungchan(RawNode* node)
+	{
+		if (node->bindedBone)
+		{
+			_sungchanBoneCount++;
+		}
+
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			ForSungchan(node->children[i]);
+		}
+	}
+
 }
