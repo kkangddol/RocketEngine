@@ -136,6 +136,7 @@ namespace Rocket
 	{
 		T* component = new T();
 		component->gameObject = this;
+		component->BindTransform();
 		_components[typeid(T).name()].emplace_back(component);
 		return component;
 	}

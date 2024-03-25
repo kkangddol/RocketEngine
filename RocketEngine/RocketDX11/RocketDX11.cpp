@@ -249,6 +249,7 @@ namespace Rocket::Core
 		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
 		////Blend State Set.
 		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
+
 		return;
 	}
 
@@ -272,8 +273,7 @@ namespace Rocket::Core
 
 		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
 		////Blend State Set.
-		//_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
-		_deviceContext->OMSetBlendState(nullptr, nullptr, 0xFF);
+		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 
 		return;
 	}
@@ -282,33 +282,15 @@ namespace Rocket::Core
 	{
 		Camera* mainCam = Camera::GetMainCamera();
 
-		// 카메라 버퍼 세팅
-		{
-			// 버텍스 쉐이더
-			D3D11_MAPPED_SUBRESOURCE mappedResource;
-			HR(_deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-
-			CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
-
-			cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
-			cameraBufferDataPtr->padding = 0.0f;
-
-			_deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
-
-			unsigned int bufferNumber = 1;
-
-			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
-		}
-
 		// TODO : 전체 리스트에 있는 것들을 그리는 것이 아니라 현재 씬만 그려야 한다..
 		for (auto meshRenderer : _objectManager.GetStaticModelRenderers())
 		{
 			meshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 
-		for (auto skinnedMeshRenderer : _objectManager.GetDynamicModelRenderers())
+		for (auto dynamicModelRenderer : _objectManager.GetDynamicModelRenderers())
 		{
-			skinnedMeshRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+			dynamicModelRenderer->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 	}
 
