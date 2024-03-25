@@ -146,7 +146,6 @@ namespace Rocket::Core
 				lightBufferDataPtr->specularColor = directionalLight->GetSpecularColor();				
 				lightBufferDataPtr->lightDirection = directionalLight->GetForward();
 			}
-			// TODO : LightDirection이 왜 Y축과 Z축이 바뀌어서 나오지? 해결해야한다.
 
 			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
 
@@ -234,7 +233,11 @@ namespace Rocket::Core
 		// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
 		// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
 		// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
-		nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		if (node->index > 0)
+		{
+			nodeBuffer->transformMatrix[node->index] = DirectX::XMMatrixTranspose(node->GetWorldMatrix());
+		}
+
 		for (int i = 0; i < node->children.size(); i++)
 		{
 			SetNodeBuffer(node->children[i], nodeBuffer);
