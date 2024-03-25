@@ -87,8 +87,8 @@
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Light</Filter>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Component\Light</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Material</Filter>
@@ -179,8 +179,8 @@
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Light</Filter>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Component\Light</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Singleton</Filter>
@@ -283,9 +283,6 @@
     <Filter Include="GraphicsProcess">
       <UniqueIdentifier>{783d888a-f61d-4e9b-906b-301a0c7c4c9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Light">
-      <UniqueIdentifier>{1cb4a846-a9b5-414c-b3fa-5cfa50d7cdde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader\HLSL\Light">
       <UniqueIdentifier>{cedef95d-8557-4c43-9eea-f305d33cb80a}</UniqueIdentifier>
     </Filter>
@@ -348,6 +345,9 @@
     </Filter>
     <Filter Include="Component\Camera">
       <UniqueIdentifier>{569834aa-0dc1-4d58-86a8-a5376e7b1fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Light">
+      <UniqueIdentifier>{1cb4a846-a9b5-414c-b3fa-5cfa50d7cdde}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

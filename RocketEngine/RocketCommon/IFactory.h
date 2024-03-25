@@ -14,6 +14,7 @@ namespace Rocket::Core
 	class ISpriteRenderer;
 	class ILineRenderer;
 	class IResourceManager;
+	class IDirectionalLight;
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
@@ -30,6 +31,7 @@ namespace Rocket::Core
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;
+		virtual IDirectionalLight* CreateDirectionalLight() = 0;
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

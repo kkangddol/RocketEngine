@@ -2,7 +2,10 @@
 #include "GraphicsMacro.h"
 #include "VertexStruct.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
 #include "StaticMesh.h"
+#include "Camera.h"
+#include "DirectionalLight.h"
 
 namespace Rocket::Core
 {
@@ -94,6 +97,25 @@ namespace Rocket::Core
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
+			// 카메라 버퍼 세팅
+			{
+				Camera* mainCam = Camera::GetMainCamera();
+				// 버텍스 쉐이더
+				D3D11_MAPPED_SUBRESOURCE mappedResource;
+				HR(deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+				CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
+
+				cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
+				cameraBufferDataPtr->padding = 0.0f;
+
+				deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
+
+				unsigned int bufferNumber = 1;
+
+				deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
+			}
+
 			/// 노드버퍼를 세팅할 필요가 없어짐. 각각의 GameObject의 WorldTM을 이용하면 되므로..
 // 			bufferNumber = 2;
 // 
@@ -108,6 +130,7 @@ namespace Rocket::Core
 // 
 // 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 			///
+
 			// 픽셀 쉐이더
 			bufferNumber = 0;
 
@@ -115,12 +138,15 @@ namespace Rocket::Core
 		
 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
+			for (auto& directionalLight : ObjectManager::Instance().GetDirectionalLightList())
+			{
+				lightBufferDataPtr->ambientColor = directionalLight->GetAmbientColor();
+				lightBufferDataPtr->diffuseColor = directionalLight->GetDiffuseColor();
+				lightBufferDataPtr->specularPower = directionalLight->GetSpecularPower();
+				lightBufferDataPtr->specularColor = directionalLight->GetSpecularColor();				
+				lightBufferDataPtr->lightDirection = directionalLight->GetForward();
+			}
 			// TODO : LightDirection이 왜 Y축과 Z축이 바뀌어서 나오지? 해결해야한다.
-			lightBufferDataPtr->ambientColor = { 0.15f,0.15f,0.15f,1.0f };
-			lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
-			lightBufferDataPtr->lightDirection = { 1.0f,0.0f,0.0f };
-			lightBufferDataPtr->specularPower = 2.0f;
-			lightBufferDataPtr->specularColor = { 0.5f,0.5f,0.5f,1.0f };
 
 			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
 
