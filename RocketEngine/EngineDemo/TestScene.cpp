@@ -32,6 +32,12 @@ void TestScene::Initialize()
 	auto staticTest = scene->CreateModelObject("SK_TP_CH_Default.fbx");
 	staticTest->transform.SetPosition(1.0f, 0.0f, 0.0f);
 
+	auto mr = staticTest->GetComponentsFromAll<Rocket::MeshRenderer>();
+	for (auto& m : mr)
+	{
+		m->SetTexture("T_TP_CH_Camo_006_003_D.png");
+	}
+
 	/// 스태틱 메쉬 노드 하이어라키 테스트
 // 	auto boxTest = scene->CreateObject("boxTest");
 // 	boxTest->transform.SetPosition(-1.0f, 0.0f, 0.0f);
@@ -59,10 +65,22 @@ void TestScene::Initialize()
 
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
 	skinnedTest1->transform.Translate(0.0f, 0.0f, 3.0f);
+
+	auto dmr1 = skinnedTest1->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
+	for (auto& m : dmr1)
+	{
+		m->SetTexture("Rob02Yellow_AlbedoTransparency.png");
+	}
 	
 	auto skinnedTest2 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
 	skinnedTest2->transform.SetScale(0.05f, 0.05f, 0.05f);
 	skinnedTest2->transform.Translate(3.0f, 0.0f, 0.0f);
+
+	auto dmr2 = skinnedTest2->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
+	for (auto& m : dmr2)
+	{
+		m->SetTexture("T_TP_CH_Camo_001_006_D.png");
+	}
 
  	auto skinnedTest3 = scene->CreateModelObject("Dying.fbx");
  	skinnedTest3->transform.SetScale(0.005f, 0.005f, 0.005f);
