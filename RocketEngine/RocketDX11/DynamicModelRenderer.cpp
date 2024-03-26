@@ -416,15 +416,16 @@ namespace Rocket::Core
 
 	void DynamicModelRenderer::BindTransformRecur(RocketTransform* transform, Node* node)
 	{
-		DirectX::XMVECTOR outScale;
-		DirectX::XMVECTOR outRotation;
-		DirectX::XMVECTOR outTranslation;
-
-		DirectX::XMMatrixDecompose(&outScale, &outRotation, &outTranslation, node->transformMatrix);
-
-		transform->SetLocalScale(outScale);
-		transform->SetLocalRotation(outRotation);
-		transform->SetLocalPosition(outTranslation);
+		// 앞 단에서 게임오브젝트 생성하면서 이미 Transform을 세팅해놨다.
+// 		DirectX::XMVECTOR outScale;
+// 		DirectX::XMVECTOR outRotation;
+// 		DirectX::XMVECTOR outTranslation;
+// 
+// 		DirectX::XMMatrixDecompose(&outScale, &outRotation, &outTranslation, node->transformMatrix);
+// 
+// 		transform->SetLocalScale(outScale);
+// 		transform->SetLocalRotation(outRotation);
+// 		transform->SetLocalPosition(outTranslation);
 
 		node->transform = transform;
 
