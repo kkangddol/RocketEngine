@@ -461,3 +461,6 @@ RocketEngine/vcpkg/
 ### 프로젝트 리소스들 ###
 Resources/
 Lib/
+
+### 빌드결과 ###
+Build/
