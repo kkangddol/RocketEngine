@@ -22,6 +22,14 @@ namespace Rocket::Core
 
 	}
 
+	DynamicModelRenderer::~DynamicModelRenderer()
+	{
+		// TODO : 원래는 ResourceManager에서 unique_ptr로 관리하고 있어야 하는데, 지금은 ObjectManager에서 생성할때 new Material()해서 받아온 것임.
+		//			ResourceManager에서 받아오도록 수정해야함.
+		delete _material;
+		DeleteCopiedNodeRecur(_animatedRootNode);
+	}
+
 	void DynamicModelRenderer::SetWorldTM(const Matrix& worldTM)
 	{
 		_worldTM = worldTM;
@@ -446,4 +454,15 @@ namespace Rocket::Core
 			BindTransformRecur(transform->GetChild(i), node->children[i]);
 		}
 	}
+
+	void DynamicModelRenderer::DeleteCopiedNodeRecur(Node* node)
+	{
+		for (int i = 0; i < node->children.size(); i++)
+		{
+			DeleteCopiedNodeRecur(node->children[i]);
+		}
+
+		delete node;
+	}
+
 }
