@@ -3,11 +3,13 @@
 
 namespace Rocket::Core
 {
+	// TODO : 기본폰트를 여기서 ResourceManager 접근해서 갖고오지 말고 밖에서 new TextRenderer 할 때 넣어주도록 변경하자.
 	TextRenderer::TextRenderer()
 		: _isActive(true),
 		_font(ResourceManager::Instance().GetDefaultFont()), 
 		_text("Default Text"), 
-		_color(DirectX::Colors::White)
+		_color(DirectX::Colors::White),
+		_worldTM(Matrix::Identity)
 	{
 
 	}

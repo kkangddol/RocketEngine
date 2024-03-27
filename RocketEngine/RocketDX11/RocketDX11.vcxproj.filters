@@ -41,7 +41,7 @@
       <Filter>Component\MeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
-      <Filter>Object\TextObject</Filter>
+      <Filter>Component\TextRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Resource\Texture</Filter>
@@ -133,7 +133,7 @@
       <Filter>Component\MeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
-      <Filter>Object\TextObject</Filter>
+      <Filter>Component\TextRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Resource\Texture</Filter>
@@ -199,9 +199,6 @@
     </Filter>
     <Filter Include="Object\LineRenderer">
       <UniqueIdentifier>{29601c1e-6dd6-412d-8f40-c8d66e78a994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\TextObject">
-      <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{5a459304-e098-43fa-9b09-91426347a350}</UniqueIdentifier>
@@ -310,6 +307,9 @@
     </Filter>
     <Filter Include="Component\Light">
       <UniqueIdentifier>{1cb4a846-a9b5-414c-b3fa-5cfa50d7cdde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\TextRenderer">
+      <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

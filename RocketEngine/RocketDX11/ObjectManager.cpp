@@ -22,8 +22,14 @@ namespace Rocket::Core
 		_cameraList(),
 		_textList()
 	{
-
 	}
+
+
+	void ObjectManager::Initialize()
+	{
+		_fpsText = new TextRenderer();
+	}
+
 
 	Camera* ObjectManager::CreateCamera()
 	{
