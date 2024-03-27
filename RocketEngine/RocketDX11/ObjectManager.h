@@ -23,6 +23,9 @@ namespace Rocket::Core
 		ObjectManager();
 
 	public:
+		void Initialize();
+
+	public:
 		std::vector<MeshRenderer*>& GetStaticModelRenderers();
 		std::vector<DynamicModelRenderer*>& GetDynamicModelRenderers();
 		std::vector<TextRenderer*>& GetTextList();
@@ -38,6 +41,10 @@ namespace Rocket::Core
 		SpriteRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
 		DirectionalLight* CreateDirectionalLight();
+
+		/// Debug 객체들.
+	public:
+		TextRenderer* _fpsText;
 
 	private:
 		std::vector<Camera*> _cameraList;

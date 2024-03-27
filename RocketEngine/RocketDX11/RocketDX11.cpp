@@ -55,7 +55,8 @@ namespace Rocket::Core
 		_axis(), _grid(),
 		_spriteBatch(), _lineBatch(), _basicEffect(),
 		_lineInputLayout(),
-		_deltaTime()
+		_deltaTime(),
+		_isDebugMode(false)
 	{
 
 	}
@@ -204,14 +205,18 @@ namespace Rocket::Core
 			&_viewport
 		);
 
+		/// DX 초기화 끝났으니 Manager들 초기화해준다.
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
+		_objectManager.Initialize();
 
+		/// Manager들 초기화 끝났으니 Helper Object들 초기화해준다.
 		_axis = new Axis();
 		_axis->Initialize(_device.Get());
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
 
+		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
@@ -334,15 +339,21 @@ namespace Rocket::Core
 
 	void Rocket::Core::RocketDX11::SetDebugMode(bool isDebug)
 	{
+		_isDebugMode = isDebug;
 	}
 
-	void RocketDX11::Update(float deltaTime)
+	void RocketDX11::Update(float deltaTime, int fps /*= 0*/)
 	{
 		_deltaTime = deltaTime;
 
 		Camera::GetMainCamera()->UpdateViewMatrix();
 		Camera::GetMainCamera()->UpdateProjectionMatrix();
 		UpdateAnimation(deltaTime);
+		
+		_objectManager._fpsText->SetText(
+			"deltaTime : " + std::to_string(_deltaTime)
+			+ "\n" + "fps : " + std::to_string(fps)
+		);
 	}
 
 	void RocketDX11::OnResize(int _width, int _height)
@@ -357,11 +368,16 @@ namespace Rocket::Core
 		RenderHelperObject();
 		RenderMesh();
 
+		RenderCubeMap();
+
+		RenderLine();
 		RenderText();
 		RenderTexture();
-		RenderLine();
 
-		RenderCubeMap();
+		if (_isDebugMode)
+		{
+			RenderDebug();
+		}
 
 		EndRender();
 	}
@@ -479,6 +495,15 @@ namespace Rocket::Core
 	{
 		_deviceContext->OMSetDepthStencilState(_cubeMapDepthStencilState.Get(), 0);
 		_resourceManager.GetDefaultCubeMap()->Render(_deviceContext.Get());
+		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
+
+	}
+
+	void RocketDX11::RenderDebug()
+	{
+		_spriteBatch->Begin();
+		_objectManager._fpsText->Render(_spriteBatch);
+		_spriteBatch->End();
 	}
 
 }

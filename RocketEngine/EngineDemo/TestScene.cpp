@@ -25,8 +25,6 @@ void TestScene::Initialize()
 	lightComp->SetSpecularPower(4.0f);
 	lightObj->transform.Rotate(0.0f, 180.0f, 0.0f);
 
-
-
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
 	skinnedTest1->transform.Translate(0.0f, 0.0f, 3.0f);
@@ -69,13 +67,13 @@ void TestScene::Initialize()
 	auto hierarchyTest = scene->CreateModelObject("SM_Box_Cargo.fbx");
 
 	/// 텍스트 테스트
-// 	auto text = scene->CreateObject("text");
-// 	text->AddComponent<Rocket::TextBox>();
-// 	text->GetComponent<Rocket::TextBox>()->SetText("Hello World");
-// 	text->transform.Translate(500.0f, 500.0f, 0.0f);
+	auto text = scene->CreateObject("text");
+	text->AddComponent<Rocket::TextBox>();
+	text->GetComponent<Rocket::TextBox>()->SetText("Hello World\nBABO");
+	text->transform.Translate(1400.0f, 0.0f, 0.0f);
 
 	/// 스프라이트 테스트
-// 	auto sprite = scene->CreateObject("sprite");
-// 	sprite->AddComponent<Rocket::SpriteRenderer>();
-// 	sprite->transform.Translate(100.0f, 100.0f, 0.0f);
+	auto sprite = scene->CreateObject("sprite");
+	sprite->AddComponent<Rocket::SpriteRenderer>();
+	sprite->transform.Translate(1400.0f, 700.0f, 0.0f);
 }
