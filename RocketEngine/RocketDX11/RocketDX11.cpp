@@ -488,9 +488,8 @@ namespace Rocket::Core
 	void RocketDX11::RenderCubeMap()
 	{
 		_deviceContext->OMSetDepthStencilState(_cubeMapDepthStencilState.Get(), 0);
-		_resourceManager.GetDefaultCubeMap()->Render(_deviceContext.Get());
+		_objectManager.GetDefaultCubeMap()->Render(_deviceContext.Get());
 		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
-
 	}
 
 	void RocketDX11::RenderDebug()

@@ -8,6 +8,8 @@
 #include "TextRenderer.h"
 #include "Axis.h"
 #include "Grid.h"
+#include "CubeMap.h"
+#include "LineRenderer.h"
 
 namespace Rocket::Core
 {
@@ -17,11 +19,7 @@ namespace Rocket::Core
 	class MeshRenderer;
 	class DynamicModelRenderer;
 	class SpriteRenderer;
-	class LineRenderer;
 	class DirectionalLight;
-//	class TextRenderer;
-// 	class Axis;
-// 	class Grid;
 
 	class ObjectManager : public Singleton<ObjectManager>
 	{
@@ -40,6 +38,8 @@ namespace Rocket::Core
 		std::vector<SpriteRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();
 		std::vector<DirectionalLight*>& GetDirectionalLightList();
+		CubeMap* GetCubeMap(const std::string& name);
+		CubeMap* GetDefaultCubeMap();
 
 	public:
 		Camera* CreateCamera();
@@ -62,8 +62,9 @@ namespace Rocket::Core
 		std::vector<DynamicModelRenderer*> _dynamicModelRendererList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<SpriteRenderer*> _ImageList;
-		LineRenderer* _lineRenderer;
+		std::unique_ptr<LineRenderer> _lineRenderer;
 		std::vector<DirectionalLight*> _directionalLightList;
+		std::unordered_map<std::string, std::unique_ptr<CubeMap>> _cubeMaps;
 
 	private:
 		ResourceManager& _resourceManager;

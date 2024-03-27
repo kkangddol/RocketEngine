@@ -14,20 +14,20 @@
 #include "../RocketCommon/GraphicsEnum.h"
 #include "ModelStruct.h"
 #include "../RocketCommon/RawModelStruct.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "Texture.h"
+#include "Model.h"
+#include "mesh.h"
 
 using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class Mesh;
 	class CubeMesh;
 	class SphereMesh;
-	class VertexShader;
-	class PixelShader;
 	class SpriteRenderer;
-	class Texture;
 	class Material;
-	class CubeMap;
 }
 
 namespace Rocket::Core
@@ -60,8 +60,7 @@ namespace Rocket::Core
 		Model* GetModel(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
-		Material* GetDefaultMaterial() const { return _defaultMaterial; }
-		CubeMap* GetDefaultCubeMap() const { return _cubeMap; }
+		Material* GetDefaultMaterial() const { return _defaultMaterial; }		
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont() const;
@@ -94,10 +93,6 @@ namespace Rocket::Core
 		CubeMesh* _cubeMesh;
 		SphereMesh* _sphereMesh;
 
-		// TODO : 이거 여기있어도 되나? 성격상으로는 ObjectManager에 있어야 할 것 같은데..
-		// 기본 큐브맵
-		CubeMap* _cubeMap;	
-
 		// 기본 머터리얼
 		Material* _defaultMaterial;
 
@@ -112,11 +107,11 @@ namespace Rocket::Core
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _spherePrimitive;
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cylinderPrimitive;
 
-		std::unordered_map<std::string, VertexShader*> _vertexShaders;
-		std::unordered_map<std::string, PixelShader*> _pixelShaders;
-		std::unordered_map<std::string, Texture*> _textures;
-		std::vector<ID3D11RasterizerState*> _renderStates;
-		std::unordered_map<std::string, Model*> _models;
-		std::unordered_map<std::string, Mesh*> _meshes;
+		std::unordered_map<std::string, std::unique_ptr<VertexShader>> _vertexShaders;
+		std::unordered_map<std::string, std::unique_ptr<PixelShader>> _pixelShaders;
+		std::unordered_map<std::string, std::unique_ptr<Texture>> _textures;
+		std::vector<ComPtr<ID3D11RasterizerState>> _renderStates;
+		std::unordered_map<std::string, std::unique_ptr<Model>> _models;
+		std::unordered_map<std::string, std::unique_ptr<Mesh>> _meshes;
 	};
 }

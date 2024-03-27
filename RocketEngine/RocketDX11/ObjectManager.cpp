@@ -6,14 +6,11 @@
 #include "Camera.h"
 #include "MeshRenderer.h"
 #include "DynamicModelRenderer.h"
-#include "TextRenderer.h"
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "Mesh.h"
 #include "CubeMesh.h"
 #include "DirectionalLight.h"
-#include "Axis.h"
-#include "Grid.h"
 
 namespace Rocket::Core
 {
@@ -43,6 +40,11 @@ namespace Rocket::Core
 		_grid->Initialize(device);
 		_grid->SetRenderState(_rscMgr.GetRenderState(ResourceManager::eRenderState::WIREFRAME));
 		_grid->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS"));
+
+		auto cubeMap = std::make_unique<CubeMap>();
+		cubeMap->Initialize(device);
+		cubeMap->LoadTexture("CloudCubeMap.dds");
+		_cubeMaps["CloudCubeMap"] = std::move(cubeMap);
 	}
 
 	void ObjectManager::Finalize()
@@ -114,13 +116,13 @@ namespace Rocket::Core
 
 	LineRenderer* ObjectManager::CreateLineRenderer()
 	{
-		_lineRenderer = new LineRenderer();
-		return _lineRenderer;
+		_lineRenderer = std::make_unique<LineRenderer>();
+		return _lineRenderer.get();
 	}
 
 	LineRenderer* ObjectManager::GetLineRenderer()
 	{
-		return _lineRenderer;
+		return _lineRenderer.get();
 	}
 
 	std::vector<DynamicModelRenderer*>& ObjectManager::GetDynamicModelRenderers()
@@ -159,4 +161,20 @@ namespace Rocket::Core
 	{
 		return _directionalLightList;
 	}
+
+	Rocket::Core::CubeMap* ObjectManager::GetCubeMap(const std::string& name)
+	{
+		if(_cubeMaps.find(name) == _cubeMaps.end())
+		{
+			return nullptr;
+		}
+
+		return _cubeMaps.at(name).get();
+	}
+
+	Rocket::Core::CubeMap* ObjectManager::GetDefaultCubeMap()
+	{
+		return _cubeMaps.begin()->second.get();
+	}
+
 }
