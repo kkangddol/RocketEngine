@@ -146,6 +146,16 @@ namespace Rocket::Core
 				lightBufferDataPtr->lightDirection = directionalLight->GetForward();
 			}
 
+			// TODO : 라이트가 없는경우. 임시입니다.
+			if (ObjectManager::Instance().GetDirectionalLightList().size() == 0)
+			{
+				lightBufferDataPtr->ambientColor = { 0.3f,0.3f,0.3f,0.3f };
+				lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
+				lightBufferDataPtr->specularPower = 4.0f;
+				lightBufferDataPtr->specularColor = { 1.0f,1.0f ,1.0f ,1.0f };
+				lightBufferDataPtr->lightDirection = { 0.0f,-1.0f,0.0f };
+			}
+
 			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
 
 			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _material->GetPixelShader()->GetAddressOfConstantBuffer(bufferNumber));
