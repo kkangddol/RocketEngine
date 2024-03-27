@@ -18,14 +18,8 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rocket::Core
 {
-	class Grid;
-	class Axis;
-	class CubeMesh;
-	class VertexShader;
-	class PixelShader;
 	class ObjectManager;
 	class ResourceManager;
-	class SpriteRenderer;
 	
 	class RocketDX11 final : public IDX11Renderer
 	{
@@ -82,13 +76,11 @@ namespace Rocket::Core
 		ComPtr<ID3D11DepthStencilState> _defaultDepthStencilState;
 		ComPtr<ID3D11DepthStencilState> _cubeMapDepthStencilState;
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
-		ComPtr<ID3D11BlendState > _defaultBlendState;
+		ComPtr<ID3D11BlendState> _defaultBlendState;
 		
 		D3D11_VIEWPORT _viewport;
 
 	private:
-		Grid* _grid;
-		Axis* _axis;
 		DirectX::SpriteBatch* _spriteBatch;
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;

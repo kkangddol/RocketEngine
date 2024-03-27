@@ -1,8 +1,13 @@
 ﻿#pragma once
 #include <vector>
+#include <memory>
+#include <d3d11_2.h>
+#include <dxgi1_3.h>
 
 #include "Singleton.h"
-
+#include "TextRenderer.h"
+#include "Axis.h"
+#include "Grid.h"
 
 namespace Rocket::Core
 {
@@ -11,10 +16,12 @@ namespace Rocket::Core
 	class Camera;
 	class MeshRenderer;
 	class DynamicModelRenderer;
-	class TextRenderer;
 	class SpriteRenderer;
 	class LineRenderer;
 	class DirectionalLight;
+//	class TextRenderer;
+// 	class Axis;
+// 	class Grid;
 
 	class ObjectManager : public Singleton<ObjectManager>
 	{
@@ -23,7 +30,8 @@ namespace Rocket::Core
 		ObjectManager();
 
 	public:
-		void Initialize();
+		void Initialize(ID3D11Device* device);
+		void Finalize();
 
 	public:
 		std::vector<MeshRenderer*>& GetStaticModelRenderers();
@@ -44,7 +52,9 @@ namespace Rocket::Core
 
 		/// Debug 객체들.
 	public:
-		TextRenderer* _fpsText;
+		std::unique_ptr<TextRenderer> _fpsText;
+		std::unique_ptr<Axis> _axis;
+		std::unique_ptr<Grid> _grid;
 
 	private:
 		std::vector<Camera*> _cameraList;

@@ -102,10 +102,12 @@ namespace Rocket::Core
 
 			Node* node = _animatedNodeMap[nodeAnim->nodeName];
 
+			// TODO : nodeAnim이 없을 경우도 있다? 그때를 대비한 코드를 작성해라. 내꺼에서는 이 범위기반 for문에서 없으면 애초에 들어오지 않으나. 들어왔지만 data가 없는 경우를 주의해야 한다.
+
 			// Position
 			{
 				int positionIndex = 0;
-				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
+ 				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
 				{
 					if (_animationTick < nodeAnim->positionTimestamps[i])
 					{

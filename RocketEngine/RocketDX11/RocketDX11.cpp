@@ -52,7 +52,6 @@ namespace Rocket::Core
 		_viewport(),
 		_objectManager(ObjectManager::Instance()),
 		_resourceManager(ResourceManager::Instance()),
-		_axis(), _grid(),
 		_spriteBatch(), _lineBatch(), _basicEffect(),
 		_lineInputLayout(),
 		_deltaTime(),
@@ -207,14 +206,7 @@ namespace Rocket::Core
 
 		/// DX 초기화 끝났으니 Manager들 초기화해준다.
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
-		_objectManager.Initialize();
-
-		/// Manager들 초기화 끝났으니 Helper Object들 초기화해준다.
-		_axis = new Axis();
-		_axis->Initialize(_device.Get());
-
-		_grid = new Grid();
-		_grid->Initialize(_device.Get());
+		_objectManager.Initialize(_device.Get());
 
 		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
@@ -384,19 +376,21 @@ namespace Rocket::Core
 
 	void RocketDX11::Finalize()
 	{
-		delete _grid;
-		delete _axis;
+		_objectManager.Finalize();
+		_resourceManager.Finalize();
+
+		delete _spriteBatch;
+		delete _lineBatch;
 	}
 
 	void RocketDX11::RenderHelperObject()
 	{
-		auto vs = _resourceManager.GetVertexShader("ColorVS");
-		auto ps = _resourceManager.GetPixelShader("ColorPS");
+		auto cam = Camera::GetMainCamera();
 
-		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetConstantBuffer(0), vs->GetInputLayout());
-		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetConstantBuffer(0), vs->GetInputLayout());
+		_objectManager._grid->Update(DirectX::XMMatrixIdentity(), cam->GetViewMatrix(), cam->GetProjectionMatrix());
+		_objectManager._grid->Render(_deviceContext.Get());
+		_objectManager._axis->Update(DirectX::XMMatrixIdentity(), cam->GetViewMatrix(), cam->GetProjectionMatrix());
+		_objectManager._axis->Render(_deviceContext.Get());
 	}
 
 	void RocketDX11::RenderLine()

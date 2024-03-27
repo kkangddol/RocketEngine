@@ -79,6 +79,9 @@
     <ClCompile Include="CubeMap.cpp">
       <Filter>Object\CubeMap</Filter>
     </ClCompile>
+    <ClCompile Include="HelperObjectBase.cpp">
+      <Filter>Object\HelperObject\BaseClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="CubeMap.h">
       <Filter>Object\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperObjectBase.h">
+      <Filter>Object\HelperObject\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +316,9 @@
     </Filter>
     <Filter Include="Component\TextRenderer">
       <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\HelperObject\BaseClass">
+      <UniqueIdentifier>{6a1e7798-5f44-48f6-afb6-b1ec30452067}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

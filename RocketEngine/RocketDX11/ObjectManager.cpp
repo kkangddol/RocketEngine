@@ -12,6 +12,8 @@
 #include "Mesh.h"
 #include "CubeMesh.h"
 #include "DirectionalLight.h"
+#include "Axis.h"
+#include "Grid.h"
 
 namespace Rocket::Core
 {
@@ -25,11 +27,28 @@ namespace Rocket::Core
 	}
 
 
-	void ObjectManager::Initialize()
+	void ObjectManager::Initialize(ID3D11Device* device)
 	{
-		_fpsText = new TextRenderer();
+		auto& _rscMgr = ResourceManager::Instance();
+
+		_fpsText.reset(new TextRenderer());
+		_fpsText->SetFont(_rscMgr.GetDefaultFont());
+
+		_axis.reset(new Axis());
+		_axis->Initialize(device);
+		_axis->SetRenderState(_rscMgr.GetRenderState(ResourceManager::eRenderState::WIREFRAME));
+		_axis->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS"));
+
+		_grid.reset(new Grid());
+		_grid->Initialize(device);
+		_grid->SetRenderState(_rscMgr.GetRenderState(ResourceManager::eRenderState::WIREFRAME));
+		_grid->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS"));
 	}
 
+	void ObjectManager::Finalize()
+	{
+
+	}
 
 	Camera* ObjectManager::CreateCamera()
 	{
@@ -82,9 +101,10 @@ namespace Rocket::Core
 
 	Rocket::Core::TextRenderer* ObjectManager::CreateText()
 	{
-		TextRenderer* TextObject = new TextRenderer();
-		_textList.emplace_back(TextObject);
-		return TextObject;
+		TextRenderer* textRenderer = new TextRenderer();
+		textRenderer->SetFont(ResourceManager::Instance().GetDefaultFont());
+		_textList.emplace_back(textRenderer);
+		return textRenderer;
 	}
 
 	std::vector<TextRenderer*>& ObjectManager::GetTextList()
@@ -139,5 +159,4 @@ namespace Rocket::Core
 	{
 		return _directionalLightList;
 	}
-
 }

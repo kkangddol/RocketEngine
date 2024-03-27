@@ -137,7 +137,7 @@ namespace Rocket::Core
 
 		_defaultTexture = LoadTextureFile("darkbrickdxt1.dds");
 
-		_defaultFont = new DirectX::SpriteFont(_device.Get(), (FONT_PATH + L"NotoSansKR.spritefont").c_str());
+		_defaultFont = std::make_unique<DirectX::SpriteFont>(_device.Get(), (FONT_PATH + L"NotoSansKR.spritefont").c_str());
 		
 		_defaultMaterial = new Material();
 		_defaultMaterial->SetVertexShader(GetVertexShader("StaticMeshVS"));
@@ -184,9 +184,9 @@ namespace Rocket::Core
 		return _pixelShaders[name];
 	}
 
-	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
-	{
-		return _defaultFont;
+	DirectX::SpriteFont* ResourceManager::GetDefaultFont() const
+{
+		return _defaultFont.get();
 	}
 
 	ID3D11Device* ResourceManager::GetDevice()
@@ -465,6 +465,11 @@ namespace Rocket::Core
 		skinnedMesh->CreateBuffers();
 
 		return skinnedMesh;
+	}
+
+	void ResourceManager::Finalize()
+	{
+
 	}
 
 }

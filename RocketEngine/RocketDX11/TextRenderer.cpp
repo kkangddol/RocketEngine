@@ -1,12 +1,10 @@
 ﻿#include "TextRenderer.h"
-#include "ResourceManager.h"
 
 namespace Rocket::Core
 {
-	// TODO : 기본폰트를 여기서 ResourceManager 접근해서 갖고오지 말고 밖에서 new TextRenderer 할 때 넣어주도록 변경하자.
 	TextRenderer::TextRenderer()
 		: _isActive(true),
-		_font(ResourceManager::Instance().GetDefaultFont()), 
+		_font(nullptr), 
 		_text("Default Text"), 
 		_color(DirectX::Colors::White),
 		_worldTM(Matrix::Identity)
@@ -57,4 +55,10 @@ namespace Rocket::Core
 	{
 		return _color;
 	}
+
+	void TextRenderer::SetFont(DirectX::SpriteFont* font)
+	{
+		_font = font;
+	}
+
 }

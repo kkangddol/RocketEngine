@@ -39,6 +39,9 @@ namespace Rocket::Core
 		ResourceManager();
 
 	public:
+		void Finalize();
+
+	public:
 		enum class eRenderState
 		{
 			SOLID,
@@ -61,7 +64,7 @@ namespace Rocket::Core
 		CubeMap* GetDefaultCubeMap() const { return _cubeMap; }
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
-		DirectX::SpriteFont* GetDefaultFont();
+		DirectX::SpriteFont* GetDefaultFont() const;
 
 		DirectX::DX11::GeometricPrimitive* GetCubePrimitive() { return _cubePrimitive.get(); }
 		DirectX::DX11::GeometricPrimitive* GetSpherePrimitive() { return _spherePrimitive.get(); }
@@ -102,7 +105,7 @@ namespace Rocket::Core
 		Texture* _defaultTexture;
 
 		// 기본 폰트 들고있음
-		DirectX::SpriteFont* _defaultFont;
+		std::unique_ptr<DirectX::SpriteFont> _defaultFont;
 
 		// DXTK Primitive
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cubePrimitive;
