@@ -49,7 +49,35 @@ namespace Rocket::Core
 
 	void ObjectManager::Finalize()
 	{
+		for (auto& cam : _cameraList)
+		{
+			delete cam;
+		}
 
+		for (auto& mr : _staticModelRendererList)
+		{
+			delete mr;
+		}
+
+		for (auto& dmr : _dynamicModelRendererList)
+		{
+			delete dmr;
+		}
+
+		for (auto& tr : _textList)
+		{
+			delete tr;
+		}
+
+		for (auto& sr : _spriteList)
+		{
+			delete sr;
+		}
+
+		for (auto& dl : _directionalLightList)
+		{
+			delete dl;
+		}
 	}
 
 	Camera* ObjectManager::CreateCamera()
@@ -86,14 +114,14 @@ namespace Rocket::Core
 	{
 		SpriteRenderer* temp = new SpriteRenderer();
 		temp->SetImage("test.jpg");
-		_ImageList.emplace_back(temp);
+		_spriteList.emplace_back(temp);
 
 		return temp;
 	}
 
 	std::vector<SpriteRenderer*>& ObjectManager::GetImageList()
 	{
-		return _ImageList;
+		return _spriteList;
 	}
 
 	std::vector<MeshRenderer*>& ObjectManager::GetStaticModelRenderers()

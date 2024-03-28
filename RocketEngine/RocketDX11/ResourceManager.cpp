@@ -4,18 +4,11 @@
 
 #include "ResourceManager.h"
 #include "Camera.h"
-#include "CubeMesh.h"
-#include "SphereMesh.h"
-#include "Mesh.h"
 #include "StaticMesh.h"
 #include "SkinnedMesh.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
 #include "TextRenderer.h"
 #include "SpriteRenderer.h"
 #include "GraphicsMacro.h"
-#include "texture.h"
-#include "material.h"
 #include "VertexStruct.h"
 
 #include "CubeMap.h"
@@ -54,88 +47,88 @@ namespace Rocket::Core
 		// Color Shader
 		{
 			std::unique_ptr<VertexShader> colorVS = std::make_unique<VertexShader>();
-			colorVS->Initialize(_device.Get(), HLSL_PATH + L"ColorVS.hlsl");
+			colorVS->Initialize(_device, HLSL_PATH + L"ColorVS.hlsl");
 			colorVS->SetVertexType(eVertexType::COLOR_VERTEX);
 			_vertexShaders["ColorVS"] = std::move(colorVS);
 
 			std::unique_ptr<PixelShader> colorPS = std::make_unique<PixelShader>();
-			colorPS->Initialize(_device.Get(), HLSL_PATH + L"ColorPS.hlsl");
+			colorPS->Initialize(_device, HLSL_PATH + L"ColorPS.hlsl");
 			_pixelShaders["ColorPS"] = std::move(colorPS);
 		}
 
 		// Texture Shader
 		{
 			std::unique_ptr<VertexShader> textureVS = std::make_unique<VertexShader>();
-			textureVS->Initialize(_device.Get(), HLSL_PATH + L"TextureVS.hlsl");
+			textureVS->Initialize(_device, HLSL_PATH + L"TextureVS.hlsl");
 			textureVS->SetVertexType(eVertexType::TEXTURE_VERTEX);
 			_vertexShaders["TextureVS"] = std::move(textureVS);
 
 			std::unique_ptr<PixelShader> texturePS = std::make_unique<PixelShader>();
-			texturePS->Initialize(_device.Get(), HLSL_PATH + L"TexturePS.hlsl");
+			texturePS->Initialize(_device, HLSL_PATH + L"TexturePS.hlsl");
 			_pixelShaders["TexturePS"] = std::move(texturePS);
 		}
 
 		// Light Shader
 		{
 			std::unique_ptr<VertexShader> lightVS = std::make_unique<VertexShader>();
-			lightVS->Initialize(_device.Get(), HLSL_PATH + L"LightVS.hlsl");
+			lightVS->Initialize(_device, HLSL_PATH + L"LightVS.hlsl");
 			lightVS->SetVertexType(eVertexType::LIGHT_VERTEX);
 			_vertexShaders["LightVS"] = std::move(lightVS);
 
 			std::unique_ptr<PixelShader> lightPS = std::make_unique<PixelShader>();
-			lightPS->Initialize(_device.Get(), HLSL_PATH + L"LightPS.hlsl");
+			lightPS->Initialize(_device, HLSL_PATH + L"LightPS.hlsl");
 			_pixelShaders["LightPS"] = std::move(lightPS);
 		}
 
 		// StaticMesh Shader
 		{
 			std::unique_ptr<VertexShader> staticMeshVS = std::make_unique<VertexShader>();
-			staticMeshVS->Initialize(_device.Get(), HLSL_PATH + L"StaticMeshVS.hlsl");
+			staticMeshVS->Initialize(_device, HLSL_PATH + L"StaticMeshVS.hlsl");
 			staticMeshVS->SetVertexType(eVertexType::VERTEX);
 			_vertexShaders["StaticMeshVS"] = std::move(staticMeshVS);
 
 			std::unique_ptr<PixelShader> staticMeshPS = std::make_unique<PixelShader>();
-			staticMeshPS->Initialize(_device.Get(), HLSL_PATH + L"StaticMeshPS.hlsl");
+			staticMeshPS->Initialize(_device, HLSL_PATH + L"StaticMeshPS.hlsl");
 			_pixelShaders["StaticMeshPS"] = std::move(staticMeshPS);
 		}
 
 		// SkinnedMesh Shader
 		{
 			std::unique_ptr<VertexShader> skinnedMeshVS = std::make_unique<VertexShader>();
-			skinnedMeshVS->Initialize(_device.Get(), HLSL_PATH + L"SkinnedMeshVS.hlsl");
+			skinnedMeshVS->Initialize(_device, HLSL_PATH + L"SkinnedMeshVS.hlsl");
 			skinnedMeshVS->SetVertexType(eVertexType::SKINNED_VERTEX);
 			_vertexShaders["SkinnedMeshVS"] = std::move(skinnedMeshVS);
 
 			std::unique_ptr<PixelShader> skinnedMeshPS = std::make_unique<PixelShader>();
-			skinnedMeshPS->Initialize(_device.Get(), HLSL_PATH + L"SkinnedMeshPS.hlsl");
+			skinnedMeshPS->Initialize(_device, HLSL_PATH + L"SkinnedMeshPS.hlsl");
 			_pixelShaders["SkinnedMeshPS"] = std::move(skinnedMeshPS);
 		}
 
 		// CubeMap Shader
 		{
 			std::unique_ptr<VertexShader> cubeMapVS = std::make_unique<VertexShader>();
-			cubeMapVS->Initialize(_device.Get(), HLSL_PATH + L"CubeMapVS.hlsl");
+			cubeMapVS->Initialize(_device, HLSL_PATH + L"CubeMapVS.hlsl");
 			cubeMapVS->SetVertexType(eVertexType::VERTEX);
 			_vertexShaders["CubeMapVS"] = std::move(cubeMapVS);
 
 			std::unique_ptr<PixelShader> cubeMapPS = std::make_unique<PixelShader>();
-			cubeMapPS->Initialize(_device.Get(), HLSL_PATH + L"CubeMapPS.hlsl");
+			cubeMapPS->Initialize(_device, HLSL_PATH + L"CubeMapPS.hlsl");
 			_pixelShaders["CubeMapPS"] = std::move(cubeMapPS);
 		}
 
 		CreateRenderStates();
 
-		_cubeMesh = new CubeMesh();
+		_cubeMesh = std::make_unique<CubeMesh>();
 		_cubeMesh->Initialize(device);
 
-		_sphereMesh = new SphereMesh();
+		_sphereMesh = std::make_unique<SphereMesh>();
 		_sphereMesh->Initialize(device);
 
 		_defaultTexture = LoadTextureFile("darkbrickdxt1.dds");
 
-		_defaultFont = std::make_unique<DirectX::SpriteFont>(_device.Get(), (FONT_PATH + L"NotoSansKR.spritefont").c_str());
+		_defaultFont = std::make_unique<DirectX::SpriteFont>(_device, (FONT_PATH + L"NotoSansKR.spritefont").c_str());
 		
-		_defaultMaterial = new Material();
+		_defaultMaterial = std::make_unique<Material>();
 		_defaultMaterial->SetVertexShader(GetVertexShader("StaticMeshVS"));
 		_defaultMaterial->SetPixelShader(GetPixelShader("StaticMeshPS"));
 		_defaultMaterial->SetRenderState(GetRenderState(eRenderState::SOLID));
@@ -187,12 +180,12 @@ namespace Rocket::Core
 
 	ID3D11Device* ResourceManager::GetDevice()
 	{
-		return _device.Get();
+		return _device;
 	}
 
 	ID3D11DeviceContext* ResourceManager::GetDeviceContext()
 	{
-		return _deviceContext.Get();
+		return _deviceContext;
 	}
 
 	void ResourceManager::CreateRenderStates()
@@ -229,9 +222,9 @@ namespace Rocket::Core
 		switch (meshType)
 		{
 		case eMeshType::CUBE:
-			return _cubeMesh;
+			return _cubeMesh.get();
 		case eMeshType::SPHERE:
-			return _sphereMesh;
+			return _sphereMesh.get();
 		default:
 			return nullptr;
 		}
@@ -269,11 +262,11 @@ namespace Rocket::Core
 
 		if (extension == "dds")
 		{
-			HR(DirectX::CreateDDSTextureFromFile(_device.Get(), wFileName.c_str(), &rawTexture, &textureView));
+			HR(DirectX::CreateDDSTextureFromFile(_device, wFileName.c_str(), &rawTexture, &textureView));
 		}
 		else if (extension == "jpg" || extension == "png")
 		{
-			HR(DirectX::CreateWICTextureFromFile(_device.Get(), wFileName.c_str(), &rawTexture, &textureView));
+			HR(DirectX::CreateWICTextureFromFile(_device, wFileName.c_str(), &rawTexture, &textureView));
 		}
 		else
 		{

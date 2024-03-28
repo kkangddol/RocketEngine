@@ -56,13 +56,15 @@ namespace Rocket::Core
 		std::unique_ptr<Axis> _axis;
 		std::unique_ptr<Grid> _grid;
 
+		// TODO : 얘네도 다 unique_ptr로 바꿀까? 아니면 해제를 똑바로 잘 해줄까? 지금은 해제를 수동으로 해주는 방향으로 가자.
 	private:
+		std::unique_ptr<LineRenderer> _lineRenderer;
+
 		std::vector<Camera*> _cameraList;
 		std::vector<MeshRenderer*> _staticModelRendererList;
 		std::vector<DynamicModelRenderer*> _dynamicModelRendererList;
 		std::vector<TextRenderer*> _textList;
-		std::vector<SpriteRenderer*> _ImageList;
-		std::unique_ptr<LineRenderer> _lineRenderer;
+		std::vector<SpriteRenderer*> _spriteList;
 		std::vector<DirectionalLight*> _directionalLightList;
 		std::unordered_map<std::string, std::unique_ptr<CubeMap>> _cubeMaps;
 

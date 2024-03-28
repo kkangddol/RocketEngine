@@ -283,7 +283,6 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
-    <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="HelperObjectBase.cpp" />
     <ClCompile Include="ModelStruct.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
@@ -318,7 +317,6 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CubeMap.h" />
     <ClInclude Include="CubeMesh.h" />
-    <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="HelperObjectBase.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="ModelStruct.h" />
@@ -336,7 +334,6 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
     <ClInclude Include="Material.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />
-    <ClInclude Include="IBuilder.h" />
     <ClInclude Include="IResource.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PixelShader.h" />

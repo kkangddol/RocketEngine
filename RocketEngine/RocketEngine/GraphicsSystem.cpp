@@ -55,6 +55,7 @@ namespace Rocket::Core
 
 	void GraphicsSystem::Finalize()
 	{
+		_graphicsRenderer->Finalize();
 		reinterpret_cast<GRAPHICS_RELEASE_SIGNATURE>(GetProcAddress(hGraphicsModule, GRAPHICS_RELEASE_NAME))(_graphicsRenderer.release());
 		reinterpret_cast<FACTORY_RELEASE_SIGNATURE>(GetProcAddress(hGraphicsModule, FACTORY_RELEASE_NAME))(_factory.release());
 		FreeLibrary(hGraphicsModule);

@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
-#include <wrl.h>
 #include <unordered_map>
 #include <SpriteFont.h>
 #include <vector>
 #include <GeometricPrimitive.h>
 #include <memory>
 #include <string>
+#include <wrl.h>
 
 #include "Singleton.h"
 #include "../RocketCommon/IResourceManager.h"
@@ -19,16 +19,11 @@
 #include "Texture.h"
 #include "Model.h"
 #include "mesh.h"
+#include "CubeMesh.h"
+#include "SphereMesh.h"
+#include "Material.h"
 
 using Microsoft::WRL::ComPtr;
-
-namespace Rocket::Core
-{
-	class CubeMesh;
-	class SphereMesh;
-	class SpriteRenderer;
-	class Material;
-}
 
 namespace Rocket::Core
 {
@@ -39,9 +34,6 @@ namespace Rocket::Core
 		ResourceManager();
 
 	public:
-		void Finalize();
-
-	public:
 		enum class eRenderState
 		{
 			SOLID,
@@ -50,17 +42,18 @@ namespace Rocket::Core
 
 	public:
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+		void Finalize();
 
 		/// 앞 단에서 읽은 RawModel을 이용해서 리소스들을 생성하고 저장한다.
 		virtual void LoadModel(const std::string& fileName, const RawModel* rawModel) override;
 
-		CubeMesh* GetCubeMesh() const { return _cubeMesh; }
+		CubeMesh* GetCubeMesh() const { return _cubeMesh.get(); }
 		Mesh* GetMesh(eMeshType meshType) const;
 		Mesh* GetMesh(const std::string& fileName);
 		Model* GetModel(const std::string& fileName);
 		Texture* GetTexture(std::string fileName);
 		Texture* GetDefaultTexture() const { return _defaultTexture; }
-		Material* GetDefaultMaterial() const { return _defaultMaterial; }		
+		Material* GetDefaultMaterial() const { return _defaultMaterial.get(); }		
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont() const;
@@ -86,15 +79,15 @@ namespace Rocket::Core
 		Texture* LoadTextureFile(std::string fileName);
 
 	private:
-		ComPtr<ID3D11Device> _device;
-		ComPtr<ID3D11DeviceContext> _deviceContext;
+		ID3D11Device* _device;
+		ID3D11DeviceContext* _deviceContext;
 
 		// 기본 메쉬들
-		CubeMesh* _cubeMesh;
-		SphereMesh* _sphereMesh;
+		std::unique_ptr<CubeMesh> _cubeMesh;
+		std::unique_ptr<SphereMesh> _sphereMesh;
 
 		// 기본 머터리얼
-		Material* _defaultMaterial;
+		std::unique_ptr<Material> _defaultMaterial;
 
 		// 기본 텍스쳐
 		Texture* _defaultTexture;
