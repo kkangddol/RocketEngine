@@ -1,6 +1,7 @@
 ﻿#include <cassert>
 #include <DDSTextureLoader.h>
 #include <WICTextureLoader.h>
+#include <io.h>
 
 #include "Texture.h"
 #include "ResourcePath.h"
@@ -45,6 +46,12 @@ namespace Rocket::Core
 		std::wstring wFileName(fullPath.begin(), fullPath.end());
 
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1);
+
+		if (_access(fullPath.c_str(), 0) == -1)
+		{
+			return;
+		}
+		
 
 		if (extension == "dds")
 		{
