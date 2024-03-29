@@ -13,8 +13,8 @@ namespace Rocket::Core
 
 	SphereMesh::~SphereMesh()
 	{
-		_vertexBuffer.Reset();
-		_indexBuffer.Reset();
+// 		_vertexBuffer.Reset();
+// 		_indexBuffer.Reset();
 	}
 
 	void SphereMesh::Initialize(ID3D11Device* device)
@@ -99,6 +99,9 @@ namespace Rocket::Core
 
 		_vertexCount = (int)vertices.size();
 		_indexCount = (int)indices.size();
+
+		_vertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"SPHERE v-Buffer") - 1, L"SPHERE v-Buffer");
+		_indexBuffer->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"SPHERE i-Buffer") - 1, L"SPHERE i-Buffer");
 	}
 
 }

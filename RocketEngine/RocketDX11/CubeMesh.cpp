@@ -12,8 +12,8 @@ namespace Rocket::Core
 
 	CubeMesh::~CubeMesh()
 	{
-		_vertexBuffer.Reset();
-		_indexBuffer.Reset();
+// 		_vertexBuffer.Reset();
+// 		_indexBuffer.Reset();
 	}
 
 	void CubeMesh::Initialize(ID3D11Device* device)
@@ -113,6 +113,9 @@ namespace Rocket::Core
 
 		_vertexCount = ARRAYSIZE(vertices);
 		_indexCount = ARRAYSIZE(indices);
+
+		_vertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"CUBE v-Buffer") - 1, L"CUBE v-Buffer");
+		_indexBuffer->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"CUBE i-Buffer") - 1, L"CUBE i-Buffer");
 	}
 }
 
