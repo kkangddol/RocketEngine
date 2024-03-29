@@ -1,6 +1,5 @@
 ﻿#include "RocketTransform.h"
 
-
 namespace Rocket::Core
 {
 	RocketTransform::RocketTransform()
@@ -10,6 +9,7 @@ namespace Rocket::Core
 		, _parent(nullptr)
 		, _children()
 		, _isDirty(false)
+		, _worldTM(Matrix::Identity)
 	{
 
 	}
