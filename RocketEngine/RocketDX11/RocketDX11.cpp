@@ -382,7 +382,7 @@ namespace Rocket::Core
 		_deltaTime = deltaTime;
 
 		Camera::GetMainCamera()->UpdateViewMatrix();
-		Camera::GetMainCamera()->UpdateProjectionMatrix();
+		// Camera::GetMainCamera()->UpdateProjectionMatrix();
 		UpdateAnimation(deltaTime);
 		
 		_objectManager._debugText->SetText(

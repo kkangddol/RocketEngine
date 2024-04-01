@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "VertexStruct.h"
 #include "GraphicsMacro.h"
+#include "../RocketCommon/RocketTransform.h"
 
 using namespace DirectX;
 
@@ -11,9 +12,7 @@ namespace Rocket::Core
 	Camera* Camera::_mainCamera;
 
 	Camera::Camera()
-		: _position(0.0f, 2.0f, -10.0f),
-		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
+		: _nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
@@ -29,17 +28,7 @@ namespace Rocket::Core
 
 	DirectX::XMFLOAT3 Camera::GetPosition() const
 	{
-		return _position;
-	}
-
-	void Camera::SetPosition(float x, float y, float z)
-	{
-		_position = { x,y,z };
-	}
-
-	void Camera::SetRotation(float w, float x, float y, float z)
-	{
-		_rotation = { x,y,z,w };
+		return _transform->GetPosition();
 	}
 
 	/// 카메라의 세팅을 설정한다.
@@ -77,7 +66,7 @@ namespace Rocket::Core
 		XMVECTOR R = GetRight();
 		XMVECTOR U = GetUp();
 		XMVECTOR L = GetForward();
-		XMVECTOR P = DirectX::XMLoadFloat3(&_position);
+		XMVECTOR P = _transform->GetPosition();
 
 		// Keep camera's axes orthogonal to each other and of unit length.
 		L = XMVector3Normalize(L);
@@ -146,7 +135,7 @@ namespace Rocket::Core
 	DirectX::XMVECTOR Camera::GetForward() const
 	{
 		XMFLOAT3 forward = { 0.0f,0.0f,1.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto rotationMatrix = XMMatrixRotationQuaternion(_transform->GetRotation());
 		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&forward), rotationMatrix);
 		return result;
 	}
@@ -154,7 +143,7 @@ namespace Rocket::Core
 	DirectX::XMVECTOR Camera::GetUp() const
 	{
 		XMFLOAT3 up = { 0.0f,1.0f,0.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto rotationMatrix = XMMatrixRotationQuaternion(_transform->GetRotation());
 		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&up), rotationMatrix);
 		return result;
 	}
@@ -162,44 +151,45 @@ namespace Rocket::Core
 	DirectX::XMVECTOR Camera::GetRight() const
 	{
 		XMFLOAT3 right = { 1.0f,0.0f,0.0f };
-		auto rotationMatrix = XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&_rotation));
+		auto rotationMatrix = XMMatrixRotationQuaternion(_transform->GetRotation());
 		auto result = DirectX::XMVector3Transform(DirectX::XMLoadFloat3(&right), rotationMatrix);
 		return result;
-	}
-
-	void Camera::SetWorldTM(const Matrix& matrix)
-	{
-		_worldMatrix = matrix;
 	}
 
 	void Camera::SetNearZ(float nearZ)
 	{
 		_nearZ = nearZ;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetFarZ(float farZ)
 	{
 		_farZ = farZ;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetAspect(float aspect)
 	{
 		_aspect = aspect;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetFOVY(float fov)
 	{
 		_fovY = fov;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetNearHeight(float height)
 	{
 		_nearWindowHeight = height;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetFarHeight(float height)
 	{
 		_farWindowHeight = height;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::UpdateProjectionMatrix()
@@ -213,16 +203,14 @@ namespace Rocket::Core
 		_mainCamera = this;
 	}
 
+	void Camera::BindTransform(RocketTransform* transform)
+	{
+		_transform = transform;
+	}
+
 	Camera* Camera::GetMainCamera()
 	{
 		return _mainCamera;
-	}
-
-	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
-	{
-		SetPosition(pos.x, pos.y, pos.z);
-		SetRotation(rot.w, rot.x, rot.y, rot.z);		
-		SetWorldTM(Matrix::CreateTranslation(pos) * Matrix::CreateFromQuaternion(rot));
 	}
 
 	void Camera::CreateCameraBuffer(ID3D11Device* device)
@@ -251,7 +239,6 @@ namespace Rocket::Core
 
 	DirectX::XMMATRIX Camera::GetWorldMatrix() const
 	{
-		return DirectX::XMLoadFloat4x4(&_worldMatrix);
+		return _transform->GetWorldTM();
 	}
-
 }

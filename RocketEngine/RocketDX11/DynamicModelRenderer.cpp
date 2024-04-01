@@ -11,13 +11,14 @@
 namespace Rocket::Core
 {
 	DynamicModelRenderer::DynamicModelRenderer()
-		: _model(nullptr),
-		_material(nullptr),
-		_isActive(true),
-		_worldTM(Matrix::Identity),
-		_animatedRootNode(nullptr),
-		_animationTime(0.0),
-		_animationTick(0.0)
+		: _model(nullptr)
+		, _material(nullptr)
+		, _isActive(true)
+		, _worldTM(Matrix::Identity)
+		, _animatedRootNode(nullptr)
+		, _animationTime(0.0)
+		, _animationTick(0.0)
+		, _rootTransform(nullptr)
 	{
 
 	}

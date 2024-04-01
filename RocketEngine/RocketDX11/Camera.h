@@ -18,10 +18,7 @@ namespace Rocket::Core
 		Camera();
 		~Camera();
 
-		virtual void SetPositionAndRotation(const Vector3& pos, const Quaternion& rot) override;
-
 	public:
-		virtual void SetWorldTM(const Matrix& matrix) override;
 		virtual void SetNearZ(float nearZ) override;
 		virtual void SetFarZ(float farZ) override;
 		virtual void SetAspect(float aspect) override;
@@ -29,11 +26,10 @@ namespace Rocket::Core
 		virtual void SetNearHeight(float height) override;
 		virtual void SetFarHeight(float height) override;
 		virtual void SetAsMainCamera() override;
+		virtual void BindTransform(RocketTransform* transform) override;
 
 	public:
 		DirectX::XMFLOAT3 GetPosition() const;
-		void SetPosition(float x, float y, float z);
-		void SetRotation(float w, float x, float y, float z);
 
 		void UpdateProjectionMatrix();
 		void UpdateViewMatrix();
@@ -48,8 +44,7 @@ namespace Rocket::Core
 		DirectX::XMVECTOR GetRight() const;
 
 	private:
-		DirectX::XMFLOAT3 _position;				// 위치 (월드)
-		DirectX::XMFLOAT4 _rotation;				// 쿼터니언 (월드)
+		RocketTransform* _transform;
 
 		float _nearZ;					// frustum의 가까운 평면까지의 거리
 		float _farZ;					// frustum의 먼 평면까지의 거리
@@ -58,7 +53,6 @@ namespace Rocket::Core
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
 
-		DirectX::XMFLOAT4X4 _worldMatrix;		// 카메라 worldTM
 		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
 
