@@ -52,7 +52,6 @@ namespace Rocket::Core
 			return;
 		}
 		
-
 		if (extension == "dds")
 		{
 			HR(DirectX::CreateDDSTextureFromFile(device, wFileName.c_str(), _texture.GetAddressOf(), _textureView.GetAddressOf()));
