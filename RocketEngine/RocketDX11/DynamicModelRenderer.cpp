@@ -19,6 +19,7 @@ namespace Rocket::Core
 		, _animationTime(0.0)
 		, _animationTick(0.0)
 		, _rootTransform(nullptr)
+		, _boundingBox()
 	{
 
 	}
@@ -50,6 +51,20 @@ namespace Rocket::Core
 			return;
 		}
 		_animatedRootNode = CopyNodeData(_model->rootNode);
+
+
+		// boundingBox를 만들어놓고 매번 체크해야되는건가? 그냥 그때그때 계산해도 되는건가?
+		std::vector<DirectX::XMFLOAT3> points;
+
+		for (auto& mesh : _model->meshes)
+		{
+			for (auto& vertex : mesh->GetVertices())
+			{
+				points.push_back(vertex.position);
+			}
+		}
+
+		DirectX::BoundingBox::CreateFromPoints(_boundingBox, points.size(), points.data(), sizeof(DirectX::XMFLOAT3));
 	}
 
 	void DynamicModelRenderer::LoadTexture(std::string fileName)

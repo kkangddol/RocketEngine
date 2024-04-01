@@ -2,6 +2,7 @@
 #include <SimpleMath.h>
 #include <d3d11.h>
 #include <wrl.h>
+#include <DirectXCollision.h>
 
 #include "../RocketCommon/ICamera.h"
 
@@ -18,6 +19,7 @@ namespace Rocket::Core
 		Camera();
 		~Camera();
 
+		/// ICamera 인터페이스 구현
 	public:
 		virtual void SetNearZ(float nearZ) override;
 		virtual void SetFarZ(float farZ) override;
@@ -27,6 +29,13 @@ namespace Rocket::Core
 		virtual void SetFarHeight(float height) override;
 		virtual void SetAsMainCamera() override;
 		virtual void BindTransform(RocketTransform* transform) override;
+
+		/// Static
+	public:
+		static Camera* GetMainCamera();
+
+	private:
+		static Camera* _mainCamera;
 
 	public:
 		DirectX::XMFLOAT3 GetPosition() const;
@@ -43,8 +52,15 @@ namespace Rocket::Core
 		DirectX::XMVECTOR GetUp() const;
 		DirectX::XMVECTOR GetRight() const;
 
+	public:
+		void CreateCameraBuffer(ID3D11Device* device);
+		ID3D11Buffer* GetCameraBuffer() const;
+		ID3D11Buffer** GetAddressOfCameraBuffer();
+		bool FrustumCulling(const DirectX::BoundingBox& boundingBox);
+
 	private:
 		RocketTransform* _transform;
+		DirectX::BoundingFrustum _boundingFrustum;
 
 		float _nearZ;					// frustum의 가까운 평면까지의 거리
 		float _farZ;					// frustum의 먼 평면까지의 거리
@@ -56,18 +72,6 @@ namespace Rocket::Core
 		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
 
-	public:
-		static Camera* GetMainCamera();
-
-	private:
-		static Camera* _mainCamera;
-
-	public:
-		void CreateCameraBuffer(ID3D11Device* device);
-		ID3D11Buffer* GetCameraBuffer() const;
-		ID3D11Buffer** GetAddressOfCameraBuffer();
-
-	private:
 		ComPtr<ID3D11Buffer> _cameraBuffer;
 	};
 }

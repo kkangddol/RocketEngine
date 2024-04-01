@@ -15,6 +15,7 @@ namespace Rocket::Core
 		: _nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
+		, _boundingFrustum()
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
@@ -196,6 +197,7 @@ namespace Rocket::Core
 	{
 		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
 		DirectX::XMStoreFloat4x4(&_projectionMatrix, temp);
+		_boundingFrustum = DirectX::BoundingFrustum(temp);		// boundingFrustum도 갱신해준다.
 	}
 
 	void Camera::SetAsMainCamera()
@@ -241,4 +243,10 @@ namespace Rocket::Core
 	{
 		return _transform->GetWorldTM();
 	}
+
+	bool Camera::FrustumCulling(const DirectX::BoundingBox& boundingBox)
+{
+		return _boundingFrustum.Intersects(boundingBox);
+	}
+
 }

@@ -4,8 +4,10 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <vector>
+#include <DirectXCollision.h>
 
 #include "..\\RocketCommon\\IDynamicModelRenderer.h"
+#include "IRenderable.h"
 #include "../RocketCommon/GraphicsEnum.h"
 #include "ModelStruct.h"
 #include "Material.h"
@@ -19,7 +21,7 @@ namespace Rocket::Core
 
 namespace Rocket::Core
 {
-	class DynamicModelRenderer : public Rocket::Core::IDynamicModelRenderer
+	class DynamicModelRenderer : public IDynamicModelRenderer, public IRenderable
 	{
 	public:
 		DynamicModelRenderer();
@@ -33,14 +35,17 @@ namespace Rocket::Core
 		virtual void BindTransform(RocketTransform* rootTransform) override;
 
 	public:
+		virtual void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
+
+	public:
 		void UpdateAnimation(float deltaTime);			// 깊은 복사 해온 Node 데이터에 애니메이션 데이터를 적용한다.
-		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
 
 	public:
 		void SetMaterial(Material* val) { _material = val; }
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
+		DirectX::BoundingBox GetBoundingBox() const { return _boundingBox; }
 
 	private:
 		void CalcNodeWorldMatrix(Node* node);		// TODO : 이거 여기서 이렇게 하는게 맞나? Node에서 알아서 하게끔 해야될거같은데..
@@ -58,6 +63,7 @@ namespace Rocket::Core
 		Material* _material;
 		DirectX::XMMATRIX _worldTM;
 		bool _isActive;
+		DirectX::BoundingBox _boundingBox;		// frustumCulling 용
 
 	/// <summary>
 	/// 애니메이션 관련 멤버 변수.
