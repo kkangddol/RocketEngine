@@ -51,9 +51,9 @@ namespace Rocket::Core
 			return;
 		}
 		_animatedRootNode = CopyNodeData(_model->rootNode);
+		FindArmatureRootRecur(&_armatureRootNode, _animatedRootNode);
 
-
-		// boundingBox를 만들어놓고 매번 체크해야되는건가? 그냥 그때그때 계산해도 되는건가?
+		// BoundingBox 생성
 		std::vector<DirectX::XMFLOAT3> points;
 
 		for (auto& mesh : _model->meshes)
@@ -481,4 +481,25 @@ namespace Rocket::Core
 		delete node;
 	}
 
+	DirectX::BoundingBox DynamicModelRenderer::GetBoundingBox() const
+{
+		// WorldTM을 곱한 다음에 내보낸다.
+		DirectX::BoundingBox transformedBox;
+		_boundingBox.Transform(transformedBox, _armatureRootNode->transform->GetWorldTM());
+		return transformedBox;
+	}
+
+	void DynamicModelRenderer::FindArmatureRootRecur(Node** out, Node* node) const
+	{
+		if (node->bindedBone)
+		{
+			*out = node;
+			return;
+		}
+
+		for (auto& child : node->children)
+		{
+			FindArmatureRootRecur(out, child);
+		}
+	}
 }

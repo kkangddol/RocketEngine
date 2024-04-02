@@ -45,7 +45,7 @@ namespace Rocket::Core
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
-		DirectX::BoundingBox GetBoundingBox() const { return _boundingBox; }
+		DirectX::BoundingBox GetBoundingBox() const;
 
 	private:
 		void SetNodeBuffer(Node* node, NodeBufferType* nodeBuffer);

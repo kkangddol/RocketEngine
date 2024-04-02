@@ -49,6 +49,7 @@ namespace Rocket::Core
 
 		// _model = reinterpret_cast<StaticModel*>(ResourceManager::Instance().GetModel(fileName)); 원래는 모델기준으로 그렸었음.
 
+		// BoundingBox 생성
 		std::vector<DirectX::XMFLOAT3> points;
 
 		for (auto& vertex : _mesh->GetVertices())
@@ -274,5 +275,13 @@ namespace Rocket::Core
 	void MeshRenderer::BindTransform(RocketTransform* transform)
 	{
 		_transform = transform;
+	}
+
+	DirectX::BoundingBox MeshRenderer::GetBoundingBox() const
+	{
+		// WorldTM을 곱한 다음에 내보낸다.
+		DirectX::BoundingBox transformedBox;
+		_boundingBox.Transform(transformedBox, _transform->GetWorldTM());
+		return transformedBox;
 	}
 }

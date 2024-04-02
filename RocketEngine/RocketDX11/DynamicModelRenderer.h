@@ -45,7 +45,7 @@ namespace Rocket::Core
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
-		DirectX::BoundingBox GetBoundingBox() const { return _boundingBox; }
+		DirectX::BoundingBox GetBoundingBox() const;
 
 	private:
 		void CalcNodeWorldMatrix(Node* node);		// TODO : 이거 여기서 이렇게 하는게 맞나? Node에서 알아서 하게끔 해야될거같은데..
@@ -55,6 +55,7 @@ namespace Rocket::Core
 		void CopyNodeDataRecur(Node* from, Node* to);
 		void BindTransformRecur(RocketTransform* transform, Node* node);
 		void DeleteCopiedNodeRecur(Node* node);
+		void FindArmatureRootRecur(Node** out, Node* node) const;
 
 	private:
 		// TODO : 이거 상속구조 잘 만들던가.. 어떻게든 해서 ModelData와 SkinnedModelData 잘 나눠보자..ㅠㅠ
@@ -72,6 +73,7 @@ namespace Rocket::Core
 	private:
 		std::string _nowAnimationName;
 		Node* _animatedRootNode;		// 애니메이션을 적용한 루트 노드 (원본에서 깊은 복사해옴)
+		Node* _armatureRootNode;		// 애니메이션을 적용한 루트 노드 중에서 Armature의 루트 노드
 		RocketTransform* _rootTransform;	// 앞단에서의 GameObject의 transform의 최상위 부모
 		std::unordered_map<std::string, Node*> _animatedNodeMap;	// 애니메이션을 적용한 노드들의 맵 (원본에서 깊은 복사 해옴)
 		double _animationTime;

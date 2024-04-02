@@ -197,7 +197,9 @@ namespace Rocket::Core
 	{
 		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
 		DirectX::XMStoreFloat4x4(&_projectionMatrix, temp);
-		_boundingFrustum = DirectX::BoundingFrustum(temp);		// boundingFrustum도 갱신해준다.
+
+		XMMATRIX boundingFrustumMatrix = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2 * 1.0f), _aspect * 1.0f, _nearZ, _farZ);
+		_boundingFrustum = DirectX::BoundingFrustum(boundingFrustumMatrix);		// boundingFrustum도 갱신해준다.
 	}
 
 	void Camera::SetAsMainCamera()
@@ -245,8 +247,29 @@ namespace Rocket::Core
 	}
 
 	bool Camera::FrustumCulling(const DirectX::BoundingBox& boundingBox)
-{
-		return _boundingFrustum.Intersects(boundingBox);
+	{
+		DirectX::BoundingFrustum transformedFrustum;
+		_boundingFrustum.Transform(transformedFrustum, _transform->GetWorldTM());
+		return transformedFrustum.Intersects(boundingBox);
+	}
+
+	bool Camera::FrustumCulling(const DirectX::BoundingOrientedBox& boundingOrientedBox)
+	{
+		DirectX::BoundingFrustum transformedFrustum;
+		_boundingFrustum.Transform(transformedFrustum, _transform->GetWorldTM());
+		return transformedFrustum.Intersects(boundingOrientedBox);
+	}
+
+	bool Camera::FrustumCulling(const DirectX::BoundingSphere& boundingSphere)
+	{
+		DirectX::BoundingFrustum transformedFrustum;
+		_boundingFrustum.Transform(transformedFrustum, _transform->GetWorldTM());
+		return transformedFrustum.Intersects(boundingSphere);
+	}
+
+	void Camera::Update()
+	{
+		UpdateViewMatrix();
 	}
 
 }
