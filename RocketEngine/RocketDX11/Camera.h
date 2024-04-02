@@ -2,6 +2,7 @@
 #include <SimpleMath.h>
 #include <d3d11.h>
 #include <wrl.h>
+#include <DirectXCollision.h>
 
 #include "../RocketCommon/ICamera.h"
 
@@ -18,6 +19,7 @@ namespace Rocket::Core
 		Camera();
 		~Camera();
 
+		/// ICamera 인터페이스 구현
 	public:
 		virtual void SetNearZ(float nearZ) override;
 		virtual void SetFarZ(float farZ) override;
@@ -28,11 +30,17 @@ namespace Rocket::Core
 		virtual void SetAsMainCamera() override;
 		virtual void BindTransform(RocketTransform* transform) override;
 
+		/// Static
+	public:
+		static Camera* GetMainCamera();
+
+	private:
+		static Camera* _mainCamera;
+
 	public:
 		DirectX::XMFLOAT3 GetPosition() const;
 
-		void UpdateProjectionMatrix();
-		void UpdateViewMatrix();
+		void Update();
 
 		DirectX::XMMATRIX GetWorldMatrix() const;				// 카메라의 worldTM을 반환
 		DirectX::XMMATRIX GetViewMatrix() const;				// 카메라의 로컬좌표'계'를 반환
@@ -43,31 +51,32 @@ namespace Rocket::Core
 		DirectX::XMVECTOR GetUp() const;
 		DirectX::XMVECTOR GetRight() const;
 
+	public:
+		void CreateCameraBuffer(ID3D11Device* device);
+		ID3D11Buffer* GetCameraBuffer() const;
+		ID3D11Buffer** GetAddressOfCameraBuffer();
+		bool FrustumCulling(const DirectX::BoundingBox& boundingBox);
+		bool FrustumCulling(const DirectX::BoundingOrientedBox& boundingOrientedBox);
+		bool FrustumCulling(const DirectX::BoundingSphere& boundingSphere);
+
+	private:
+		void UpdateProjectionMatrix();
+		void UpdateViewMatrix();
+
 	private:
 		RocketTransform* _transform;
+		DirectX::BoundingFrustum _boundingFrustum;
 
 		float _nearZ;					// frustum의 가까운 평면까지의 거리
 		float _farZ;					// frustum의 먼 평면까지의 거리
 		float _aspect;					// 가로 / 세로 비율
-		float _fovY;					// fov각도를 60분법으로 갖고있음
+		float _fovY;					// fovY각도를 60분법으로 갖고있음
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
 
 		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
 
-	public:
-		static Camera* GetMainCamera();
-
-	private:
-		static Camera* _mainCamera;
-
-	public:
-		void CreateCameraBuffer(ID3D11Device* device);
-		ID3D11Buffer* GetCameraBuffer() const;
-		ID3D11Buffer** GetAddressOfCameraBuffer();
-
-	private:
 		ComPtr<ID3D11Buffer> _cameraBuffer;
 	};
 }
