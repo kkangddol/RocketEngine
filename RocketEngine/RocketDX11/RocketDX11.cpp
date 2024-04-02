@@ -547,9 +547,13 @@ namespace Rocket::Core
 
 	void RocketDX11::UpdateAnimation(float deltaTime)
 	{
-		for (auto& dynamicModel : _objectManager.GetDynamicModelRenderers())
+		Camera* mainCam = Camera::GetMainCamera();
+
+		// TODO : Frustum Culling을 여기서도 하고, RenderMesh에서도 하는데 한번만 하게끔 하자.
+		for (auto modelRenderer : _objectManager.GetDynamicModelRenderers())
 		{
-			dynamicModel->UpdateAnimation(deltaTime);
+			bool isCulled = !mainCam->FrustumCulling(modelRenderer->GetBoundingBox());
+			modelRenderer->UpdateAnimation(deltaTime, isCulled);
 		}
 	}
 

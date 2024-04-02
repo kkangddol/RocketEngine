@@ -64,7 +64,11 @@ namespace Rocket::Core
 			}
 		}
 
-		DirectX::BoundingBox::CreateFromPoints(_boundingBox, points.size(), points.data(), sizeof(DirectX::XMFLOAT3));
+		DirectX::BoundingBox temp;
+		DirectX::BoundingBox::CreateFromPoints(temp, points.size(), points.data(), sizeof(DirectX::XMFLOAT3));
+
+		//_boundingBox = temp;
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(_boundingBox, temp);
 	}
 
 	void DynamicModelRenderer::LoadTexture(std::string fileName)
@@ -77,7 +81,7 @@ namespace Rocket::Core
 		BindTransformRecur(rootTransform, _animatedRootNode);
 	}
 
-	void DynamicModelRenderer::UpdateAnimation(float deltaTime)
+	void DynamicModelRenderer::UpdateAnimation(float deltaTime, bool isCulled /*= false*/)
 	{
 		if (_model->animations.empty())
 		{
@@ -117,6 +121,10 @@ namespace Rocket::Core
 			}
 		}
 
+		if (isCulled)
+		{
+			return;
+		}
 
 		for (auto& nodeAnim : anim->nodeAnimations)
 		{
@@ -481,10 +489,19 @@ namespace Rocket::Core
 		delete node;
 	}
 
-	DirectX::BoundingBox DynamicModelRenderer::GetBoundingBox() const
-{
+// 	DirectX::BoundingBox DynamicModelRenderer::GetBoundingBox() const
+// 	{
+// 		// WorldTM을 곱한 다음에 내보낸다.
+// 		DirectX::BoundingBox transformedBox;
+// 		_boundingBox.Transform(transformedBox, _armatureRootNode->transform->GetWorldTM());
+// 		transformedBox.Transform(transformedBox, 2.0f, { 0.0f,0.0f,0.0f,1.0f }, { 0.0f,0.0f,0.0f });
+// 		return transformedBox;
+// 	}
+
+	DirectX::BoundingOrientedBox DynamicModelRenderer::GetBoundingBox() const
+	{
 		// WorldTM을 곱한 다음에 내보낸다.
-		DirectX::BoundingBox transformedBox;
+		DirectX::BoundingOrientedBox transformedBox;
 		_boundingBox.Transform(transformedBox, _armatureRootNode->transform->GetWorldTM());
 		return transformedBox;
 	}

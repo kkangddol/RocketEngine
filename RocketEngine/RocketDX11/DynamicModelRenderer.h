@@ -38,14 +38,15 @@ namespace Rocket::Core
 		virtual void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
 
 	public:
-		void UpdateAnimation(float deltaTime);			// 깊은 복사 해온 Node 데이터에 애니메이션 데이터를 적용한다.
+		void UpdateAnimation(float deltaTime, bool isCulled = false);			// 깊은 복사 해온 Node 데이터에 애니메이션 데이터를 적용한다.
 
 	public:
 		void SetMaterial(Material* val) { _material = val; }
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
-		DirectX::BoundingBox GetBoundingBox() const;
+		//DirectX::BoundingBox GetBoundingBox() const;
+		DirectX::BoundingOrientedBox GetBoundingBox() const;
 
 	private:
 		void CalcNodeWorldMatrix(Node* node);		// TODO : 이거 여기서 이렇게 하는게 맞나? Node에서 알아서 하게끔 해야될거같은데..
@@ -64,7 +65,8 @@ namespace Rocket::Core
 		Material* _material;
 		DirectX::XMMATRIX _worldTM;
 		bool _isActive;
-		DirectX::BoundingBox _boundingBox;		// frustumCulling 용
+		//DirectX::BoundingBox _boundingBox;		// frustumCulling 용
+		DirectX::BoundingOrientedBox _boundingBox;		// frustumCulling 용
 
 	/// <summary>
 	/// 애니메이션 관련 멤버 변수.
