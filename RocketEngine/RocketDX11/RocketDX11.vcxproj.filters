@@ -76,6 +76,9 @@
     <ClCompile Include="HelperObjectBase.cpp">
       <Filter>Object\HelperObject\BaseClass</Filter>
     </ClCompile>
+    <ClCompile Include="DeferredBuffers.cpp">
+      <Filter>DefferedShading\DeferredBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h">
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="IRenderable.h">
       <Filter>Component\Renderer\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredBuffers.h">
+      <Filter>DefferedShading\DeferredBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,12 @@
     </Filter>
     <Filter Include="Component\Renderer\Interface">
       <UniqueIdentifier>{20f6505e-d6c2-47bd-bc9a-ec2d7bc64134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DefferedShading">
+      <UniqueIdentifier>{f1cd75f3-057e-480e-a4c4-972aab00e42b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DefferedShading\DeferredBuffer">
+      <UniqueIdentifier>{015ea244-f5f7-4cb0-863d-cdb4f05ecf3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

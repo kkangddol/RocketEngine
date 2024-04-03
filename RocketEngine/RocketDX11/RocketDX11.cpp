@@ -21,6 +21,7 @@
 #include "SpriteRenderer.h"
 #include "LineRenderer.h"
 #include "GraphicsMacro.h"
+#include "DeferredBuffers.h"
 
 namespace Rocket::Core
 {
@@ -240,12 +241,15 @@ namespace Rocket::Core
 		_viewport.Height = (float)backBufferDesc.Height;
 		_viewport.Width = (float)backBufferDesc.Width;
 		_viewport.MinDepth = 0;
-		_viewport.MaxDepth = 1; 
+		_viewport.MaxDepth = 1;
 
-		_deviceContext->RSSetViewports(
-			1,
-			&_viewport
-		);
+		/// 기본 viewPort로 설정해준다. -> deferred 시 계속 변경될 예정.
+		_deviceContext->RSSetViewports(1, &_viewport);
+
+
+		/// deferredBuffers 초기화
+		_deferredBuffers = std::make_unique<DeferredBuffers>();
+		_deferredBuffers->Initialize(_device.Get(), _screenWidth, _screenHeight, 1000.0f, 0.1f);
 
 		/// DX 초기화 끝났으니 Manager들 초기화해준다.
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
@@ -424,6 +428,8 @@ namespace Rocket::Core
 		delete _spriteBatch;
 		delete _lineBatch;		
 		_basicEffect.reset();
+		_deferredBuffers.reset();
+
 
 		// TODO : 여기서 Release를 먼저 해줬더니 아래에서 Reset 하면서 한번 더 지워서 RefCount가 -1이 되는 녀석이 하나 있다.. 뭐하는친구일까?
 // 

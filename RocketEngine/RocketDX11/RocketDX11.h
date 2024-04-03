@@ -20,7 +20,11 @@ namespace Rocket::Core
 {
 	class ObjectManager;
 	class ResourceManager;
-	
+	class DeferredBuffers;
+}
+
+namespace Rocket::Core
+{	
 	class RocketDX11 final : public IDX11Renderer
 	{
 	public:
@@ -84,6 +88,10 @@ namespace Rocket::Core
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
+
+		/// deferred 관련
+	private:
+		std::unique_ptr<DeferredBuffers> _deferredBuffers;
 
 	private:
 		ObjectManager& _objectManager;
