@@ -17,8 +17,8 @@ namespace Rocket::Core
 
 	public:
 		void Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear);
-		void SetRenderTargets(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView);
-		void ClearRenderTargets(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView, float r, float g, float b, float a);
+		void SetRenderTargets(ID3D11DeviceContext* deviceContext);
+		void ClearRenderTargets(ID3D11DeviceContext* deviceContext, float r, float g, float b, float a);
 		ID3D11ShaderResourceView* GetShaderResourceView(int index);
 
 	private:

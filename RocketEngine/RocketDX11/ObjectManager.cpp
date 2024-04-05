@@ -104,13 +104,16 @@ namespace Rocket::Core
 		// TODO : 기본 Mesh를 넣어주기로 했는데 이거 일단 보류.
 		// meshRenderer->LoadModel(_resourceManager.GetCubeMesh());
 
-		//skinnedMeshRenderer->LoadMesh(_resourceManager.GetCubeMesh());
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
 		//meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 		Material* material = new Material();
 		material->SetTexture(_resourceManager.GetDefaultTexture());
-		material->SetVertexShader(_resourceManager.GetVertexShader("StaticMeshVS"));
-		material->SetPixelShader(_resourceManager.GetPixelShader("StaticMeshPS"));
+
+		// TODO : 디퍼드 셰이더를 여기서 수동으로 바꿔주는게 조금 아쉽다.
+// 		material->SetVertexShader(_resourceManager.GetVertexShader("StaticMeshVS"));
+// 		material->SetPixelShader(_resourceManager.GetPixelShader("StaticMeshPS"));
+		material->SetVertexShader(_resourceManager.GetVertexShader("DeferredStaticMeshVS"));
+		material->SetPixelShader(_resourceManager.GetPixelShader("DeferredStaticMeshPS"));
 		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
 		meshRenderer->SetMaterial(material);
 		
@@ -133,7 +136,7 @@ namespace Rocket::Core
 		return _spriteList;
 	}
 
-	std::vector<MeshRenderer*>& ObjectManager::GetStaticModelRenderers()
+	std::vector<MeshRenderer*>& ObjectManager::GetStaticMeshRenderers()
 	{
 		return _staticModelRendererList;
 	}

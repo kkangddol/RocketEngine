@@ -114,16 +114,16 @@ namespace Rocket::Core
 		_viewport.TopLeftY = 0.0f;
 	}
 
-	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView)
+	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 	{
 		// 렌더링 대상 뷰 배열 및 깊이 스텐실 버퍼를 출력 렌더 파이프라인에 바인딩 합니다.
-		deviceContext->OMSetRenderTargets(BUFFER_COUNT, _renderTargetViewArray[0].GetAddressOf(), depthStencilView);
+		deviceContext->OMSetRenderTargets(BUFFER_COUNT, _renderTargetViewArray->GetAddressOf(), _depthStencilView.Get());
 
 		// 뷰포트를 설정합니다.
 		deviceContext->RSSetViewports(1, &_viewport);
 	}
 
-	void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView, float r, float g, float b, float a)
+	void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float r, float g, float b, float a)
 	{
 		float color[4] = { r, g, b, a };
 
@@ -132,7 +132,7 @@ namespace Rocket::Core
 			deviceContext->ClearRenderTargetView(_renderTargetViewArray[i].Get(), color);
 		}
 
-		deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetShaderResourceView(int index)

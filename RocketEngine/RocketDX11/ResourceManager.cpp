@@ -120,6 +120,18 @@ namespace Rocket::Core
 			_pixelShaders["CubeMapPS"] = std::move(cubeMapPS);
 		}
 
+		// Deferred StaticMesh Shader
+		{
+			std::unique_ptr<VertexShader> deferredStaticMeshVS = std::make_unique<VertexShader>();
+			deferredStaticMeshVS->Initialize(_device, HLSL_PATH + L"DeferredStaticMeshVS.hlsl");
+			deferredStaticMeshVS->SetVertexType(eVertexType::VERTEX);
+			_vertexShaders["DeferredStaticMeshVS"] = std::move(deferredStaticMeshVS);
+
+			std::unique_ptr<PixelShader> deferredStaticMeshPS = std::make_unique<PixelShader>();
+			deferredStaticMeshPS->Initialize(_device, HLSL_PATH + L"DeferredStaticMeshPS.hlsl");
+			_pixelShaders["DeferredStaticMeshPS"] = std::move(deferredStaticMeshPS);
+		}
+
 		CreateRenderStates();
 
 		_cubeMesh = std::make_unique<CubeMesh>();

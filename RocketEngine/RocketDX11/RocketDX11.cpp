@@ -22,6 +22,7 @@
 #include "LineRenderer.h"
 #include "GraphicsMacro.h"
 #include "DeferredBuffers.h"
+#include "LightPass.h"
 
 namespace Rocket::Core
 {
@@ -187,10 +188,7 @@ namespace Rocket::Core
 		adapter.Reset();
 		factory.Reset();
 
-		hr = _swapChain->GetBuffer(
-			0,
-			__uuidof(ID3D11Texture2D),
-			(void**)&_backBuffer);
+		hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&_backBuffer);
 
 		hr = _device->CreateRenderTargetView(
 			_backBuffer.Get(),
@@ -246,7 +244,6 @@ namespace Rocket::Core
 		/// 기본 viewPort로 설정해준다. -> deferred 시 계속 변경될 예정.
 		_deviceContext->RSSetViewports(1, &_viewport);
 
-
 		/// deferredBuffers 초기화
 		_deferredBuffers = std::make_unique<DeferredBuffers>();
 		_deferredBuffers->Initialize(_device.Get(), _screenWidth, _screenHeight, 1000.0f, 0.1f);
@@ -254,6 +251,10 @@ namespace Rocket::Core
 		/// DX 초기화 끝났으니 Manager들 초기화해준다.
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 		_objectManager.Initialize(_device.Get());
+
+		/// LightPass 초기화 (ResourceManager에서 초기화한 셰이더가 필요하기때문에 이 순서)
+		_lightPass = std::make_unique<LightPass>();
+		_lightPass->Initialize(_resourceManager.GetVertexShader("LightPassVS"), _resourceManager.GetPixelShader("LightPassPS"));
 
 		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
@@ -291,7 +292,7 @@ namespace Rocket::Core
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 
 		_deviceContext->OMSetDepthStencilState(_defaultDepthStencilState.Get(), 0);
-		////Blend State Set.
+		//Blend State Set.
 		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 	}
 
@@ -303,7 +304,7 @@ namespace Rocket::Core
 		std::vector<IRenderable*> renderList;
 		renderList.reserve(256);
 
-		for (auto meshRenderer : _objectManager.GetStaticModelRenderers())
+		for (auto meshRenderer : _objectManager.GetStaticMeshRenderers())
 		{
 			if (mainCam->FrustumCulling(meshRenderer->GetBoundingBox()))
 			{
@@ -403,12 +404,19 @@ namespace Rocket::Core
 	{
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 
-		RenderHelperObject();
-		RenderMesh();
+		GBufferPass();
+		
+		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
+		_deviceContext->RSSetViewports(1, &_viewport);
+		_lightPass->Render(_deviceContext.Get());
+
+
+ 		RenderHelperObject();
+// 		RenderMesh();
 
 		RenderCubeMap();
 
-		RenderLine();
+// 		RenderLine();
 		RenderText();
 		RenderTexture();
 
@@ -429,6 +437,7 @@ namespace Rocket::Core
 		delete _lineBatch;		
 		_basicEffect.reset();
 		_deferredBuffers.reset();
+		_lightPass.reset();
 
 
 		// TODO : 여기서 Release를 먼저 해줬더니 아래에서 Reset 하면서 한번 더 지워서 RefCount가 -1이 되는 녀석이 하나 있다.. 뭐하는친구일까?
@@ -629,9 +638,37 @@ namespace Rocket::Core
 
 	void RocketDX11::RenderDebug()
 	{
+		float height = _screenHeight / BUFFER_COUNT;
+		height *= BUFFER_COUNT - 1;
+		float width = _screenWidth / BUFFER_COUNT;
+
 		_spriteBatch->Begin();
+		for (int i = 0; i < BUFFER_COUNT; i++)
+		{
+			auto deferredTexture = _deferredBuffers->GetShaderResourceView(i);
+			_spriteBatch->Draw(
+				deferredTexture
+				, DirectX::XMFLOAT2(width * i, height)
+				, nullptr
+				, DirectX::Colors::White
+				, 0.0f							// 회전 각도
+				, DirectX::XMFLOAT2(0, 0)		// 이미지의 원점 : 0.0f,0.0f가 좌측상단
+				, (1.0f/(float)BUFFER_COUNT));						// 이미지 스케일
+		}
 		_objectManager._debugText->Render(_spriteBatch);
 		_spriteBatch->End();
 	}
 
+	void RocketDX11::GBufferPass()
+	{
+		_deferredBuffers->SetRenderTargets(_deviceContext.Get());
+		_deferredBuffers->ClearRenderTargets(_deviceContext.Get(), 0.0f, 0.0f, 0.0f, 1.0f);
+
+		Camera* mainCam = Camera::GetMainCamera();
+
+		for (auto& renderable : _objectManager.GetStaticMeshRenderers())
+		{
+			renderable->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+		}
+	}
 }

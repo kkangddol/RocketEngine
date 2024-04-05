@@ -21,6 +21,7 @@ namespace Rocket::Core
 	class ObjectManager;
 	class ResourceManager;
 	class DeferredBuffers;
+	class LightPass;
 }
 
 namespace Rocket::Core
@@ -51,6 +52,7 @@ namespace Rocket::Core
 		void RenderTexture();
 		void RenderCubeMap();
 		void RenderDebug();
+		void GBufferPass();
 		void EndRender();
 
 		void UpdateAnimation(float deltaTime);
@@ -92,6 +94,7 @@ namespace Rocket::Core
 		/// deferred 관련
 	private:
 		std::unique_ptr<DeferredBuffers> _deferredBuffers;
+		std::unique_ptr<LightPass> _lightPass;
 
 	private:
 		ObjectManager& _objectManager;
