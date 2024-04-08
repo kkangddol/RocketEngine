@@ -661,16 +661,39 @@ namespace Rocket::Core
 
 	void RocketDX11::GBufferPass()
 	{
+		// Frustum Culling
+		Camera* mainCam = Camera::GetMainCamera();
+
+		std::vector<IRenderable*> renderList;
+		renderList.reserve(256);
+
+		for (auto meshRenderer : _objectManager.GetStaticMeshRenderers())
+		{
+			if (mainCam->FrustumCulling(meshRenderer->GetBoundingBox()))
+			{
+				renderList.push_back(meshRenderer);
+			}
+		}
+
+		for (auto dynamicModelRenderer : _objectManager.GetDynamicModelRenderers())
+		{
+			if (mainCam->FrustumCulling(dynamicModelRenderer->GetBoundingBox()))
+			{
+				renderList.push_back(dynamicModelRenderer);
+			}
+		}
+
+		// Set RenderTarget
 		_deferredBuffers->SetRenderTargets(_deviceContext.Get());
 		_deferredBuffers->ClearRenderTargets(_deviceContext.Get(), 0.0f, 0.0f, 0.0f, 1.0f);
 
-		Camera* mainCam = Camera::GetMainCamera();
-
-		for (auto& renderable : _objectManager.GetStaticMeshRenderers())
+		// Draw On G-Buffers
+		for (auto& renderable : renderList)
 		{
 			renderable->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 
-		// TODO : skinnedModel도 해야함.
+		// Debug Text
+		_objectManager._debugText->Append("\nObjects Draw : " + std::to_string(renderList.size()));
 	}
 }

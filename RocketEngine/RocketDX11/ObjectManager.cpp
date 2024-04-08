@@ -179,8 +179,11 @@ namespace Rocket::Core
 		//skinnedMeshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 		Material* material = new Material();
 		material->SetTexture(_resourceManager.GetDefaultTexture());
-		material->SetVertexShader(_resourceManager.GetVertexShader("SkinnedMeshVS"));
-		material->SetPixelShader(_resourceManager.GetPixelShader("SkinnedMeshPS"));
+		// TODO : 디퍼드 셰이더를 여기서 수동으로 바꿔주는게 조금 아쉽다.
+// 		material->SetVertexShader(_resourceManager.GetVertexShader("SkinnedMeshVS"));
+// 		material->SetPixelShader(_resourceManager.GetPixelShader("SkinnedMeshPS"));
+		material->SetVertexShader(_resourceManager.GetVertexShader("DeferredSkinnedMeshVS"));
+		material->SetPixelShader(_resourceManager.GetPixelShader("DeferredSkinnedMeshPS"));
 		material->SetRenderState(_resourceManager.GetRenderState(ResourceManager::eRenderState::SOLID));
 		dynamicModelRenderer->SetMaterial(material);
 

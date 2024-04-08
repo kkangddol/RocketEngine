@@ -26,28 +26,28 @@ void TestScene::Initialize()
 	lightObj->transform.Rotate(45.0f, 0.0f, 0.0f);
 
 	/// 스킨드 메쉬 테스트
-// 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
-// 	skinnedTest1->transform.Translate(0.0f, 0.0f, 3.0f);
-// 
-// 	auto dmr1 = skinnedTest1->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
-// 	for (auto& m : dmr1)
-// 	{
-// 		m->SetTexture("Rob02Yellow_AlbedoTransparency.png");
-// 	}
-// 
-// 	auto skinnedTest2 = scene->CreateModelObject("Dying.fbx");
-// 	skinnedTest2->transform.SetScale(0.005f, 0.005f, 0.005f);
-// 	skinnedTest2->transform.Translate(-3.0f, 0.0f, 0.0f);
-// 	
-// 	auto skinnedTest3 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
-// 	skinnedTest3->transform.SetScale(0.05f, 0.05f, 0.05f);
-// 	skinnedTest3->transform.Translate(3.0f, 0.0f, 0.0f);
-// 
-// 	auto dmr3 = skinnedTest3->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
-// 	for (auto& m : dmr3)
-// 	{
-// 		m->SetTexture("T_TP_CH_Camo_001_006_D.png");
-// 	}
+	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
+	skinnedTest1->transform.Translate(0.0f, 0.0f, 3.0f);
+
+	auto dmr1 = skinnedTest1->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
+	for (auto& m : dmr1)
+	{
+		m->SetTexture("Rob02Yellow_AlbedoTransparency.png");
+	}
+
+	auto skinnedTest2 = scene->CreateModelObject("Dying.fbx");
+	skinnedTest2->transform.SetScale(0.005f, 0.005f, 0.005f);
+	skinnedTest2->transform.Translate(-3.0f, 0.0f, 0.0f);
+	
+	auto skinnedTest3 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
+	skinnedTest3->transform.SetScale(0.05f, 0.05f, 0.05f);
+	skinnedTest3->transform.Translate(3.0f, 0.0f, 0.0f);
+
+	auto dmr3 = skinnedTest3->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
+	for (auto& m : dmr3)
+	{
+		m->SetTexture("T_TP_CH_Camo_001_006_D.png");
+	}
 
 	/// 스태틱 메쉬 테스트
 	auto staticTest = scene->CreateModelObject("SK_TP_CH_Default.fbx");
@@ -60,9 +60,9 @@ void TestScene::Initialize()
 	}
 
 	/// 노드구조대로 게임오브젝트 생성한 것 테스트
-// 	auto hand = scene->FindObjectByName("hand_r");
-// 	staticTest->transform.SetParent(hand,false);
-// 	staticTest->transform.SetScale(1.0f, 1.0f, 1.0f);
+	auto hand = scene->FindObjectByName("hand_r");
+	staticTest->transform.SetParent(hand,false);
+	staticTest->transform.SetScale(1.0f, 1.0f, 1.0f);
 
 
 	/// 스태틱 메쉬 계층구조 테스트

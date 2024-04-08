@@ -21,7 +21,6 @@ DeferredOutput main(PixelInputType input)
 {
     DeferredOutput output;
     
-    // Sample the pixel color from the texture using the sampler at this texture coordinate location.
     output.position = input.worldPosition;
     output.baseColor = shaderTexture.Sample(SampleType, input.tex);
     output.normal = float4(input.normal, 1.0f);

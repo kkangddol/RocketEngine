@@ -132,6 +132,18 @@ namespace Rocket::Core
 			_pixelShaders["DeferredStaticMeshPS"] = std::move(deferredStaticMeshPS);
 		}
 
+		// Deferred SkinnedMesh Shader
+		{
+			std::unique_ptr<VertexShader> deferredSkinnedMeshVS = std::make_unique<VertexShader>();
+			deferredSkinnedMeshVS->Initialize(_device, HLSL_PATH + L"DeferredSkinnedMeshVS.hlsl");
+			deferredSkinnedMeshVS->SetVertexType(eVertexType::SKINNED_VERTEX);
+			_vertexShaders["DeferredSkinnedMeshVS"] = std::move(deferredSkinnedMeshVS);
+
+			std::unique_ptr<PixelShader> deferredSkinnedMeshPS = std::make_unique<PixelShader>();
+			deferredSkinnedMeshPS->Initialize(_device, HLSL_PATH + L"DeferredSkinnedMeshPS.hlsl");
+			_pixelShaders["DeferredSkinnedMeshPS"] = std::move(deferredSkinnedMeshPS);
+		}
+
 		// LightPass Shader
 		{
 			std::unique_ptr<VertexShader> lightPassVS = std::make_unique<VertexShader>();
