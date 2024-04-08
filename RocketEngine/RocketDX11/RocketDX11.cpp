@@ -254,7 +254,7 @@ namespace Rocket::Core
 
 		/// LightPass 초기화 (ResourceManager에서 초기화한 셰이더가 필요하기때문에 이 순서)
 		_lightPass = std::make_unique<LightPass>();
-		_lightPass->Initialize(_resourceManager.GetVertexShader("LightPassVS"), _resourceManager.GetPixelShader("LightPassPS"));
+		_lightPass->Initialize(_device.Get(), _resourceManager.GetVertexShader("LightPassVS"), _resourceManager.GetPixelShader("LightPassPS"));
 
 		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
@@ -408,7 +408,7 @@ namespace Rocket::Core
 		
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 		_deviceContext->RSSetViewports(1, &_viewport);
-		_lightPass->Render(_deviceContext.Get());
+		_lightPass->Render(_deviceContext.Get(), _deferredBuffers.get());
 
 
  		RenderHelperObject();
@@ -670,5 +670,7 @@ namespace Rocket::Core
 		{
 			renderable->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
+
+		// TODO : skinnedModel도 해야함.
 	}
 }

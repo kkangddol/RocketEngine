@@ -132,6 +132,18 @@ namespace Rocket::Core
 			_pixelShaders["DeferredStaticMeshPS"] = std::move(deferredStaticMeshPS);
 		}
 
+		// LightPass Shader
+		{
+			std::unique_ptr<VertexShader> lightPassVS = std::make_unique<VertexShader>();
+			lightPassVS->Initialize(_device, HLSL_PATH + L"LightPassVS.hlsl");
+			lightPassVS->SetVertexType(eVertexType::VERTEX);
+			_vertexShaders["LightPassVS"] = std::move(lightPassVS);
+
+			std::unique_ptr<PixelShader> lightPassPS = std::make_unique<PixelShader>();
+			lightPassPS->Initialize(_device, HLSL_PATH + L"LightPassPS.hlsl");
+			_pixelShaders["LightPassPS"] = std::move(lightPassPS);
+		}
+
 		CreateRenderStates();
 
 		_cubeMesh = std::make_unique<CubeMesh>();

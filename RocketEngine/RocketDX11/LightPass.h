@@ -9,6 +9,7 @@ namespace Rocket::Core
 {
 	class VertexShader;
 	class PixelShader;
+	class DeferredBuffers;
 }
 
 namespace Rocket::Core
@@ -20,11 +21,15 @@ namespace Rocket::Core
 		~LightPass();
 
 	public:
-		void Initialize(VertexShader* vertexShader, PixelShader* pixelShader);
-		void Render(ID3D11DeviceContext* deviceContext);
+		void Initialize(ID3D11Device* device, VertexShader* vertexShader, PixelShader* pixelShader);
+		void Render(ID3D11DeviceContext* deviceContext, DeferredBuffers* g_buffer);
+
+	private:
+		void CreateSamplerState(ID3D11Device* device);
 
 	private:
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
+		ComPtr<ID3D11SamplerState> _sampleState;
 	};
 }

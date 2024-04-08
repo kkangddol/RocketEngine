@@ -139,4 +139,10 @@ namespace Rocket::Core
 	{
 		return _shaderResourceViewArray[index].Get();
 	}
+
+	ID3D11ShaderResourceView** DeferredBuffers::GetAddressOfShaderResourceView(int index)
+	{
+		return _shaderResourceViewArray[index].GetAddressOf();
+	}
+
 }

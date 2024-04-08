@@ -20,6 +20,7 @@ namespace Rocket::Core
 		void SetRenderTargets(ID3D11DeviceContext* deviceContext);
 		void ClearRenderTargets(ID3D11DeviceContext* deviceContext, float r, float g, float b, float a);
 		ID3D11ShaderResourceView* GetShaderResourceView(int index);
+		ID3D11ShaderResourceView** GetAddressOfShaderResourceView(int index);
 
 	private:
 		int _textureWidth;
