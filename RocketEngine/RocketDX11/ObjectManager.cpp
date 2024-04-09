@@ -33,15 +33,19 @@ namespace Rocket::Core
 		_axis.reset(new Axis());
 		_axis->Initialize(device);
 		_axis->SetRenderState(_rscMgr.GetRenderState(ResourceManager::eRenderState::WIREFRAME));
-		_axis->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS"));
+		_axis->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS")); // Forward
+		// _axis->SetShader(_rscMgr.GetVertexShader("DeferredColorVS"), _rscMgr.GetPixelShader("DeferredColorPS")); // Deferred
 
 		_grid.reset(new Grid());
 		_grid->Initialize(device);
 		_grid->SetRenderState(_rscMgr.GetRenderState(ResourceManager::eRenderState::WIREFRAME));
-		_grid->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS"));
+		_grid->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS")); // Forward
+		// _grid->SetShader(_rscMgr.GetVertexShader("DeferredColorVS"), _rscMgr.GetPixelShader("DeferredColorPS")); // Deferred
 
 		auto cubeMap = std::make_unique<CubeMap>();
 		cubeMap->Initialize(device);
+		cubeMap->SetShader(_rscMgr.GetVertexShader("CubeMapVS"), _rscMgr.GetPixelShader("CubeMapPS")); // Forward
+		// cubeMap->SetShader(_rscMgr.GetVertexShader("DeferredCubeMapVS"), _rscMgr.GetPixelShader("DeferredCubeMapPS")); // Deferred
 		cubeMap->LoadTexture("CloudCubeMap.dds");
 		_cubeMaps["CloudCubeMap"] = std::move(cubeMap);
 	}

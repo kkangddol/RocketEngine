@@ -29,6 +29,9 @@ namespace Rocket::Core
 		_textureWidth = textureWidth;
 		_textureHeight = textureHeight;
 
+		UINT m4xMsaaQuality;
+		HR(device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality));
+
 		// 렌더 타겟 텍스쳐 생성.
 		D3D11_TEXTURE2D_DESC textureDesc;
 		ZeroMemory(&textureDesc, sizeof(textureDesc));
@@ -53,6 +56,7 @@ namespace Rocket::Core
 		// 렌더 타겟 뷰 생성.
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 		ZeroMemory(&renderTargetViewDesc, sizeof(renderTargetViewDesc));
+
 
 		renderTargetViewDesc.Format = textureDesc.Format;
 		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
@@ -87,7 +91,7 @@ namespace Rocket::Core
 		depthBufferDesc.ArraySize = 1;
 		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		depthBufferDesc.SampleDesc.Count = 1;
-		depthBufferDesc.SampleDesc.Quality = 0;
+		depthBufferDesc.SampleDesc.Quality = 0; // m4xMsaaQuality - 1;
 		depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 		depthBufferDesc.CPUAccessFlags = 0;
@@ -104,23 +108,17 @@ namespace Rocket::Core
 		depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 		HR(device->CreateDepthStencilView(_depthStencilBuffer.Get(), &depthStencilViewDesc, _depthStencilView.GetAddressOf()));
-
-		// 뷰포트 설정.
-		_viewport.Width = static_cast<float>(_textureWidth);
-		_viewport.Height = static_cast<float>(_textureHeight);
-		_viewport.MinDepth = 0.0f;
-		_viewport.MaxDepth = 1.0f;
-		_viewport.TopLeftX = 0.0f;
-		_viewport.TopLeftY = 0.0f;
 	}
 
 	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
 	{
 		// 렌더링 대상 뷰 배열 및 깊이 스텐실 버퍼를 출력 렌더 파이프라인에 바인딩 합니다.
 		deviceContext->OMSetRenderTargets(BUFFER_COUNT, _renderTargetViewArray->GetAddressOf(), _depthStencilView.Get());
+	}
 
-		// 뷰포트를 설정합니다.
-		deviceContext->RSSetViewports(1, &_viewport);
+	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext, ID3D11DepthStencilView* depthStencilView)
+	{
+		deviceContext->OMSetRenderTargets(BUFFER_COUNT, _renderTargetViewArray->GetAddressOf(), depthStencilView);
 	}
 
 	void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, float r, float g, float b, float a)
@@ -143,6 +141,11 @@ namespace Rocket::Core
 	ID3D11ShaderResourceView** DeferredBuffers::GetAddressOfShaderResourceView(int index)
 	{
 		return _shaderResourceViewArray[index].GetAddressOf();
+	}
+
+	void DeferredBuffers::ReleaseRenderTargets(ID3D11DeviceContext* deviceContext)
+	{
+
 	}
 
 }

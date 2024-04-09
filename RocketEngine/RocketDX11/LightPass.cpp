@@ -60,6 +60,12 @@ namespace Rocket::Core
 
 
 		deviceContext->Draw(4, 0);
+
+		ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
+		for (int i = 0; i < BUFFER_COUNT; i++)
+		{
+			deviceContext->PSSetShaderResources(i, 1, nullSRV.GetAddressOf());
+		}
 	}
 
 	void LightPass::Initialize(ID3D11Device* device, VertexShader* vertexShader, PixelShader* pixelShader)

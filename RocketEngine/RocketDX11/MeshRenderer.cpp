@@ -208,6 +208,8 @@ namespace Rocket::Core
 
 		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
 
+		ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
+		deviceContext->PSSetShaderResources(0, 1, nullSRV.GetAddressOf());
 
 		/// Model 기반으로 그릴 때.
 		/*

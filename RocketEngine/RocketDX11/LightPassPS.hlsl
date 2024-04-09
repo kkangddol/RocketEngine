@@ -17,7 +17,7 @@ struct PixelInput
 };
 
 float4 main(PixelInput input) : SV_TARGET
-{
+{ 
     float3 posW = Position.Sample(SampleType, input.uv).rgb;
     float3 baseColor = BaseColor.Sample(SampleType, input.uv).rgb;
     float3 normal = Normal.Sample(SampleType, input.uv).rgb;
@@ -26,6 +26,6 @@ float4 main(PixelInput input) : SV_TARGET
     float lightIntensity = saturate(dot(normal.xyz, lightDir));
     
     float4 outputColor = saturate(float4(baseColor, 1.0f) * lightIntensity);
-    
+        
     return outputColor;
 }

@@ -344,6 +344,12 @@
     <Filter Include="Resource\Shader\HLSL\Deferred\LightPass">
       <UniqueIdentifier>{f4d84565-6ebc-42c0-8096-81e9de836678}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\Deferred\Color">
+      <UniqueIdentifier>{52a38d56-6bf5-4d02-b4d2-7e0c5105dcc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Deferred\CubeMap">
+      <UniqueIdentifier>{ae108884-c1a6-4de3-ac1b-7ebf48e117fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorPS.hlsl">
@@ -399,6 +405,18 @@
     </FxCompile>
     <FxCompile Include="LightPassPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\LightPass</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredColorVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\Color</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredColorPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\Color</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredCubeMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\CubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredCubeMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\CubeMap</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
