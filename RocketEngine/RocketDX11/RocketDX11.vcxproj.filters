@@ -350,6 +350,9 @@
     <Filter Include="Resource\Shader\HLSL\Deferred\CubeMap">
       <UniqueIdentifier>{ae108884-c1a6-4de3-ac1b-7ebf48e117fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\Deferred\PBR">
+      <UniqueIdentifier>{8d1ac17c-af76-4718-80a5-bf891fee3843}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorPS.hlsl">
