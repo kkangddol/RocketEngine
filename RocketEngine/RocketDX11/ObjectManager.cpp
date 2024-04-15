@@ -111,7 +111,7 @@ namespace Rocket::Core
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
 		//meshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 		Material* material = new Material();
-		material->SetTexture(_resourceManager.GetDefaultTexture());
+		material->SetBaseColorTexture(_resourceManager.GetDefaultTexture());
 
 		// TODO : 디퍼드 셰이더를 여기서 수동으로 바꿔주는게 조금 아쉽다.
 // 		material->SetVertexShader(_resourceManager.GetVertexShader("StaticMeshVS"));
@@ -182,7 +182,7 @@ namespace Rocket::Core
 		// TODO : 기본 Material을 넣어주고 앞단에서 Material을 바꿔서 넣어줄 수 있도록 하자
 		//skinnedMeshRenderer->SetMaterial(_resourceManager.GetDefaultMaterial());
 		Material* material = new Material();
-		material->SetTexture(_resourceManager.GetDefaultTexture());
+		material->SetBaseColorTexture(_resourceManager.GetDefaultTexture());
 		// TODO : 디퍼드 셰이더를 여기서 수동으로 바꿔주는게 조금 아쉽다.
 // 		material->SetVertexShader(_resourceManager.GetVertexShader("SkinnedMeshVS"));
 // 		material->SetPixelShader(_resourceManager.GetPixelShader("SkinnedMeshPS"));

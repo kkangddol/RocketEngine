@@ -73,7 +73,7 @@ namespace Rocket::Core
 
 	void DynamicModelRenderer::LoadTexture(std::string fileName)
 	{
-		_material->SetTexture(ResourceManager::Instance().GetTexture(fileName));
+		_material->SetBaseColorTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
 
 	void DynamicModelRenderer::BindTransform(RocketTransform* rootTransform)
@@ -311,38 +311,45 @@ namespace Rocket::Core
 
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
-			///
-			// TODO : LightPass에서 처리하므로 더 이상 필요가 없다.. 근데 뭔가 이상하다..
-			// 픽셀 쉐이더
-// 			bufferNumber = 0;
-// 
-// 			HR(deviceContext->Map(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-// 
-// 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
-// 
-// 			for (auto& directionalLight : ObjectManager::Instance().GetDirectionalLightList())
-// 			{
-// 				lightBufferDataPtr->ambientColor = directionalLight->GetAmbientColor();
-// 				lightBufferDataPtr->diffuseColor = directionalLight->GetDiffuseColor();
-// 				lightBufferDataPtr->specularPower = directionalLight->GetSpecularPower();
-// 				lightBufferDataPtr->specularColor = directionalLight->GetSpecularColor();
-// 				lightBufferDataPtr->lightDirection = directionalLight->GetForward();
-// 			}
-// 
-// 			// TODO : 라이트가 없는경우. 임시입니다.
-// 			if (ObjectManager::Instance().GetDirectionalLightList().size() == 0)
-// 			{
-// 				lightBufferDataPtr->ambientColor = { 0.3f,0.3f,0.3f,0.3f };
-// 				lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
-// 				lightBufferDataPtr->specularPower = 4.0f;
-// 				lightBufferDataPtr->specularColor = { 1.0f,1.0f ,1.0f ,1.0f };
-// 				lightBufferDataPtr->lightDirection = { 0.0f,-1.0f,0.0f };
-// 			}
-// 
-// 			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
-// 
-// 
-// 			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _material->GetPixelShader()->GetAddressOfConstantBuffer(bufferNumber));
+			
+			/// 픽셀 쉐이더
+			// PBR Data를 넘겨준다.
+			bufferNumber = 0;
+
+			HR(deviceContext->Map(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			PBRBufferType* pbrBufferData = (PBRBufferType*)mappedResource.pData;
+
+			pbrBufferData->metallic = _material->GetMetallic();
+			pbrBufferData->roughness = _material->GetRoughness();
+			pbrBufferData->useNormalMap = false;
+			pbrBufferData->useMetallicMap = false;
+			pbrBufferData->useRoughnessMap = false;
+			pbrBufferData->useAOMap = false;
+
+			if (_material->GetNormalTexture())
+			{
+				pbrBufferData->useNormalMap = true;
+			}
+
+			if (_material->GetMetallicTexture())
+			{
+				pbrBufferData->useMetallicMap = true;
+			}
+
+			if (_material->GetRoughnessTexture())
+			{
+				pbrBufferData->useRoughnessMap = true;
+			}
+
+			if (_material->GetAOTexture())
+			{
+				pbrBufferData->useAOMap = true;
+			}
+
+			deviceContext->Unmap(_material->GetPixelShader()->GetConstantBuffer(bufferNumber), 0);
+
+			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _material->GetPixelShader()->GetAddressOfConstantBuffer(bufferNumber));
 		}
 
 		// 렌더스테이트
@@ -366,13 +373,36 @@ namespace Rocket::Core
 			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
 			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
-			deviceContext->PSSetShaderResources(0, 1, _material->GetTexture()->GetAddressOfTextureView());
+			if (_material->GetBaseColorTexture())
+			{
+				deviceContext->PSSetShaderResources(0, 1, _material->GetBaseColorTexture()->GetAddressOfTextureView());
+			}
+			if (_material->GetNormalTexture())
+			{
+				deviceContext->PSSetShaderResources(1, 1, _material->GetNormalTexture()->GetAddressOfTextureView());
+			}
+			if (_material->GetMetallicTexture())
+			{
+				deviceContext->PSSetShaderResources(2, 1, _material->GetMetallicTexture()->GetAddressOfTextureView());
+			}
+			if (_material->GetRoughnessTexture())
+			{
+				deviceContext->PSSetShaderResources(3, 1, _material->GetRoughnessTexture()->GetAddressOfTextureView());
+			}
+			if (_material->GetAOTexture())
+			{
+				deviceContext->PSSetShaderResources(4, 1, _material->GetAOTexture()->GetAddressOfTextureView());
+			}
 
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
 
 		ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
 		deviceContext->PSSetShaderResources(0, 1, nullSRV.GetAddressOf());
+		deviceContext->PSSetShaderResources(1, 1, nullSRV.GetAddressOf());
+		deviceContext->PSSetShaderResources(2, 1, nullSRV.GetAddressOf());
+		deviceContext->PSSetShaderResources(3, 1, nullSRV.GetAddressOf());
+		deviceContext->PSSetShaderResources(4, 1, nullSRV.GetAddressOf());
 	}
 
 	void DynamicModelRenderer::SetVertexShader(VertexShader* shader)

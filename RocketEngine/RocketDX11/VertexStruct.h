@@ -81,6 +81,16 @@ namespace Rocket::Core
 		DirectX::XMMATRIX projection;
 	};
 
+	struct PBRBufferType
+	{
+		float metallic;
+		float roughness;
+		int useNormalMap;
+		int useMetallicMap;
+		int useRoughnessMap;
+		int useAOMap;
+	};
+
 	/// <summary>
 	/// assimp 용 vertex 구조체?
 	/// </summary>

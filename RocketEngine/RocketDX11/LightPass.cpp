@@ -5,6 +5,7 @@
 #include "DeferredBuffers.h"
 #include "ObjectManager.h"
 #include "DirectionalLight.h"
+#include "Camera.h"		// 흠 Camera를 열어버리는 건 마음에 들지 않는 군.
 
 namespace Rocket::Core
 {
@@ -35,6 +36,7 @@ namespace Rocket::Core
 
 		/// 상수 버퍼 세팅
 		{
+			// 라이트 세팅
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
 			unsigned int bufferNumber = 0;
 
@@ -52,6 +54,20 @@ namespace Rocket::Core
 			{
 				lightBufferDataPtr->lightDirection = { 0.0f,-1.0f,0.0f };
 			}
+
+			deviceContext->Unmap(_pixelShader->GetConstantBuffer(bufferNumber), 0);
+
+			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _pixelShader->GetAddressOfConstantBuffer(bufferNumber));
+		
+
+			// view Direction 세팅
+			bufferNumber = 1;
+
+			HR(deviceContext->Map(_pixelShader->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
+
+			cameraBufferDataPtr->cameraPosition = Camera::GetMainCamera()->GetPosition();
 
 			deviceContext->Unmap(_pixelShader->GetConstantBuffer(bufferNumber), 0);
 

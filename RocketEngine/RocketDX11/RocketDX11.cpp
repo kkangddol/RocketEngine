@@ -295,7 +295,7 @@ namespace Rocket::Core
 		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 
 		/// Deferred
-		_deferredBuffers->ClearRenderTargets(_deviceContext.Get(), 0.1f, 0.1f, 0.1f, 0.1f);
+		_deferredBuffers->ClearRenderTargets(_deviceContext.Get(), 0.0f, 0.0f, 0.0f, 0.3f);
 	}
 
 	void RocketDX11::RenderMesh()

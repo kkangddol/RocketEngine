@@ -422,4 +422,9 @@
       <Filter>Resource\Shader\HLSL\Deferred\CubeMap</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="PBRFunction.hlsli">
+      <Filter>Resource\Shader\HLSL\Deferred\PBR</Filter>
+    </None>
+  </ItemGroup>
 </Project>

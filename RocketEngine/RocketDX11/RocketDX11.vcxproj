@@ -208,8 +208,12 @@
       <AdditionalDependencies>RocketCommon.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "*.hlsl" "$(ProjectDir)..\Resources\Shaders";</Command>
+      <Command>copy /Y "*.hlsl" "$(ProjectDir)..\Resources\Shaders";
+copy /Y "*.hlsli" "$(ProjectDir)..\Resources\Shaders";</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">
     <ClCompile>
@@ -228,8 +232,12 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(SolutionDir)Build\$(Configuration)";
-copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
+copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";
+copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -251,8 +259,12 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
       <AdditionalDependencies>RocketCommon.lib;DirectXTK.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "*.hlsl" "$(ProjectDir)..\Resources\Shaders";</Command>
+      <Command>copy /Y "*.hlsl" "$(ProjectDir)..\Resources\Shaders";
+copy /Y "*.hlsli" "$(ProjectDir)..\Resources\Shaders";</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">
     <ClCompile>
@@ -275,8 +287,12 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mt.dll" "$(SolutionDir)Build\$(Configuration)";
-copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
+copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";
+copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
     </PostBuildEvent>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp" />
@@ -654,6 +670,9 @@ copy /Y "*.hlsl" "$(SolutionDir)Resources\Shaders";</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PBRFunction.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

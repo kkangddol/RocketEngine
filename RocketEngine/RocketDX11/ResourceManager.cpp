@@ -197,7 +197,7 @@ namespace Rocket::Core
 		_defaultMaterial->SetVertexShader(GetVertexShader("StaticMeshVS"));
 		_defaultMaterial->SetPixelShader(GetPixelShader("StaticMeshPS"));
 		_defaultMaterial->SetRenderState(GetRenderState(eRenderState::SOLID));
-		_defaultMaterial->SetTexture(_defaultTexture);
+		_defaultMaterial->SetBaseColorTexture(_defaultTexture);
 
 		_cubePrimitive = DirectX::DX11::GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
 		_spherePrimitive = DirectX::DX11::GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
