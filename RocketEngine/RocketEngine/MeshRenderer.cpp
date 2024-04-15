@@ -12,10 +12,10 @@ namespace Rocket
 
 	}
 
-// 	void StaticModelRenderer::SetMesh(eMeshType meshType)
-// 	{
-// 		_meshRenderer->LoadModel(meshType);
-// 	}
+	void MeshRenderer::SetMesh(eMeshType meshType)
+	{
+		_graphicsRenderer->SetMesh(meshType);
+	}
 
 	void MeshRenderer::LoadMesh(std::string fileName)
 	{
@@ -25,7 +25,17 @@ namespace Rocket
 
 	void MeshRenderer::SetTexture(std::string fileName)
 	{
-		_graphicsRenderer->LoadTexture(fileName);
+		_graphicsRenderer->LoadBaseColorTexture(fileName);
+	}
+
+	void MeshRenderer::SetMetallic(float value)
+	{
+		_graphicsRenderer->SetMetallic(value);
+	}
+
+	void MeshRenderer::SetRoughness(float value)
+	{
+		_graphicsRenderer->SetRoughness(value);
 	}
 
 	void MeshRenderer::BindTransform()

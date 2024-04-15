@@ -2,6 +2,7 @@
 #include "..\\RocketEngine\\RocketAPI.h"
 #include "DebugCameraMove.h"
 #include "PlayerController.h"
+#include "PBRController.h"
 
 TestScene::TestScene()
 	: scene()
@@ -24,6 +25,13 @@ void TestScene::Initialize()
 	auto lightComp = lightObj->AddComponent<Rocket::DirectionalLight>();
 	lightComp->SetSpecularPower(4.0f);
 	lightObj->transform.Rotate(45.0f, 0.0f, 0.0f);
+
+	/// PBR 테스트
+	auto PBRTest = scene->CreateObject("PBRTest");
+	PBRTest->AddComponent<PBRController>();
+	PBRTest->transform.SetPosition(0.0f, 0.0f, -10.0f);
+	auto PBRRenderer = PBRTest->AddComponent<Rocket::MeshRenderer>();
+	PBRRenderer->SetMesh(Rocket::eMeshType::SPHERE);
 
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");

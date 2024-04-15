@@ -42,10 +42,10 @@ float4 main(PixelInput input) : SV_TARGET
     float3 viewDir = normalize(viewPosition - posW);
     float3 halfVector = normalize(lightDir + viewDir);
     
-    float nDotL = max(dot(normal, lightDir), 0.0f);
-    float nDotV = max(dot(normal, viewDir), 0.0f);
-    float lDotH = max(dot(lightDir, viewDir), 0.0f);
-    float nDotH = max(dot(normal, halfVector), 0.0f);
+    float nDotL = max(dot(normal, lightDir), 0.0000001f);
+    float nDotV = max(dot(normal, viewDir), 0.0000001f);
+    float lDotH = max(dot(lightDir, viewDir), 0.0000001f);
+    float nDotH = max(dot(normal, halfVector), 0.0000001f);
     
     float3 specularColor = baseColor * metallic.x;
     

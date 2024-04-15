@@ -37,6 +37,12 @@ namespace Rocket::Core
 		_isActive = isActive;
 	}
 
+
+	void MeshRenderer::SetMesh(eMeshType meshType)
+	{
+		_mesh = dynamic_cast<StaticMesh*>(ResourceManager::Instance().GetMesh(meshType));
+	}
+
 	void MeshRenderer::LoadMesh(std::string fileName)
 	{
 		// TODO : reinterpret_cast를 사용하지 않는 엑세렌또한 방법을 찾아보자.
@@ -60,7 +66,7 @@ namespace Rocket::Core
 		DirectX::BoundingBox::CreateFromPoints(_boundingBox, points.size(), points.data(), sizeof(DirectX::XMFLOAT3));
 	}
 
-	void MeshRenderer::LoadTexture(std::string fileName)
+	void MeshRenderer::LoadBaseColorTexture(std::string fileName)
 	{
 		_material->SetBaseColorTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
@@ -304,4 +310,15 @@ namespace Rocket::Core
 		_boundingBox.Transform(transformedBox, _transform->GetWorldTM());
 		return transformedBox;
 	}
+
+	void MeshRenderer::SetMetallic(float metallic)
+	{
+		_material->SetMetallic(metallic);
+	}
+
+	void MeshRenderer::SetRoughness(float roughness)
+	{
+		_material->SetRoughness(roughness);
+	}
+
 }
