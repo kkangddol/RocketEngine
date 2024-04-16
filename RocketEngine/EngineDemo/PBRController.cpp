@@ -46,7 +46,7 @@ void PBRController::Update()
 		_roughness -= _delta * deltaTime;
 		if (_roughness < 0.0f)
 		{
-			_roughness = 0.04f;
+			_roughness = 0.0f;
 		}
 		_meshRenderer->SetRoughness(_roughness);
 	}

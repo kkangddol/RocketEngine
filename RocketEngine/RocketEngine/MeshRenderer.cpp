@@ -23,9 +23,29 @@ namespace Rocket
 		_graphicsRenderer->BindTransform(gameObject->transform._rocketTransform);
 	}
 
-	void MeshRenderer::SetTexture(std::string fileName)
+	void MeshRenderer::SetBaseColorTexture(std::string fileName)
 	{
 		_graphicsRenderer->LoadBaseColorTexture(fileName);
+	}
+
+	void MeshRenderer::SetNormalTexture(std::string fileName)
+	{
+		_graphicsRenderer->LoadNormalTexture(fileName);
+	}
+
+	void MeshRenderer::SetMetallicTexture(std::string fileName)
+	{
+		_graphicsRenderer->LoadMetallicTexture(fileName);
+	}
+
+	void MeshRenderer::SetRoughnessTexture(std::string fileName)
+	{
+		_graphicsRenderer->LoadRoughnessTexture(fileName);
+	}
+
+	void MeshRenderer::SetAOTexture(std::string fileName)
+	{
+		_graphicsRenderer->LoadAOTexture(fileName);
 	}
 
 	void MeshRenderer::SetMetallic(float value)

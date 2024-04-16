@@ -45,7 +45,7 @@ namespace Rocket::Core
 	void DynamicModelRenderer::LoadModel(const std::string& fileName)
 	{
 		_model = reinterpret_cast<DynamicModel*>(ResourceManager::Instance().GetModel(fileName));
-		if(_model == nullptr)
+		if (_model == nullptr)
 		{
 			MessageBox(NULL, TEXT("모델이 없습니다."), TEXT("모델 로드 실패"), MB_OK);
 			return;
@@ -71,7 +71,7 @@ namespace Rocket::Core
 		DirectX::BoundingOrientedBox::CreateFromBoundingBox(_boundingBox, temp);
 	}
 
-	void DynamicModelRenderer::LoadTexture(std::string fileName)
+	void DynamicModelRenderer::LoadBaseColorTexture(std::string fileName)
 	{
 		_material->SetBaseColorTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
@@ -107,7 +107,7 @@ namespace Rocket::Core
 			{
 				double secondPerTick = anim->duration / anim->ticksPerSecond;;
 				int count = 0;
-				while (secondPerTick * (count+1) < _animationTime)
+				while (secondPerTick * (count + 1) < _animationTime)
 				{
 					count++;
 				}
@@ -139,7 +139,7 @@ namespace Rocket::Core
 			// Position
 			{
 				int positionIndex = 0;
- 				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
+				for (int i = 0; i < nodeAnim->positionTimestamps.size(); i++)
 				{
 					if (_animationTick < nodeAnim->positionTimestamps[i])
 					{
@@ -147,7 +147,7 @@ namespace Rocket::Core
 						break;
 					}
 				}
-				
+
 				if (positionIndex == 0)
 				{
 					position = nodeAnim->positions[0];
@@ -209,7 +209,7 @@ namespace Rocket::Core
 
 			node->transform->SetLocalPosition(position);
 			node->transform->SetLocalRotation(rotation);
-			node->transform->SetLocalScale(scale);			
+			node->transform->SetLocalScale(scale);
 		}
 
 	}
@@ -311,7 +311,7 @@ namespace Rocket::Core
 
 
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
-			
+
 			/// 픽셀 쉐이더
 			// PBR Data를 넘겨준다.
 			bufferNumber = 0;
@@ -367,7 +367,7 @@ namespace Rocket::Core
 		// 		}
 
 		stride = sizeof(VertexSkinned);
-		
+
 		for (auto& mesh : _model->meshes)
 		{
 			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
@@ -451,7 +451,7 @@ namespace Rocket::Core
 	}
 
 	void DynamicModelRenderer::SetBoneBuffer(Node* node, BoneBufferType* boneBuffer)
-	{	
+	{
 		Bone* bone = node->bindedBone;
 		if (bone)
 		{
@@ -523,14 +523,14 @@ namespace Rocket::Core
 		delete node;
 	}
 
-// 	DirectX::BoundingBox DynamicModelRenderer::GetBoundingBox() const
-// 	{
-// 		// WorldTM을 곱한 다음에 내보낸다.
-// 		DirectX::BoundingBox transformedBox;
-// 		_boundingBox.Transform(transformedBox, _armatureRootNode->transform->GetWorldTM());
-// 		transformedBox.Transform(transformedBox, 2.0f, { 0.0f,0.0f,0.0f,1.0f }, { 0.0f,0.0f,0.0f });
-// 		return transformedBox;
-// 	}
+	// 	DirectX::BoundingBox DynamicModelRenderer::GetBoundingBox() const
+	// 	{
+	// 		// WorldTM을 곱한 다음에 내보낸다.
+	// 		DirectX::BoundingBox transformedBox;
+	// 		_boundingBox.Transform(transformedBox, _armatureRootNode->transform->GetWorldTM());
+	// 		transformedBox.Transform(transformedBox, 2.0f, { 0.0f,0.0f,0.0f,1.0f }, { 0.0f,0.0f,0.0f });
+	// 		return transformedBox;
+	// 	}
 
 	DirectX::BoundingOrientedBox DynamicModelRenderer::GetBoundingBox() const
 	{
@@ -553,4 +553,35 @@ namespace Rocket::Core
 			FindArmatureRootRecur(out, child);
 		}
 	}
+
+	void DynamicModelRenderer::LoadNormalTexture(std::string fileName)
+	{
+		_material->SetNormalTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::LoadMetallicTexture(std::string fileName)
+	{
+		_material->SetMetallicTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::LoadRoughnessTexture(std::string fileName)
+	{
+		_material->SetRoughnessTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::LoadAOTexture(std::string fileName)
+	{
+		_material->SetAmbientOcclusionTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void DynamicModelRenderer::SetMetallic(float value)
+	{
+		_material->SetMetallic(value);
+	}
+
+	void DynamicModelRenderer::SetRoughness(float value)
+	{
+		_material->SetRoughness(value);
+	}
+
 }

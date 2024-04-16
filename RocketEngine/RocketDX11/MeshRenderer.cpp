@@ -321,4 +321,24 @@ namespace Rocket::Core
 		_material->SetRoughness(roughness);
 	}
 
+	void MeshRenderer::LoadNormalTexture(std::string fileName)
+	{
+		_material->SetNormalTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void MeshRenderer::LoadMetallicTexture(std::string fileName)
+	{
+		_material->SetMetallicTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void MeshRenderer::LoadRoughnessTexture(std::string fileName)
+	{
+		_material->SetRoughnessTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
+	void MeshRenderer::LoadAOTexture(std::string fileName)
+	{
+		_material->SetAmbientOcclusionTexture(ResourceManager::Instance().GetTexture(fileName));
+	}
+
 }

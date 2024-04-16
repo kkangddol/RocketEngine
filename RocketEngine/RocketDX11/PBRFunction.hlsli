@@ -72,6 +72,13 @@ float3 Specular_F_Fresnel_Shlick_Unity(in float3 specularColor, in float LdotH)
     return specularColor + (1.0f - specularColor) * FC;
 }
 
+float3 FresnelSchlickRoughness(in float3 specularColor, in float LdotH, in float roughness)
+{
+    float a = 1.0f - roughness;
+    float FC = pow(1.0f - LdotH, 5.0f);
+    return specularColor + (max(float3(a, a, a), specularColor) - specularColor) * FC;
+}
+
 float3 Specular_BRDF(in float roughness, in float3 specularColor, in float NdotH, in float NdotV, in float NdotL, in float LdotH)
 {
     // Specular D

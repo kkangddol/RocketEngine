@@ -32,7 +32,7 @@ void TestScene::Initialize()
 	PBRTest->transform.SetPosition(0.0f, 0.0f, -10.0f);
 	auto PBRRenderer = PBRTest->AddComponent<Rocket::MeshRenderer>();
 	PBRRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-	PBRRenderer->SetTexture("T_WEP_Basic_009_D.png");
+	PBRRenderer->SetBaseColorTexture("T_WEP_Basic_009_D.png");
 
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
@@ -41,7 +41,10 @@ void TestScene::Initialize()
 	auto dmr1 = skinnedTest1->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
 	for (auto& m : dmr1)
 	{
-		m->SetTexture("Rob02Yellow_AlbedoTransparency.png");
+		m->SetBaseColorTexture("Rob02Yellow_AlbedoTransparency.png");
+		m->SetNormalTexture("Rob02_Normal.dds");
+		m->SetMetallicTexture("Rob02White_MetallicSmoothness.dds");
+		m->SetRoughnessTexture("Rob02White_Roughness.png");
 	}
 
 	auto skinnedTest2 = scene->CreateModelObject("Dying.fbx");
@@ -55,7 +58,7 @@ void TestScene::Initialize()
 	auto dmr3 = skinnedTest3->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
 	for (auto& m : dmr3)
 	{
-		m->SetTexture("T_TP_CH_Camo_001_006_D.png");
+		m->SetBaseColorTexture("T_TP_CH_Camo_001_006_D.png");
 	}
 
 	/// 스태틱 메쉬 테스트
@@ -65,7 +68,7 @@ void TestScene::Initialize()
 	auto mr = staticTest->GetComponentsFromAll<Rocket::MeshRenderer>();
 	for (auto& m : mr)
 	{
-		m->SetTexture("T_TP_CH_Camo_006_003_D.png");
+		m->SetBaseColorTexture("T_TP_CH_Camo_006_003_D.png");
 	}
 
 	/// 노드구조대로 게임오브젝트 생성한 것 테스트
@@ -76,6 +79,11 @@ void TestScene::Initialize()
 
 	/// 스태틱 메쉬 계층구조 테스트
 	auto hierarchyTest = scene->CreateModelObject("SM_Box_Cargo.fbx");
+	auto hierarchyRenderer = hierarchyTest->GetComponentsFromAll<Rocket::MeshRenderer>();
+	for(auto& m : hierarchyRenderer)
+	{
+		m->SetBaseColorTexture("T_TP_CH_Props_D.png");
+	}
 
 	/// 텍스트 테스트
 	auto text = scene->CreateObject("text");

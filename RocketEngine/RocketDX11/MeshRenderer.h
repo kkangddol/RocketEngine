@@ -36,6 +36,10 @@ namespace Rocket::Core
 		virtual void SetMesh(eMeshType meshType) override;
 		virtual void LoadMesh(std::string fileName) override;
 		virtual void LoadBaseColorTexture(std::string fileName) override;
+		virtual void LoadNormalTexture(std::string fileName) override;
+		virtual void LoadMetallicTexture(std::string fileName) override;
+		virtual void LoadRoughnessTexture(std::string fileName) override;
+		virtual void LoadAOTexture(std::string fileName) override;
 		virtual void BindTransform(RocketTransform* transform) override;
 
 		// 임시

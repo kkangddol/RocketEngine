@@ -22,6 +22,10 @@ namespace Rocket::Core
 		// TODO : 나중에는 머터리얼단위로 Set 할 예정.
 		// virtual void SetMaterial(std::string fileName) = 0;
 		virtual void LoadBaseColorTexture(std::string fileName) = 0;		// 현재 머터리얼의 텍스쳐를 Set하는 함수.
+		virtual void LoadNormalTexture(std::string fileName) = 0;
+		virtual void LoadMetallicTexture(std::string fileName) = 0;
+		virtual void LoadRoughnessTexture(std::string fileName) = 0;
+		virtual void LoadAOTexture(std::string fileName) = 0;
 		virtual void BindTransform(RocketTransform* transform) = 0;
 
 		// 임시

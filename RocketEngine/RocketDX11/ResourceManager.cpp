@@ -461,6 +461,7 @@ namespace Rocket::Core
 			vertex.normal = rawVertex.normal;
 			vertex.UV = rawVertex.UV;
 			vertex.tangent = rawVertex.tangent;
+			vertex.bitangent = rawVertex.biTangent;
 			vertex.nodeIndex = rawVertex.nodeIndex;
 
 			vertices.push_back(vertex);
@@ -492,6 +493,7 @@ namespace Rocket::Core
 			vertex.UV = rawVertex.UV;
 			vertex.normal = rawVertex.normal;
 			vertex.tangent = rawVertex.tangent;
+			vertex.bitangent = rawVertex.biTangent;
 			vertex.nodeIndex = rawVertex.nodeIndex;
 			vertex.weights = rawVertex.weights;
 			vertex.boneIndices = rawVertex.boneIndices;

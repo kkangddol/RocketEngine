@@ -38,6 +38,7 @@ float4 main(PixelInput input) : SV_TARGET
     normal = normalize(normal);
     float3 metallic = Metallic.Sample(SampleType, input.uv).rgb;
     float3 roughness = Roughness.Sample(SampleType, input.uv).rgb;
+    roughness = max(roughness, 0.04f);
     float3 ambientOcclusion = AmbientOcclusion.Sample(SampleType, input.uv).rgb;
     
     float3 lightDir = -lightDirection;
@@ -51,6 +52,7 @@ float4 main(PixelInput input) : SV_TARGET
     float LdotH = max(dot(lightDir, halfVector), 0.0f);
     float NdotH = max(dot(normal, halfVector), 0.0f);
     
+    // PBR
     float3 F0 = 0.04f;
     F0 = lerp(F0, baseColor, metallic);
     float3 specularColor = F0;
@@ -58,7 +60,7 @@ float4 main(PixelInput input) : SV_TARGET
     
     float D = Specular_D_GGX(roughness.x, NdotH);
     float G = GeometrySmith(normal, viewDir, lightDir, roughness.x);
-    float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, NdotV);
+    float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, LdotH);
     float denominator = max((4 * NdotV * NdotL), 0.00001f);
     
     float3 BRDFspecular = D * G * F / denominator;
@@ -71,7 +73,11 @@ float4 main(PixelInput input) : SV_TARGET
     //float4 outputColor = float4((Disney_Diffuse(roughness.x,baseColor,NdotL,NdotV,LdotH) + BRDFspecular) * lightColor * NdotL, 1.0f);
         
     // outputColor = outputColor / (outputColor + float4(1.0f, 1.0f, 1.0f, 1.0f));
-    outputColor = pow(outputColor, float4(1.0f / 2.2f, 1.0f / 2.2f, 1.0f / 2.2f, 1.0f / 2.2f));
+    outputColor = pow(outputColor, float4(1.0f / gamma, 1.0f / gamma, 1.0f / gamma, 1.0f / gamma));
     
-    return float4(outputColor.xyz, 1.0f);
+    // IBL
+    float3 globalAmbient = float3(0.3f, 0.3f, 0.3f); // ÀÓ½Ã°ª
+    float3 ambient = globalAmbient * baseColor * ambientOcclusion;
+    
+    return float4(ambient + outputColor.xyz, 1.0f);
 }
