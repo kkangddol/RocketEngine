@@ -20,19 +20,49 @@ float3 Disney_Diffuse(in float roughnessPercent, in float3 diffuseColor, in floa
 }
 
 // GGX Specular D
-float Specular_D_GGX(in float roughness2, in float NdotH)
+float Specular_D_GGX(in float roughness, in float NdotH)
 {
-    const float lower = (NdotH * (NdotH * roughness2 - NdotH)) + 1.0f;
-    return roughness2 / (PI * lower * lower);
+    float a = roughness * roughness;
+    const float lower = (NdotH * (NdotH * a - NdotH)) + 1.0f;
+    return a / (PI * lower * lower);
 }
 
 // Schlick-Smith specular G (visibility) By Unity Version
-float Specular_G_Smith_Unity(float roughness2, float NdotV, float NdotL)
+float Specular_G_Smith_Unity(float roughness, float NdotV, float NdotL)
 {
-    float SmithV = NdotL * sqrt(NdotV * (NdotV - NdotV * roughness2) + roughness2);
-    float SmithL = NdotV * sqrt(NdotL * (NdotL - NdotL * roughness2) + roughness2);
+    float a = roughness * roughness;
+    float SmithV = NdotL * sqrt(NdotV * (NdotV - NdotV * a) + a);
+    float SmithL = NdotV * sqrt(NdotL * (NdotL - NdotL * a) + a);
     
     return 0.5f / max(SmithV + SmithL, 1e-5f);
+}
+
+float GeometrySchlickGGX(float NdotV, float roughness)  // k is a remapping of roughness based on direct lighting or IBL lighting
+{
+    // Unreal and Disney
+    float r = roughness + 1.0f;
+    float k = (r * r) / 8.0f;
+
+    // For IBL
+    //float k = (roughness * roughness) / 2.0f;
+
+    float nom = NdotV;
+    float denom = NdotV * (1.0f - k) + k;
+
+    return nom / denom;
+}
+  
+float GeometrySmith(float3 n, float3 v, float3 l, float roughness)
+{
+    //  Geometry Obstruction
+    float NdotV = saturate(dot(n, v));
+    //  Geometry Shadowing
+    float NdotL = saturate(dot(n, l));
+
+    float ggx2 = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1 = GeometrySchlickGGX(NdotL, roughness);
+
+    return ggx1 * ggx2;
 }
 
 // Shlick's approximation of Fresnel By Unity Engine
@@ -42,13 +72,13 @@ float3 Specular_F_Fresnel_Shlick_Unity(in float3 specularColor, in float LdotH)
     return specularColor + (1.0f - specularColor) * FC;
 }
 
-float3 Specular_BRDF(in float roughness2, in float3 specularColor, in float NdotH, in float NdotV, in float NdotL, in float LdotH)
+float3 Specular_BRDF(in float roughness, in float3 specularColor, in float NdotH, in float NdotV, in float NdotL, in float LdotH)
 {
     // Specular D
-    float specular_D = Specular_D_GGX(roughness2, NdotH);
+    float specular_D = Specular_D_GGX(roughness, NdotH);
     
     // Specular G
-    float specular_G = Specular_G_Smith_Unity(roughness2, NdotV, NdotL);
+    float specular_G = Specular_G_Smith_Unity(roughness, NdotV, NdotL);
     
     // Specular F
     float3 specular_F = Specular_F_Fresnel_Shlick_Unity(specularColor, LdotH);

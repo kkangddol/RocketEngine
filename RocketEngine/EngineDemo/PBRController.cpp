@@ -1,7 +1,7 @@
 ﻿#include "PBRController.h"
 
 PBRController::PBRController()
-	: _delta(1.0f), _meshRenderer(), _metallic(0.0f), _roughness(0.5f)
+	: _delta(0.5f), _meshRenderer(), _metallic(0.0f), _roughness(0.5f)
 {
 
 }
@@ -46,7 +46,7 @@ void PBRController::Update()
 		_roughness -= _delta * deltaTime;
 		if (_roughness < 0.0f)
 		{
-			_roughness = 0.0f;
+			_roughness = 0.04f;
 		}
 		_meshRenderer->SetRoughness(_roughness);
 	}

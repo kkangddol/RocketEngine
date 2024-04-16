@@ -28,10 +28,14 @@ struct PixelInput
 };
 
 float4 main(PixelInput input) : SV_TARGET
-{ 
+{
+    float gamma = 2.2f;
+    
     float3 posW = Position.Sample(SampleType, input.uv).rgb;
     float3 baseColor = BaseColor.Sample(SampleType, input.uv).rgb;
+    baseColor = pow(baseColor, gamma);
     float3 normal = Normal.Sample(SampleType, input.uv).rgb;
+    normal = normalize(normal);
     float3 metallic = Metallic.Sample(SampleType, input.uv).rgb;
     float3 roughness = Roughness.Sample(SampleType, input.uv).rgb;
     float3 ambientOcclusion = AmbientOcclusion.Sample(SampleType, input.uv).rgb;
@@ -41,20 +45,33 @@ float4 main(PixelInput input) : SV_TARGET
     
     float3 viewDir = normalize(viewPosition - posW);
     float3 halfVector = normalize(lightDir + viewDir);
+   
+    float NdotL = max(dot(normal, lightDir), 0.0f);
+    float NdotV = max(dot(normal, viewDir), 0.0f);
+    float LdotH = max(dot(lightDir, halfVector), 0.0f);
+    float NdotH = max(dot(normal, halfVector), 0.0f);
     
-    float nDotL = max(dot(normal, lightDir), 0.0000001f);
-    float nDotV = max(dot(normal, viewDir), 0.0000001f);
-    float lDotH = max(dot(lightDir, viewDir), 0.0000001f);
-    float nDotH = max(dot(normal, halfVector), 0.0000001f);
+    float3 F0 = 0.04f;
+    F0 = lerp(F0, baseColor, metallic);
+    float3 specularColor = F0;
+    float3 lightColor = float3(1.0f, 1.0f, 1.0f);
     
-    float3 specularColor = baseColor * metallic.x;
+    float D = Specular_D_GGX(roughness.x, NdotH);
+    float G = GeometrySmith(normal, viewDir, lightDir, roughness.x);
+    float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, NdotV);
+    float denominator = max((4 * NdotV * NdotL), 0.00001f);
     
+    float3 BRDFspecular = D * G * F / denominator;
     
-    float4 outputColor = float4((Disney_Diffuse(roughness.x ,baseColor, nDotL, nDotV, lDotH)
-                            + Specular_BRDF(roughness.x, specularColor, nDotH, nDotV, nDotL, lDotH))
-                            * saturate(baseColor * lightIntensity) * dot(normal, lightDir),1.0f);
+    float3 kS = F;
+    float3 kD = float3(1.0f, 1.0f, 1.0f) - kS;
+    kD *= (1.0 - metallic.x);
     
-    // float4 outputColor = saturate(float4(baseColor, 1.0f) * lightIntensity);
+    float4 outputColor = float4(((kD * baseColor / PI) + BRDFspecular) * lightColor * NdotL, 1.0f);
+    //float4 outputColor = float4((Disney_Diffuse(roughness.x,baseColor,NdotL,NdotV,LdotH) + BRDFspecular) * lightColor * NdotL, 1.0f);
         
-    return outputColor;
+    // outputColor = outputColor / (outputColor + float4(1.0f, 1.0f, 1.0f, 1.0f));
+    outputColor = pow(outputColor, float4(1.0f / 2.2f, 1.0f / 2.2f, 1.0f / 2.2f, 1.0f / 2.2f));
+    
+    return float4(outputColor.xyz, 1.0f);
 }

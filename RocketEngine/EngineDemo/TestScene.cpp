@@ -24,7 +24,7 @@ void TestScene::Initialize()
 	auto lightObj = scene->CreateObject("light");
 	auto lightComp = lightObj->AddComponent<Rocket::DirectionalLight>();
 	lightComp->SetSpecularPower(4.0f);
-	lightObj->transform.Rotate(45.0f, 0.0f, 0.0f);
+	lightObj->transform.Rotate(45.0f, 45.0f, 0.0f);
 
 	/// PBR 테스트
 	auto PBRTest = scene->CreateObject("PBRTest");
@@ -32,6 +32,7 @@ void TestScene::Initialize()
 	PBRTest->transform.SetPosition(0.0f, 0.0f, -10.0f);
 	auto PBRRenderer = PBRTest->AddComponent<Rocket::MeshRenderer>();
 	PBRRenderer->SetMesh(Rocket::eMeshType::SPHERE);
+	PBRRenderer->SetTexture("T_WEP_Basic_009_D.png");
 
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
