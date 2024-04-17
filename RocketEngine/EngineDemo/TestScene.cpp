@@ -27,12 +27,28 @@ void TestScene::Initialize()
 	lightObj->transform.Rotate(45.0f, 45.0f, 0.0f);
 
 	/// PBR 테스트
-	auto PBRTest = scene->CreateObject("PBRTest");
-	PBRTest->AddComponent<PBRController>();
-	PBRTest->transform.SetPosition(0.0f, 0.0f, -10.0f);
-	auto PBRRenderer = PBRTest->AddComponent<Rocket::MeshRenderer>();
-	PBRRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-	PBRRenderer->SetBaseColorTexture("T_WEP_Basic_009_D.png");
+	// PBR 구
+	auto PBRSphere = scene->CreateObject("PBRTest");
+	PBRSphere->AddComponent<PBRController>();
+	PBRSphere->transform.SetPosition(0.0f, 1.0f, -10.0f);
+	auto SphereRenderer = PBRSphere->AddComponent<Rocket::MeshRenderer>();
+	SphereRenderer->SetMesh(Rocket::eMeshType::SPHERE);
+	SphereRenderer->SetBaseColorTexture("T_WEP_Basic_009_D.png");
+
+	// PBR 모델
+	auto PBRModel = scene->CreateModelObject("Cerberus_LP.fbx");
+	PBRModel->transform.SetPosition(2.0f, 1.0f, -10.0f);
+	PBRModel->transform.SetScale(0.05f, 0.05f, 0.05f);
+	PBRModel->transform.Rotate(0.0f, 180.0f, 0.0f);
+
+	auto PBRmr = PBRModel->GetComponentsFromAll<Rocket::MeshRenderer>();
+	for (auto& m : PBRmr)
+	{
+		m->SetBaseColorTexture("Cerberus_A.tga");
+		m->SetNormalTexture("Cerberus_N.tga");
+		m->SetMetallicTexture("Cerberus_M.tga");
+		m->SetRoughnessTexture("Cerberus_R.tga");
+	}
 
 	/// 스킨드 메쉬 테스트
 	auto skinnedTest1 = scene->CreateModelObject("Rob02.fbx");
