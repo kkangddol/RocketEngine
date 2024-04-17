@@ -30,6 +30,9 @@ namespace Rocket::Core
 		void LoadTexture(const std::string& fileName);
 		void SetShader(VertexShader* vertexShader, PixelShader* pixelShader);
 
+		// 임시
+		Texture* GetTexture() const { return _texture; }
+
 	private:
 		void BuildGeometryBuffers(ID3D11Device* device);
 

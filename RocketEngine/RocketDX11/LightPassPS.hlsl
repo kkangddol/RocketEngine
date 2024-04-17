@@ -33,6 +33,7 @@ float4 main(PixelInput input) : SV_TARGET
     
     float3 posW = Position.Sample(SampleType, input.uv).rgb;
     float3 baseColor = BaseColor.Sample(SampleType, input.uv).rgb;
+    // Gamma Space -> Linear Space
     baseColor = pow(baseColor, gamma);
     float3 normal = Normal.Sample(SampleType, input.uv).rgb;
     normal = normalize(normal);
@@ -71,8 +72,11 @@ float4 main(PixelInput input) : SV_TARGET
     
     float4 outputColor = float4(((kD * baseColor / PI) + BRDFspecular) * lightColor * NdotL, 1.0f);
     //float4 outputColor = float4((Disney_Diffuse(roughness.x,baseColor,NdotL,NdotV,LdotH) + BRDFspecular) * lightColor * NdotL, 1.0f);
-        
+    
+    // Tone Mapping
     // outputColor = outputColor / (outputColor + float4(1.0f, 1.0f, 1.0f, 1.0f));
+    
+    // Gamma Correction
     outputColor = pow(outputColor, float4(1.0f / gamma, 1.0f / gamma, 1.0f / gamma, 1.0f / gamma));
     
     // IBL

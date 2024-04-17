@@ -656,6 +656,7 @@ namespace Rocket::Core
 				, (1.0f/(float)BUFFER_COUNT));						// 이미지 스케일
 		}
 		_objectManager._debugText->Render(_spriteBatch);
+
 		_spriteBatch->End();
 	}
 
