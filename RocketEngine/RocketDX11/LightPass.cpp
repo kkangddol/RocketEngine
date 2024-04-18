@@ -87,7 +87,7 @@ namespace Rocket::Core
 
 			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _pixelShader->GetAddressOfConstantBuffer(bufferNumber));
 		}
-
+		 
 
 		deviceContext->Draw(4, 0);
 

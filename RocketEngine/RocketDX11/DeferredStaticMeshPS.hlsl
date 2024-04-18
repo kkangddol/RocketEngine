@@ -42,16 +42,17 @@ DeferredOutput main(PixelInputType input)
     DeferredOutput output;
     
     float3 normalMap = normalTexture.Sample(SampleType, input.tex).xyz;
-    float4 tangentNormal;
+    float3 worldNormal;
     
     normalMap = (normalMap * 2.0f) - 1.0f;
-    tangentNormal = float4((normalMap.r * input.tangent) + (normalMap.g * input.bitangent) + (normalMap.b * input.normal), 1.0f);
-    tangentNormal = normalize(tangentNormal);
+    float3x3 TBN = float3x3(input.tangent, input.bitangent, input.normal);
+    worldNormal = mul(normalMap, TBN);
+    worldNormal = normalize(worldNormal);
     
     output.position = input.worldPosition;
     output.baseColor = baseColorTexture.Sample(SampleType, input.tex);
     output.normal = (float4(input.normal, 1.0f) * (1 - useNormalMap))
-                    + (tangentNormal * useNormalMap);
+                    + (float4(worldNormal, 1.0f) * useNormalMap);
     
     output.metallic = (float4(metallic, metallic, metallic, 1.0f) * (1 - useMetallicMap))
                     + (metallicTexture.Sample(SampleType, input.tex) * useMetallicMap);

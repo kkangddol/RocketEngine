@@ -92,7 +92,7 @@ float4 main(PixelInput input) : SV_TARGET
     rgb;
     float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, roughness.x)).rg;
     
-    kS = FresnelSchlickRoughness(F0, NdotV, roughness.x);
+    kS = FresnelSchlickRoughness(specularColor, NdotV, roughness.x);
     kD = float3(1.0f, 1.0f, 1.0f) - kS;
     kD *= (1.0 - metallic.x);
     
