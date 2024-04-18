@@ -42,12 +42,11 @@ namespace Rocket::Core
 		_grid->SetShader(_rscMgr.GetVertexShader("ColorVS"), _rscMgr.GetPixelShader("ColorPS")); // Forward
 		// _grid->SetShader(_rscMgr.GetVertexShader("DeferredColorVS"), _rscMgr.GetPixelShader("DeferredColorPS")); // Deferred
 
-		auto cubeMap = std::make_unique<CubeMap>();
-		cubeMap->Initialize(device);
-		cubeMap->SetShader(_rscMgr.GetVertexShader("CubeMapVS"), _rscMgr.GetPixelShader("CubeMapPS")); // Forward
+		_cubeMap = std::make_unique<CubeMap>();
+		_cubeMap->Initialize(device);
+		_cubeMap->SetShader(_rscMgr.GetVertexShader("CubeMapVS"), _rscMgr.GetPixelShader("CubeMapPS")); // Forward
 		// cubeMap->SetShader(_rscMgr.GetVertexShader("DeferredCubeMapVS"), _rscMgr.GetPixelShader("DeferredCubeMapPS")); // Deferred
-		cubeMap->LoadTexture("CloudCubeMap.dds");
-		_cubeMaps["CloudCubeMap"] = std::move(cubeMap);
+		_cubeMap->LoadTexture("Garden.dds");
 	}
 
 	void ObjectManager::Finalize()
@@ -87,10 +86,7 @@ namespace Rocket::Core
 			delete dl;
 		}
 
-		for (auto& iter : _cubeMaps)
-		{
-			iter.second.reset();
-		}
+		_cubeMap.reset();
 	}
 
 	Camera* ObjectManager::CreateCamera()
@@ -209,18 +205,9 @@ namespace Rocket::Core
 		return _directionalLightList;
 	}
 
-	Rocket::Core::CubeMap* ObjectManager::GetCubeMap(const std::string& name)
+	Rocket::Core::CubeMap* ObjectManager::GetCubeMap()
 	{
-		if(_cubeMaps.find(name) == _cubeMaps.end())
-		{
-			return nullptr;
-		}
 
-		return _cubeMaps.at(name).get();
-	}
-
-	Rocket::Core::CubeMap* ObjectManager::GetDefaultCubeMap()
-	{
-		return _cubeMaps.begin()->second.get();
+		return _cubeMap.get();
 	}
 }

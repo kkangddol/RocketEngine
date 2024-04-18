@@ -1,3 +1,4 @@
+/*
 TextureCube CubeMapTexture : register(t0);
 SamplerState samplerLinear : register(s0);
 
@@ -55,3 +56,4 @@ float4 main(VertexOutput input) : SV_Target
 
     return float4(irradiance, 1.0f);
 }
+*/

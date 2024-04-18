@@ -29,12 +29,25 @@ namespace Rocket::Core
 		deviceContext->PSSetShader(_pixelShader->GetPixelShader(), nullptr, 0);
 
 		deviceContext->PSSetSamplers(0, 1, _sampleState.GetAddressOf());
+		deviceContext->PSSetSamplers(1, 1, ObjectManager::Instance().GetCubeMap()->GetSamplerState());
+
+		// G-Buffer 세팅
 		for (int i = 0; i < BUFFER_COUNT; i++)
 		{
 			deviceContext->PSSetShaderResources(i, 1, g_buffer->GetAddressOfShaderResourceView(i));
 		}
 
-		/// 상수 버퍼 세팅
+		// IBL Texture 세팅
+		{
+			unsigned int textureNumber = BUFFER_COUNT;
+			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetIrradianceTextureSRV());
+			textureNumber++;
+			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetPrefilteredTextureSRV());
+			textureNumber++;
+			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetBRDF2DLUTTextureSRV());
+		}
+
+		/// PS 상수 버퍼 세팅
 		{
 			// 라이트 세팅
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -44,6 +57,7 @@ namespace Rocket::Core
 
 			LightPassBufferType* lightBufferDataPtr = (LightPassBufferType*)mappedResource.pData;
 
+			// Directional Light
 			for (auto& directionalLight : ObjectManager::Instance().GetDirectionalLightList())
 			{
 				lightBufferDataPtr->lightDirection = directionalLight->GetForward();
