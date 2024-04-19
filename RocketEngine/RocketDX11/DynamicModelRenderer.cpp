@@ -264,26 +264,26 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 			// 카메라 버퍼 세팅
-			{
-				Camera* mainCam = Camera::GetMainCamera();
-				// 버텍스 쉐이더
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				HR(deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-
-				CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
-
-				cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
-				cameraBufferDataPtr->padding = 0.0f;
-
-				deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
-
-				unsigned int bufferNumber = 1;
-
-				deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
-			}
+// 			{
+// 				Camera* mainCam = Camera::GetMainCamera();
+// 				// 버텍스 쉐이더
+// 				D3D11_MAPPED_SUBRESOURCE mappedResource;
+// 				HR(deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+// 
+// 				CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
+// 
+// 				cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
+// 				cameraBufferDataPtr->padding = 0.0f;
+// 
+// 				deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
+// 
+// 				unsigned int bufferNumber = 1;
+// 
+// 				deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
+// 			}
 
 			///
-			bufferNumber = 2;
+			bufferNumber = 1;
 			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
@@ -297,7 +297,7 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 
-			bufferNumber = 3;
+			bufferNumber = 2;
 			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			BoneBufferType* boneBufferDataPtr = (BoneBufferType*)mappedResource.pData;

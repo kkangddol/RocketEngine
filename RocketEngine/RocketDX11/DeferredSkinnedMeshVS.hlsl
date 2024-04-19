@@ -6,18 +6,12 @@ cbuffer MatrixBuffer : register(b0)
     matrix projectionMatrix;
 };
 
-cbuffer CameraBuffer : register(b1)
-{
-    float3 cameraPosition;
-    float padding;
-};
-
-cbuffer NodeBuffer : register(b2)
+cbuffer NodeBuffer : register(b1)
 {
     matrix nodeTransform[512];
 };
 
-cbuffer BoneBuffer : register(b3)
+cbuffer BoneBuffer : register(b2)
 {
     matrix boneTransform[512];
 }
@@ -42,7 +36,6 @@ struct PixelInputType
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 bitangent : BINORMAL;
-    float3 viewDiretion : TEXCOORD1;
 };
 
 PixelInputType main(VertexInputType input)
@@ -71,10 +64,10 @@ PixelInputType main(VertexInputType input)
     // TODO : offsetMatrix와 node matrix도 곱한 matrix의 역전치를 곱해야될거같은데 일단 보류
     output.normal = mul(float4(input.normal, 0.0f), finalOffsetMatrix);
     output.normal = normalize(output.normal);
-    
-    output.viewDiretion = cameraPosition.xyz - resultPosition.xyz;
-    
-    output.viewDiretion = normalize(output.viewDiretion);
+    output.tangent = mul(float4(input.tangent, 0.0f), finalOffsetMatrix);
+    output.tangent = normalize(output.tangent);
+    output.bitangent = mul(float4(input.bitangent, 0.0f), finalOffsetMatrix);
+    output.bitangent = normalize(output.bitangent);
     
     output.worldPosition = resultPosition;
     

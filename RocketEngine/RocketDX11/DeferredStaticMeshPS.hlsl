@@ -24,7 +24,6 @@ struct PixelInputType
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 bitangent : BINORMAL;
-    float3 viewDiretion : TEXCOORD1;
 };
 
 struct DeferredOutput
@@ -41,6 +40,7 @@ DeferredOutput main(PixelInputType input)
 {
     DeferredOutput output;
     
+    // TODO : 오른손좌표계의 노말맵을 왼손좌표계로 변환하는 코드도 있으면 좋겠다.
     float3 normalMap = normalTexture.Sample(SampleType, input.tex).xyz;
     float3 worldNormal;
     

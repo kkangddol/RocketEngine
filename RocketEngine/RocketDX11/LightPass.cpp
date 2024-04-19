@@ -110,10 +110,10 @@ namespace Rocket::Core
 	{
 		// 텍스처 샘플러 상태 구조체를 생성 및 설정한다.
 		D3D11_SAMPLER_DESC samplerDesc;
-		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		samplerDesc.MipLODBias = 0.0f;
 		samplerDesc.MaxAnisotropy = 1;
 		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
