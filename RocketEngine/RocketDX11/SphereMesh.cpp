@@ -53,6 +53,14 @@ namespace Rocket::Core
 				vertex.normal.y = cosf(phi);
 				vertex.normal.z = sinf(phi) * sinf(theta);
 
+				vertex.tangent.x = 0.0f;
+				vertex.tangent.y = 0.0f;
+				vertex.tangent.z = 0.0f;
+
+				vertex.bitangent.x = 0.0f;
+				vertex.bitangent.y = 0.0f;
+				vertex.bitangent.z = 0.0f;
+
 				vertices.push_back(vertex);
 			}
 		}

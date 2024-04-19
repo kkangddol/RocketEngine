@@ -38,11 +38,13 @@ PixelInputType main(VertexInputType input)
     // Store the texture coordinates for the pixel shader.
     output.tex = input.tex;
     
-    output.normal = mul(float4(input.normal, 0.0f), (float4x4) transpose(worldInverse));
+    float4x4 inverseTranspose = (float4x4) transpose(worldInverse);
+    
+    output.normal = mul(float4(input.normal, 0.0f), inverseTranspose).xyz;
     output.normal = normalize(output.normal);
-    output.tangent = mul(float4(input.tangent, 0.0f), (float4x4) transpose(worldInverse));
+    output.tangent = mul(float4(input.tangent, 0.0f), inverseTranspose).xyz;
     output.tangent = normalize(output.tangent);
-    output.bitangent = mul(float4(input.bitangent, 0.0f), (float4x4) transpose(worldInverse));
+    output.bitangent = mul(float4(input.bitangent, 0.0f), inverseTranspose).xyz;
     output.bitangent = normalize(output.bitangent);
     
     // float4 worldPosition = mul(float4(input.position, 1.0f), mul(nodeTransformMatrix, worldMatrix));

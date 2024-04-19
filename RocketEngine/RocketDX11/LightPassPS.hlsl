@@ -78,8 +78,8 @@ float4 main(PixelInput input) : SV_TARGET
     float3 kD = float3(1.0f, 1.0f, 1.0f) - kS;
     kD *= (1.0 - metallic.x);
     
-    float4 outputColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    outputColor = float4(((kD * baseColor / PI) + BRDFspecular) * lightColor * NdotL, 1.0f);
+    float4 outputColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
+    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * lightColor * NdotL;
     //outputColor *= 0.001f;
     //float4 outputColor = float4((Disney_Diffuse(roughness.x,baseColor,NdotL,NdotV,LdotH) + BRDFspecular) * lightColor * NdotL, 1.0f);
     

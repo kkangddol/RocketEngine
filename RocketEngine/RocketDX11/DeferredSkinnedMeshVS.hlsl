@@ -62,11 +62,11 @@ PixelInputType main(VertexInputType input)
     output.tex = input.tex;
     
     // TODO : offsetMatrix와 node matrix도 곱한 matrix의 역전치를 곱해야될거같은데 일단 보류
-    output.normal = mul(float4(input.normal, 0.0f), finalOffsetMatrix);
+    output.normal = mul(float4(input.normal, 0.0f), finalOffsetMatrix).xyz;
     output.normal = normalize(output.normal);
-    output.tangent = mul(float4(input.tangent, 0.0f), finalOffsetMatrix);
+    output.tangent = mul(float4(input.tangent, 0.0f), finalOffsetMatrix).xyz;
     output.tangent = normalize(output.tangent);
-    output.bitangent = mul(float4(input.bitangent, 0.0f), finalOffsetMatrix);
+    output.bitangent = mul(float4(input.bitangent, 0.0f), finalOffsetMatrix).xyz;
     output.bitangent = normalize(output.bitangent);
     
     output.worldPosition = resultPosition;

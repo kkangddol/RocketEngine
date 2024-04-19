@@ -42,17 +42,18 @@ DeferredOutput main(PixelInputType input)
     
     // TODO : 오른손좌표계의 노말맵을 왼손좌표계로 변환하는 코드도 있으면 좋겠다.
     float3 normalMap = normalTexture.Sample(SampleType, input.tex).xyz;
-    float3 worldNormal;
+    float3 tangentNormal;
     
     normalMap = (normalMap * 2.0f) - 1.0f;
-    float3x3 TBN = float3x3(input.tangent, input.bitangent, input.normal);
-    worldNormal = mul(normalMap, TBN);
-    worldNormal = normalize(worldNormal);
+    tangentNormal = (normalMap.r * input.tangent) + (normalMap.g * input.bitangent) + (normalMap.b * input.normal);
+    //float3x3 TBN = float3x3(input.tangent, input.bitangent, input.normal);
+    //tangentNormal = mul(normalMap, TBN);
+    tangentNormal = normalize(tangentNormal);
     
     output.position = input.worldPosition;
     output.baseColor = baseColorTexture.Sample(SampleType, input.tex);
     output.normal = (float4(input.normal, 1.0f) * (1 - useNormalMap))
-                    + (float4(worldNormal, 1.0f) * useNormalMap);
+                    + (float4(tangentNormal, 1.0f) * useNormalMap);
     
     output.metallic = (float4(metallic, metallic, metallic, 1.0f) * (1 - useMetallicMap))
                     + (metallicTexture.Sample(SampleType, input.tex) * useMetallicMap);
