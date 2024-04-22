@@ -33,7 +33,7 @@ void TestScene::Initialize()
 	PBRSphere->transform.SetPosition(0.0f, 1.0f, -10.0f);
 	auto SphereRenderer = PBRSphere->AddComponent<Rocket::MeshRenderer>();
 	SphereRenderer->SetMesh(Rocket::eMeshType::SPHERE);
-	SphereRenderer->SetBaseColorTexture("T_WEP_Basic_009_D.png");
+	SphereRenderer->SetBaseColorTexture("T_WEP_Basic_008_D.png");
 
 	// PBR 모델
 	auto PBRModel = scene->CreateModelObject("Cerberus_LP.fbx");

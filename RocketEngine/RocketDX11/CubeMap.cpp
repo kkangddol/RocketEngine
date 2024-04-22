@@ -132,6 +132,7 @@ namespace Rocket::Core
 		std::string pureName = fileName.substr(0, fileName.find_last_of("."));
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1);
 		_texture = ResourceManager::Instance().GetTexture(pureName + "EnvHDR" + "." + extension);
+		//_texture = ResourceManager::Instance().GetTexture(fileName);
 		_irradianceTexture = ResourceManager::Instance().GetTexture(pureName + "DiffuseHDR" + "." + extension);
 		_prefilteredTexture = ResourceManager::Instance().GetTexture(pureName + "SpecularHDR" + "." + extension);
 		_BRDF2DLUTTexture = ResourceManager::Instance().GetTexture(pureName + "Brdf" + "." + extension);
