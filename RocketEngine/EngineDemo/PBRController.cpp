@@ -24,7 +24,7 @@ void PBRController::Update()
 	if (Rocket::GetKey('7'))
 	{
 		_metallic -= _delta * deltaTime;
-		if (_metallic < 0.0f)
+		if (_metallic <= 0.0f)
 		{
 			_metallic = 0.0f;
 		}
@@ -34,7 +34,7 @@ void PBRController::Update()
 	if (Rocket::GetKey('8'))
 	{
 		_metallic += _delta * deltaTime;
-		if (_metallic > 1.0f)
+		if (_metallic >= 1.0f)
 		{
 			_metallic = 1.0f;
 		}
@@ -44,7 +44,7 @@ void PBRController::Update()
 	if (Rocket::GetKey('9'))
 	{
 		_roughness -= _delta * deltaTime;
-		if (_roughness < 0.0f)
+		if (_roughness <= 0.0f)
 		{
 			_roughness = 0.0f;
 		}
@@ -54,7 +54,7 @@ void PBRController::Update()
 	if (Rocket::GetKey('0'))
 	{
 		_roughness += _delta * deltaTime;
-		if (_roughness > 1.0f)
+		if (_roughness >= 1.0f)
 		{
 			_roughness = 1.0f;
 		}

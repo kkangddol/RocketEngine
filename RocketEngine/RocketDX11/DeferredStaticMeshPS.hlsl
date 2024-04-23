@@ -65,7 +65,7 @@ DeferredOutput main(PixelInputType input)
                             + (ambientOcclusionTexture.Sample(SampleType, input.tex) * useAOMap);
     
     output.normal.w = 1.0f;
-    output.metallic.w = 1.0f;
+    output.metallic.w = 1.0f;    
     output.roughness.w = 1.0f;
     output.ambientOcclusion.w = 1.0f;
     
