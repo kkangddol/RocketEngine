@@ -46,8 +46,11 @@ float4 main(PixelInput input) : SV_TARGET
     float3 normal = Normal.Sample(LightPassSampler, input.uv).rgb;
     normal = normalize(normal);
     float metallic = Metallic.Sample(LightPassSampler, input.uv).r;
+    metallic = saturate(metallic);
     float roughness = Roughness.Sample(LightPassSampler, input.uv).r;
+    roughness = saturate(roughness);
     float ambientOcclusion = AmbientOcclusion.Sample(LightPassSampler, input.uv).r;
+    ambientOcclusion = saturate(ambientOcclusion);
     
     
     float3 lightDir = -normalize(lightDirection);
@@ -71,7 +74,7 @@ float4 main(PixelInput input) : SV_TARGET
     
     //float D = Specular_D_GGX(roughness.x, NdotH); // ->0
     float D = DistributionGGX(roughness, NdotH);
-    float G = GeometrySmith(NdotV, NdotL, roughness.x, 1);
+    float G = GeometrySmith(NdotV, NdotL, roughness, 1);
     float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, VdotH);
     float denominator = max((4 * NdotV * NdotL), 0.0001f);
     
@@ -87,7 +90,7 @@ float4 main(PixelInput input) : SV_TARGET
     // IBL
     float3 irradiance = IBLIrradiance.Sample(CubeMapSampler, normal).rgb;
     float3 prefilteredColor = IBLPrefilter.SampleLevel(CubeMapSampler, reflect(-viewDir, normal), roughness * MAX_REF_LOD).rgb;
-    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, roughness)).rg;
+    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, 1-roughness)).rg;
     
     kS = FresnelSchlickRoughness(specularColor, NdotV, roughness);
     kD = float3(1.0f, 1.0f, 1.0f) - kS;

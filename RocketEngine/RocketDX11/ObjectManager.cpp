@@ -48,6 +48,7 @@ namespace Rocket::Core
 		// cubeMap->SetShader(_rscMgr.GetVertexShader("DeferredCubeMapVS"), _rscMgr.GetPixelShader("DeferredCubeMapPS")); // Deferred
 		_cubeMap->LoadTexture("Garden.dds");
 		//_cubeMap->LoadTexture("IBLBaker.dds");
+		//_cubeMap->LoadTexture("CobblestoneStreet.dds");
 	}
 
 	void ObjectManager::Finalize()

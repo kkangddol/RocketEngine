@@ -13,7 +13,8 @@ PBRController::~PBRController()
 
 void PBRController::Start()
 {
-	_meshRenderer = gameObject->GetComponent<Rocket::MeshRenderer>();
+	auto temp = gameObject->GetComponentsFromAll<Rocket::MeshRenderer>();
+	_meshRenderer = temp.front();
 }
 
 void PBRController::Update()
