@@ -90,7 +90,8 @@ float4 main(PixelInput input) : SV_TARGET
     // IBL
     float3 irradiance = IBLIrradiance.Sample(CubeMapSampler, normal).rgb;
     float3 prefilteredColor = IBLPrefilter.SampleLevel(CubeMapSampler, reflect(-viewDir, normal), roughness * MAX_REF_LOD).rgb;
-    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, 1-roughness)).rg;
+    // OpenGL LUT 사용해서 1-roughness 하는 중, 내가 직접 만들어서 roughness로 바꿀 것.
+    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, 1 - roughness)).rg;
     
     kS = FresnelSchlickRoughness(specularColor, NdotV, roughness);
     kD = float3(1.0f, 1.0f, 1.0f) - kS;
