@@ -2,7 +2,7 @@
 
 DebugCameraMove::DebugCameraMove()
 	: moveSpeed(2.0f),
-	accelRatio(10.0f),
+	accelRatio(5.0f),
 	thisFrameSpeed()
 {
 }

@@ -85,7 +85,7 @@ float4 main(PixelInput input) : SV_TARGET
     float3 BRDFspecular = D * G * F / denominator;
     
     float4 outputColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
-    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * radiance * NdotL * 0.0001f;
+    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * radiance * NdotL;
  
     // IBL
     float3 irradiance = IBLIrradiance.Sample(CubeMapSampler, normal).rgb;

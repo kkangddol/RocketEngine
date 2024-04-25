@@ -412,7 +412,11 @@ namespace Rocket::Core
 		_lightPass->Render(_deviceContext.Get(), _deferredBuffers.get());
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _deferredBuffers->GetDepthStencilView());
-		RenderHelperObject();
+		if (_isDebugMode)
+		{
+			RenderHelperObject();
+		}
+
 		RenderCubeMap();
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), nullptr); 
