@@ -375,23 +375,23 @@ namespace Rocket::Core
 
 			if (_material->GetBaseColorTexture())
 			{
-				deviceContext->PSSetShaderResources(0, 1, _material->GetBaseColorTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(0, 1, _material->GetBaseColorTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetNormalTexture())
 			{
-				deviceContext->PSSetShaderResources(1, 1, _material->GetNormalTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(1, 1, _material->GetNormalTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetMetallicTexture())
 			{
-				deviceContext->PSSetShaderResources(2, 1, _material->GetMetallicTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(2, 1, _material->GetMetallicTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetRoughnessTexture())
 			{
-				deviceContext->PSSetShaderResources(3, 1, _material->GetRoughnessTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(3, 1, _material->GetRoughnessTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetAOTexture())
 			{
-				deviceContext->PSSetShaderResources(4, 1, _material->GetAOTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(4, 1, _material->GetAOTexture()->GetAddressOfSRV());
 			}
 
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);

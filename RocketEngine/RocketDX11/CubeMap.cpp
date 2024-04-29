@@ -6,9 +6,14 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Camera.h"
+#include "MathHeader.h"
 
 namespace Rocket::Core
 {
+	constexpr float IRRADIANCEMAPSIZE = 512.0f;
+	constexpr float PREFILTEREDMAPSIZE = 512.0f;
+	constexpr float BRDF2DLUTSIZE = 512.0f;
+
 
 	CubeMap::CubeMap()
 		:_texture(),
@@ -32,8 +37,11 @@ namespace Rocket::Core
 		_samplerState.Reset();
 	}
 
-	void CubeMap::Initialize(ID3D11Device* device)
+	void CubeMap::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 	{
+		_device = device;
+		_deviceContext = deviceContext;
+
 		BuildGeometryBuffers(device);
 
 		D3D11_RASTERIZER_DESC cubeMapDesc;
@@ -103,7 +111,7 @@ namespace Rocket::Core
 		// 픽셀 쉐이더 세팅
 		{
 			// pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap()); 아래로 대체.
-			deviceContext->PSSetShaderResources(0, 1, _texture->GetAddressOfTextureView());
+			deviceContext->PSSetShaderResources(0, 1, _texture->GetAddressOfSRV());
 			deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 		}
 
@@ -131,11 +139,15 @@ namespace Rocket::Core
 		// 아니면 IBL Baker 코드를 갖고와서 여기서 생성하도록 해도 될듯..?
 		std::string pureName = fileName.substr(0, fileName.find_last_of("."));
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1);
-		_texture = ResourceManager::Instance().GetTexture(pureName + "EnvHDR" + "." + extension);
 		//_texture = ResourceManager::Instance().GetTexture(fileName);
+		_texture = ResourceManager::Instance().GetTexture(pureName + "EnvHDR" + "." + extension);
+
+		// TODO : 아래 텍스쳐들 hlsl을 통해 직접 만들기.
 		_irradianceTexture = ResourceManager::Instance().GetTexture(pureName + "DiffuseHDR" + "." + extension);
 		_prefilteredTexture = ResourceManager::Instance().GetTexture(pureName + "SpecularHDR" + "." + extension);
 		_BRDF2DLUTTexture = ResourceManager::Instance().GetTexture(pureName + "Brdf" + "." + extension);
+	
+		GenerateIBLTextures();
 	}
 
 	void CubeMap::BuildGeometryBuffers(ID3D11Device* device)
@@ -256,54 +268,125 @@ namespace Rocket::Core
 
 	ID3D11ShaderResourceView** CubeMap::GetIrradianceTextureSRV()
 	{
-		return _irradianceTexture->GetAddressOfTextureView();
+		return _irradianceTexture->GetAddressOfSRV();
 	}
 
 	ID3D11ShaderResourceView** CubeMap::GetPrefilteredTextureSRV()
 	{
-		return _prefilteredTexture->GetAddressOfTextureView();
+		return _prefilteredTexture->GetAddressOfSRV();
 	}
 
 	ID3D11ShaderResourceView** CubeMap::GetBRDF2DLUTTextureSRV()
 	{
-		return _BRDF2DLUTTexture->GetAddressOfTextureView();
+		return _BRDF2DLUTTexture->GetAddressOfSRV();
 	}
 
-// 	void CubeMap::CreateIBLTextures(ID3D11DeviceContext* deviceContext)
-// 	{
-// 		deviceContext->IASetInputLayout(_IBLCreatingVS->GetInputLayout());
-// 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-// 
-// 		// Shader deviceContext 이용해 연결.
-// 		deviceContext->VSSetShader(_vertexShader->GetVertexShader(), nullptr, 0);
-// 		deviceContext->PSSetShader(_pixelShader->GetPixelShader(), nullptr, 0);
-// 
-// 		// 픽셀 쉐이더 세팅
-// 		{
-// 			// pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap()); 아래로 대체.
-// 			deviceContext->PSSetShaderResources(0, 1, _texture->GetAddressOfTextureView());
-// 			deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
-// 		}
-// 
-// 		// 인덱스버퍼와 버텍스버퍼 셋팅
-// 		UINT stride = 0;
-// 		UINT offset = 0;
-// 
-// 		stride = sizeof(CubeMapVertex);
-// 
-// 		deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
-// 		deviceContext->IASetIndexBuffer(_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-// 
-// 		deviceContext->DrawIndexed(_indexCount, 0, 0);
-// 
-// 		ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
-// 		deviceContext->PSSetShaderResources(0, 1, nullSRV.GetAddressOf());
-// 	}
-// 
-// 	void CubeMap::SetIBLCreatingShader(VertexShader* vertexShader, PixelShader* pixelShader)
-// 	{
-// 		_IBLCreatingVS = vertexShader;
-// 		_IBLCreatingPS = pixelShader;
-// 	}
+	void CubeMap::GenerateIBLTextures()
+	{
+		/*
+		/// Generate Irradiance Map
+		{
+			D3D11_TEXTURE2D_DESC textureDesc;
+			ZeroMemory(&textureDesc, sizeof(textureDesc));
+			textureDesc.Width = IRRADIANCEMAPSIZE;
+			textureDesc.Height = IRRADIANCEMAPSIZE;
+			textureDesc.MipLevels = 1;
+			textureDesc.ArraySize = 6;	// 6 faces
+			textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.Usage = D3D11_USAGE_DEFAULT;
+			textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			textureDesc.CPUAccessFlags = 0;
+			textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 
+			ComPtr<ID3D11Texture2D> texture;
+			HR(_device->CreateTexture2D(&textureDesc, nullptr, texture.GetAddressOf()));
+
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+			srvDesc.TextureCube.MostDetailedMip = 0;
+			srvDesc.TextureCube.MipLevels = 1;
+
+			HR(_device->CreateShaderResourceView(texture.Get(), &srvDesc, _irradianceTexture->GetAddressOfSRV()));
+
+			ComPtr<ID3D11RenderTargetView> rtvArr[6];
+
+			D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+			rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.MipSlice = 0;
+			rtvDesc.Texture2DArray.ArraySize = 1;
+			for (UINT i = 0; i < 6; ++i)
+			{
+				rtvDesc.Texture2DArray.FirstArraySlice = i;
+				ID3D11RenderTargetView* rtv;
+				HR(_device->CreateRenderTargetView(texture.Get(), &rtvDesc, &rtv));
+				rtvArr[i] = rtv;
+			}
+
+			D3D11_VIEWPORT viewport
+			{
+				.TopLeftX = 0.0f,
+				.TopLeftY = 0.0f,
+				.Width = IRRADIANCEMAPSIZE,
+				.Height = IRRADIANCEMAPSIZE,
+				.MinDepth = 0.0f,
+				.MaxDepth = 1.0f
+			};
+			_deviceContext->RSSetViewports(1, &viewport);
+
+			VertexShader* vs = GetVertexShader("CubeMapVertexShader.cso");
+			PixelShader* ps = GetPixelShader("IrradianceMapPS.cso");
+
+			for (int i = 0; i < 6; ++i)
+			{
+				_deviceContext->OMSetRenderTargets(1, rtvArr[i].GetAddressOf(), nullptr);
+				XMVECTOR eyePos{ 0, 0, 0, 0 };
+				XMVECTOR lookAt = forward[i];
+				XMVECTOR upVec = up[i];
+				float nearZ = 0.0f;
+				float farZ = 10.0f;
+				float viewWidth = 2.0f;
+				float viewHeight = 2.0f;
+
+				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
+				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+				XMMATRIX viewProj = viewMatrix * projMatrix;
+
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
+				vs->CopyAllBufferData();
+				vs->SetShader();
+
+				ps->SetShaderResourceView("CubeMap", cubeMapSRV);
+				ps->CopyAllBufferData();
+				ps->SetShader();
+
+				_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				Mesh* mesh = GetMeshes("skybox")[0];
+				mesh->BindBuffers();
+				mesh->Draw();
+
+				_deviceContext->Flush();
+			}
+
+			ID3D11ShaderResourceView* nullSRV = nullptr;
+			_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+			ID3D11RenderTargetView* nullRTV = nullptr;
+			_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+		}
+		*/
+
+		/// Generate Prefiltered Map
+		{
+
+		}
+
+		/// Generate BRDF 2D LUT
+		{
+
+		}
+	}
 }

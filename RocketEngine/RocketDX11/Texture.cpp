@@ -83,13 +83,24 @@ namespace Rocket::Core
 		}
 	}
 
-	ID3D11ShaderResourceView* Texture::GetTextureView()
+	ID3D11ShaderResourceView* Texture::GetSRV()
 	{
 		return _textureView.Get();
 	}
 
-	ID3D11ShaderResourceView** Texture::GetAddressOfTextureView()
+	ID3D11ShaderResourceView** Texture::GetAddressOfSRV()
 	{
 		return _textureView.GetAddressOf();
 	}
+
+	ID3D11Resource* Texture::GetResource()
+	{
+		return _texture.Get();
+	}
+
+	ID3D11Resource** Texture::GetAddressOfResource()
+	{
+		return _texture.GetAddressOf();
+	}
+
 }

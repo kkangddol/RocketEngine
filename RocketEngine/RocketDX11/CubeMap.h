@@ -25,7 +25,7 @@ namespace Rocket::Core
 		~CubeMap();
 
 	public:
-		void Initialize(ID3D11Device* device);
+		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 		void Render(ID3D11DeviceContext* deviceContext);
 		void LoadTexture(const std::string& fileName);
 		void SetShader(VertexShader* vertexShader, PixelShader* pixelShader);
@@ -43,9 +43,12 @@ namespace Rocket::Core
 
 	private:
 		void BuildGeometryBuffers(ID3D11Device* device);
-/*		void CreateIBLTextures(ID3D11DeviceContext* deviceContext);*/
+		void GenerateIBLTextures();
 
 	private:
+		ID3D11Device* _device;
+		ID3D11DeviceContext* _deviceContext;
+
 		Texture* _texture;
 		Texture* _irradianceTexture;
 		Texture* _prefilteredTexture;
