@@ -670,7 +670,7 @@ namespace Rocket::Core
 		Camera* mainCam = Camera::GetMainCamera();
 
 		std::vector<IRenderable*> renderList;
-		renderList.reserve(256);
+		renderList.reserve(512);
 
 		for (auto meshRenderer : _objectManager.GetStaticMeshRenderers())
 		{
