@@ -111,7 +111,8 @@ namespace Rocket::Core
 		// 픽셀 쉐이더 세팅
 		{
 			// pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap()); 아래로 대체.
-			deviceContext->PSSetShaderResources(0, 1, _cubeMapTexture->GetAddressOfSRV());
+			//deviceContext->PSSetShaderResources(0, 1, _cubeMapTexture->GetAddressOfSRV());
+			deviceContext->PSSetShaderResources(0, 1, _irradianceTexture->GetAddressOfSRV());
 			deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 		}
 
@@ -363,7 +364,7 @@ namespace Rocket::Core
 				DirectX::XMVECTOR lookAt = forward[i];
 				DirectX::XMVECTOR upVec = up[i];
 				float nearZ = 0.0f;
-				float farZ = 100.0f;
+				float farZ = 10.0f;
 				float viewWidth = 2.0f;
 				float viewHeight = 2.0f;
 
@@ -406,10 +407,10 @@ namespace Rocket::Core
 
 			_irradianceTexture->SetResource(texture.Get());
 
-			ID3D11ShaderResourceView* nullSRV = nullptr;
-			_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
-			ID3D11RenderTargetView* nullRTV = nullptr;
-			_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+			ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
+			_deviceContext->PSSetShaderResources(0, 1, nullSRV.GetAddressOf());
+			ComPtr<ID3D11RenderTargetView> nullRTV = nullptr;
+			_deviceContext->OMSetRenderTargets(1, nullRTV.GetAddressOf(), nullptr);
 		}
 
 		/// Generate Prefiltered Map
