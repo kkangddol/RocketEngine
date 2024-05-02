@@ -35,7 +35,7 @@ float4 main(float3 wolrdPos : POSITION) : SV_TARGET
     //irradiance.y *= 0.965f;
     //irradiance.z *= 1.045f;
     
-    irradiance = CubeMap.Sample(LinearWrapSampler, normal).rgb;
+    irradiance = CubeMap.Sample(LinearWrapSampler, wolrdPos).rgb;
     irradiance = pow(irradiance, float3(1.0f / 2.2f, 1.0f / 2.2f, 1.0f / 2.2f));
     
     return float4(irradiance, 1.0f);

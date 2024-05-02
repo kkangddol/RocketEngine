@@ -10,7 +10,7 @@
 
 namespace Rocket::Core
 {
-	constexpr float IRRADIANCEMAPSIZE = 512.0f;
+	constexpr float IRRADIANCEMAPSIZE = 128.0f;
 	constexpr float PREFILTEREDMAPSIZE = 512.0f;
 	constexpr float BRDF2DLUTSIZE = 512.0f;
 
