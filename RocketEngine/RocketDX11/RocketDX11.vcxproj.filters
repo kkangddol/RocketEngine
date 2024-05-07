@@ -424,7 +424,13 @@
     <FxCompile Include="DeferredCubeMapPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\CubeMap</Filter>
     </FxCompile>
-    <FxCompile Include="CreateIBLMapPS.hlsl">
+    <FxCompile Include="IrradianceMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\IBL</Filter>
+    </FxCompile>
+    <FxCompile Include="PrefilteredMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\IBL</Filter>
+    </FxCompile>
+    <FxCompile Include="BRDF2DLUTPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\IBL</Filter>
     </FxCompile>
   </ItemGroup>

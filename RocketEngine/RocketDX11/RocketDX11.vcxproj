@@ -362,6 +362,16 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="BRDF2DLUTPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="ColorPS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">5.0</ShaderModel>
@@ -389,24 +399,6 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Vertex</ShaderType>
-    </FxCompile>
-    <FxCompile Include="CreateIBLMapPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="CubeMapPS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -580,6 +572,16 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">$(SolutionDir)Resources\Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="IrradianceMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="LightPassPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|Win32'">Pixel</ShaderType>
@@ -643,6 +645,16 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="PrefilteredMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='R_Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="SkinnedMeshPS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

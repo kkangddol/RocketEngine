@@ -23,7 +23,6 @@ void TestScene::Initialize()
 	/// 라이트
 	auto lightObj = scene->CreateObject("light");
 	auto lightComp = lightObj->AddComponent<Rocket::DirectionalLight>();
-	lightComp->SetSpecularPower(4.0f);
 	lightObj->transform.Rotate(45.0f, 45.0f, 0.0f);
 
 	/// PBR 테스트
@@ -34,6 +33,26 @@ void TestScene::Initialize()
 	auto SphereRenderer = PBRSphere->AddComponent<Rocket::MeshRenderer>();
 	SphereRenderer->SetMesh(Rocket::eMeshType::SPHERE);
 	SphereRenderer->SetBaseColorTexture("T_WEP_Basic_009_D.png");
+
+	// PBR 구 25개 배치
+	// 0.0 0.25 0.5 0.75 1.0
+	int count = 7;
+	float offSet = 10.0f;
+	float lenInterval = 1.5f;
+	float matInterval = 1.0f / static_cast<float>(count-1);
+	for (int i = 0; i < count; i++)
+	{
+		for (int j = 0; j < count; j++)
+		{
+			auto sphere = scene->CreateObject("PBRTest"+std::to_string(i)+std::to_string(j));
+			sphere->transform.SetPosition(offSet + j * lenInterval, i * lenInterval, 0.0f);
+			auto sr = sphere->AddComponent<Rocket::MeshRenderer>();
+			sr->SetMesh(Rocket::eMeshType::SPHERE);
+			sr->SetBaseColorTexture("T_WEP_Basic_009_D.png");
+			sr->SetMetallic(i * matInterval);
+			sr->SetRoughness(j * matInterval);
+		}
+	}
 
 	// PBR 모델
 	auto PBRModel = scene->CreateModelObject("Cerberus_LP.fbx");
@@ -113,19 +132,19 @@ void TestScene::Initialize()
 	sprite->transform.Translate(1400.0f, 700.0f, 0.0f);
 
 	/// 부하테스트
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < 5; j++)
 		{
 			/// 스킨드 메쉬 부하 테스트
 // 			auto skinnedTest3 = scene->CreateModelObject("A_TP_CH_Sprint_F.fbx");
 // 			skinnedTest3->transform.SetScale(0.05f, 0.05f, 0.05f);
-// 			skinnedTest3->transform.Translate(5 + i, 0.0f, 5 + j);
+// 			skinnedTest3->transform.Translate(5 * i - 10.0f , 0.0f, 5 * j);
 // 
 // 			auto dmr3 = skinnedTest3->GetComponentsFromAll<Rocket::DynamicModelRenderer>();
 // 			for (auto& m : dmr3)
 // 			{
-// 				m->SetTexture("T_TP_CH_Camo_001_006_D.png");
+// 				m->SetBaseColorTexture("T_TP_CH_Camo_001_006_D.png");
 // 			}
 
 			/// 스태틱 메쉬 부하 테스트

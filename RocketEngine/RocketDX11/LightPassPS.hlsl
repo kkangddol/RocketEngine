@@ -1,7 +1,7 @@
 #include "PBRFunction.hlsli"
 
 #ifndef MAX_REF_LOD
-#define MAX_REF_LOD 4.0
+#define MAX_REF_LOD 10.0f
 #endif
 
 SamplerState LightPassSampler : register(s0);
@@ -45,56 +45,58 @@ float4 main(PixelInput input) : SV_TARGET
     baseColor = pow(baseColor, gamma);
     float3 normal = Normal.Sample(LightPassSampler, input.uv).rgb;
     normal = normalize(normal);
-    float3 metallic = Metallic.Sample(LightPassSampler, input.uv).rgb;
-    float3 roughness = Roughness.Sample(LightPassSampler, input.uv).rgb;
-    roughness = max(roughness, 0.04f);
-    float3 ambientOcclusion = AmbientOcclusion.Sample(LightPassSampler, input.uv).rgb;
+    float metallic = Metallic.Sample(LightPassSampler, input.uv).r;
+    metallic = saturate(metallic);
+    float roughness = Roughness.Sample(LightPassSampler, input.uv).r;
+    roughness = saturate(roughness);
+    float ambientOcclusion = AmbientOcclusion.Sample(LightPassSampler, input.uv).r;
+    ambientOcclusion = saturate(ambientOcclusion);
     
-    float3 lightDir = -lightDirection;
-    float lightIntensity = saturate(dot(normal.xyz, lightDir));
     
+    float3 lightDir = -normalize(lightDirection);
     float3 viewDir = normalize(viewPosition - posW);
+    viewDir = normalize(viewDir);
     float3 halfVector = normalize(lightDir + viewDir);
-   
+    
     float NdotL = max(dot(normal, lightDir), 0.0f);
     float NdotV = max(dot(normal, viewDir), 0.0f);
     float LdotH = max(dot(lightDir, halfVector), 0.0f);
     float NdotH = max(dot(normal, halfVector), 0.0f);
+    float VdotH = max(dot(viewDir, halfVector), 0.0f);
+   
+    float3 lightColor = float3(1.0f, 1.0f, 1.0f);
+    float3 radiance = lightColor * NdotL;
     
     // PBR
-    float3 F0 = 0.04f;
+    float3 F0 = { 0.04f, 0.04f, 0.04f };
     F0 = lerp(F0, baseColor, metallic);
     float3 specularColor = F0;
-    float3 lightColor = float3(1.0f, 1.0f, 1.0f);
     
-    float D = Specular_D_GGX(roughness.x, NdotH);
-    float G = GeometrySmith(normal, viewDir, lightDir, roughness.x, 1);
-    float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, LdotH);
-    float denominator = max((4 * NdotV * NdotL), 0.00001f);
-    
-    float3 BRDFspecular = D * G * F / denominator;
+    //float D = Specular_D_GGX(roughness.x, NdotH); // ->0
+    float D = DistributionGGX(roughness, NdotH);
+    float G = GeometrySmith(NdotV, NdotL, roughness, 1);
+    float3 F = Specular_F_Fresnel_Shlick_Unity(specularColor, VdotH);
+    float denominator = max((4 * NdotV * NdotL), 0.0001f);
     
     float3 kS = F;
     float3 kD = float3(1.0f, 1.0f, 1.0f) - kS;
-    kD *= (1.0 - metallic.x);
+    kD *= (1.0 - metallic);
     
-    float4 outputColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    outputColor = float4(((kD * baseColor / PI) + BRDFspecular) * lightColor * NdotL, 1.0f);
-    //outputColor *= 0.001f;
-    //float4 outputColor = float4((Disney_Diffuse(roughness.x,baseColor,NdotL,NdotV,LdotH) + BRDFspecular) * lightColor * NdotL, 1.0f);
+    float3 BRDFspecular = D * G * F / denominator;
     
+    float4 outputColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
+    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * radiance * NdotL;
+ 
     // IBL
-    float3 globalAmbient = float3(0.3f, 0.3f, 0.3f); // 임시값
-    float3 ambient = globalAmbient * baseColor * ambientOcclusion;
-    
     float3 irradiance = IBLIrradiance.Sample(CubeMapSampler, normal).rgb;
-    float3 prefilteredColor = IBLPrefilter.SampleLevel(CubeMapSampler, reflect(-viewDir, normal), roughness.x * MAX_REF_LOD).
-    rgb;
-    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, roughness.x)).rg;
+    float3 prefilteredColor = IBLPrefilter.SampleLevel(CubeMapSampler, reflect(-viewDir, normal), roughness * MAX_REF_LOD).rgb;
+    // OpenGL LUT 사용해서 1-roughness 하는 중, 내가 직접 만들어서 roughness로 바꿀 것.
+    float2 brdf = IBLBRDFLUT.Sample(LightPassSampler, float2(NdotV, 1 - roughness)).rg;
     
-    kS = FresnelSchlickRoughness(specularColor, NdotV, roughness.x);
+    kS = FresnelSchlickRoughness(specularColor, NdotV, roughness);
     kD = float3(1.0f, 1.0f, 1.0f) - kS;
-    kD *= (1.0 - metallic.x);
+    kD *= (1.0 - metallic);
+    float3 diffuse = irradiance * baseColor;
     
     float3 IBLdiffuse = irradiance * baseColor * kD;
     float3 IBLspecular = prefilteredColor * (kS * brdf.x + brdf.y);
@@ -106,6 +108,10 @@ float4 main(PixelInput input) : SV_TARGET
     
     // Gamma Correction
     outputColor = pow(outputColor, float4(1.0f / gamma, 1.0f / gamma, 1.0f / gamma, 1.0f / gamma));
+    
+    // 임시 GlobalAmbient
+//    float3 globalAmbient = float3(0.1f, 0.1f, 0.1f); // 임시값
+//    float3 ambient = globalAmbient * baseColor * ambientOcclusion;
     
     outputColor.w = 1.0f;
     return outputColor;

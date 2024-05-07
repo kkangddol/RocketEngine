@@ -412,7 +412,11 @@ namespace Rocket::Core
 		_lightPass->Render(_deviceContext.Get(), _deferredBuffers.get());
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _deferredBuffers->GetDepthStencilView());
-		RenderHelperObject();
+		if (_isDebugMode)
+		{
+			RenderHelperObject();
+		}
+
 		RenderCubeMap();
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), nullptr); 
@@ -666,7 +670,7 @@ namespace Rocket::Core
 		Camera* mainCam = Camera::GetMainCamera();
 
 		std::vector<IRenderable*> renderList;
-		renderList.reserve(256);
+		renderList.reserve(512);
 
 		for (auto meshRenderer : _objectManager.GetStaticMeshRenderers())
 		{

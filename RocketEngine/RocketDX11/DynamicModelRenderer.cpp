@@ -264,26 +264,26 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 			// 카메라 버퍼 세팅
-			{
-				Camera* mainCam = Camera::GetMainCamera();
-				// 버텍스 쉐이더
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				HR(deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-
-				CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
-
-				cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
-				cameraBufferDataPtr->padding = 0.0f;
-
-				deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
-
-				unsigned int bufferNumber = 1;
-
-				deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
-			}
+// 			{
+// 				Camera* mainCam = Camera::GetMainCamera();
+// 				// 버텍스 쉐이더
+// 				D3D11_MAPPED_SUBRESOURCE mappedResource;
+// 				HR(deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+// 
+// 				CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
+// 
+// 				cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
+// 				cameraBufferDataPtr->padding = 0.0f;
+// 
+// 				deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
+// 
+// 				unsigned int bufferNumber = 1;
+// 
+// 				deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
+// 			}
 
 			///
-			bufferNumber = 2;
+			bufferNumber = 1;
 			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
@@ -297,7 +297,7 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 
-			bufferNumber = 3;
+			bufferNumber = 2;
 			HR(deviceContext->Map(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 			BoneBufferType* boneBufferDataPtr = (BoneBufferType*)mappedResource.pData;
@@ -375,23 +375,23 @@ namespace Rocket::Core
 
 			if (_material->GetBaseColorTexture())
 			{
-				deviceContext->PSSetShaderResources(0, 1, _material->GetBaseColorTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(0, 1, _material->GetBaseColorTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetNormalTexture())
 			{
-				deviceContext->PSSetShaderResources(1, 1, _material->GetNormalTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(1, 1, _material->GetNormalTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetMetallicTexture())
 			{
-				deviceContext->PSSetShaderResources(2, 1, _material->GetMetallicTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(2, 1, _material->GetMetallicTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetRoughnessTexture())
 			{
-				deviceContext->PSSetShaderResources(3, 1, _material->GetRoughnessTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(3, 1, _material->GetRoughnessTexture()->GetAddressOfSRV());
 			}
 			if (_material->GetAOTexture())
 			{
-				deviceContext->PSSetShaderResources(4, 1, _material->GetAOTexture()->GetAddressOfTextureView());
+				deviceContext->PSSetShaderResources(4, 1, _material->GetAOTexture()->GetAddressOfSRV());
 			}
 
 			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
