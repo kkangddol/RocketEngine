@@ -112,7 +112,7 @@ namespace Rocket::Core
 		{
 			// pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap()); 아래로 대체.
 			//deviceContext->PSSetShaderResources(0, 1, _cubeMapTexture->GetAddressOfSRV());
-			deviceContext->PSSetShaderResources(0, 1, _irradianceTexture->GetAddressOfSRV());
+			deviceContext->PSSetShaderResources(0, 1, _cubeMapTexture->GetAddressOfSRV());
 			deviceContext->PSSetSamplers(0, 1, _samplerState.GetAddressOf());
 		}
 
@@ -143,14 +143,14 @@ namespace Rocket::Core
 		//_cubeMapTexture = ResourceManager::Instance().GetTexture(fileName);
 		_cubeMapTexture = ResourceManager::Instance().GetTexture(pureName + "EnvHDR" + "." + extension);
 
-		_irradianceTexture = std::make_unique<Texture>();
+		//_irradianceTexture = std::make_unique<Texture>();
 
 		// TODO : 아래 텍스쳐들 hlsl을 통해 직접 만들기.
-		//_irradianceTexture = ResourceManager::Instance().GetTexture(pureName + "DiffuseHDR" + "." + extension);
+		_irradianceTexture = ResourceManager::Instance().GetTexture(pureName + "DiffuseHDR" + "." + extension);
 		_prefilteredTexture = ResourceManager::Instance().GetTexture(pureName + "SpecularHDR" + "." + extension);
 		_BRDF2DLUTTexture = ResourceManager::Instance().GetTexture(pureName + "Brdf" + "." + extension);
 
-		GenerateIBLTextures();
+		//GenerateIBLTextures();
 	}
 
 	void CubeMap::BuildGeometryBuffers(ID3D11Device* device)

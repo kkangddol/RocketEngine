@@ -35,7 +35,8 @@ namespace Rocket::Core
 
 		// 임시
 		Texture* GetTexture() const { return _cubeMapTexture; }
-		Texture* GetIrradianceTexture() const { return _irradianceTexture.get(); }
+		Texture* GetIrradianceTexture() const { return _irradianceTexture; }
+		//Texture* GetIrradianceTexture() const { return _irradianceTexture.get(); }
 		ID3D11ShaderResourceView** GetIrradianceTextureSRV();
 		Texture* GetPrefilteredTexture() const { return _prefilteredTexture; }
 		ID3D11ShaderResourceView** GetPrefilteredTextureSRV();
@@ -52,9 +53,10 @@ namespace Rocket::Core
 		ID3D11DeviceContext* _deviceContext;
 
 		Texture* _cubeMapTexture;
-		std::unique_ptr<Texture> _irradianceTexture;
+		Texture* _irradianceTexture;
 		Texture* _prefilteredTexture;
 		Texture* _BRDF2DLUTTexture;
+//		std::unique_ptr<Texture> _irradianceTexture;
 // 		std::unique_ptr<Texture> _prefilteredTexture;
 // 		std::unique_ptr<Texture> _BRDF2DLUTTexture;
 		ComPtr<ID3D11Buffer> _vertexBuffer;
