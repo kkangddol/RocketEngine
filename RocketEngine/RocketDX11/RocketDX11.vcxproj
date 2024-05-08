@@ -303,6 +303,7 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
     <ClCompile Include="HelperObjectBase.cpp" />
     <ClCompile Include="LightPass.cpp" />
     <ClCompile Include="ModelStruct.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="DynamicModelRenderer.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
@@ -336,6 +337,7 @@ copy /Y "*.hlsli" "$(SolutionDir)Resources\Shaders";</Command>
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="ModelStruct.h" />
     <ClInclude Include="ResourcePath.h" />
+    <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="DynamicModelRenderer.h" />
     <ClInclude Include="SpriteRenderer.h" />

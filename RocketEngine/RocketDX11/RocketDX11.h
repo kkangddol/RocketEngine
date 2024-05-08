@@ -22,6 +22,7 @@ namespace Rocket::Core
 	class ResourceManager;
 	class DeferredBuffers;
 	class LightPass;
+	class ShadowPass;
 }
 
 namespace Rocket::Core
@@ -95,6 +96,7 @@ namespace Rocket::Core
 	private:
 		std::unique_ptr<DeferredBuffers> _deferredBuffers;
 		std::unique_ptr<LightPass> _lightPass;
+		std::unique_ptr<ShadowPass> _shadowPass;
 
 	private:
 		ObjectManager& _objectManager;

@@ -23,6 +23,7 @@
 #include "GraphicsMacro.h"
 #include "DeferredBuffers.h"
 #include "LightPass.h"
+#include "ShadowPass.h"
 
 namespace Rocket::Core
 {
@@ -255,6 +256,9 @@ namespace Rocket::Core
 		_lightPass = std::make_unique<LightPass>();
 		_lightPass->Initialize(_device.Get(), _resourceManager.GetVertexShader("LightPassVS"), _resourceManager.GetPixelShader("LightPassPS"));
 
+		/// ShadowPass 초기화
+		_shadowPass = std::make_unique<ShadowPass>();
+
 		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
@@ -407,6 +411,8 @@ namespace Rocket::Core
 		BeginRender(1.0f, 0.0f, 1.0f, 1.0f);
 
 		GBufferPass();
+		// TODO : 섀도우 맵 만들고 LightPass에 넘겨줘야함.
+		//_shadowPass->GenerateShadowMap(_deviceContext.Get());
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), nullptr);
 		_lightPass->Render(_deviceContext.Get(), _deferredBuffers.get());
@@ -443,6 +449,7 @@ namespace Rocket::Core
 		_basicEffect.reset();
 		_deferredBuffers.reset();
 		_lightPass.reset();
+		_shadowPass.reset();
 
 
 		// TODO : 여기서 Release를 먼저 해줬더니 아래에서 Reset 하면서 한번 더 지워서 RefCount가 -1이 되는 녀석이 하나 있다.. 뭐하는친구일까?
