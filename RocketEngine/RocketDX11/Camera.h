@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include <SimpleMath.h>
 #include <d3d11.h>
 #include <wrl.h>
 #include <DirectXCollision.h>
 
+#include "MathHeader.h"
 #include "../RocketCommon/ICamera.h"
 
 using Microsoft::WRL::ComPtr;
@@ -47,9 +47,11 @@ namespace Rocket::Core
 		DirectX::XMMATRIX GetProjectionMatrix() const;		// 카메라의 투영행렬을 반환
 		DirectX::XMMATRIX GetViewProjectionMatrix() const;	// 위의 두 행렬을 적절히 곱해서 반환(view의 역행렬을 곱해주겠지?)
 
-		DirectX::XMVECTOR GetForward() const;
-		DirectX::XMVECTOR GetUp() const;
-		DirectX::XMVECTOR GetRight() const;
+		Vector3 GetForward() const;
+		Vector3 GetUp() const;
+		Vector3 GetRight() const;
+
+		float GetLengthZ() const { return _farZ - _nearZ; }
 
 	public:
 		bool FrustumCulling(const DirectX::BoundingBox& boundingBox);

@@ -264,16 +264,22 @@ namespace Rocket::Core
 		*/
 	}
 
-	void MeshRenderer::SetVertexShader(VertexShader* shader)
+	// return : 사용하던 VertexShader
+	Rocket::Core::VertexShader* MeshRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
+		auto temp = _material->GetVertexShader();
 		_material->SetVertexShader(shader);
+		return temp;
 	}
 
-	void MeshRenderer::SetPixelShader(PixelShader* shader)
+	// return : 사용하던 PixelShader
+	Rocket::Core::PixelShader* MeshRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
+		auto temp = _material->GetPixelShader();
 		_material->SetPixelShader(shader);
+		return temp;
 	}
 
 	void MeshRenderer::SetRenderState(ID3D11RasterizerState* renderState)
@@ -340,5 +346,4 @@ namespace Rocket::Core
 	{
 		_material->SetAmbientOcclusionTexture(ResourceManager::Instance().GetTexture(fileName));
 	}
-
 }

@@ -9,6 +9,7 @@ namespace Rocket::Core
 {
 	class VertexShader;
 	class PixelShader;
+	class DeferredBuffers;
 }
 
 
@@ -21,12 +22,14 @@ namespace Rocket::Core
 		~ShadowPass();
 
 	public:
-		void Initialize(VertexShader* vs, PixelShader* ps);
-		void GenerateShadowMap(ID3D11DeviceContext* deviceContext);
+		void Initialize(VertexShader* staticMeshVS, PixelShader* staticMeshPS, VertexShader* dynamicModelVS, PixelShader* dynamicModelPS);
+		void GenerateShadowMap(ID3D11DeviceContext* deviceContext, DeferredBuffers* g_buffer); 
 
 	private:
-		VertexShader* _vertexShader;
-		PixelShader* _pixelShader;
+		VertexShader* _staticMeshVS;
+		PixelShader* _staticMeshPS;
+		VertexShader* _dynamicModelVS;
+		PixelShader* _dynamicModelPS;
 	};
 
 }

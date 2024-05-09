@@ -51,8 +51,8 @@ namespace Rocket::Core
 
 	public:
 		void SetMaterial(Material* val) { _material = val; }
-		void SetVertexShader(VertexShader* shader);
-		void SetPixelShader(PixelShader* shader);
+		VertexShader* SetVertexShader(VertexShader* shader);
+		PixelShader* SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState);
 		DirectX::BoundingBox GetBoundingBox() const;
 

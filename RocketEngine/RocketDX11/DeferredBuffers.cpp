@@ -22,6 +22,12 @@ namespace Rocket::Core
 
 		_depthStencilBuffer.Reset();
 		_depthStencilView.Reset();
+
+		_shadowMapTexture.Reset();
+		_shadowMapRenderTargetView.Reset();
+		_shadowMapShaderResourceView.Reset();
+		_shadowDepthBuffer.Reset();
+		_shadowDepthStencilView.Reset();
 	}
 
 	void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int textureHeight, float screenDepth, float screenNear)
@@ -108,6 +114,29 @@ namespace Rocket::Core
 		depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 		HR(device->CreateDepthStencilView(_depthStencilBuffer.Get(), &depthStencilViewDesc, _depthStencilView.GetAddressOf()));
+
+
+		/// Shadow Map 관련
+		_shadowMapTexture;
+		_shadowMapRenderTargetView;
+		_shadowMapShaderResourceView;
+		_shadowDepthBuffer;
+		_shadowDepthStencilView;
+
+		// ShadowMapTexture 생성
+		HR(device->CreateTexture2D(&textureDesc, nullptr, _shadowMapTexture.GetAddressOf()));
+
+		// ShadowMapRenderTargetView 생성
+		HR(device->CreateRenderTargetView(_shadowMapTexture.Get(), &renderTargetViewDesc, _shadowMapRenderTargetView.GetAddressOf()));
+
+		// ShadowMapShaderResourceView 생성
+		HR(device->CreateShaderResourceView(_shadowMapTexture.Get(), &shaderResourceViewDesc, _shadowMapShaderResourceView.GetAddressOf()));
+
+		// ShadowDepthBuffer 생성
+		HR(device->CreateTexture2D(&depthBufferDesc, NULL, _shadowDepthBuffer.GetAddressOf()));
+
+		// ShadowDepthStencilView 생성
+		HR(device->CreateDepthStencilView(_shadowDepthBuffer.Get(), &depthStencilViewDesc, _shadowDepthStencilView.GetAddressOf()));
 	}
 
 	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
@@ -146,6 +175,11 @@ namespace Rocket::Core
 	void DeferredBuffers::ReleaseRenderTargets(ID3D11DeviceContext* deviceContext)
 	{
 
+	}
+
+	void DeferredBuffers::SetShadowMapRenderTarget(ID3D11DeviceContext* deviceContext)
+	{
+		deviceContext->OMSetRenderTargets(1, _shadowMapRenderTargetView.GetAddressOf(), _shadowDepthStencilView.Get());
 	}
 
 }

@@ -78,10 +78,10 @@ namespace Rocket::Core
 		ComPtr<IDXGISwapChain> _swapChain;
 		ComPtr<ID3D11Texture2D> _backBuffer;
 		ComPtr<ID3D11RenderTargetView> _renderTargetView;
-		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
+		ComPtr<ID3D11Texture2D> _depthStencilBuffer;					// Deferred일때는 이것을 사용하지않고, DeferredBuffer의 뎁스스텐실 버퍼를 사용한다.
 		ComPtr<ID3D11DepthStencilState> _defaultDepthStencilState;
 		ComPtr<ID3D11DepthStencilState> _cubeMapDepthStencilState;
-		ComPtr<ID3D11DepthStencilView> _depthStencilView;
+		ComPtr<ID3D11DepthStencilView> _depthStencilView;				// Deferred일때는 이것을 사용하지않고, DeferredBuffer의 뎁스스텐실 버퍼를 사용한다.
 		ComPtr<ID3D11BlendState> _defaultBlendState;
 		
 		D3D11_VIEWPORT _viewport;

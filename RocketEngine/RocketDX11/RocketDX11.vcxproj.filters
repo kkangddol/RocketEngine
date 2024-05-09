@@ -365,6 +365,9 @@
     <Filter Include="DeferredShading\ShadowPass">
       <UniqueIdentifier>{ab29fa6c-1635-45d2-a74c-00ceccfd7bd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\Deferred\ShadowPass">
+      <UniqueIdentifier>{571ad4e1-abd0-4946-9835-c66bdce95594}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ColorPS.hlsl">
@@ -441,6 +444,18 @@
     </FxCompile>
     <FxCompile Include="BRDF2DLUTPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\IBL</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshShadowVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshShadowPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
+    </FxCompile>
+    <FxCompile Include="DynamicModelShadowVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
+    </FxCompile>
+    <FxCompile Include="DynamicModelShadowPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

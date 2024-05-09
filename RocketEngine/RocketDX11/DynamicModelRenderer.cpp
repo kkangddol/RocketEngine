@@ -405,16 +405,20 @@ namespace Rocket::Core
 		deviceContext->PSSetShaderResources(4, 1, nullSRV.GetAddressOf());
 	}
 
-	void DynamicModelRenderer::SetVertexShader(VertexShader* shader)
+	Rocket::Core::VertexShader* DynamicModelRenderer::SetVertexShader(VertexShader* shader)
 	{
 		assert(_material);
+		auto temp = _material->GetVertexShader();
 		_material->SetVertexShader(shader);
+		return temp;
 	}
 
-	void DynamicModelRenderer::SetPixelShader(PixelShader* shader)
+	Rocket::Core::PixelShader* DynamicModelRenderer::SetPixelShader(PixelShader* shader)
 	{
 		assert(_material);
+		auto temp = _material->GetPixelShader();
 		_material->SetPixelShader(shader);
+		return temp;
 	}
 
 	void DynamicModelRenderer::SetRenderState(ID3D11RasterizerState* renderState)
@@ -583,5 +587,4 @@ namespace Rocket::Core
 	{
 		_material->SetRoughness(value);
 	}
-
 }
