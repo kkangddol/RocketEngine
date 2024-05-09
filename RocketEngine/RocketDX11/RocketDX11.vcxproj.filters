@@ -448,13 +448,10 @@
     <FxCompile Include="StaticMeshShadowVS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
     </FxCompile>
-    <FxCompile Include="StaticMeshShadowPS.hlsl">
+    <FxCompile Include="ShadowMapPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
     </FxCompile>
     <FxCompile Include="DynamicModelShadowVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
-    </FxCompile>
-    <FxCompile Include="DynamicModelShadowPS.hlsl">
       <Filter>Resource\Shader\HLSL\Deferred\ShadowPass</Filter>
     </FxCompile>
   </ItemGroup>

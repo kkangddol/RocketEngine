@@ -21,12 +21,11 @@ namespace Rocket::Core
 
 	}
 
-	void ShadowPass::Initialize(VertexShader* staticMeshVS, PixelShader* staticMeshPS, VertexShader* dynamicModelVS, PixelShader* dynamicModelPS)
+	void ShadowPass::Initialize(VertexShader* staticMeshVS, VertexShader* dynamicModelVS, PixelShader* shadowMapPS)
 	{
 		_staticMeshVS = staticMeshVS;
-		_staticMeshPS = staticMeshPS;
 		_dynamicModelVS = dynamicModelVS;
-		_dynamicModelPS = dynamicModelPS;
+		_shadowMapPS = shadowMapPS;
 	}
 
 	void ShadowPass::GenerateShadowMap(ID3D11DeviceContext* deviceContext, DeferredBuffers* g_buffer)
@@ -65,7 +64,7 @@ namespace Rocket::Core
 			for (auto& meshRenderer : staticMeshList)
 			{
 				auto tempVS = meshRenderer->SetVertexShader(_staticMeshVS);
-				auto tempPS = meshRenderer->SetPixelShader(_staticMeshPS);
+				auto tempPS = meshRenderer->SetPixelShader(_shadowMapPS);
 				meshRenderer->Render(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix());
 				meshRenderer->SetVertexShader(tempVS);
 				meshRenderer->SetPixelShader(tempPS);
@@ -74,7 +73,7 @@ namespace Rocket::Core
 			for (auto& modelRenderer : dynamicModelList)
 			{
 				auto tempVS = modelRenderer->SetVertexShader(_dynamicModelVS);
-				auto tempPS = modelRenderer->SetPixelShader(_dynamicModelPS);
+				auto tempPS = modelRenderer->SetPixelShader(_shadowMapPS);
 				modelRenderer->Render(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix());
 				modelRenderer->SetVertexShader(tempVS);
 				modelRenderer->SetPixelShader(tempPS);

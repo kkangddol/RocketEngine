@@ -259,8 +259,8 @@ namespace Rocket::Core
 
 		/// ShadowPass 초기화
 		_shadowPass = std::make_unique<ShadowPass>();
-		_shadowPass->Initialize(_resourceManager.GetVertexShader("StaticMeshShadowVS"), _resourceManager.GetPixelShader("StaticMeshShadowPS"),
-			_resourceManager.GetVertexShader("DynamicModelShadowVS"), _resourceManager.GetPixelShader("DynamicModelShadowPS"));
+		_shadowPass->Initialize(_resourceManager.GetVertexShader("StaticMeshShadowVS"), _resourceManager.GetVertexShader("DynamicModelShadowVS")
+			, _resourceManager.GetPixelShader("ShadowMapPS"));
 
 		/// SpriteBatch, LineBatch, BasicEffect 초기화
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
