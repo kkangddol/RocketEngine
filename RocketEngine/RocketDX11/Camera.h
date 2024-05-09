@@ -52,9 +52,6 @@ namespace Rocket::Core
 		DirectX::XMVECTOR GetRight() const;
 
 	public:
-		void CreateCameraBuffer(ID3D11Device* device);
-		ID3D11Buffer* GetCameraBuffer() const;
-		ID3D11Buffer** GetAddressOfCameraBuffer();
 		bool FrustumCulling(const DirectX::BoundingBox& boundingBox);
 		bool FrustumCulling(const DirectX::BoundingOrientedBox& boundingOrientedBox);
 		bool FrustumCulling(const DirectX::BoundingSphere& boundingSphere);
@@ -76,7 +73,5 @@ namespace Rocket::Core
 
 		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
-
-		ComPtr<ID3D11Buffer> _cameraBuffer;
 	};
 }

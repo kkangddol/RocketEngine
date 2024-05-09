@@ -19,12 +19,11 @@ namespace Rocket::Core
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
-		CreateCameraBuffer(ResourceManager::Instance().GetDevice());
 	}
 
 	Camera::~Camera()
 	{
-		_cameraBuffer.Reset();
+		
 	}
 
 	DirectX::XMFLOAT3 Camera::GetPosition() const
@@ -215,30 +214,6 @@ namespace Rocket::Core
 	Camera* Camera::GetMainCamera()
 	{
 		return _mainCamera;
-	}
-
-	void Camera::CreateCameraBuffer(ID3D11Device* device)
-	{
-		D3D11_BUFFER_DESC cameraBufferDesc;
-		cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
-		cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		cameraBufferDesc.MiscFlags = 0;
-		cameraBufferDesc.StructureByteStride = 0;
-
-		HR(device->CreateBuffer(&cameraBufferDesc, NULL, &_cameraBuffer));
-		_cameraBuffer->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"CameraConstantBuffer") - 1, L"CameraConstantBuffer");
-	}
-
-	ID3D11Buffer* Camera::GetCameraBuffer() const
-	{
-		return _cameraBuffer.Get();
-	}
-
-	ID3D11Buffer** Camera::GetAddressOfCameraBuffer()
-	{
-		return _cameraBuffer.GetAddressOf();
 	}
 
 	DirectX::XMMATRIX Camera::GetWorldMatrix() const
