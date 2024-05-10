@@ -19,11 +19,23 @@ void TestScene::Initialize()
 	auto camObj = scene->GetMainCamera()->gameObject;
 	camObj->AddComponent<DebugCameraMove>();	
 	scene->GetMainCamera()->SetAsMainCamera();
+	camObj->transform.Rotate(45.0f, 45.0f, 0.0f);
+	//camObj->transform.Translate(-10.0f, 10.0f, -10.0f);
+	camObj->transform.SetPosition(-10.0f, 10.0f, -10.0f);
 
 	/// 라이트
 	auto lightObj = scene->CreateObject("light");
 	auto lightComp = lightObj->AddComponent<Rocket::DirectionalLight>();
 	lightObj->transform.Rotate(45.0f, 45.0f, 0.0f);
+	lightObj->transform.Translate(-10.0f, 10.0f, -10.0f);
+
+	/// Plane
+	auto plane = scene->CreateObject("plane");
+	plane->transform.SetPosition(0.0f, 0.0f, 0.0f);
+	plane->transform.SetScale(50.0f, 0.01f, 50.0f);
+	auto planeRenderer = plane->AddComponent<Rocket::MeshRenderer>();
+	planeRenderer->SetMesh(Rocket::eMeshType::CUBE);
+	planeRenderer->SetBaseColorTexture("T_WEP_Basic_008_D.png");
 
 	/// PBR 테스트
 	// PBR 구

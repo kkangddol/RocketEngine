@@ -45,6 +45,7 @@ namespace Rocket::Core
 
 	public:
 		virtual void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj) override;
+		void RenderShadowMap(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj, VertexShader* vs, PixelShader* ps);
 
 	public:
 		void UpdateAnimation(float deltaTime, bool isCulled = false);			// 깊은 복사 해온 Node 데이터에 애니메이션 데이터를 적용한다.

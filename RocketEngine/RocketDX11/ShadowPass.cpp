@@ -46,6 +46,8 @@ namespace Rocket::Core
 
 			for (auto meshRenderer : objMgr.GetStaticMeshRenderers())
 			{
+/*				staticMeshList.push_back(meshRenderer);*/
+
 				if (light->FrustumCulling(meshRenderer->GetBoundingBox()))
 				{
 					staticMeshList.push_back(meshRenderer);
@@ -54,29 +56,26 @@ namespace Rocket::Core
 
 			for (auto dynamicModelRenderer : objMgr.GetDynamicModelRenderers())
 			{
+/*				dynamicModelList.push_back(dynamicModelRenderer);*/
+
 				if (light->FrustumCulling(dynamicModelRenderer->GetBoundingBox()))
 				{
 					dynamicModelList.push_back(dynamicModelRenderer);
 				}
 			}
 
+			// TODO : 지금 각각의 렌더러가 Render할때는 머터리얼의 정보도 전부 포함해서 그린다.
+			//			하지만 ShadowMap 만들때는 필요가 없단말이다..
+			//			우선은 임시로 함수 하나 만들어서 때웠다.
 			// Draw On ShadowMap
 			for (auto& meshRenderer : staticMeshList)
 			{
-				auto tempVS = meshRenderer->SetVertexShader(_staticMeshVS);
-				auto tempPS = meshRenderer->SetPixelShader(_shadowMapPS);
-				meshRenderer->Render(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix());
-				meshRenderer->SetVertexShader(tempVS);
-				meshRenderer->SetPixelShader(tempPS);
+				meshRenderer->RenderShadowMap(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix(), _staticMeshVS, _shadowMapPS);
 			}
 
 			for (auto& modelRenderer : dynamicModelList)
 			{
-				auto tempVS = modelRenderer->SetVertexShader(_dynamicModelVS);
-				auto tempPS = modelRenderer->SetPixelShader(_shadowMapPS);
-				modelRenderer->Render(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix());
-				modelRenderer->SetVertexShader(tempVS);
-				modelRenderer->SetPixelShader(tempPS);
+				modelRenderer->RenderShadowMap(deviceContext, light->GetViewMatrix(), light->GetProjectionMatrix(), _dynamicModelVS, _shadowMapPS);
 			}
 		}
 	}

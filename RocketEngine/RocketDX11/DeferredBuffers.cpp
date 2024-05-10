@@ -63,7 +63,6 @@ namespace Rocket::Core
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 		ZeroMemory(&renderTargetViewDesc, sizeof(renderTargetViewDesc));
 
-
 		renderTargetViewDesc.Format = textureDesc.Format;
 		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		renderTargetViewDesc.Texture2D.MipSlice = 0;
@@ -117,26 +116,67 @@ namespace Rocket::Core
 
 
 		/// Shadow Map 관련
-		_shadowMapTexture;
-		_shadowMapRenderTargetView;
-		_shadowMapShaderResourceView;
-		_shadowDepthBuffer;
-		_shadowDepthStencilView;
-
 		// ShadowMapTexture 생성
-		HR(device->CreateTexture2D(&textureDesc, nullptr, _shadowMapTexture.GetAddressOf()));
+		D3D11_TEXTURE2D_DESC shadowMapTexDesc;
+		shadowMapTexDesc.Width = _textureWidth;
+		shadowMapTexDesc.Height = _textureHeight;
+		shadowMapTexDesc.MipLevels = 1;
+		shadowMapTexDesc.ArraySize = 1;
+		shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+		shadowMapTexDesc.SampleDesc.Count = 1;
+		shadowMapTexDesc.SampleDesc.Quality = 0;
+		shadowMapTexDesc.Usage = D3D11_USAGE_DEFAULT;
+		shadowMapTexDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		shadowMapTexDesc.CPUAccessFlags = 0;
+		shadowMapTexDesc.MiscFlags = 0;
+
+		HR(device->CreateTexture2D(&shadowMapTexDesc, nullptr, _shadowMapTexture.GetAddressOf()));
 
 		// ShadowMapRenderTargetView 생성
-		HR(device->CreateRenderTargetView(_shadowMapTexture.Get(), &renderTargetViewDesc, _shadowMapRenderTargetView.GetAddressOf()));
+		D3D11_RENDER_TARGET_VIEW_DESC shadowMapRTVDesc;
+		ZeroMemory(&shadowMapRTVDesc, sizeof(shadowMapRTVDesc));
+		shadowMapRTVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		shadowMapRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		shadowMapRTVDesc.Texture2D.MipSlice = 0;
+
+		HR(device->CreateRenderTargetView(_shadowMapTexture.Get(), &shadowMapRTVDesc, _shadowMapRenderTargetView.GetAddressOf()));
 
 		// ShadowMapShaderResourceView 생성
-		HR(device->CreateShaderResourceView(_shadowMapTexture.Get(), &shaderResourceViewDesc, _shadowMapShaderResourceView.GetAddressOf()));
+		D3D11_SHADER_RESOURCE_VIEW_DESC shadowMapSRVDesc;
+		ZeroMemory(&shadowMapSRVDesc, sizeof(shadowMapSRVDesc));
+		shadowMapSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		shadowMapSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shadowMapSRVDesc.Texture2D.MostDetailedMip = 0;
+		shadowMapSRVDesc.Texture2D.MipLevels = 1;
+
+		HR(device->CreateShaderResourceView(_shadowMapTexture.Get(), &shadowMapSRVDesc, _shadowMapShaderResourceView.GetAddressOf()));
 
 		// ShadowDepthBuffer 생성
-		HR(device->CreateTexture2D(&depthBufferDesc, NULL, _shadowDepthBuffer.GetAddressOf()));
+		D3D11_TEXTURE2D_DESC shadowMapDepthBufferDesc;
+		ZeroMemory(&shadowMapDepthBufferDesc, sizeof(shadowMapDepthBufferDesc));
+		shadowMapDepthBufferDesc.Width = _textureWidth;
+		shadowMapDepthBufferDesc.Height = _textureHeight;
+		shadowMapDepthBufferDesc.MipLevels = 1;
+		shadowMapDepthBufferDesc.ArraySize = 1;
+		shadowMapDepthBufferDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		shadowMapDepthBufferDesc.SampleDesc.Count = 1;
+		shadowMapDepthBufferDesc.SampleDesc.Quality = 0;
+		shadowMapDepthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		shadowMapDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		shadowMapDepthBufferDesc.CPUAccessFlags = 0;
+		shadowMapDepthBufferDesc.MiscFlags = 0;
+
+		HR(device->CreateTexture2D(&shadowMapDepthBufferDesc, NULL, _shadowDepthBuffer.GetAddressOf()));
 
 		// ShadowDepthStencilView 생성
-		HR(device->CreateDepthStencilView(_shadowDepthBuffer.Get(), &depthStencilViewDesc, _shadowDepthStencilView.GetAddressOf()));
+		D3D11_DEPTH_STENCIL_VIEW_DESC shadowMapDSVDesc;
+		ZeroMemory(&shadowMapDSVDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		shadowMapDSVDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		shadowMapDSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		shadowMapDSVDesc.Texture2D.MipSlice = 0;
+		shadowMapDSVDesc.Flags = 0;
+
+		HR(device->CreateDepthStencilView(_shadowDepthBuffer.Get(), &shadowMapDSVDesc, _shadowDepthStencilView.GetAddressOf()));
 	}
 
 	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
@@ -160,6 +200,10 @@ namespace Rocket::Core
 		}
 
 		deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		float depthColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		deviceContext->ClearRenderTargetView(_shadowMapRenderTargetView.Get(), depthColor);
+		deviceContext->ClearDepthStencilView(_shadowDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetShaderResourceView(int index)

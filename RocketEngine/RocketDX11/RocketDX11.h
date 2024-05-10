@@ -23,6 +23,7 @@ namespace Rocket::Core
 	class DeferredBuffers;
 	class LightPass;
 	class ShadowPass;
+	class IRenderable;
 }
 
 namespace Rocket::Core
@@ -55,8 +56,6 @@ namespace Rocket::Core
 		void RenderDebug();
 		void GBufferPass();
 		void EndRender();
-
-		void UpdateAnimation(float deltaTime);
 
 		/// Initialize Member
 	private:
@@ -91,6 +90,10 @@ namespace Rocket::Core
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
+
+	private:
+		// 매 프레임 Frustum Culling 적용 후 살아남은 객체들
+		std::vector<IRenderable*> _renderList;
 
 		/// deferred 관련
 	private:

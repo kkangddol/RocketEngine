@@ -52,6 +52,7 @@ namespace Rocket::Core
 		float _specularPower;
 
 		float _lengthZ;		// TODO : 매번 업데이트되는데 여기다 둘까? 흠..
+		float _shadowRadius;
 
 		// For Shadow Map.
 	private:

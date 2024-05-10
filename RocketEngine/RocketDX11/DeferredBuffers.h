@@ -29,6 +29,9 @@ namespace Rocket::Core
 		ID3D11DepthStencilView* GetDepthStencilView() { return _depthStencilView.Get(); }
 		ID3D11DepthStencilView** GetAddressOfDepthStencilView() { return _depthStencilView.GetAddressOf(); }
 
+		ID3D11ShaderResourceView* GetShadowMapSRV() { return _shadowMapShaderResourceView.Get(); }
+		ID3D11ShaderResourceView** GetAddressOfShadowMapSRV() { return _shadowMapShaderResourceView.GetAddressOf(); }
+
 	private:
 		int _textureWidth;
 		int _textureHeight;

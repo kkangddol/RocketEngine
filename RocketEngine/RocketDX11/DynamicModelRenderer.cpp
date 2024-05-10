@@ -587,4 +587,102 @@ namespace Rocket::Core
 	{
 		_material->SetRoughness(value);
 	}
+
+	void DynamicModelRenderer::RenderShadowMap(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj, VertexShader* vs, PixelShader* ps)
+	{
+		if (!_isActive)
+		{
+			return;
+		}
+
+		// Grid가 쓰는 Shader deviceContext 이용해 연결.
+		deviceContext->VSSetShader(vs->GetVertexShader(), nullptr, 0);
+		deviceContext->PSSetShader(ps->GetPixelShader(), nullptr, 0);
+
+		// 입력 배치 객체 셋팅
+		deviceContext->IASetInputLayout(vs->GetInputLayout());
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// 상수 버퍼 세팅
+		{
+			// 버텍스 쉐이더
+			unsigned int bufferNumber = 0;
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			HR(deviceContext->Map(vs->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			MatrixBufferType* matrixBufferDataPtr = (MatrixBufferType*)mappedResource.pData;
+
+			// DX에서 HLSL 로 넘어갈때 자동으로 전치가 되서 넘어간다.
+			// HLSL 에서도 Row Major 하게 작성하고 싶으므로 미리 전치를 시켜놓는다.
+			// 총 전치가 2번되므로 HLSL에서도 Row Major한 Matrix로 사용한다.
+
+			DirectX::XMVECTOR det = DirectX::XMMatrixDeterminant(_worldTM);
+			DirectX::XMMATRIX worldInverse = DirectX::XMMatrixInverse(&det, _worldTM);
+
+			DirectX::XMMATRIX w = DirectX::XMMatrixTranspose(_worldTM);
+			DirectX::XMMATRIX wi = DirectX::XMMatrixTranspose(worldInverse);
+			DirectX::XMMATRIX v = DirectX::XMMatrixTranspose(view);
+			DirectX::XMMATRIX p = DirectX::XMMatrixTranspose(proj);
+
+			matrixBufferDataPtr->world = w;
+			matrixBufferDataPtr->worldInverse = wi;
+			matrixBufferDataPtr->view = v;
+			matrixBufferDataPtr->projection = p;
+
+			deviceContext->Unmap(vs->GetConstantBuffer(bufferNumber), 0);
+
+
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
+
+			///
+			bufferNumber = 1;
+			HR(deviceContext->Map(vs->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			NodeBufferType* nodeBufferDataPtr = (NodeBufferType*)mappedResource.pData;
+
+			//SetNodeBuffer(_model->rootNode, nodeBufferDataPtr);
+			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
+
+			deviceContext->Unmap(vs->GetConstantBuffer(bufferNumber), 0);
+
+
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
+
+
+			bufferNumber = 2;
+			HR(deviceContext->Map(vs->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			BoneBufferType* boneBufferDataPtr = (BoneBufferType*)mappedResource.pData;
+
+			// TODO : 이거 사실 둘 다 같은 본 데이터인건데 왜 매트릭스가 영행렬이 들어가있지..?
+			//SetBoneBuffer(_model->rootNode, boneBufferDataPtr);
+			SetBoneBuffer(_animatedRootNode, boneBufferDataPtr);
+			testCount = 0;
+
+			deviceContext->Unmap(vs->GetConstantBuffer(bufferNumber), 0);
+
+
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
+		}
+
+		// 렌더스테이트
+		deviceContext->RSSetState(_material->GetRenderState());
+
+
+		/// 그린다
+		// 인덱스버퍼와 버텍스버퍼 셋팅
+		UINT stride = 0;
+		UINT offset = 0;
+
+		stride = sizeof(VertexSkinned);
+
+		for (auto& mesh : _model->meshes)
+		{
+			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
+			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+			deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		}
+	}
+
 }

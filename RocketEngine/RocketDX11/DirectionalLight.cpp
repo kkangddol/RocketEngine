@@ -9,7 +9,13 @@ namespace Rocket::Core
 		_diffuseColor(1.0f, 1.0f, 1.0f, 1.0f),
 		_ambientColor(0.3f, 0.3f, 0.3f, 0.3f),
 		_specularColor(1.0f, 1.0f, 1.0f, 1.0f),
-		_specularPower(4.0f)
+		_specularPower(4.0f),
+		_lengthZ(0.0f),
+		_shadowRadius(50.0f),
+		_lightPosForShadow(Vector3::Zero),
+		_boundingFrustum(),
+		_viewMatrix(),
+		_projectionMatrix()
 	{
 
 	}
@@ -23,9 +29,9 @@ namespace Rocket::Core
 	{
 		// 카메라 근처의 적절한 위치로 위치 변경.
 		auto mainCam = Camera::GetMainCamera();
-		_lengthZ = mainCam->GetLengthZ();
-		_lightPosForShadow = mainCam->GetPosition() + (mainCam->GetForward() * _lengthZ / 2);	// frustum의 중앙으로 보냄
-		_lightPosForShadow += -_transform->GetForward() * _lengthZ / 2;							// 빛 방향의 반대방향으로 lengthZ만큼 보냄
+		//_lengthZ = mainCam->GetLengthZ();
+		_lightPosForShadow = mainCam->GetPosition() + (mainCam->GetForward() * _shadowRadius);	// frustum의 중앙으로 보냄
+		//_lightPosForShadow -= _transform->GetForward() * _shadowRadius;							// 빛 방향의 반대방향으로 lengthZ만큼 보냄
 
 		UpdateViewMatrix();
 		UpdateProjectionMatrix();
@@ -34,6 +40,7 @@ namespace Rocket::Core
 	void DirectionalLight::UpdateViewMatrix()
 	{
 		auto temp = DirectX::XMMatrixLookAtLH(_lightPosForShadow, _lightPosForShadow + _transform->GetForward(), _transform->GetUp());
+		//auto temp = DirectX::XMMatrixLookAtLH(_transform->GetPosition(), _transform->GetPosition() + _transform->GetForward(), _transform->GetUp());
 		DirectX::XMStoreFloat4x4(&_viewMatrix, temp);
 
 // 		DirectX::XMVECTOR R = _transform->GetRight();
@@ -86,7 +93,9 @@ namespace Rocket::Core
 	{
 		// [in] float ViewWidth, [in] float ViewHeight, [in] float NearZ, [in] float FarZ
 
-		DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(_lengthZ, _lengthZ, 0.001f, _lengthZ);
+		float tempSize = 2000.0f;
+		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(tempSize / 9.0f, tempSize / 16.0f, 0.001f, _lengthZ / 2);
+		DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(_shadowRadius * 2, _shadowRadius * 2, -_shadowRadius, _shadowRadius);
 		DirectX::XMStoreFloat4x4(&_projectionMatrix, temp);
 
 		_boundingFrustum = DirectX::BoundingFrustum(temp);		// boundingFrustum도 갱신해준다.

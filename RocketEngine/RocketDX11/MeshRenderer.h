@@ -48,6 +48,7 @@ namespace Rocket::Core
 
 	public:
 		virtual void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj) override;
+		void RenderShadowMap(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj, VertexShader* vs, PixelShader* ps);
 
 	public:
 		void SetMaterial(Material* val) { _material = val; }
