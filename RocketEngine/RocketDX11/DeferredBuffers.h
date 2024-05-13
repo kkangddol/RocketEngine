@@ -47,5 +47,6 @@ namespace Rocket::Core
 		ComPtr<ID3D11ShaderResourceView> _shadowMapShaderResourceView;
 		ComPtr<ID3D11Texture2D> _shadowDepthBuffer;
 		ComPtr<ID3D11DepthStencilView> _shadowDepthStencilView;
+		D3D11_VIEWPORT _shadowMapViewport;
 	};
 }

@@ -31,7 +31,7 @@ namespace Rocket::Core
 		auto mainCam = Camera::GetMainCamera();
 		//_lengthZ = mainCam->GetLengthZ();
 		_lightPosForShadow = mainCam->GetPosition() + (mainCam->GetForward() * _shadowRadius);	// frustum의 중앙으로 보냄
-		//_lightPosForShadow -= _transform->GetForward() * _shadowRadius;							// 빛 방향의 반대방향으로 lengthZ만큼 보냄
+		_lightPosForShadow -= _transform->GetForward() * _shadowRadius;							// 빛 방향의 반대방향으로 lengthZ만큼 보냄
 
 		UpdateViewMatrix();
 		UpdateProjectionMatrix();
@@ -93,12 +93,16 @@ namespace Rocket::Core
 	{
 		// [in] float ViewWidth, [in] float ViewHeight, [in] float NearZ, [in] float FarZ
 
-		float tempSize = 2000.0f;
+		//DirectX::XMMATRIX temp = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(70.0f/2), 16.0f/9.0f , 0.01f, 1000.0f);
+		//float tempSize = 64.0f;
+		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(tempSize, tempSize, -100.0f, 100.0f);
 		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(tempSize / 9.0f, tempSize / 16.0f, 0.001f, _lengthZ / 2);
-		DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(_shadowRadius * 2, _shadowRadius * 2, -_shadowRadius, _shadowRadius);
-		DirectX::XMStoreFloat4x4(&_projectionMatrix, temp);
+		DirectX::XMMATRIX projMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 2, _shadowRadius * 2, 0.01f, _shadowRadius * 2);
+		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicOffCenterLH(-_shadowRadius, _shadowRadius, -_shadowRadius, _shadowRadius, -_shadowRadius, _shadowRadius);
+		DirectX::XMStoreFloat4x4(&_projectionMatrix, projMatrix);
 
-		_boundingFrustum = DirectX::BoundingFrustum(temp);		// boundingFrustum도 갱신해준다.
+		DirectX::XMMATRIX boundingMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 4, _shadowRadius * 4, 0.01f, _shadowRadius * 2);
+		_boundingFrustum = DirectX::BoundingFrustum(boundingMatrix);		// boundingFrustum도 갱신해준다.
 	}
 
 	bool DirectionalLight::FrustumCulling(const DirectX::BoundingBox& boundingBox)

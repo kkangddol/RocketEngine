@@ -441,9 +441,12 @@ namespace Rocket::Core
 	{
 		BeginRender(1.0f, 0.0f, 1.0f, 1.0f);
 
-		GBufferPass();
 		// TODO : 섀도우 맵 만들고 LightPass에 넘겨줘야함.
 		_shadowPass->GenerateShadowMap(_deviceContext.Get(), _deferredBuffers.get());
+
+		_deviceContext->RSSetViewports(1, &_viewport);
+
+		GBufferPass();
 
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), nullptr);
 		_lightPass->Render(_deviceContext.Get(), _deferredBuffers.get());
@@ -683,7 +686,7 @@ namespace Rocket::Core
 			, DirectX::Colors::White
 			, 0.0f							// 회전 각도
 			, DirectX::XMFLOAT2(0, 0)		// 이미지의 원점 : 0.0f,0.0f가 좌측상단
-			, (1.0f / (float)BUFFER_COUNT) * 2.0f);
+			, 1.0f);
 
 
 		for (int i = 0; i < BUFFER_COUNT; i++)

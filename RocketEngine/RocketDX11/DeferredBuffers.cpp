@@ -116,10 +116,16 @@ namespace Rocket::Core
 
 
 		/// Shadow Map 관련
+		float shadowMapWidth = 512.0f;
+		float shadowMapHeight = 512.0f;
+
+//  		shadowMapWidth = _textureWidth;
+//  		shadowMapHeight = _textureHeight;
+
 		// ShadowMapTexture 생성
 		D3D11_TEXTURE2D_DESC shadowMapTexDesc;
-		shadowMapTexDesc.Width = _textureWidth;
-		shadowMapTexDesc.Height = _textureHeight;
+		shadowMapTexDesc.Width = shadowMapWidth;	//_textureWidth;
+		shadowMapTexDesc.Height = shadowMapHeight;	//_textureHeight;
 		shadowMapTexDesc.MipLevels = 1;
 		shadowMapTexDesc.ArraySize = 1;
 		shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
@@ -154,8 +160,8 @@ namespace Rocket::Core
 		// ShadowDepthBuffer 생성
 		D3D11_TEXTURE2D_DESC shadowMapDepthBufferDesc;
 		ZeroMemory(&shadowMapDepthBufferDesc, sizeof(shadowMapDepthBufferDesc));
-		shadowMapDepthBufferDesc.Width = _textureWidth;
-		shadowMapDepthBufferDesc.Height = _textureHeight;
+		shadowMapDepthBufferDesc.Width = shadowMapWidth;	//_textureWidth;
+		shadowMapDepthBufferDesc.Height = shadowMapHeight;	//_textureHeight;
 		shadowMapDepthBufferDesc.MipLevels = 1;
 		shadowMapDepthBufferDesc.ArraySize = 1;
 		shadowMapDepthBufferDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
@@ -177,6 +183,13 @@ namespace Rocket::Core
 		shadowMapDSVDesc.Flags = 0;
 
 		HR(device->CreateDepthStencilView(_shadowDepthBuffer.Get(), &shadowMapDSVDesc, _shadowDepthStencilView.GetAddressOf()));
+
+
+		ZeroMemory(&_shadowMapViewport, sizeof(D3D11_VIEWPORT));
+		_shadowMapViewport.Height = shadowMapHeight;
+		_shadowMapViewport.Width = shadowMapWidth;
+		_shadowMapViewport.MinDepth = 0;
+		_shadowMapViewport.MaxDepth = 1;
 	}
 
 	void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
@@ -224,6 +237,7 @@ namespace Rocket::Core
 	void DeferredBuffers::SetShadowMapRenderTarget(ID3D11DeviceContext* deviceContext)
 	{
 		deviceContext->OMSetRenderTargets(1, _shadowMapRenderTargetView.GetAddressOf(), _shadowDepthStencilView.Get());
+		deviceContext->RSSetViewports(1, &_shadowMapViewport);
 	}
 
 }

@@ -54,6 +54,11 @@ namespace Rocket::Core
 		float padding;
 	};
 
+	struct ShadowBufferType
+	{
+		DirectX::XMMATRIX lightViewProjection;
+	};
+
 	struct CameraBufferType
 	{
 		DirectX::XMFLOAT3 cameraPosition;

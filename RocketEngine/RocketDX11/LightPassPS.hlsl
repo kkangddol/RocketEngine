@@ -16,6 +16,7 @@ Texture2D AmbientOcclusion : register(t5);
 TextureCube IBLIrradiance : register(t6);
 TextureCube IBLPrefilter : register(t7);
 Texture2D IBLBRDFLUT : register(t8);
+Texture2D ShadowMap : register(t9);
 
 cbuffer LightBuffer : register(b0)
 {
@@ -29,11 +30,43 @@ cbuffer viewBuffer : register(b1)
     float padding1;
 }
 
+cbuffer shadowBuffer : register(b2)
+{
+    float4x4 lightViewProjection;
+}
+
 struct PixelInput
 {
     float4 position : SV_POSITION;
     float2 uv : TEXCOORD;
 };
+
+float CalculateShadowFactor(float3 position)
+{
+    float bias = 0.001f;    // 부동 소수점 정밀도 문제를 해결할 바이어스 값?
+    
+    float4 lightSpacePos = mul(float4(position, 1.0f), lightViewProjection);
+    float3 projCoords = lightSpacePos.xyz / lightSpacePos.w;
+    float currentDepth = projCoords.z;
+    
+    if (currentDepth > 1.0f)
+    {
+        return 1.0f;
+    }
+
+    projCoords = projCoords * 0.5f + 0.5f;      // -1 ~ 1 -> 0 ~ 1
+    
+    float depthValue = ShadowMap.Sample(LightPassSampler, projCoords.xy).r;
+    
+    float shadowFactor = 0.0f;  // 1.0f이면 빛을 받고 있음. 0.0f이면 아예 안받음
+    
+    if(currentDepth-bias < depthValue)
+    {
+        shadowFactor = 1.0f;        // 임시로 그냥 때려박은 값
+    }
+    
+    return shadowFactor;
+}
 
 float4 main(PixelInput input) : SV_TARGET
 {
@@ -66,6 +99,7 @@ float4 main(PixelInput input) : SV_TARGET
    
     float3 lightColor = float3(1.0f, 1.0f, 1.0f);
     float3 radiance = lightColor * NdotL;
+    float lightPower = 3.5f;
     
     // PBR
     float3 F0 = { 0.04f, 0.04f, 0.04f };
@@ -85,7 +119,10 @@ float4 main(PixelInput input) : SV_TARGET
     float3 BRDFspecular = D * G * F / denominator;
     
     float4 outputColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
-    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * radiance * NdotL;
+    float shadowFactor = CalculateShadowFactor(posW);
+    //shadowFactor *= 0.0001f;
+    //shadowFactor += 1.0f;
+    outputColor.rgb = ((kD * baseColor / PI) + BRDFspecular) * radiance * NdotL * shadowFactor * lightPower;
  
     // IBL
     float3 irradiance = IBLIrradiance.Sample(CubeMapSampler, normal).rgb;
@@ -101,7 +138,7 @@ float4 main(PixelInput input) : SV_TARGET
     float3 IBLdiffuse = irradiance * baseColor * kD;
     float3 IBLspecular = prefilteredColor * (kS * brdf.x + brdf.y);
     
-    outputColor.xyz += (IBLdiffuse + IBLspecular) * ambientOcclusion;
+    outputColor.xyz += (IBLdiffuse + IBLspecular) * ambientOcclusion * 0.3f;
     
     // Tone Mapping
     // outputColor = outputColor / (outputColor + float4(1.0f, 1.0f, 1.0f, 1.0f));

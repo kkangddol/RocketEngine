@@ -37,15 +37,20 @@ namespace Rocket::Core
 			deviceContext->PSSetShaderResources(i, 1, g_buffer->GetAddressOfShaderResourceView(i));
 		}
 
-		// IBL Texture 세팅
-		{
 			unsigned int textureNumber = BUFFER_COUNT;
+
+		// IBL Texture 세팅
 			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetIrradianceTextureSRV());
 			textureNumber++;
 			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetPrefilteredTextureSRV());
 			textureNumber++;
 			deviceContext->PSSetShaderResources(textureNumber, 1, ObjectManager::Instance().GetCubeMap()->GetBRDF2DLUTTextureSRV());
-		}
+			textureNumber++;
+
+		// ShadowMap 세팅
+			deviceContext->PSSetShaderResources(textureNumber, 1, g_buffer->GetAddressOfShadowMapSRV());
+			textureNumber++;
+
 
 		/// PS 상수 버퍼 세팅
 		{
@@ -86,13 +91,31 @@ namespace Rocket::Core
 			deviceContext->Unmap(_pixelShader->GetConstantBuffer(bufferNumber), 0);
 
 			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _pixelShader->GetAddressOfConstantBuffer(bufferNumber));
+
+
+			// TODO : 일단 우겨넣은거임
+			// Directional Light Shadow Matrix 세팅
+			bufferNumber = 2;
+
+			HR(deviceContext->Map(_pixelShader->GetConstantBuffer(bufferNumber), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			ShadowBufferType* shadowBufferDataPtr = (ShadowBufferType*)mappedResource.pData;
+
+			auto dirLight = ObjectManager::Instance().GetDirectionalLightList().front();
+			Matrix VP = dirLight->GetViewMatrix() * dirLight->GetProjectionMatrix();
+			VP = VP.Transpose();
+			shadowBufferDataPtr->lightViewProjection = VP;
+
+			deviceContext->Unmap(_pixelShader->GetConstantBuffer(bufferNumber), 0);
+
+			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _pixelShader->GetAddressOfConstantBuffer(bufferNumber));
 		}
 		 
 
 		deviceContext->Draw(4, 0);
 
 		ComPtr<ID3D11ShaderResourceView> nullSRV = nullptr;
-		for (int i = 0; i < BUFFER_COUNT; i++)
+		for (int i = 0; i < textureNumber; i++)
 		{
 			deviceContext->PSSetShaderResources(i, 1, nullSRV.GetAddressOf());
 		}
