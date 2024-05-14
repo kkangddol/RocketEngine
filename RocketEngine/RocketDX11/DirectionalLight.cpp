@@ -97,11 +97,11 @@ namespace Rocket::Core
 		//float tempSize = 64.0f;
 		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(tempSize, tempSize, -100.0f, 100.0f);
 		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicLH(tempSize / 9.0f, tempSize / 16.0f, 0.001f, _lengthZ / 2);
-		DirectX::XMMATRIX projMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 2, _shadowRadius * 2, 0.01f, _shadowRadius * 2);
+		DirectX::XMMATRIX projMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 2, _shadowRadius * 2, 0.0001f, _shadowRadius * 2);
 		//DirectX::XMMATRIX temp = DirectX::XMMatrixOrthographicOffCenterLH(-_shadowRadius, _shadowRadius, -_shadowRadius, _shadowRadius, -_shadowRadius, _shadowRadius);
 		DirectX::XMStoreFloat4x4(&_projectionMatrix, projMatrix);
 
-		DirectX::XMMATRIX boundingMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 4, _shadowRadius * 4, 0.01f, _shadowRadius * 2);
+		DirectX::XMMATRIX boundingMatrix = DirectX::XMMatrixOrthographicLH(_shadowRadius * 8, _shadowRadius * 8, 0.0001f, _shadowRadius * 4);
 		_boundingFrustum = DirectX::BoundingFrustum(boundingMatrix);		// boundingFrustum도 갱신해준다.
 	}
 
