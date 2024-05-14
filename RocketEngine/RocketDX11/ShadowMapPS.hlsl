@@ -1,10 +1,6 @@
-float4 main(float4 input : SV_POSITION) : SV_TARGET
+float main(float4 input : SV_POSITION) : SV_TARGET
 {
-    float4 output = (float) 0;
-    
-    float depth = input.z / input.w;
-    
-    output = float4(depth, depth, depth, 1.0f);
-    
-    return output;
+//    float depthValue = input.z / input.w;
+//    float4 output = float4(depthValue, depthValue, depthValue, 1.0f);
+    return input.z / input.w;
 }

@@ -6,6 +6,7 @@
 
 SamplerState LightPassSampler : register(s0);
 SamplerState CubeMapSampler : register(s1);
+SamplerState ShadowMapSampler : register(s2);
 
 Texture2D Position : register(t0);
 Texture2D BaseColor : register(t1);
@@ -56,11 +57,11 @@ float CalculateShadowFactor(float3 position)
 
     projCoords = projCoords * 0.5f + 0.5f;      // -1 ~ 1 -> 0 ~ 1
     
-    float depthValue = ShadowMap.Sample(LightPassSampler, projCoords.xy).r;
+    float depthValue = ShadowMap.Sample(ShadowMapSampler, float2(projCoords.x, 1 - projCoords.y)).r;
     
     float shadowFactor = 0.0f;  // 1.0f이면 빛을 받고 있음. 0.0f이면 아예 안받음
     
-    if(currentDepth-bias < depthValue)
+    if(currentDepth - bias < depthValue)
     {
         shadowFactor = 1.0f;        // 임시로 그냥 때려박은 값
     }

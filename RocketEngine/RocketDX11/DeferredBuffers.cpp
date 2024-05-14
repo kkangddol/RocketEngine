@@ -23,8 +23,6 @@ namespace Rocket::Core
 		_depthStencilBuffer.Reset();
 		_depthStencilView.Reset();
 
-		_shadowMapTexture.Reset();
-		_shadowMapRenderTargetView.Reset();
 		_shadowMapShaderResourceView.Reset();
 		_shadowDepthBuffer.Reset();
 		_shadowDepthStencilView.Reset();
@@ -116,46 +114,11 @@ namespace Rocket::Core
 
 
 		/// Shadow Map 관련
-		float shadowMapWidth = 512.0f;
-		float shadowMapHeight = 512.0f;
+		float shadowMapWidth = 2048.0f;
+		float shadowMapHeight = 2048.0f;
 
 //  		shadowMapWidth = _textureWidth;
 //  		shadowMapHeight = _textureHeight;
-
-		// ShadowMapTexture 생성
-		D3D11_TEXTURE2D_DESC shadowMapTexDesc;
-		shadowMapTexDesc.Width = shadowMapWidth;	//_textureWidth;
-		shadowMapTexDesc.Height = shadowMapHeight;	//_textureHeight;
-		shadowMapTexDesc.MipLevels = 1;
-		shadowMapTexDesc.ArraySize = 1;
-		shadowMapTexDesc.Format = DXGI_FORMAT_R32_TYPELESS;
-		shadowMapTexDesc.SampleDesc.Count = 1;
-		shadowMapTexDesc.SampleDesc.Quality = 0;
-		shadowMapTexDesc.Usage = D3D11_USAGE_DEFAULT;
-		shadowMapTexDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-		shadowMapTexDesc.CPUAccessFlags = 0;
-		shadowMapTexDesc.MiscFlags = 0;
-
-		HR(device->CreateTexture2D(&shadowMapTexDesc, nullptr, _shadowMapTexture.GetAddressOf()));
-
-		// ShadowMapRenderTargetView 생성
-		D3D11_RENDER_TARGET_VIEW_DESC shadowMapRTVDesc;
-		ZeroMemory(&shadowMapRTVDesc, sizeof(shadowMapRTVDesc));
-		shadowMapRTVDesc.Format = DXGI_FORMAT_R32_FLOAT;
-		shadowMapRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		shadowMapRTVDesc.Texture2D.MipSlice = 0;
-
-		HR(device->CreateRenderTargetView(_shadowMapTexture.Get(), &shadowMapRTVDesc, _shadowMapRenderTargetView.GetAddressOf()));
-
-		// ShadowMapShaderResourceView 생성
-		D3D11_SHADER_RESOURCE_VIEW_DESC shadowMapSRVDesc;
-		ZeroMemory(&shadowMapSRVDesc, sizeof(shadowMapSRVDesc));
-		shadowMapSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
-		shadowMapSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		shadowMapSRVDesc.Texture2D.MostDetailedMip = 0;
-		shadowMapSRVDesc.Texture2D.MipLevels = 1;
-
-		HR(device->CreateShaderResourceView(_shadowMapTexture.Get(), &shadowMapSRVDesc, _shadowMapShaderResourceView.GetAddressOf()));
 
 		// ShadowDepthBuffer 생성
 		D3D11_TEXTURE2D_DESC shadowMapDepthBufferDesc;
@@ -168,7 +131,7 @@ namespace Rocket::Core
 		shadowMapDepthBufferDesc.SampleDesc.Count = 1;
 		shadowMapDepthBufferDesc.SampleDesc.Quality = 0;
 		shadowMapDepthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		shadowMapDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		shadowMapDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 		shadowMapDepthBufferDesc.CPUAccessFlags = 0;
 		shadowMapDepthBufferDesc.MiscFlags = 0;
 
@@ -184,10 +147,19 @@ namespace Rocket::Core
 
 		HR(device->CreateDepthStencilView(_shadowDepthBuffer.Get(), &shadowMapDSVDesc, _shadowDepthStencilView.GetAddressOf()));
 
+		// ShadowMapShaderResourceView 생성
+		D3D11_SHADER_RESOURCE_VIEW_DESC shadowMapSRVDesc;
+		ZeroMemory(&shadowMapSRVDesc, sizeof(shadowMapSRVDesc));
+		shadowMapSRVDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+		shadowMapSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shadowMapSRVDesc.Texture2D.MostDetailedMip = 0;
+		shadowMapSRVDesc.Texture2D.MipLevels = 1;
+
+		HR(device->CreateShaderResourceView(_shadowDepthBuffer.Get(), &shadowMapSRVDesc, _shadowMapShaderResourceView.GetAddressOf()));
 
 		ZeroMemory(&_shadowMapViewport, sizeof(D3D11_VIEWPORT));
-		_shadowMapViewport.Height = shadowMapHeight;
 		_shadowMapViewport.Width = shadowMapWidth;
+		_shadowMapViewport.Height = shadowMapHeight;
 		_shadowMapViewport.MinDepth = 0;
 		_shadowMapViewport.MaxDepth = 1;
 	}
@@ -215,7 +187,6 @@ namespace Rocket::Core
 		deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		float depthColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		deviceContext->ClearRenderTargetView(_shadowMapRenderTargetView.Get(), depthColor);
 		deviceContext->ClearDepthStencilView(_shadowDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
@@ -236,7 +207,7 @@ namespace Rocket::Core
 
 	void DeferredBuffers::SetShadowMapRenderTarget(ID3D11DeviceContext* deviceContext)
 	{
-		deviceContext->OMSetRenderTargets(1, _shadowMapRenderTargetView.GetAddressOf(), _shadowDepthStencilView.Get());
+		deviceContext->OMSetRenderTargets(0, nullptr, _shadowDepthStencilView.Get());
 		deviceContext->RSSetViewports(1, &_shadowMapViewport);
 	}
 

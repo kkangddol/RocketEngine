@@ -681,12 +681,12 @@ namespace Rocket::Core
 		auto shadowMap = _deferredBuffers->GetShadowMapSRV();
 		_spriteBatch->Draw(
 			shadowMap
-			, DirectX::XMFLOAT2(_screenWidth/2, 0)
+			, DirectX::XMFLOAT2(_screenWidth - 512.0f, 0)
 			, nullptr
 			, DirectX::Colors::White
 			, 0.0f							// 회전 각도
 			, DirectX::XMFLOAT2(0, 0)		// 이미지의 원점 : 0.0f,0.0f가 좌측상단
-			, 1.0f);
+			, 1.0f/4.0f);
 
 
 		for (int i = 0; i < BUFFER_COUNT; i++)

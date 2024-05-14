@@ -357,7 +357,8 @@ namespace Rocket::Core
 
 		// Shader deviceContext 이용해 연결.
 		deviceContext->VSSetShader(vs->GetVertexShader(), nullptr, 0);
-		deviceContext->PSSetShader(ps->GetPixelShader(), nullptr, 0);
+		//deviceContext->PSSetShader(ps->GetPixelShader(), nullptr, 0);
+		deviceContext->PSSetShader(NULL, NULL, 0);
 
 		// 상수 버퍼 세팅
 		{
@@ -391,8 +392,8 @@ namespace Rocket::Core
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
 		}
 
-		// 렌더스테이트
-		deviceContext->RSSetState(_material->GetRenderState());
+		// 렌더스테이트 ShadowMap용으로 사용
+		deviceContext->RSSetState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SHADOWMAP));
 
 
 		/// 그린다

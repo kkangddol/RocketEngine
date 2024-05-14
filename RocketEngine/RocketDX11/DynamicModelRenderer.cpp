@@ -292,8 +292,6 @@ namespace Rocket::Core
 			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
 
 			deviceContext->Unmap(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0);
-
-
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 
@@ -308,8 +306,6 @@ namespace Rocket::Core
 			testCount = 0;
 
 			deviceContext->Unmap(_material->GetVertexShader()->GetConstantBuffer(bufferNumber), 0);
-
-
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _material->GetVertexShader()->GetAddressOfConstantBuffer(bufferNumber));
 
 			/// 픽셀 쉐이더
@@ -597,11 +593,8 @@ namespace Rocket::Core
 
 		// Grid가 쓰는 Shader deviceContext 이용해 연결.
 		deviceContext->VSSetShader(vs->GetVertexShader(), nullptr, 0);
-		deviceContext->PSSetShader(ps->GetPixelShader(), nullptr, 0);
-
-		// 입력 배치 객체 셋팅
-		deviceContext->IASetInputLayout(vs->GetInputLayout());
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//deviceContext->PSSetShader(ps->GetPixelShader(), nullptr, 0);
+		deviceContext->PSSetShader(NULL, NULL, 0);
 
 		// 상수 버퍼 세팅
 		{
@@ -644,8 +637,6 @@ namespace Rocket::Core
 			SetNodeBuffer(_animatedRootNode, nodeBufferDataPtr);
 
 			deviceContext->Unmap(vs->GetConstantBuffer(bufferNumber), 0);
-
-
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
 
 
@@ -657,16 +648,13 @@ namespace Rocket::Core
 			// TODO : 이거 사실 둘 다 같은 본 데이터인건데 왜 매트릭스가 영행렬이 들어가있지..?
 			//SetBoneBuffer(_model->rootNode, boneBufferDataPtr);
 			SetBoneBuffer(_animatedRootNode, boneBufferDataPtr);
-			testCount = 0;
 
 			deviceContext->Unmap(vs->GetConstantBuffer(bufferNumber), 0);
-
-
 			deviceContext->VSSetConstantBuffers(bufferNumber, 1, vs->GetAddressOfConstantBuffer(bufferNumber));
 		}
 
 		// 렌더스테이트
-		deviceContext->RSSetState(_material->GetRenderState());
+		deviceContext->RSSetState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SHADOWMAP));
 
 
 		/// 그린다
@@ -675,6 +663,10 @@ namespace Rocket::Core
 		UINT offset = 0;
 
 		stride = sizeof(VertexSkinned);
+
+		// 입력 배치 객체 셋팅
+		deviceContext->IASetInputLayout(vs->GetInputLayout());
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		for (auto& mesh : _model->meshes)
 		{
