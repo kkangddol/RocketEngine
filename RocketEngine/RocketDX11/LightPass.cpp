@@ -30,6 +30,7 @@ namespace Rocket::Core
 
 		deviceContext->PSSetSamplers(0, 1, _sampleState.GetAddressOf());
 		deviceContext->PSSetSamplers(1, 1, ObjectManager::Instance().GetCubeMap()->GetSamplerState());
+		deviceContext->PSSetSamplers(2, 1, _shadowMapSamplerState.GetAddressOf());
 
 		// G-Buffer 세팅
 		for (int i = 0; i < BUFFER_COUNT; i++)
@@ -154,6 +155,25 @@ namespace Rocket::Core
 		HR(device->CreateSamplerState(&samplerDesc, _sampleState.GetAddressOf()));
 
 		_sampleState->SetPrivateData(WKPDID_D3DDebugObjectNameW, sizeof(L"LightPassSampler") - 1, L"LightPassSampler");
+	
+		// ShadowMap Sampler
+		D3D11_SAMPLER_DESC shadowSamplerDESC;
+		shadowSamplerDESC.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		shadowSamplerDESC.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSamplerDESC.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSamplerDESC.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSamplerDESC.MipLODBias = 0.0f;
+		shadowSamplerDESC.MaxAnisotropy = 1;
+		shadowSamplerDESC.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		shadowSamplerDESC.BorderColor[0] = 1.0f;
+		shadowSamplerDESC.BorderColor[1] = 1.0f;
+		shadowSamplerDESC.BorderColor[2] = 1.0f;
+		shadowSamplerDESC.BorderColor[3] = 1.0f;
+		shadowSamplerDESC.MinLOD = 0;
+		shadowSamplerDESC.MaxLOD = D3D11_FLOAT32_MAX;
+
+		// 텍스처 샘플러 상태를 만듭니다.
+		HR(device->CreateSamplerState(&shadowSamplerDESC, _shadowMapSamplerState.GetAddressOf()));
 	}
 
 }
