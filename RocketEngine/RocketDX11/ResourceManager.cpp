@@ -179,7 +179,8 @@ namespace Rocket::Core
 		D3D11_RASTERIZER_DESC shadowMapDesc;
 		ZeroMemory(&shadowMapDesc, sizeof(D3D11_RASTERIZER_DESC));
 		shadowMapDesc.FillMode = D3D11_FILL_SOLID;
-		shadowMapDesc.CullMode = D3D11_CULL_FRONT;
+		//shadowMapDesc.CullMode = D3D11_CULL_NONE;		// TODO : Plane의 경우를 어떻게 처리할것인가 (그림자를 만들거면 NONE, 아니라면 BACK)
+		shadowMapDesc.CullMode = D3D11_CULL_BACK;
 		shadowMapDesc.FrontCounterClockwise = false;
 		shadowMapDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* shadowMapRS;
