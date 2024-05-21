@@ -78,6 +78,12 @@ void TestScene::Initialize()
 		test2->transform.SetScale(2.0f, 2.0f, 2.0f);
 	}
 
+	/// 에셋 테스트 에셋 테스트 에셋 테스트 에셋 테스트 에셋 테스트 에셋 테스트 
+	{
+		auto test1 = scene->CreateModelObject("Tile_Corner.fbx");
+		test1->transform.SetScale(0.01f, 0.01f, 0.01f);
+	}
+
 	/// PBR 테스트
 	// PBR 구
 	auto PBRSphere = scene->CreateObject("PBRTest");
