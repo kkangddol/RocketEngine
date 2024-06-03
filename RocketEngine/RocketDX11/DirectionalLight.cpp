@@ -17,7 +17,7 @@ namespace Rocket::Core
 		_viewMatrix(),
 		_projectionMatrix()
 	{
-
+		UpdateProjectionMatrix();
 	}
 
 	Vector3 DirectionalLight::GetForward() const
@@ -34,7 +34,6 @@ namespace Rocket::Core
 		_lightPosForShadow -= _transform->GetForward() * _shadowRadius;							// 빛 방향의 반대방향으로 lengthZ만큼 보냄
 
 		UpdateViewMatrix();
-		UpdateProjectionMatrix();
 	}
 
 	void DirectionalLight::UpdateViewMatrix()
