@@ -1,5 +1,5 @@
 # RocketEngine
-|DirectX 11 자체 제작 엔진
+| DirectX 11 자체 제작 엔진
 
 ### 리소스 및 라이브러리 파일
 https://drive.google.com/file/d/196_8DCr3NlaVbLwXK351577kampAoJee/view?usp=sharing
